@@ -1,0 +1,1 @@
+{"ts":"2026-09-04T15:30:07.423Z","event":"review_override","actor":"rae-hugo-kim","meta":{"reason":"upstream harness sync rae-hugo-kim/omp tag 2026.73 (remote-wins); content authored and versioned in source repo","diff_hash":"6280b5b0ff6705ab59a847dd9d03ba687e2a5452e7147d59e0751378794d39f6","risk":"high","risk_reason":"502+ lines of code changed"}}
