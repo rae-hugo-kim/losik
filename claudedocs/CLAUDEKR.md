@@ -137,7 +137,6 @@ Harness 검증 계약 세부 사항: [`rules/harness_integration_contract.md`](.
 - Repo command discovery: [`rules/repo_command_discovery.md`](../rules/repo_command_discovery.md)
 - Information discovery (breadth-first): [`rules/information_discovery.md`](../rules/information_discovery.md)
 - MCP server policies: [`rules/mcp_policy.md`](../rules/mcp_policy.md)
-- Context7 trigger policy: [`rules/context7_policy.md`](../rules/context7_policy.md)
 - Verification (tests + evals): [`rules/verification_tests_and_evals.md`](../rules/verification_tests_and_evals.md)
 - Change control (minimal change, scope, tidy): [`rules/change_control.md`](../rules/change_control.md)
 - Documentation policy (optional): [`rules/documentation_policy.md`](../rules/documentation_policy.md)
