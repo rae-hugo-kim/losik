@@ -1,0 +1,356 @@
+{
+ "before_control_note": "first two runs (surface-v3140, surface-v3140-settle) had no settle/health probe; see retest doc",
+ "runs": [
+  {
+   "tag": "surface-v3140-health",
+   "binary": "/Users/hugom4/.local/opt/logic-pro-mcp/LogicProMCP",
+   "initialize": [
+    "OK",
+    0.07560396194458008
+   ],
+   "tools_list": [
+    "OK",
+    0.021618127822875977
+   ],
+   "health_call": [
+    "OK",
+    0.7600390911102295
+   ],
+   "mcu": {
+    "connected": true,
+    "feedback_stale": true,
+    "last_feedback_at": "2026-09-04T16:34:42.541Z",
+    "port_name": "LogicProMCP-MCU-Internal",
+    "registered_as_device": true
+   },
+   "health_keys": [
+    "cache",
+    "channels",
+    "logic_pro_bundle_id",
+    "logic_pro_has_document",
+    "logic_pro_has_window",
+    "logic_pro_project_chooser_visible",
+    "logic_pro_running",
+    "logic_pro_ui_locale",
+    "logic_pro_variant",
+    "logic_pro_variants",
+    "logic_pro_version",
+    "mcu",
+    "permissions",
+    "process",
+    "process_metadata_resolved"
+   ],
+   "alive_at_end": true,
+   "stderr_bytes": 4146
+  },
+  {
+   "tag": "surface-fixed-health",
+   "binary": "/tmp/mong-src/.build/release/LogicProMCP",
+   "initialize": [
+    "OK",
+    0.1159968376159668
+   ],
+   "tools_list": [
+    "OK",
+    0.024784088134765625
+   ],
+   "health_call": [
+    "OK",
+    0.3316009044647217
+   ],
+   "mcu": {
+    "connected": true,
+    "feedback_stale": true,
+    "last_feedback_at": "2026-09-04T16:35:12.746Z",
+    "port_census": {
+     "endpoint_count": 2,
+     "has_foreign_endpoint": false,
+     "state": "observed"
+    },
+    "port_name": "LogicProMCP-MCU-Internal",
+    "registered_as_device": true
+   },
+   "health_keys": [
+    "cache",
+    "channels",
+    "logic_pro_bundle_id",
+    "logic_pro_has_document",
+    "logic_pro_has_window",
+    "logic_pro_project_chooser_visible",
+    "logic_pro_running",
+    "logic_pro_ui_locale",
+    "logic_pro_variant",
+    "logic_pro_variants",
+    "logic_pro_version",
+    "mcu",
+    "permissions",
+    "process",
+    "process_metadata_resolved"
+   ],
+   "alive_at_end": true,
+   "stderr_bytes": 4002
+  },
+  {
+   "tag": "surface-v3140-t1",
+   "binary": "/Users/hugom4/.local/opt/logic-pro-mcp/LogicProMCP",
+   "initialize": [
+    "OK",
+    0.04623007774353027
+   ],
+   "tools_list": [
+    "OK",
+    0.02060413360595703
+   ],
+   "health_call": [
+    "OK",
+    0.3294250965118408
+   ],
+   "mcu": {
+    "connected": true,
+    "feedback_stale": true,
+    "last_feedback_at": "2026-09-04T16:35:43.094Z",
+    "port_name": "LogicProMCP-MCU-Internal",
+    "registered_as_device": true
+   },
+   "health_keys": [
+    "cache",
+    "channels",
+    "logic_pro_bundle_id",
+    "logic_pro_has_document",
+    "logic_pro_has_window",
+    "logic_pro_project_chooser_visible",
+    "logic_pro_running",
+    "logic_pro_ui_locale",
+    "logic_pro_variant",
+    "logic_pro_variants",
+    "logic_pro_version",
+    "mcu",
+    "permissions",
+    "process",
+    "process_metadata_resolved"
+   ],
+   "alive_at_end": true,
+   "stderr_bytes": 5435
+  },
+  {
+   "tag": "surface-fixed-t1",
+   "binary": "/tmp/mong-src/.build/release/LogicProMCP",
+   "initialize": [
+    "OK",
+    0.038207054138183594
+   ],
+   "tools_list": [
+    "OK",
+    0.026327133178710938
+   ],
+   "health_call": [
+    "OK",
+    0.3321828842163086
+   ],
+   "mcu": {
+    "connected": false,
+    "feedback_stale": false,
+    "port_census": {
+     "endpoint_count": 2,
+     "has_foreign_endpoint": false,
+     "state": "observed"
+    },
+    "port_name": "LogicProMCP-MCU-Internal",
+    "registered_as_device": false
+   },
+   "health_keys": [
+    "cache",
+    "channels",
+    "logic_pro_bundle_id",
+    "logic_pro_has_document",
+    "logic_pro_has_window",
+    "logic_pro_project_chooser_visible",
+    "logic_pro_running",
+    "logic_pro_ui_locale",
+    "logic_pro_variant",
+    "logic_pro_variants",
+    "logic_pro_version",
+    "mcu",
+    "permissions",
+    "process",
+    "process_metadata_resolved"
+   ],
+   "alive_at_end": true,
+   "stderr_bytes": 4002
+  },
+  {
+   "tag": "surface-v3140-t2",
+   "binary": "/Users/hugom4/.local/opt/logic-pro-mcp/LogicProMCP",
+   "initialize": [
+    "OK",
+    0.03610110282897949
+   ],
+   "tools_list": [
+    "OK",
+    0.02532792091369629
+   ],
+   "health_call": [
+    "OK",
+    0.3180859088897705
+   ],
+   "mcu": {
+    "connected": false,
+    "feedback_stale": false,
+    "port_name": "LogicProMCP-MCU-Internal",
+    "registered_as_device": false
+   },
+   "health_keys": [
+    "cache",
+    "channels",
+    "logic_pro_bundle_id",
+    "logic_pro_has_document",
+    "logic_pro_has_window",
+    "logic_pro_project_chooser_visible",
+    "logic_pro_running",
+    "logic_pro_ui_locale",
+    "logic_pro_variant",
+    "logic_pro_variants",
+    "logic_pro_version",
+    "mcu",
+    "permissions",
+    "process",
+    "process_metadata_resolved"
+   ],
+   "alive_at_end": true,
+   "stderr_bytes": 3994
+  },
+  {
+   "tag": "surface-fixed-t2",
+   "binary": "/tmp/mong-src/.build/release/LogicProMCP",
+   "initialize": [
+    "OK",
+    0.041398048400878906
+   ],
+   "tools_list": [
+    "OK",
+    0.024673938751220703
+   ],
+   "health_call": [
+    "OK",
+    0.3314642906188965
+   ],
+   "mcu": {
+    "connected": false,
+    "feedback_stale": false,
+    "port_census": {
+     "endpoint_count": 2,
+     "has_foreign_endpoint": false,
+     "state": "observed"
+    },
+    "port_name": "LogicProMCP-MCU-Internal",
+    "registered_as_device": false
+   },
+   "health_keys": [
+    "cache",
+    "channels",
+    "logic_pro_bundle_id",
+    "logic_pro_has_document",
+    "logic_pro_has_window",
+    "logic_pro_project_chooser_visible",
+    "logic_pro_running",
+    "logic_pro_ui_locale",
+    "logic_pro_variant",
+    "logic_pro_variants",
+    "logic_pro_version",
+    "mcu",
+    "permissions",
+    "process",
+    "process_metadata_resolved"
+   ],
+   "alive_at_end": true,
+   "stderr_bytes": 4002
+  },
+  {
+   "tag": "surface-v3140-t3",
+   "binary": "/Users/hugom4/.local/opt/logic-pro-mcp/LogicProMCP",
+   "initialize": [
+    "OK",
+    0.03414201736450195
+   ],
+   "tools_list": [
+    "OK",
+    0.02178788185119629
+   ],
+   "health_call": [
+    "OK",
+    0.3303349018096924
+   ],
+   "mcu": {
+    "connected": false,
+    "feedback_stale": false,
+    "port_name": "LogicProMCP-MCU-Internal",
+    "registered_as_device": false
+   },
+   "health_keys": [
+    "cache",
+    "channels",
+    "logic_pro_bundle_id",
+    "logic_pro_has_document",
+    "logic_pro_has_window",
+    "logic_pro_project_chooser_visible",
+    "logic_pro_running",
+    "logic_pro_ui_locale",
+    "logic_pro_variant",
+    "logic_pro_variants",
+    "logic_pro_version",
+    "mcu",
+    "permissions",
+    "process",
+    "process_metadata_resolved"
+   ],
+   "alive_at_end": true,
+   "stderr_bytes": 3994
+  },
+  {
+   "tag": "surface-fixed-t3",
+   "binary": "/tmp/mong-src/.build/release/LogicProMCP",
+   "initialize": [
+    "OK",
+    0.04032111167907715
+   ],
+   "tools_list": [
+    "OK",
+    0.02568221092224121
+   ],
+   "health_call": [
+    "OK",
+    0.3343169689178467
+   ],
+   "mcu": {
+    "connected": false,
+    "feedback_stale": false,
+    "port_census": {
+     "endpoint_count": 2,
+     "has_foreign_endpoint": false,
+     "state": "observed"
+    },
+    "port_name": "LogicProMCP-MCU-Internal",
+    "registered_as_device": false
+   },
+   "health_keys": [
+    "cache",
+    "channels",
+    "logic_pro_bundle_id",
+    "logic_pro_has_document",
+    "logic_pro_has_window",
+    "logic_pro_project_chooser_visible",
+    "logic_pro_running",
+    "logic_pro_ui_locale",
+    "logic_pro_variant",
+    "logic_pro_variants",
+    "logic_pro_version",
+    "mcu",
+    "permissions",
+    "process",
+    "process_metadata_resolved"
+   ],
+   "alive_at_end": true,
+   "stderr_bytes": 7529
+  }
+ ]
+}
