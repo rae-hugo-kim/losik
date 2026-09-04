@@ -25,3 +25,6 @@ artifacts/**
 !artifacts/**/
 !artifacts/README.md
 !artifacts/**/README.md
+
+# machine-local MCP server registry (local binary paths)
+.omp/mcp.json
