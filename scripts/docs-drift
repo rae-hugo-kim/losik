@@ -419,10 +419,14 @@ function getRegisteredHookPaths(indexSource) {
 
 function checkReferenceDocs() {
   const sourcePath = path.join(repoRoot, 'AGENTS.md');
+  // harness 2026.75: claudedocs/CLAUDEKR.md is maintained in the omp source repo only;
+  // consumer repos are told to delete it, so its absence is not drift.
   const referenceDocs = [
-    'claudedocs/CLAUDEKR.md',
     'claudedocs/CLAUDE_original.md',
   ];
+  if (fs.existsSync(path.join(repoRoot, 'claudedocs/CLAUDEKR.md'))) {
+    referenceDocs.unshift('claudedocs/CLAUDEKR.md');
+  }
   const currentSourceHash = getPolicySourceCommitHash();
   if (!currentSourceHash) {
     addIssue(WARNING, 'Reference-doc freshness unverified', {
