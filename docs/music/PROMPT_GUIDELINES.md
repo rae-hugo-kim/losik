@@ -62,6 +62,9 @@
 | 89 | 멜로디 | Classic Pad | 신스 패드 |
 | 90 | 멜로디 | **Epic Cloud Formation** | 폴리신스 |
 | 100 | 멜로디 | Cosmonaut Space Capsule | FX/앰비언트 |
+| 16 | 멜로디 | Tonewheel Organ | 오르간 롱코드 (17 Bebop / 18 Classic Rock / 19 Side Man 도 로드 확인, 2026-09-05) |
+| 24 | 멜로디 | Classical Acoustic Guitar | 나일론 (27 과 동일 패치) |
+| 25 | 멜로디 | Acoustic Guitar | 스틸 어쿠스틱 스트럼 |
 
 **함정 (사용 금지/주의)**:
 - PC 48 → "GM 기기 4" 폴백 (저품질 GM). 스트링은 PC 50 사용.
@@ -93,3 +96,8 @@
 - 저장 위치: 프로젝트 `/Volumes/Netac 2TB/music/projects/`, 바운스 `/Volumes/Netac 2TB/music/bounces/`, MIDI 소스는 리포 `docs/music/sketches/`
 - 구버전은 삭제하지 않고 `music/_archive-*/`로 보관
 - 헤드폰(블루투스) 청취는 Logic이 아니라 **바운스 파일을 Finder/QuickTime으로** (BT HFP 16kHz 강등 이슈)
+- 코드는 `docs/music/tools/`(`pipeline.py` AX·SMF·계측 / `sketches.py`·`goldenhour.py` 작곡 / `round_*.py` 라운드별 수정)에 둔다 — 커널 상주 함수는 세션과 함께 휘발됨(2026-09-05 복원 비용 발생)
+- **밸런스는 SMF 의 CC7 로 잡히지 않는다** (계측: star v6 1차 시도 저역-고역 차 25.1→27.4 dB, 무효). 확실한 수단은 ① 편성/음역 정리 ② 악기 교체 ③ 벨로시티 스케일. AX 페이더는 새 임포트마다 리셋되고 성공률이 랜덤
+- 바운스 전/후 `band_balance()` 로 저역-고역 차(dB)를 이전판과 대조해 밸런스 변화 방향을 계측한다 (절대값이 아니라 상대 변화만 의미 있음)
+- osascript 창 이름은 한글이 NFD 로 돌아올 수 있음 → NFC 정규화 후 비교 (`pipeline.windows()`). 임포트 중에는 System Events 호출이 ~2분씩 블록되므로 대기 루프는 호출 횟수가 아니라 벽시계 기준으로
+- 같은 이름의 `.logicx` 가 `sketches/` 에 남아 있으면 저장 시 "대치하겠습니까?" 시트가 뜬다 (`save_project_as` 가 처리)
