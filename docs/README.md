@@ -36,4 +36,3 @@ Mermaid는 Obsidian이 네이티브 렌더한다. 다이어그램 syntax는 저�
 - 저작은 마크다운으로 (`rules/doc_standards.md`)
 - 1회성 사람용 HTML 산출물은 `artifacts/`로 (SST 미포함)
 - 다이어그램은 Mermaid 기본 — 지원 타입은 doc_standards R1 참조
-- 링크 무결성 검사: `node scripts/docs-drift`
