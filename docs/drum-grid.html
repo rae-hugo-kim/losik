@@ -22,6 +22,9 @@
   .legend { display:flex; gap:16px; align-items:center; margin:6px 0 4px; }
   .legend span { display:inline-flex; align-items:center; gap:6px; }
   .legend .c { cursor:default; }
+  .head .c.now { background:var(--fg); color:#000; border-radius:50%; }
+  button.play { background:#2a6; color:#000; border-color:#2a6; font-weight:600; min-width:70px; }
+  button.play.on { background:#e55; border-color:#e55; }
   .rm { width:22px; flex:none; text-align:center; color:var(--dim); cursor:pointer; }
   .rm:hover { color:#f55; }
   .c { width:20px; height:20px; flex:none; margin:1px; background:var(--cell); border-radius:3px; display:flex; align-items:center; justify-content:center; font-size:11px; cursor:pointer; color:#000; }
@@ -73,6 +76,11 @@
   <button data-p="tresillo">트레실로</button>
   <button data-p="dembow">뎀보우</button>
   <button id="clear">전체 지우기</button>
+</div>
+
+<div class="row">
+  <button class="play" id="play">▶ Play</button>
+  <span class="hint">브라우저 내장 신스(Web Audio). 악기 이름으로 소리 결정: kick / snare / hh·hat / clap / rim / tom / ride / crash. 그 외는 클릭음.</span>
 </div>
 
 <div id="grid"></div>
@@ -237,6 +245,79 @@ $('copy').onclick = async () => {
   catch { out.select(); document.execCommand('copy'); }
   $('copied').textContent = '복사됨'; setTimeout(() => $('copied').textContent = '', 1500);
 };
+
+// ---- 재생: Web Audio 합성 ----
+let ac = null, playing = false, timer = null, nextStep = 0, nextTime = 0;
+const LOOKAHEAD_MS = 25, SCHEDULE_AHEAD = 0.12;
+const VEL = { x: 0.8, X: 1.0, o: 0.3, O: 0.8 };
+let noiseBuf = null;
+function noise() {
+  if (!noiseBuf) {
+    noiseBuf = ac.createBuffer(1, ac.sampleRate, ac.sampleRate);
+    const d = noiseBuf.getChannelData(0); for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
+  }
+  const s = ac.createBufferSource(); s.buffer = noiseBuf; return s;
+}
+function env(node, t, peak, decay) {
+  const g = ac.createGain(); g.gain.setValueAtTime(peak, t); g.gain.exponentialRampToValueAtTime(0.001, t + decay);
+  node.connect(g); g.connect(ac.destination); return g;
+}
+function tone(t, f0, f1, decay, vel, type = 'sine') {
+  const o = ac.createOscillator(); o.type = type;
+  o.frequency.setValueAtTime(f0, t); o.frequency.exponentialRampToValueAtTime(f1, t + decay * 0.6);
+  env(o, t, vel, decay); o.start(t); o.stop(t + decay);
+}
+function hiss(t, hp, decay, vel, bp = null) {
+  const n = noise(); let node = n;
+  const f = ac.createBiquadFilter(); f.type = 'highpass'; f.frequency.value = hp; node.connect(f); node = f;
+  if (bp) { const b = ac.createBiquadFilter(); b.type = 'bandpass'; b.frequency.value = bp; b.Q.value = 1; node.connect(b); node = b; }
+  env(node, t, vel, decay); n.start(t); n.stop(t + decay);
+}
+function hit(name, v, t) {
+  const vel = VEL[v]; if (!vel) return;
+  const n = name.toLowerCase();
+  if (n.includes('kick'))        tone(t, 150, 45, 0.35, vel);
+  else if (n.includes('snare'))  { tone(t, 220, 180, 0.12, vel * 0.5, 'triangle'); hiss(t, 1500, 0.18, vel); }
+  else if (n.includes('hh') || n.includes('hat')) hiss(t, 7000, v === 'O' ? 0.35 : 0.05, vel * 0.6);
+  else if (n.includes('clap'))   { for (let k = 0; k < 3; k++) hiss(t + k * 0.01, 1200, 0.1 + k * 0.03, vel * 0.7, 1800); }
+  else if (n.includes('rim'))    tone(t, 800, 400, 0.04, vel * 0.7, 'square');
+  else if (n.includes('tom'))    tone(t, n.includes('lo') ? 110 : n.includes('mid') ? 160 : 220, 60, 0.3, vel);
+  else if (n.includes('crash'))  hiss(t, 4000, 1.2, vel * 0.5);
+  else if (n.includes('ride'))   hiss(t, 6000, 0.5, vel * 0.4, 8000);
+  else                           tone(t, 1000, 1000, 0.03, vel * 0.5, 'square');
+}
+function stepDur() { return 60 / state.bpm / STEPS_PER_BEAT; }
+function swingDelay(step) { return step % 2 === 1 ? (state.swing / 100 * 2 - 1) * stepDur() : 0; }
+const stepTimes = [];
+function schedule() {
+  while (nextTime < ac.currentTime + SCHEDULE_AHEAD) {
+    const t = nextTime + swingDelay(nextStep);
+    for (const inst of state.insts) hit(inst.name, inst.cells[nextStep], t);
+    stepTimes.push({ step: nextStep, t });
+    nextStep = (nextStep + 1) % TOTAL; nextTime += stepDur();
+  }
+}
+function cursor() {
+  if (!playing) return;
+  while (stepTimes.length > 1 && stepTimes[1].t <= ac.currentTime) stepTimes.shift();
+  const cur = stepTimes[0];
+  if (cur) grid.querySelectorAll('.head .c').forEach((c, i) => c.classList.toggle('now', i === cur.step));
+  requestAnimationFrame(cursor);
+}
+function start() {
+  if (!ac) ac = new (window.AudioContext || window.webkitAudioContext)();
+  ac.resume();
+  playing = true; nextStep = 0; nextTime = ac.currentTime + 0.05; stepTimes.length = 0;
+  timer = setInterval(schedule, LOOKAHEAD_MS); requestAnimationFrame(cursor);
+  $('play').textContent = '■ Stop'; $('play').classList.add('on');
+}
+function stop() {
+  playing = false; clearInterval(timer);
+  grid.querySelectorAll('.head .c.now').forEach(c => c.classList.remove('now'));
+  $('play').textContent = '▶ Play'; $('play').classList.remove('on');
+}
+$('play').onclick = () => playing ? stop() : start();
+document.addEventListener('keydown', e => { if (e.code === 'Space' && e.target.tagName !== 'INPUT') { e.preventDefault(); $('play').click(); } });
 
 render();
 </script>
