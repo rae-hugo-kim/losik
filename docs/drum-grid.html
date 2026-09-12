@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>Drum Grid</title>
+<style>
+  :root { --bg:#111; --fg:#ddd; --dim:#555; --cell:#1e1e1e; --on:#4caf50; --acc:#ff9800; --ghost:#3a5a8a; --open:#c0c0c0; --bar:#333; }
+  body { background:var(--bg); color:var(--fg); font:14px/1.4 -apple-system, "SF Mono", Menlo, monospace; margin:20px; }
+  h1 { font-size:16px; margin:0 0 12px; }
+  .row { display:flex; gap:12px; align-items:center; flex-wrap:wrap; margin-bottom:10px; }
+  label { color:#999; }
+  input[type=text], input[type=number] { background:var(--cell); color:var(--fg); border:1px solid #333; padding:4px 6px; width:70px; font:inherit; }
+  button { background:#222; color:var(--fg); border:1px solid #444; padding:5px 10px; cursor:pointer; font:inherit; }
+  button:hover { background:#2c2c2c; }
+  button.primary { background:var(--on); color:#000; border-color:var(--on); font-weight:600; }
+  .brush button.active { outline:2px solid var(--fg); }
+  #grid { display:block; overflow-x:auto; margin:14px 0; padding-bottom:6px; user-select:none; }
+  .r { display:flex; align-items:center; height:24px; }
+  .r.head { color:#888; font-size:11px; }
+  .name { width:80px; flex:none; }
+  .name input { width:64px; padding:2px 4px; }
+  .legend { display:flex; gap:16px; align-items:center; margin:6px 0 4px; }
+  .legend span { display:inline-flex; align-items:center; gap:6px; }
+  .legend .c { cursor:default; }
+  .rm { width:22px; flex:none; text-align:center; color:var(--dim); cursor:pointer; }
+  .rm:hover { color:#f55; }
+  .c { width:20px; height:20px; flex:none; margin:1px; background:var(--cell); border-radius:3px; display:flex; align-items:center; justify-content:center; font-size:11px; cursor:pointer; color:#000; }
+  .c[data-v="x"] { background:var(--on); }
+  .c[data-v="X"] { background:var(--acc); }
+  .c[data-v="o"] { background:var(--ghost); color:var(--fg); }
+  .c[data-v="O"] { background:var(--open); }
+  .c.beat { margin-left:5px; }
+  .c.bar { margin-left:14px; }
+  .head .c { background:none; color:#666; cursor:default; }
+  .head .c.beat { color:#aaa; }
+  #out { width:100%; min-height:160px; background:var(--cell); color:var(--fg); border:1px solid #333; font:12px/1.4 "SF Mono", Menlo, monospace; padding:8px; box-sizing:border-box; white-space:pre; }
+  .hint { color:#777; font-size:12px; }
+  #tapinfo { color:#999; min-width:60px; }
+</style>
+</head>
+<body>
+<h1>Drum Grid — 4마디 × 16분</h1>
+
+<div class="row">
+  <label>이름</label> <input type="text" id="label" placeholder="Chorus" style="width:110px">
+  <label>BPM</label> <input type="number" id="bpm" value="120" min="30" max="300">
+  <button id="tap">Tap</button> <span id="tapinfo"></span>
+  <label>Swing %</label> <input type="number" id="swing" value="50" min="50" max="75">
+</div>
+
+<div class="row brush">
+  <label>브러시</label>
+  <button data-b="x" class="active" title="친다">x</button>
+  <button data-b="X" title="악센트">X</button>
+  <button data-b="o" title="고스트">o</button>
+  <button data-b="O" title="오픈 하이햇">O</button>
+  <span class="hint">셀 클릭: 브러시로 칠하기 / 이미 같은 값이면 지움 / 드래그로 연속 칠하기</span>
+</div>
+<div class="legend">
+  <span><div class="c" data-v="x">x</div>친다 (기본)</span>
+  <span><div class="c" data-v="X">X</div>악센트 — 세게</span>
+  <span><div class="c" data-v="o">o</div>고스트 — 아주 약하게</span>
+  <span><div class="c" data-v="O">O</div>오픈 하이햇 (HH 줄 전용)</span>
+  <span><div class="c"></div>쉼</span>
+</div>
+
+<div class="row">
+  <label>프리셋 (마디 1~4 채움)</label>
+  <button data-p="backbeat">백비트 8비트</button>
+  <button data-p="backbeat16">백비트 16비트</button>
+  <button data-p="fourfloor">4-on-the-floor</button>
+  <button data-p="halftime">하프타임</button>
+  <button data-p="tresillo">트레실로</button>
+  <button data-p="dembow">뎀보우</button>
+  <button id="clear">전체 지우기</button>
+</div>
+
+<div id="grid"></div>
+
+<div class="row">
+  <input type="text" id="newinst" placeholder="악기명 (Ride, Clap, Tom hi …)" style="width:220px">
+  <button id="add">악기 추가</button>
+  <span class="hint">복사 대상: 마디 4개 각각 블록으로 출력. 비어 있는 악기 줄도 그대로 나감.</span>
+</div>
+
+<div class="row">
+  <button class="primary" id="copy">복사</button>
+  <span id="copied" class="hint"></span>
+</div>
+<textarea id="out" readonly></textarea>
+
+<script>
+// ---- 그리드 설정: 나중에 8분/셋잇단/32분 확장 시 여기만 바꾼다 ----
+const STEPS_PER_BEAT = 4;          // 16분음표
+const BEATS_PER_BAR  = 4;
+const BARS           = 4;
+const STEPS_PER_BAR  = STEPS_PER_BEAT * BEATS_PER_BAR;
+const TOTAL          = STEPS_PER_BAR * BARS;
+const SUBDIV_LABELS  = ['', 'e', '&', 'a']; // 박 안 4칸 라벨. 첫 칸은 박 번호로 대체
+const STORAGE_KEY    = 'drum-grid-v1';
+
+const DEFAULT_INSTS = ['Kick', 'Snare', 'HH'];
+
+let state = load() || fresh();
+let brush = 'x';
+let dragging = false, dragValue = null;
+
+function fresh() {
+  return { label: '', bpm: 120, swing: 50,
+           insts: DEFAULT_INSTS.map(n => ({ name: n, cells: Array(TOTAL).fill('.') })) };
+}
+function load() {
+  try { const s = JSON.parse(localStorage.getItem(STORAGE_KEY)); return s && s.insts ? s : null; } catch { return null; }
+}
+function save() { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
+
+// ---- 렌더 ----
+const grid = document.getElementById('grid');
+function render() {
+  grid.innerHTML = '';
+  const head = document.createElement('div'); head.className = 'r head';
+  head.appendChild(Object.assign(document.createElement('div'), { className: 'name' }));
+  head.appendChild(Object.assign(document.createElement('div'), { className: 'rm' }));
+  for (let i = 0; i < TOTAL; i++) {
+    const c = document.createElement('div'); c.className = 'c' + cls(i);
+    const sub = i % STEPS_PER_BEAT, beat = Math.floor(i / STEPS_PER_BEAT) % BEATS_PER_BAR;
+    c.textContent = sub === 0 ? String(beat + 1) : SUBDIV_LABELS[sub];
+    head.appendChild(c);
+  }
+  grid.appendChild(head);
+
+  state.insts.forEach((inst, r) => {
+    const row = document.createElement('div'); row.className = 'r';
+    const nm = document.createElement('div'); nm.className = 'name';
+    const inp = document.createElement('input'); inp.type = 'text'; inp.value = inst.name;
+    inp.oninput = () => { inst.name = inp.value; save(); refreshOut(); };
+    nm.appendChild(inp); row.appendChild(nm);
+    const rm = document.createElement('div'); rm.className = 'rm'; rm.textContent = '×'; rm.title = '삭제';
+    rm.onclick = () => { state.insts.splice(r, 1); save(); render(); };
+    row.appendChild(rm);
+    inst.cells.forEach((v, i) => {
+      const c = document.createElement('div'); c.className = 'c' + cls(i);
+      c.dataset.v = v; c.textContent = v === '.' ? '' : v;
+      c.onmousedown = e => { e.preventDefault(); dragging = true; dragValue = inst.cells[i] === brush ? '.' : brush; paint(inst, i, c); };
+      c.onmouseenter = () => { if (dragging) paint(inst, i, c); };
+      row.appendChild(c);
+    });
+    grid.appendChild(row);
+  });
+  refreshOut();
+}
+function cls(i) { return i % STEPS_PER_BAR === 0 ? ' bar' : i % STEPS_PER_BEAT === 0 ? ' beat' : ''; }
+function paint(inst, i, el) {
+  inst.cells[i] = dragValue; el.dataset.v = dragValue; el.textContent = dragValue === '.' ? '' : dragValue;
+  save(); refreshOut();
+}
+document.addEventListener('mouseup', () => { dragging = false; });
+
+// ---- 출력 텍스트 ----
+function toText() {
+  const pad = Math.max(5, ...state.insts.map(x => x.name.length)) + 1;
+  const lines = [];
+  if (state.label) lines.push(`Section: ${state.label}`);
+  lines.push(`BPM: ${state.bpm}`);
+  if (Number(state.swing) !== 50) lines.push(`Swing: ${state.swing}%`);
+  lines.push(`Bars: ${BARS}, grid: 1/${STEPS_PER_BEAT * 4}`);
+  const header = ' '.repeat(pad) + Array.from({ length: STEPS_PER_BAR }, (_, i) => {
+    const sub = i % STEPS_PER_BEAT; return sub === 0 ? String(Math.floor(i / STEPS_PER_BEAT) + 1) : SUBDIV_LABELS[sub];
+  }).join(' ');
+  for (let b = 0; b < BARS; b++) {
+    lines.push('', `Bar ${b + 1}`, header);
+    for (const inst of state.insts) {
+      const seg = inst.cells.slice(b * STEPS_PER_BAR, (b + 1) * STEPS_PER_BAR).join(' ');
+      lines.push(inst.name.padEnd(pad) + seg);
+    }
+  }
+  return lines.join('\n') + '\n';
+}
+const out = document.getElementById('out');
+function refreshOut() { out.value = toText(); }
+
+// ---- 컨트롤 ----
+const $ = id => document.getElementById(id);
+$('label').value = state.label; $('bpm').value = state.bpm; $('swing').value = state.swing;
+$('label').oninput = e => { state.label = e.target.value; save(); refreshOut(); };
+$('bpm').oninput   = e => { state.bpm = Number(e.target.value); save(); refreshOut(); };
+$('swing').oninput = e => { state.swing = Number(e.target.value); save(); refreshOut(); };
+
+document.querySelectorAll('.brush button').forEach(b => b.onclick = () => {
+  brush = b.dataset.b;
+  document.querySelectorAll('.brush button').forEach(x => x.classList.toggle('active', x === b));
+});
+
+$('add').onclick = () => {
+  const n = $('newinst').value.trim(); if (!n) return;
+  state.insts.push({ name: n, cells: Array(TOTAL).fill('.') }); $('newinst').value = ''; save(); render();
+};
+$('newinst').onkeydown = e => { if (e.key === 'Enter') $('add').onclick(); };
+$('clear').onclick = () => { state.insts.forEach(i => i.cells.fill('.')); save(); render(); };
+
+// 탭 템포: 최근 8회 간격 평균
+let taps = [];
+$('tap').onclick = () => {
+  const t = performance.now();
+  if (taps.length && t - taps[taps.length - 1] > 2000) taps = [];
+  taps.push(t); if (taps.length > 8) taps.shift();
+  if (taps.length >= 2) {
+    const avg = (taps[taps.length - 1] - taps[0]) / (taps.length - 1);
+    state.bpm = Math.round(60000 / avg); $('bpm').value = state.bpm; save(); refreshOut();
+    $('tapinfo').textContent = `${taps.length}회`;
+  } else $('tapinfo').textContent = '계속…';
+};
+
+// 프리셋: 한 마디 16칸 패턴, 4마디 반복
+const PRESETS = {
+  backbeat:   { Kick:'x.......x.......', Snare:'....x.......x...', HH:'x.x.x.x.x.x.x.x.' },
+  backbeat16: { Kick:'x.....x.x.......', Snare:'....x.......x...', HH:'xxxxxxxxxxxxxxxx' },
+  fourfloor:  { Kick:'x...x...x...x...', Snare:'....x.......x...', HH:'..O...O...O...O.' },
+  halftime:   { Kick:'x......x..x.....', Snare:'........x.......', HH:'x.x.x.x.x.x.x.x.' },
+  tresillo:   { Kick:'x.....x.....x...', Snare:'....x.......x...', HH:'x.x.x.x.x.x.x.x.' },
+  dembow:     { Kick:'x...x...x...x...', Snare:'...x..x....x..x.', HH:'x.x.x.x.x.x.x.x.' },
+};
+document.querySelectorAll('[data-p]').forEach(b => b.onclick = () => {
+  const p = PRESETS[b.dataset.p];
+  for (const [name, pat] of Object.entries(p)) {
+    let inst = state.insts.find(i => i.name === name);
+    if (!inst) { inst = { name, cells: Array(TOTAL).fill('.') }; state.insts.push(inst); }
+    for (let i = 0; i < TOTAL; i++) inst.cells[i] = pat[i % STEPS_PER_BAR];
+  }
+  save(); render();
+});
+
+// 복사
+$('copy').onclick = async () => {
+  const text = toText();
+  try { await navigator.clipboard.writeText(text); }
+  catch { out.select(); document.execCommand('copy'); }
+  $('copied').textContent = '복사됨'; setTimeout(() => $('copied').textContent = '', 1500);
+};
+
+render();
+</script>
+</body>
+</html>
