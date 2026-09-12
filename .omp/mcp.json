@@ -1,0 +1,21 @@
+{
+  "$schema": "https://raw.githubusercontent.com/can1357/oh-my-pi/main/packages/coding-agent/src/config/mcp-schema.json",
+  "mcpServers": {
+    "logic-pro": {
+      "command": "/Users/hugom4/.local/opt/logic-pro-mcp-creator/.build/release/LogicProMCP"
+    },
+    "logic-pro-ruben": {
+      "command": "/Users/hugom4/.fnm/aliases/default/bin/node",
+      "args": ["/Users/hugom4/.local/opt/logic-pro-mcp-ruben/dist/index.js"],
+      "env": {
+        "LOGIC_MCP_PYTHON": "/Users/hugom4/.local/opt/logic-pro-mcp-ruben/.venv/bin/python"
+      },
+      "enabled": false
+    },
+    "logic-pro-monglong": {
+      "command": "/Users/hugom4/.local/bin/LogicProMCP",
+      "env": { "LOGIC_PRO_BUNDLE_ID": "com.apple.mobilelogic" },
+      "enabled": false
+    }
+  }
+}
