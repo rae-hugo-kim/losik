@@ -86,9 +86,19 @@
 <div id="grid"></div>
 
 <div class="row">
-  <input type="text" id="newinst" placeholder="악기명 (Ride, Clap, Tom hi …)" style="width:220px">
+  <input type="text" id="newinst" placeholder="악기명 직접 입력" style="width:150px">
   <button id="add">악기 추가</button>
-  <span class="hint">복사 대상: 마디 4개 각각 블록으로 출력. 비어 있는 악기 줄도 그대로 나감.</span>
+  <span class="hint">빠른 추가:</span>
+  <button data-q="Kick">Kick</button>
+  <button data-q="Snare">Snare</button>
+  <button data-q="Rim" title="사이드스틱/림샷">Rim</button>
+  <button data-q="Clap">Clap</button>
+  <button data-q="HH" title="closed, O 브러시로 open">HH</button>
+  <button data-q="Ride">Ride</button>
+  <button data-q="Crash">Crash</button>
+  <button data-q="Tom hi">Tom hi</button>
+  <button data-q="Tom mid">Tom mid</button>
+  <button data-q="Tom lo">Tom lo</button>
 </div>
 
 <div class="row">
@@ -204,6 +214,10 @@ $('add').onclick = () => {
   state.insts.push({ name: n, cells: Array(TOTAL).fill('.') }); $('newinst').value = ''; save(); render();
 };
 $('newinst').onkeydown = e => { if (e.key === 'Enter') $('add').onclick(); };
+document.querySelectorAll('[data-q]').forEach(b => b.onclick = () => {
+  if (state.insts.some(i => i.name === b.dataset.q)) return;
+  state.insts.push({ name: b.dataset.q, cells: Array(TOTAL).fill('.') }); save(); render();
+});
 $('clear').onclick = () => { state.insts.forEach(i => i.cells.fill('.')); save(); render(); };
 
 // 탭 템포: 최근 8회 간격 평균
@@ -267,6 +281,16 @@ function tone(t, f0, f1, decay, vel, type = 'sine') {
   o.frequency.setValueAtTime(f0, t); o.frequency.exponentialRampToValueAtTime(f1, t + decay * 0.6);
   env(o, t, vel, decay); o.start(t); o.stop(t + decay);
 }
+// 금속성 심벌: 비정수배 사각파 6개 겹침 (808 방식)
+function metal(t, decay, vel, hp, bp = null) {
+  const ratios = [1, 1.342, 1.2312, 1.6532, 1.9523, 2.1768], base = 300;
+  const sum = ac.createGain(); sum.gain.value = 1 / ratios.length;
+  for (const r of ratios) { const o = ac.createOscillator(); o.type = 'square'; o.frequency.value = base * r; o.connect(sum); o.start(t); o.stop(t + decay); }
+  let node = sum;
+  const f = ac.createBiquadFilter(); f.type = 'highpass'; f.frequency.value = hp; node.connect(f); node = f;
+  if (bp) { const b = ac.createBiquadFilter(); b.type = 'bandpass'; b.frequency.value = bp; b.Q.value = 0.7; node.connect(b); node = b; }
+  env(node, t, vel, decay);
+}
 function hiss(t, hp, decay, vel, bp = null) {
   const n = noise(); let node = n;
   const f = ac.createBiquadFilter(); f.type = 'highpass'; f.frequency.value = hp; node.connect(f); node = f;
@@ -278,12 +302,12 @@ function hit(name, v, t) {
   const n = name.toLowerCase();
   if (n.includes('kick'))        tone(t, 150, 45, 0.35, vel);
   else if (n.includes('snare'))  { tone(t, 220, 180, 0.12, vel * 0.5, 'triangle'); hiss(t, 1500, 0.18, vel); }
-  else if (n.includes('hh') || n.includes('hat')) hiss(t, 7000, v === 'O' ? 0.35 : 0.05, vel * 0.6);
+  else if (n.includes('hh') || n.includes('hat')) metal(t, v === 'O' ? 0.4 : 0.06, vel * 0.5, 7000);
   else if (n.includes('clap'))   { for (let k = 0; k < 3; k++) hiss(t + k * 0.01, 1200, 0.1 + k * 0.03, vel * 0.7, 1800); }
-  else if (n.includes('rim'))    tone(t, 800, 400, 0.04, vel * 0.7, 'square');
+  else if (n.includes('rim'))    { tone(t, 1700, 900, 0.03, vel * 0.6, 'square'); hiss(t, 3000, 0.03, vel * 0.4); }
   else if (n.includes('tom'))    tone(t, n.includes('lo') ? 110 : n.includes('mid') ? 160 : 220, 60, 0.3, vel);
-  else if (n.includes('crash'))  hiss(t, 4000, 1.2, vel * 0.5);
-  else if (n.includes('ride'))   hiss(t, 6000, 0.5, vel * 0.4, 8000);
+  else if (n.includes('crash'))  { metal(t, 1.5, vel * 0.45, 3500); hiss(t, 5000, 1.0, vel * 0.3); }
+  else if (n.includes('ride'))   metal(t, 0.7, vel * 0.35, 5000, 9000);
   else                           tone(t, 1000, 1000, 0.03, vel * 0.5, 'square');
 }
 function stepDur() { return 60 / state.bpm / STEPS_PER_BEAT; }
