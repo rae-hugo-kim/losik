@@ -57,6 +57,61 @@ Late bridge drops to kick pulse and half-time bass, then explodes back into a fi
 Feel: golden-hour glow, hopeful and full. About 3.5 minutes.
 ```
 
+## first-light-v1
+**Style**
+`korean modern rock / indie band anthem, 108 BPM, D major, clean electric guitar melody opening over drums alone, gradually building band, steel-string acoustic strums, string ensemble, uplifting climax, quiet outro, instrumental`
+
+**Description**
+```
+Instrumental band-style rock at 108 BPM in D major (D–A–Bm–G verses, G–A–F#m–Bm chorus).
+Opens with only a clean electric-guitar theme (a rising D–F#–G–A motif) over kick and snare — no hi-hat yet.
+Bass and acoustic guitar join, then a higher guitar counter-line answers the theme an octave up while strings sustain underneath.
+Low-register verse melody, then the theme returns as the chorus; second chorus adds strings and the high counter-line.
+Bridge drops to fingerpicked guitar, pad and a four-on-the-floor kick, with a snare build and a long crash-roll riser
+into the climax: full band, open hi-hats, octave strings and both guitar lines together.
+Ends quietly — the theme alone over a soft pad, long chords fading to a D resolution.
+Feel: dawn breaking, swelling, hopeful — like Delispice "Chau Chau" or the Stellar Blade "Dawn" OST. About 3 minutes 15 seconds.
+```
+
+## first-light-v3 (볼레로형, 2026-09-12 투입) — v1 프롬프트는 폐기
+**Style** (100자 제한)
+`korean modern rock, 108 BPM, clean guitar ostinato riff, bolero-like build, piano lead, instrumental`
+
+**Description** (1000자 제한, 997자)
+```
+Instrumental Korean modern rock, 108 BPM, D major, built like a bolero on one repeating riff.
+A clean electric guitar plays the same syncopated 3+3+2 ostinato, leaping up an octave to a ringing high D pedal note every bar, over a four-chord loop D–A–Bm–G (two bars per chord) for the whole song. The riff never changes; the arrangement builds around it one layer at a time:
+guitar and drums alone → bass on steady root notes → acoustic strums → a piano enters as the "singer", a long-breathed melody above the riff → half-time pull-back with a soft pad → strings and ride cymbal → first peak: distorted power chords, open hi-hats, pumping bass → a second quiet pull-back → the final, biggest peak with the piano doubled an octave up → everything falls away to the lone guitar riff and one ringing D chord.
+Bass holds root notes only. The riff briefly lifts a fourth higher at the end of some cycles and returns.
+Feel: dawn slowly breaking, waves of build and release, never collapsing. About 3:15.
+```
+
+메모: Suno 가 "bolero" 를 라틴 볼레로(스페인풍 리듬)로 오해할 수 있음 — Style 에는 `bolero-like gradual build` 로 한정하고, 결과가 라틴풍이면 Style 에서 bolero 단어를 빼고 `Ravel-style additive build` 로 교체.
+
+## Dawn Set v1 — first-light 와 공통 Description 골격, 곡별 Style·키·진행·모티프만 교체
+공통 Description (키·진행·모티프 줄만 곡별로 치환)
+```
+Instrumental band-style rock in {KEY} at {BPM} BPM ({VERSE} verses, {CHORUS} chorus).
+Opens with only a clean electric-guitar theme ({MOTIF}) over kick and snare — no hi-hat yet.
+Bass and acoustic guitar join, then a higher guitar counter-line answers the theme an octave up while strings sustain underneath.
+Low-register verse melody, then the theme returns as the chorus; second chorus adds strings and the high counter-line.
+Bridge drops to fingerpicked guitar, pad and a four-on-the-floor kick, with a snare build and a long crash-roll riser
+into the climax: full band, open hi-hats, octave strings and both guitar lines together.
+Ends quietly — the theme alone over a soft pad, long chords fading to the tonic.
+```
+
+**morning-glass-v1 Style**: `korean modern rock, 104 BPM, G major, clean electric guitar sighing descending melody opening over drums alone, gradually building band, steel-string acoustic strums, strings, hopeful morning light, quiet outro, instrumental`
+— KEY G major · VERSE G–Em–C–D · CHORUS Em–C–G–D · MOTIF a sighing descending D–B–A–G line that lifts at the end of each phrase
+
+**blue-hour-v1 Style**: `korean modern rock anthem, 112 BPM, E major, clean electric guitar dotted-rhythm octave-leap melody opening over drums alone, gradually building band, acoustic strums, strings, twilight before dawn, quiet outro, instrumental`
+— KEY E major · VERSE E–G#m–A–B · CHORUS A–E–B–C#m · MOTIF a dotted "E, E, then a leap up an octave" figure
+
+**paper-kite-v1 Style**: `korean indie rock, 100 BPM, A major, clean electric guitar syncopated off-beat melody opening over drums alone, gradually building band, acoustic strums, strings, light and airy, quiet outro, instrumental`
+— KEY A major · VERSE A–D–Bm–E · CHORUS Bm–D–A–E · MOTIF every phrase enters half a beat late, floating over the beat like a kite
+
+**long-bridge-v1 Style**: `korean modern rock, 116 BPM, C major, clean electric guitar repeated-note pedal melody opening over drums alone, gradually building band, acoustic strums, strings, driving and wide, quiet outro, instrumental`
+— KEY C major · VERSE Am–F–C–G · CHORUS C–G–Dm–F · MOTIF an insistent repeated G pedal note that finally steps away
+
 ## 사용 메모
 - Suno 는 스타일 필드가 짧을수록 안정적. Description 은 커스텀 모드의 가사란에 `[Instrumental]` 태그와 함께 넣거나, Cover/Extend 시 참고용.
 - 코드 진행·BPM·키는 원곡 SMF 와 동일. Suno 가 키를 무시하는 경우가 많으므로 무드·악기 단어를 우선.
