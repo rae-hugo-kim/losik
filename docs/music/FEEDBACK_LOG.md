@@ -241,9 +241,394 @@ neon-rain / highway-zero / midnight-arcade / analog-heart: 개별 피드백 **�
 
 **판정 포인트**: (1) 3분 동안 오스티나토 반복이 견딜 만한지 — 지루하면 떠오름을 4·7·10 → 3·5·7·10 으로 (2) 후퇴 6·9 가 "숨 고르기"로 들리는지, 너무 꺼지면 하프타임 대신 햇만 빼기 (3) 피아노 탑노트가 "보컬"로 분리되어 들리는지 (4) 8·10 디스토션이 싸비로 터지는지, Hard Rock vel 118 이 과하면 108 (5) 클린 기타 vel 상한 92 에서도 가늘면 음색 문제 확정.
 
+## Rebetiko 5 버전 초안 (2026-09-18) — 지시형 의뢰, 버전당 1개
+
+의뢰: 드로모스·리듬·편성·로직 방침·Suno 태그·레퍼런스가 버전별로 명시된 5개 스펙 → 각 초안 1개. 산출: `sketches/rebetiko-{1..5}-*.mid`, `tools/rebetiko.py`(도수표 선율 + 드로모스 검사), `SUNO_PROMPTS.md` 5쌍. `build_smf` 에 `timesig`·`tempos` 추가(9/8·2/4·루바토·아첼레란도; 기존 4/4 출력 md5 불변 확인).
+
+| # | 드로모스 / 리듬 | 구조 (마디) | 구현 요점 |
+|---|---|---|---|
+| 1 piraeus | Hitzaz / zeibekiko 9/8 66 | taximi 1-3(48bpm 무박) · 벌스 5-12 · 간주 13-20 · 벌스 21-28 · 코다 30 | 기타 2+2+2+3 (베이스 0·2·4·6, 코드 1·3·5·7, 8번째 8분음 강세). 부주키 옥타브 아래 더블링 + 롱톤 트레몰로. 프레임드럼 5타/마디 vel 60대 |
+| 2 hasapiko | Kiourdi(종지 C#) / 2/4 80 | 인트로 8 · A 16 · B 8 · A' 16(+아코디언) · B' 8(8va) · 아우트로 8 | 트윈 부주키 온음계 3도 아래 병행(C# → A). 기타 근음-5도 워킹 + 뒷박 코드. 드럼 없음 |
+| 3 smyrna | Hitzazkiar / tsifteteli 4/4 100 | 바이올린 taximi 1-4(72bpm) · 벌스×2 · 솔로 · 벌스(8va) · 솔로 · 코다 | 둠(41) `x..x..x.` 텍(37) `..x..x.x` + 질리아(54) 16분 뒷박. 바이올린 온음계 아래 이웃음 슬라이드 장식. 산투리 16분 트레몰로, 우드 근음+턴 |
+| 4 teke | Sabah / 9/8 56 루바토 | taximi 1-8(마디별 템포 46~60) · zeibekiko 9-20 · taximi 회귀 21-23(48→42) | 부주키+바글라마스만, 기타는 D 드론 2회+근음 0·6. 선율 F 중심 → Gb 기울기 → D 낙하 |
+| 5 serviko | Rast(하행 C) / 2/4 138→170 | 인트로 8 · A16 B8 A16 B8(솔로 8va) A16(아첼레란도 시작) B8 A16 · 코다 4 | 기타 8분 다운스트로크(베이스+코드 동시), 바글라마스 16분 트레몰로 = 하이햇, 손북 둠텍+탬버린. 57~96마디 마디 단위 선형 가속 |
+
+패치 실측(09-19): 부주키·바글라마스 PC 25 Acoustic Guitar / 기타·우드 PC 24 Classical Acoustic Guitar / 산투리 PC 46 Space Harp / 바이올린 PC 40 → **GM 기기 3 폴백** → 프로브(41·42·44·110·23·22·105·104) 결과 **110 Authentic Strings** 로 교체 후 재바운스 / 아코디언 PC 21 Cheap Organ(22·23 동일, 전용 패치 없음 — 유지).
+
+바운스(09-19, v1): `bounces/rebetiko-{1..5}-v1.wav` — 2:03 / 1:36 / 1:50 / 1:57 / 1:23, 피크 -0.33~-0.41, 저역-고역 차 13.4 / 8.9 / 10.0 / 12.0 / 10.0 dB. 길이가 설계 추정과 일치 = Logic 이 9/8·2/4 박자표와 루바토·아첼레란도 템포맵을 그대로 받음 (판정 포인트 1 해소). 메트로놈 OFF 5회 모두 `before=2` 클릭 확인.
+
+임포트 실패 원인 확정: `open -a` 가 아니라 AppleScript `open POSIX file` 이어야 함 → `pipeline.open_in_logic()` (PROMPT_GUIDELINES §6).
+
+**v1 판정 (09-19)**: "느낌이 미묘… 그리스가 아니라 이스탄불이나 알라딘 나올 것 같다. 1번이 제일 어색. 전반적으로 고쳐라. 3번은 괜찮은데 드럼킷을 더 볼드한 걸로 바꾸고 비트를 더 신나는 붐뱁으로."
+
+**진단**: (1) 선율이 음계를 한 음씩 오르내리는 순차+턴 장식 = 마캄 타크심 문법. 레베티코 부주키는 코드톤 아르페지오·반복음·3도 도약, 종지 V(장)→I (2) 1번 Hitzaz 의 E♭–F♯ 증2도가 Misirlou/알라딘 음정 — Vamvakaris·Batis 는 minore·Rast·Ousak (3) 3박 이상 전부 트레몰로 → 우드/카눈 질감 (4) 긴 루바토 taximi = 타크심 (5) 3번 스미르나는 원래 소아시아 색 — 사용자도 OK.
+
+### rebetiko v2 (09-19) — `sketches/rebetiko-*-v2.mid`, `bounces/rebetiko-{1..5}-v2.wav`
+
+| 변경 | 내용 |
+|---|---|
+| 선율 문법 (1·2·4·5) | 표 전부 재작성. 마디 화음의 구성음 + 경과음 1개 이내, 반복음·3도 도약, 16분은 코드톤 아르페지오만 |
+| 1번 드로모스 | Hitzaz → **Minore**(D E F G A B♭ C♯, 하행 C 허용). 화음 Dm·Gm·A(장)·B♭. 진행 Dm Dm Gm A / Dm Gm A Dm. taximi 3→2마디, Dm 코드톤 닻 |
+| 트레몰로 | 마디 마지막 롱톤(≥3 8분음)에만. `Song.phrase` 규칙 변경, twin 도 동일 |
+| 4번 taximi | 8→4마디(템포 46/56/48/60), Dm 코드톤 닻 + G♭ 한 번씩만 |
+| 3번 드럼 | 프레임드럼·질리아 제거 → **Tough Kit(PC 16 드럼 채널 실측)** 붐뱁: 킥 1·2& + 3& 고스트, 스네어 2·4, 스윙 8분 햇(뒷박 +22틱), 짝수 마디 4& 오픈햇, 8마디째 16분 스네어 필인, 코다 킥+크래시 |
+
+계측 v2: 1:59 / 1:36 / 1:50 / 1:36 / 1:23, 피크 -0.35~-0.73, 저역-고역 차 12.4 / 8.1 / **18.0**(3번, 킷 킥 — v1 10.0) / 11.2 / 9.8. `produce()` 교체본으로 5곡 연속 성공(각 70~78초).
+
+**v2 판정 (09-19)**: "내가 그리스 스타일을 잘 모르네." 1번 — "v1 은 음악 자체가 이상했는데 이제 무슨 느낌인지는 알겠음. 같은 음이 되게 반복적으로 쓰이는구나." 2번 — "대강 신나." 4번 — "불협화음이 자꾸 끼어드는 느낌. 원래 그리스 음악이 이런 거라고? 듣기에 너무 어려워." 5번 — "되게 메이저하고 밝고 빠르다. 톰과 제리 게임이면 써도 될 듯." 3번 — "스네어가 있어야 해. 붐뱁보다는 올드스쿨하게 정박에 떨어지는 비트, 킥에 약간 변주."
+
+### rebetiko-3 v3 (09-19) — 드럼만: `sketches/rebetiko-3-smyrna-v3.mid`, `bounces/rebetiko-3-v3.wav`
+스윙 햇·3& 고스트 킥·16분 필인 제거. 킥 1·3 기본 + 4마디 셀 변주(2번째 마디 2&, 3번째 3&, 4번째 4&), 스네어 2·4 vel +18/+20(최전면, 길이 180틱), 스트레이트 8분 햇 vel −30/−48, 짝수 마디 4& 오픈햇, 8마디째 필인 = 스네어 3·4박 2타. 계측 1:50, 피크 −0.47, 저역-고역 17.9.
+
+v2 관찰 → 후속 후보(미착수): 1번 반복음 과다 → 반복 2회 상한·경과음 비율 상향 / 4번 불협 = Sabah G♭ + 바글라마스 다이어드 + 옥타브 더블링의 조합 — 스펙의 "불안정"이 의도였으나 청취 난도 초과 → minore 전환 또는 폐기 / 5번 만화적 → 템포 138→120·아첼레란도 축소·아코디언 제거 검토. **장르 자체 재검토 필요** — 레베티코 선택은 이 세션 이전 결정.
+
+## Drum Grid 92 (2026-09-14 ~ 09-18) — 사용자 격자 → SoCal 실측, 심벌·클랩 장르 재판정
+
+원천: 사용자가 `chats` 브랜치 `docs/drum-grid.html`(Web Audio 신스 루프 툴)로 그린 4마디 록 그루브(킥 1·2&·3&, 3마디 라이드 변주, 4마디 필인). 코드 `tools/drumgrid.py`, SMF `sketches/drumgrid-*.mid`, WAV `bounces/drumgrid-*.wav` (모두 4마디×2회, 변주는 +해소 마디 1).
+
+| 파일 | 내용 | 판정 |
+|---|---|---|
+| original | 격자 그대로 (16분 햇만 88/60/74/60 강약) | — |
+| revised | 지적 5개: 필인 중 햇→풋햇 4분 / 클랩→고스트 스네어 / 라이드→벨 / 4& 크래시에 킥 동반 / 로우탐 3a→4e | "크래시가 빨리 나오는 느낌" |
+| A-downbeat | 4& 없음, 다음 1박 크래시+킥 | |
+| B-splash | 4& 스플래시(GM55)+킥, 다음 1박 크래시 | **선택** |
+| C-soft | 4& 크래시 vel 84+킥, 1박 없음 | |
+| B-clap | B + 3마디 1e·3e 클랩 단독 vel 96 (원본) | 판정 대기 |
+| B-clap-layer | B + 클랩과 고스트 스네어 겹침 | 판정 대기 |
+
+**크래시 원인 확정** (`drum-grid.html:309`): HTML 크래시 = 사각파 6개 3.5k 하이패스 + 노이즈 5k 하이패스, 실청 0.3~0.5초 → 고역만 남은 짧은 악센트라 4& 에서 '당김'으로 들림. SoCal 크래시 = 전대역 2~3초 감쇠 → 다음 1박을 덮어 '반박 빠른 1박'으로 들림. 루프 툴은 끊김 없이 1박으로 해소되지만 첫 바운스(revised)는 마지막 반복이 미해소였던 것도 가중. **함의: 스케치 툴에서 킥/스네어/탐 배치는 옮겨도 심벌(크래시·라이드·오픈햇) 판단은 어쿠스틱 킷에서 다시.**
+
+**클랩 재판정 취지**: §2-5 "단독 노출 금지"는 08-25 신스웨이브 실측에서 나온 전역 규칙. 92 BPM 록·SoCal·라이드 벨 직후라는 자리에서 유효한지 미실측 → B-clap / B-clap-layer 판정 후 §2-5 를 **장르별**로 분화(신스웨이브 / 밴드·록). 같은 갱신에서 §2-4·§2-6 도 "신스웨이브 실측" 표기, §5 에 HTML 크래시 건 추가, 승격 대기 Fix 1(다곡 엔진 공유 클론) 반영.
+
+**클랩 판정 (09-19)**: "그다지 차이를 모르겠다, 둘 다 어색하지 않다, 레이어 없는 쪽이 전반적으로 무겁다." 계측: 3마디 1e/3e 16분 창 RMS — B-splash(고스트만) -28.3/-28.5, **B-clap(클랩 단독) -33.1/-33.8**, B-clap-layer -27.6/-28.0 dB, 총 RMS 3개 동일 -19.5. → SoCal 클랩은 vel 96 에서도 고스트 스네어 vel 40 보다 5 dB 작아 그 자리가 사실상 비어 있음. "무겁다" = 그 두 자리의 고역 트랜지언트 부재 [INFERENCE]. **§2-5 는 장르가 아니라 킷 문제** — Drum Synth Kit 클랩(크고 날카로움)과 SoCal 클랩(거의 안 들림)은 다른 소리. 채택: **B-splash 그대로**. `PROMPT_GUIDELINES.md` 갱신: §2 실측 맥락 표기, §2-5 킷별 분화, §2-10 다곡 엔진 공유 금지, §2-11 심벌 판단, §1 레퍼런스 형식 판정, §5 사례 4건, §6 Logic idle 우회.
+
+**Logic idle 무응답 (4회 재현, 1회 구독 만료 오인 30분 손실)**: 창 0개로 오래 idle 이면 `open -a` 임포트 무시. 확인된 우회 — `activate` → **Cmd-N 으로 빈 프로젝트 생성** → `open_mid` → 저장 패널 dismiss (커널 `produce_robust`). `pipeline.produce()` 반영 + 창 0개 실패 시 다이얼로그 텍스트 보고는 다음 pipeline 수정 라운드. 09-14 실측: 구독 만료 다이얼로그(`AXDialog` "구독이 만료됨")도 같은 증상으로 나타남 — 실패 시 다이얼로그 static text 를 먼저 읽을 것.
+
+## grid92 (가제) 기획 (2026-09-19) — B-splash 비트 전제 신곡, Logic 미사용
+
+의뢰: 스네어 2타 픽업 + B-splash 셀을 골자로, Runaway/연필깎이처럼 "단순한 몇 음이 박자감 있게 반복"되는 곡. 피아노·클린 신스 위주. 형식 판정(§1): 오스티나토 위 섹션(힙합 루프) — 멜로디는 노래가 아니라 리듬 모티프.
+
+- **A minor 92 BPM**, 픽업 ½ + 84마디. 편성: SoCal / Pulse Bass 서브(마디 1히트) / Studio Grand 오스티나토 / Reverse Engineering 스퀘어(1+5 롱톤, 코러스 옥타브 유니즌) / Classic Pad(브릿지만)
+- 진행: Verse Am–Am–Fmaj7–Fmaj7 (E 페달이 5도↔장7도) · Pre Dm–Dm–E7–E7 · Chorus Am–G–F–E · Bridge Fmaj7–G–Am–Am
+- 드럼: 픽업 스네어 4&·4a(vel 96→112)를 모든 섹션 진입에 재사용(시그니처). Verse = B-splash 셀 / Pre = 킥 1박 + 매 마디 픽업 스네어(빌드) / Chorus = 오픈햇 8분 + 2마디 크래시 / Bridge = 킥 + 픽업만
+- 멜로디 후보: **M1 페달**(E5 리듬 7→5→7→3 밀도 감소, 마디 끝 E–D–C 하행) / **M2 3음 트레실로**(C5·E5·D5 점4분 순환, 2마디 위상) / **M3 2음**(A4 롱 + E5 뒷박, Fmaj7 위 F→E 반음)
+- 다음: Logic 비면 M1~M3 각 8마디 바운스 → 선택 → 84마디 편곡 → 곡명
+
+**후보 바운스 (09-19)**: `bounces/grid92-{M1-pedal,M2-tresillo,M3-twonote}.wav` (각 26초 = 픽업 + 8마디 + 해소). 코드 `tools/grid92.py`(drumgrid B-splash 셀 import). 스트립 4트랙 의도 패치(SoCal / Pulse Bass / Studio Grand / Reverse Engineering). 1차 바운스에서 서브 vel 92 가 저역-고역 차 22 dB(드럼 단독 17)로 지배 → **vel 66 으로 재바운스**(20.6~22.3). 2회전(마디 6~9)에만 신스 1+5 롱톤 vel 46 합류 — "스윽 들어오는" 느낌 확인용.
+판정 요청: 셋 중 하나 또는 조합("M1 리듬 + M2 음"). 판정 포인트: (1) 피아노가 드럼 위에서 박자를 찍는지, 묻히는지 (2) 픽업 스네어 2타가 곡의 문으로 들리는지 (3) Fmaj7 마디(3·4·7·8)에서 E 페달(M1)·F→E(M3)의 색이 나는지 (4) 신스 합류가 앞서지 않는지.
+
+## Suno 완성본 판정 (2026-09-19) — 기존 4곡, Logic 최신판 → Suno Cover 최종
+
+> 기록 구조: **A** 우리 의도(Logic 최신판) · **B** 업로드 시 넣은 Style · **C** Suno 가 스스로 남긴 텍스트 · **D** 청취 판정. 분석은 A↔C(Suno 가 원곡에서 읽어낸 어휘) / B↔C(우리 단어의 채택·무시·치환) / D(효과).
+>
+> 조사 결과 (09-19): 09-05 투입 시 실제로 붙여넣은 Style 은 세션·리포 어디에도 없었음 — 사용자가 Suno 곡 페이지에서 복사해 준 텍스트를 정본으로 기록한다. **100자 제한은 09-12 에 처음 등장**(first-light v3 투입) — 09-05 에는 ~560자 Description 이 그대로 들어갔다.
+>
+> **Cover 모드는 Style 을 생성하지 않는다.** 대신 **가사 필드에 섹션별 메타태그**(`[Intro]` `[Section A]` … `[Outro]` + 편성 지시)를 원곡 오디오 분석으로 생성하며, 같은 업로드의 생성본 2개가 **동일 메타태그**를 받았다 → 메타태그는 업로드당 1회 결정, 생성본 차이는 렌더링만.
+
+### golden-hour v3 → Suno Cover ×2
+
+**A. Logic v3 청취 판정 (09-19, 첫 기록)** — 설계 의도 전부 확인됨:
+
+| 관측 (사용자) | 설계 대응 (마디 · 시각, 94 BPM) |
+|---|---|
+| 하이라이트부를 몽환적 신스로 쭉 뽑은 부분 인상적 | 65-72 (2:43-3:04) 폴리신스 훅 + **옥타브 더블링 vel 66** → "몽환" 은 더블링에서 |
+| 1:30 전후 피아노에 약간의 복잡도가 생기며 진행 | 33-40 (1:22-1:42) `PIANO_RIFF` (2·2.5·3박 3음 리프, v3 에서 G7 마디 교정) |
+| 라이딩햇으로 라이저 → 크래시 임팩트 | 코러스 라이드(energy 3) + 2마디 크래시 롤(vel 34→112) + 경계 크래시 120 |
+| 롱노트 신스가 2:30 부근에서 코드를 밀어주고 주제부로 | 57-64 (2:23-2:43) 브릿지 — 신스 r4+5도 롱톤, 킥 4분, 하프 베이스 → 65 재폭발 |
+| 드럼 필인 오버하지 않되 적소에 존재 | `FILL_BARS` = 섹션 직전 마디만 (스네어 램프 + 탐 하강) |
+
+용어: 이 곡의 레이아웃에서 25-32 / 49-56 = **코러스**(훅), 57-64 = **브릿지**(꺼짐), 65-72 = **하이라이트**(= 일본식 '싸비', 마지막 코러스 + 더블링). 사용자가 "브릿지? 싸비?" 라 부른 몽환 신스 구간은 하이라이트.
+
+**B. 업로드 시 Style** (사용자 복사, 09-19) — `SUNO_PROMPTS.md` 의 **Description 전문**을 Style 필드에 넣은 것. 마침표가 쉼표로 바뀌고 "3.5 minutes" 가 "3, 5 minutes" 로 깨진 채 들어감:
+
+```
+Instrumental band-style pop at 94 BPM in C major over a four-chord loop (Fmaj7–G7–Dm7–Em7), Acoustic drums with swung hi-hats in the verses and ride in the choruses; warm finger bass with walking approach notes, Piano comping with sustain pedal carries the harmony; a string ensemble fills the space; a polysynth plays the chorus hook, Every section change is marked by a crash-roll riser and an impact, Late bridge drops to kick pulse and half-time bass, then explodes back into a final chorus with an octave-layered hook, Feel: golden-hour glow, hopeful and full, About 3, 5 minutes
+```
+
+**C. Suno 자동 메타태그** (가사 필드, 생성본 1·2 동일):
+
+```
+[Instrumental]
+[Intro] [arpeggiated clean electric guitar, light reverb] [electronic drum kit enters with steady kick and gated snare]
+[Section A] [analog synth bass enters, rhythmic eighth notes] [shimmering synth pads swell in the background]
+[Section B] [bright polyphonic synth melody enters] [guitar arpeggio continues underneath] [increased percussion density with hi-hat patterns]
+[Section C] [synth lead takes over the main melodic theme] [bass becomes more sustained] [full electronic arrangement with layered pads]
+[Outro] [drums and bass drop out] [fading synth pads and final guitar arpeggio]
+```
+
+**A↔C 대조 — Suno 가 원곡에서 읽은 것**
+
+| 원곡 요소 | Suno 의 인식 | 판정 |
+|---|---|---|
+| 1-8 Studio Grand `piano_intro` (반박 스태거 아르페지오) | "arpeggiated clean electric guitar" | **오인식** — 피아노 아르페지오를 클린 기타로. 73-80 아웃트로도 "final guitar arpeggio" |
+| SoCal 어쿠스틱 킷 | "electronic drum kit, gated snare" | **오인식** — 폴리신스 존재가 장르 판단을 전자음악으로 끌어감 |
+| Simple Foundation 핑거베이스 groove/drive | "analog synth bass, eighth notes" | 오인식 (드라이브 8분 패턴은 정확히 읽음) |
+| Epic Cloud 1+5 롱톤 (5-8, 57-64) | "shimmering synth pads" | 정확 |
+| 폴리신스 훅 25/49/65 | "bright polyphonic synth melody" → "synth lead takes over" | 정확 |
+| 코러스 라이드 | "increased percussion density with hi-hat patterns" | 대체로 정확 |
+| 57-64 하프 베이스 → 65 | "bass becomes more sustained" (Section C) | 정확 — 브릿지가 별도 섹션이 아니라 C 의 도입으로 흡수 |
+| Authentic Strings (13-72 상시) | **언급 없음** | **누락** — 4겹 중 한 겹이 통째로 빠짐 |
+| 피아노 컴핑 (9-72), CC64 | 언급 없음 (기타 아르페지오로 흡수) | 누락 |
+| 크래시 롤 라이저·임팩트·필인 | 언급 없음 | 누락 → D 에서 "라이딩햇 라이저 없어진 느낌" 으로 확인 |
+
+구조는 정확(레이어 누적 순서·아웃트로 드롭아웃 모두 맞음), **편성 식별은 전자음악 편향**. 메타태그에 BPM·키·장르 단어는 없음 — 오직 편성 + 레이어 순서.
+
+**B↔C 대조 — 우리 단어의 운명**: B 의 "Acoustic drums / finger bass / Piano comping / string ensemble / crash-roll riser / impact" 는 C 에 하나도 남지 않음. 남은 것은 "polysynth hook" 계열과 구조 서술("late bridge drops … explodes back")만. → **Style 텍스트는 Suno 의 오디오 분석을 이기지 못한다**: 메타태그가 오디오에서 결정되고, Style 은 렌더링 톤에만 관여한 것으로 보임.
+
+**D. 청취 판정**
+
+| | 생성본 1 (2:54) | 생성본 2 |
+|---|---|---|
+| 도입부 (1-8) | **붕붕 뜨는 이펙터(모듈레이션) 먹은 기타 + 신스** — 분위기를 딱 잡으며 시작, 선호 | 일렉트릭 피아노에 페달 + 리버브 — 원곡 `piano_intro` 에 가장 가까운 렌더지만 인상은 약함 |
+| ~0:50 | 기타 솔로 안정적 (원곡 17-24 = 0:41-1:01 폴리신스 8분 아르페지오 → **기타 솔로로 렌더**) | 솔로 더 간결 |
+| 첫 주제부 (~1:01) | 멜로디가 깨끗한 신스로 들어옴 — 좋음 | 메인 멜로디를 **기타가 밀고 나가는 힘** 좋음 |
+| ~1:26 | **여유롭지만 느낌 있는 기타 리프 아주 훌륭** (원곡 33-40 `PIANO_RIFF` 1:22 → 기타로 렌더) | 리프 마무리가 더 세련되게 빠짐 — "세세한 프롬프팅 불가, 운" |
+| 햇 | — | **중간중간 오픈햇** 좋음 |
+| 드럼 필인 | 있음, 스네어+탐 필인 느낌 좋음. **라이딩햇 라이저는 없어진 느낌** | — |
+| 2:00-2:30 | — | 메인 멜로디 악기 식별 불가 (신스패드?) |
+| ~2:30 | — | 분위기 한 번 정리하며 **피아노 진입 좋음**. "마무리할 듯하다가 다시 시작" 하는 느낌 조금 어색, 나쁘진 않음 (= 원곡 브릿지→하이라이트 재폭발. Logic 에선 "아주 좋음", Suno 렌더에선 페이크 엔딩으로 들림) |
+| 길이 | **2:54 — 원곡 3:27 보다 33초 짧음** | 구조 동일 |
+
+사용자 결론: "메타데이터를 잘 쓰든가 Style 프롬프트로 커버를 유도하는 쪽으로 갔어야 했다."
+
+**이 곡에서 얻은 규칙 후보** (4곡 끝나면 `PROMPT_GUIDELINES.md` 로 승격 판단)
+1. Cover 는 편성을 **원곡 오디오 분석**으로 정하고, 피아노·어쿠스틱 킷·핑거베이스를 전자 편성으로 오인할 수 있다. 어쿠스틱을 원하면 **원곡에 폴리신스를 넣지 말거나**, 메타태그를 직접 써서 덮어야 한다.
+2. 스트링처럼 **롱톤·저벨로시티 레이어는 메타태그에서 통째로 사라진다** → Suno 에 전달되려면 움직임(아르페지오·리듬)이 있어야 한다.
+3. 라이저·임팩트·필인 같은 **경계 장치는 전달되지 않는다**. 대신 Suno 가 자기 방식의 필인을 넣는다(스네어+탐, 오픈햇). 경계에 힘을 쓸 이유가 줄어듦.
+4. 폴리신스 아르페지오·피아노 리프가 **기타 솔로/리프**로 렌더되어 오히려 호평 — "악기" 보다 **선율 골격**이 전달 단위. 리프의 음정·리듬을 잘 쓰면 악기는 Suno 가 고른다.
+5. 원곡 길이가 보존되지 않는다 (3:27 → 2:54). 브릿지 꺼짐이 페이크 엔딩으로 들릴 수 있음 — 꺼짐 폭을 줄이거나 꺼짐 중 한 레이어(피아노)는 유지.
+6. Style 필드에 Description 전문을 넣어도 무해했으나 메타태그를 바꾸지 못함. 다음 Cover 는 **가사 필드에 메타태그를 직접 작성**해서 편성을 지정하는 실험이 필요.
+7. **같은 메타태그("arpeggiated clean electric guitar, light reverb")에서도 도입부 음색은 생성본마다 갈린다** (이펙트 기타+신스 vs EP+리버브) — 메타태그는 편성 범주만 고정하고 음색·이펙트는 주사위. 도입부 음색을 고정하려면 메타태그에 이펙트 단어(`chorus/modulated guitar`, `warm electric piano`)를 직접 써야 할 것으로 추정.
+
+**상태**: golden-hour **완성 (Suno final)**. 채택 = **생성본 1** ("굳이 선택한다면 1 을 업로드") — 구성·길이는 2 가 낫지만 **도입부가 분위기를 잡는 쪽**이 결정을 가름. 이상형은 "2 의 구성에 1 의 도입부"이나 Cover 단위로는 조합 불가. 재도전 시 메타태그 `[Intro]` 에 1 의 음색을 명시해 2 의 구성을 노린다. Logic v3 판정 완료.
+
+사용자 메타 관찰: "Suno 곡들은 다 그럴싸하게 들리는 게 문제." → 생성본 간 판정은 **결함 찾기가 아니라 의도 대조**로만 가능. 이 절의 A 열(Logic 의도)을 판정 기준으로 삼는 이유.
+
+### star-cruiser v6 → Suno Cover ×2
+
+**A. Logic v6 청취 판정 (09-19, 첫 기록)** — 122 BPM, 마디 = 1.97초:
+
+| 관측 (사용자) | 설계 대응 |
+|---|---|
+| 다소 심심. **30초 넘어서 첫 주제 멜로디** | 1-16 인트로·벌스(패드·코드·베이스만) → 17마디(0:31) 첫 훅. 구성상 도입이 길다 |
+| 드럼이 리듬감을 끌어가며 존재감 큼 | v6 의 Drum Synth Kit → **SoCal** 교체 + 햇/스네어 vel +14 — 6회전의 "드럼 안 들림" 싸움이 여기서 종결 |
+| 신스 멜로디 신나고 좋음 | 옥타브 점프 훅 (71↔83 반박 교대) |
+| **50초 전후 변주 멜로디 난해** | 25-28 `SWING_SOLO` (0:47-0:55) + v6 삽입 29-32 응답구 (0:55-1:03). v5 에서 "스윙 파트 확장" 을 요청했던 바로 그 구간 — 늘리고 나니 난해 |
+| 아래 깔리는 신스/패드가 붕 뜸 | Epic Cloud 코드 + 패드 — v6 에서 저역 옥타브 제거·-25% 했으나 "우주 느낌" 톤 자체가 부양감 |
+| 의도·구성은 이해됨, Suno 가 편성을 바꿔줄 것으로 기대 | — |
+
+**B. 업로드 시 Style** — golden-hour 와 같이 `SUNO_PROMPTS.md` Description 전문(마침표→쉼표):
+
+```
+Instrumental synthwave with a disco pulse at 122 BPM in B minor (Bm7–Em7–A7–Dmaj7 verses, Em7–A7–Dmaj7–Bm7 chorus), Punchy acoustic-style drum kit sits in front; the bass is light and clean, never dominant, Wide polysynth chords play a syncopated "bam— bop ba-ba" rhythm, pushing the next chord in early on the and-of-four, Octave-jumping lead riff in the chorus; a loose, swinging synth solo section between verses, Crash-roll risers into every section, Feel: a starship cruising between stars — glossy, propulsive, no distortion
+```
+
+**C. Suno 자동 메타태그** (가사 필드):
+
+```
+[Instrumental]
+[Intro] [bright sawtooth synth lead riff, electronic kick drum] [closed hi-hat sixteenth notes]
+[Main Theme] [synth bass enters with sidechain pumping] [staccato synth pad chord stabs] [snare on beats 2 and 4]
+[Transition] [white noise riser, kick drum roll]
+[Variation Section] [lead synth melody continues with added filter resonance] [open hi-hat accents on the off-beats]
+[Outro] [drums drop out, synth lead fades with delay effect]
+```
+
+**A↔C 대조**
+
+| 원곡 요소 | Suno 의 인식 | 판정 |
+|---|---|---|
+| The Final Lead(ES2 소우) 옥타브 점프 훅 | "bright sawtooth synth lead riff" | 정확 (음색까지). 옥타브 점프는 이름 안 붙었지만 렌더에서 살아남 |
+| SoCal 어쿠스틱 킷 | "electronic kick drum, closed hi-hat 16ths" | **또 전자 킷으로 오인식** — 이번엔 장르(신스웨이브)와 맞아 결과가 좋았음. Suno 는 킷 종류를 장르로 결정한다 |
+| Simple Foundation 핑거베이스 8분 | "synth bass with sidechain pumping" | 오인식이지만 **pump16 스타일 의도는 정확히 읽음** → D 의 "둠칫둠칫" |
+| Epic Cloud "빰~ 밥 빠빠" + 3.5박 선행 | "staccato synth pad chord stabs" | 리듬 아이디어는 "스타카토 스탭" 으로 축약. 선행(밀기)은 언급 없음 |
+| 크래시 롤 라이저 (섹션 경계) | "**white noise riser, kick drum roll**" (Transition 섹션) | **정확 — golden-hour 에서는 누락됐던 경계 장치가 여기선 잡힘.** 차이: 전자음악 문맥에서 라이저는 장르 어휘. 어쿠스틱 문맥의 크래시 롤은 "장치" 로 인식 안 됨 |
+| 25-32 스윙 솔로 + 응답구 | "Variation Section: lead continues with added **filter resonance**, open hi-hat off-beats" | 스윙 느낌은 사라지고 "변주 + 필터" 로 — **CC74 필터 스윕이 실제로 읽혔다** (v0 부터 깔려 있던 아르페지오 스윕). 오픈햇 오프비트 = 디스코 문법 |
+| 곡 끝 (1:27, 40마디에서 컷) | "Outro: drums drop out, lead fades with delay" | **Suno 가 아웃트로를 발명** — 원곡엔 없음 |
+| B minor / 122 BPM / 스윙 | 언급 없음 | 골든아워와 동일 — 메타태그엔 키·BPM·필 단어가 없다 |
+
+**B↔C 대조**: "acoustic-style drum kit" → 무시(전자 킷). "bass light and clean" → "sidechain pumping" 으로 치환(결과는 호평). "bam— bop ba-ba / pushing early" → "staccato stabs" 로 축약. "swinging synth solo" → "Variation Section"(스윙 탈락). **"Crash-roll risers" → "white noise riser, kick drum roll" 로 장르 어휘 치환되어 생존** — B 의 단어가 C 에 반영된 첫 사례. 단, 이것이 B 때문인지 오디오 분석 때문인지는 분리 불가 (골든아워 B 에도 같은 문구가 있었고 누락됨 → **오디오 문맥이 결정**, B 는 무관했을 가능성이 높음).
+
+**D. 청취 판정**
+
+| | 생성본 1 (2:28) — **채택** | 생성본 2 |
+|---|---|---|
+| 장르 | **디스코 문법을 잘 따름 — 스페이스 디스코라 부르기에 손색 없음** | "젠틀". 조금 신나지만 내적 댄스용. 스페이스 디스코라기엔 미묘 |
+| 주제 멜로디 | 잘 살림 | 주제선율·코드 아주 잘 따름, 마음에 듦 |
+| 드럼 | **아주 잘 씀** — 스네어 필요한 곳에 충분히, 브레이크 후 변주 지점에 **클랩** 적시 | — |
+| 도입 | **크레셴도로 들어오는 인트로** 가 특이점 (원곡엔 없음) | 무난, 여유 |
+| 패드 | **톤이 바뀌고 존재감이 옅어져 붕 뜬 느낌 사라짐** → "달릴 준비 - 달리기 - 쉬기 - 달릴 준비 - 달리기" 아크가 살아남 | 라인이 곳곳에 많이 추가됨 |
+| 변주 구간 (원곡 25-32 난해) | **드럼 필인 → 클랩 → 메인 코드 1마디 반복 → 변주** 가 가장 마음에 드는 부분 | 분위기 안 바꾸는 점잖은 쉬는 시간 |
+| 베이스 | 둠칫둠칫 | — |
+| 느낌 | — | 미묘하게 살짝 처짐, 이유 불명 |
+| 마무리 | 좋음 | 심심 |
+| 길이 | 2:28 — **원곡 1:27 에서 +61초 확장**. 다소 짧나 싶지만 낫 배드 | — |
+
+**이 곡에서 얻은 규칙 후보**
+8. **길이는 원곡과 무관하게 ~2.5-3분으로 정규화된다** (golden 3:27→2:54 축소, star 1:27→2:28 확장). 로직 원곡을 3분 채울 이유가 없다 — **1:30 짜리 골격으로 충분**하고, 그만큼 로직 라운드가 싸진다.
+9. **패드 톤은 Suno 가 자유롭게 다시 쓴다** — 로직에서 "붕 뜬다" 고 고민한 패드가 Suno 에서 자동 해결. 패드·롱톤 음색은 로직에서 시간 쓸 대상이 아님 (골든아워 스트링 누락과 같은 축: 롱톤 레이어는 전달 안 되거나 재작성됨).
+10. **난해한 솔로는 Suno 가 단순화한다** — 원곡의 난해 구간이 "필인→클랩→코드 반복→변주" 로 렌더되어 최고 호평. 가치는 솔로의 음정이 아니라 **구조상 '브레이크 슬롯' 의 존재**. 로직에서 솔로를 잘 쓰려 애쓰기보다 슬롯을 비워두는 게 낫다 (v5 "스윙 확장" 요청은 결과적으로 불필요했던 라운드).
+11. **CC74 필터 스윕은 읽힌다** ("added filter resonance") — 골든아워에서 누락된 스트링과 달리, 롱톤이라도 **움직임(스윕)이 있으면 전달**된다. 규칙 2 의 보강.
+12. 드럼 킷 종류는 **장르가 결정** — 어쿠스틱 킷(SoCal)이 두 곡 모두 "electronic kit" 으로 읽혔고, 신스웨이브에서는 무해, 밴드 팝에서는 손실. 어쿠스틱 밴드 사운드를 원하면 폴리신스를 빼서 장르 판단부터 바꿔야 한다 (규칙 1 재확인).
+13. **2곡 연속 "캐릭터 강한 생성본" 이 "균형 잡힌 생성본" 을 이겼다** (golden: 도입부 분위기 / star: 디스코 추진력 vs 젠틀). 판정 기준 후보: 의도한 감정 한 단어("벅참" "질주")가 첫 30초에 들리는가.
+
+**상태**: star-cruiser **완성 (Suno final, 생성본 1)**. Logic v6 판정 완료. 남은 것: ghost-signal v4, chrome-sunset (올린 버전 확인 필요).
+
+### ghost-signal v4 → Suno Cover ×2
+
+> 정정 (사용자, 09-19): **Style 은 원곡 업로드 시에만 들어가고, 메타태그는 업로드된 원곡과 Cover 양쪽에 붙는다.** 즉 메타태그는 업로드 시점에 오디오 분석으로 1회 생성되어 원곡 항목에 저장되고, Cover 는 그것을 상속한다. Cover 가 텍스트로 받는 것은 이 메타태그(편집 가능)뿐.
+
+**A. Logic v4 청취 판정 (09-19, 첫 기록)** — 100 BPM, 마디 = 2.4초. 레이아웃 1-36 v3 | 37-44 벌스 | 45-48 프리 | **49 폭발+침묵** (1:55) | 50-57 마지막 벌스 (Pulse Bass) | 58-73 코러스×2 | 74-77 아웃트로:
+
+| 관측 (사용자) | 설계 대응 |
+|---|---|
+| 신스 롱노트 코드가 **귀신 같은 이미지** 잘 줌 | Glistening Pad 롱코드 + Gm–A♭maj7 프리지안 b2 |
+| **볼드하게 걷는 베이스 = 유령이 둥둥 떠올랐다 가라앉는 느낌**, 잘 어울림 | Simple Foundation 핑거베이스 + 50-57 Pulse Bass 4분+옥타브 팝 (v0 "심장 압박" 재사용) |
+| 베이스 다소 앞 | v4 는 v3 벨로시티 비율 고정 — 여전히 앞. Suno 단계에서 무의미해진 항목 |
+| 멜로디 신스가 쫑쫑거림 | D–E♭ 반음 오스티나토 리드 (스퀘어) |
+| 드럼킷이 **먹먹함** | Drum Synth Kit (PC 25) — 신스와 어울리는지 불명 |
+| 구성 다소 지루, 정석 | 벌스-프리-폭발-벌스-코러스×2 교과서 구조 |
+
+**B. 업로드 시 Style** — Description 전문(마침표→쉼표):
+
+```
+Instrumental horror/thriller synthwave at 100 BPM in G minor with a Phrygian pull (Gm–A♭maj7–Gm–D7), Half-time drums with a dark ride pattern; a muted clavinet plays tense, restrained chord stabs, Hypnotic dotted-eighth synth arpeggio and a lead built on a D–E♭ semitone ostinato, Around the two-minute mark the tension breaks: a huge cymbal crash, one bar of silence, then the final verse returns with a heavy, chest-pressing sub bass under the groove, Two final choruses, then a short fade, Mood: unsettling but controlled — sinister, not loud, About 3 minutes
+```
+
+**C. Suno 자동 메타태그** (원곡·Cover 공통):
+
+```
+[Instrumental]
+[Intro] [distorted kick drum, metallic synth sequence] [white noise sweeps]
+[Section A] [syncopated 16th-note bassline enters] [closed hi-hats with velocity modulation]
+[Section B] [snare on beats 2 and 4] [acid-style synth lead with resonant filter modulation] [industrial percussion layers]
+[Outro] [bass and lead synth fade out] [kick drum and metallic sequence remain] [final white noise decay]
+```
+
+**A↔C 대조**
+
+| 원곡 요소 | Suno 의 인식 | 판정 |
+|---|---|---|
+| Drum Synth Kit | "distorted kick drum" | 정확 (전자 킷을 전자로) |
+| 점8분 아르페지오 (Glistening Pad) | "metallic synth sequence" | 정확 — 곡의 정체성 레이어로 잡힘 (Intro 부터 Outro 까지 "remain") |
+| 크래시 롤 / SFX (Cosmonaut) | "white noise sweeps" | 정확 (star 와 같이 전자 문맥에서 라이저 인식) |
+| 핑거베이스 / Pulse Bass 4분+옥타브 팝 | "syncopated 16th-note bassline" | 리듬 과대 해석 (4분·8분 → 16분). "볼드하게 걷는" 성격은 미포착 |
+| 휴머나이즈 햇 (v3 추가) | "closed hi-hats with velocity modulation" | **정확 — §2-4 벨로시티 지터가 그대로 읽혔다** |
+| **하프타임 (스네어 3박)** | "snare on beats 2 and 4" | **오인식** — 하프타임을 표준 백비트로. B 의 "Half-time" 도 무시 |
+| D–E♭ 반음 오스티나토 리드 | "acid-style synth lead with resonant filter modulation" | 음색·움직임은 정확(반음 오스티나토 + 스윕 = 애시드 문법). "공포" 는 없음 |
+| Muted Clav 스탭 | "industrial percussion layers" (추정) | 클라비넷을 타악으로 — 짧은 스탭이 퍼커션으로 읽힘 |
+| **49마디 폭발 + 1마디 침묵** (1:55) | **언급 없음** | **누락** — star 의 라이저는 잡혔는데 곡의 최대 사건이 태그에 없음. 침묵은 "이벤트" 로 안 읽힘. 그러나 D: 생성본 2 가 2:00 에 클랩 전환을 넣음 → 오디오에서 피벗은 살아남았고 태그만 없는 것 |
+| Gm 프리지안 / 호러 무드 / 서브베이스 | 언급 없음 | 태그는 음색·리듬만 서술, **무드·화성 단어는 절대 안 나온다** (3곡 공통) |
+
+**B↔C 대조**: horror / Phrygian / half-time / dark ride / muted clavinet / dotted-eighth / semitone ostinato / cymbal crash + silence / sub bass / sinister — **C 에 하나도 없음**. C 는 이 곡을 호러 신스웨이브가 아니라 **인더스트리얼·애시드 테크노** 로 서술한다. 그런데 D 의 결과는 "먹먹하고 멀리서 들리는" 호러 톤으로 나옴 → 무드는 태그가 아니라 **오디오의 화성(프리지안)** 에서 전달됐다 (09-05 "장치를 지정하면 장르로 렌더" 판정과 일치).
+
+**D. 청취 판정**
+
+| | 생성본 1 (2:49) | 생성본 2 (3:02) |
+|---|---|---|
+| 도입 | **먹먹하고 멀리서 들리는 듯** 시작 → 바로 드럼 비트가 앞으로 나와 "이런 박자감의 곡" 이 확 와닿음 | 같은 크레셴도, **멜로디 먼저 → 비트 나중** (비트 없는 멜로디 1마디 추가) |
+| 드럼 | 진행부는 **아날로그틱한 SoCal 느낌**, 필인 탐은 드럼패드 느낌. 필인 괜찮음 | 같은 킷 |
+| 주제부 | — | 표현 비슷 |
+| 브릿지 (주제부 사이) | **아르페지오 노트가 감정을 연결** — 좋음 | **차이 큼**: 베이스 대신 중저음 패드(현 떨림 없음), 연결 멜로디 없음. 주제+아르페지오 코드 강약만으로 진행. 브릿지 변주가 재미는 있음 |
+| 2:00 이후 | — | **비트에 클랩** 섞음 — 괜찮은 선택 (= 원곡 49 피벗 자리) |
+| 편성 | — | 3:02 내내 **아르페지오 코드 + 주제선율 둘만** — 아쉬움 |
+| 후반·마무리 | 마무리 **애매** — "곡을 끝낸다는 느낌을 어떻게 줘야 할지 모르겠음" | 중저역 악기만으로 끌어가는 후반 + 마무리 **좋음** |
+| 길이 | 2:49 적당 | 3:02 |
+
+원곡 3:07 → 2:49 / 3:02: 정규화 대역 안이라 거의 보존됨 (규칙 8 재확인).
+
+**"곡을 끝낸다는 느낌" — 장치 목록** (사용자 질문에 대한 답, 다음 Cover 메타태그 `[Outro]` 에 직접 쓸 수 있는 단어):
+- **정박 종지**: 마지막 마디 1박에 전 악기 으뜸화음 한 방 + 크래시, 이후 잔향만 (`final hit on the downbeat, cymbal ring out`)
+- **드럼 먼저 퇴장**: 마지막 4마디 드럼 빠지고 한 악기만 남아 으뜸음으로 (`drums stop, solo piano resolves to the tonic`) — 생성본 2 의 "중저역만 남는" 마무리가 이쪽
+- **리타르단도**: 마지막 2마디 느려지며 롱코드 (`slowing down into a held final chord`)
+- **페이드**: 반복하며 볼륨만 내림 — 가장 약한 선택. 생성본 1 의 "애매함" 은 태그 `[bass and lead synth fade out] … [final white noise decay]` 가 바로 페이드 지시였기 때문
+→ 메타태그의 `[Outro]` 를 페이드 서술에서 종지 서술로 **고쳐 쓰면** 마무리를 바꿀 수 있을 것으로 추정 (실험 필요).
+
+**이 곡에서 얻은 규칙 후보**
+14. 메타태그는 **업로드 시 1회 생성 → 원곡 항목에 저장 → Cover 상속**. Style 은 원곡 업로드 시 1회. 따라서 Cover 를 바꾸는 유일한 텍스트 레버는 **메타태그 편집**이다.
+15. 태그는 **음색·리듬 어휘만** 쓴다. 무드(horror)·화성(Phrygian)·필(half-time, swing) 단어는 3곡 모두 태그에 없다. 무드는 오디오의 화성이 전달하므로 **로직에서 화성 장치를 정확히 쓰는 것이 무드 프롬프트보다 강하다**.
+16. **1마디 침묵·단발 크래시는 태그화되지 않는다** — 그러나 오디오 피벗은 살아남는다 (생성본 2 의 2:00 클랩). 태그에 없다 ≠ 전달 안 됨. 반대로 태그에 있는 것(페이드 아웃트로)은 확실히 실행된다.
+17. **베이스 음색은 주사위** — 같은 태그에서 생성본 1 은 현 떨림 있는 베이스, 2 는 패드. "유령 둥둥" 의 핵심이 베이스였으므로 이 곡에선 치명적 차이. 지키려면 `[Section A]` 태그의 "syncopated 16th-note bassline" 을 `walking fingered electric bass` 로 고쳐 쓸 것.
+18. **하프타임은 전달되지 않는다** (태그 "snare on 2 and 4", B 의 half-time 무시). 로직에서 하프타임으로 쓴 의도가 Suno 에서 표준 백비트로 정규화될 수 있음 — 하프타임 필을 원하면 BPM 자체를 절반(50)으로 써서 넘기는 편이 안전할 것으로 추정.
+19. 사용자가 로직에서 지적한 "베이스 앞", "드럼 먹먹", "구성 지루" 세 항목 모두 Suno 에서 소멸 (킷 교체·밸런스 재렌더·브릿지 변주 삽입). 로직 판정 항목 중 **밸런스·킷 음색·지루함은 Suno 단계 이슈**로 넘기고, 로직에서는 화성·리듬 골격·레이어 존재 여부만 본다.
+
+**상태**: ghost-signal **완성 (Suno final, 생성본 1)** — 결정 요인은 **브릿지의 리듬과 연결 멜로디**. 이상형은 "1 + 2 의 마무리(중저역만 남기고 종지)". 재도전 시 1 의 태그를 유지하고 `[Outro]` 만 `[bass and lead synth fade out] …` → `[drums stop, low synth and bass carry the last phrase, resolve on a held G minor chord]` 로 교체해 확인. Logic v4 판정 완료.
+
+3곡 패턴: 채택은 매번 **한 구간의 질감**(golden 도입부 / star 브레이크 슬롯 / ghost 브릿지)이 결정하고, 미련은 매번 **구성·마무리**에 남는다. → 메타태그 편집 실험의 1순위는 `[Outro]` 다.
+
+### chrome-sunset v6 (오르간) → Suno Cover ×2
+
+세 편성 중 **v6 톤휠 오르간** 을 업로드. 근거(사용자): "로직 기준으로 오르간이 가장 어울림" — 09-05 판정 포인트 (1) 의 답.
+
+**A. Logic v6 청취 판정 (09-19, 첫 기록)** — 104 BPM, 1:32:
+
+| 관측 (사용자) | 설계 대응 / 진단 |
+|---|---|
+| 오르간이라는데 **신스 같은 느낌**. "전자 키트라 어쩔 수 없나?" | 킷은 전자가 아니라 **SoCal 브러시** (v2 결정). 신스 느낌은 킷이 아니라 **Tonewheel Organ 패치 자체** — 로터리 없이 롱코드만 치면 오르간은 정적 신스 패드와 구별이 안 됨. Suno 도 이것을 "Rhodes with tremolo" 로 읽음 (아래 C) |
+| 라이딩 햇이 다소 튐 | 코러스 라이드 vel 86/62 — 브러시 킷에서 라이드만 스틱 소리라 이질 |
+| 뒤에서 뾰록뾰록 들리는 소리가 **의외로 킥** | SoCal 킥 저벨로시티(브러시 문맥) = 어택만 남은 블립. Suno 는 "muffled kick" 으로 정확히 재해석 |
+
+**B. 업로드 시 Style** — 공통 Description 전문(마침표→쉼표). v6 전용 Style(`tonewheel organ long chords low in the mix`)은 **넣지 않았음**:
+
+```
+Instrumental city-pop / soft evening groove at 104 BPM in C major (Cmaj7–Am7–Dm7–G7 verses, Fmaj7–G7–Em7–Am7 chorus), Warm brushed drums with ride cymbal, finger bass on root notes, gentle electric-piano melody with a sixth-leap hook, Feel: a pleasant walk at golden hour — soft, warm, slightly bouncy, relaxed, Nothing aggressive, nothing dreamy or washed out
+```
+
+**C. Suno 자동 메타태그**:
+
+```
+[Instrumental]
+[Intro] [Rhodes electric piano playing jazz chords with tremolo] [subtle vinyl crackle and hiss]
+[Main Theme] [muffled kick drum and crisp snare enter with swing] [warm synth bass follows piano root notes] [clean electric guitar enters with melodic lead lines]
+[Bridge] [airy flute melody enters] [electric guitar continues with light chorus and delay]
+[Outro] [drums and bass fade out] [Rhodes piano and vinyl crackle remain until silence]
+```
+
+**A↔C 대조**
+
+| 원곡 요소 | Suno 의 인식 | 판정 |
+|---|---|---|
+| Tonewheel Organ 롱코드 + Deluxe Classic EP 멜로디 | "Rhodes electric piano, jazz chords with tremolo" | 오르간 → **Rhodes 트레몰로** 로 병합. 오르간 패치는 살아남지 않음 (사용자도 신스로 들음) |
+| SoCal 브러시 킷 + SW 22틱 스윙 | "muffled kick, crisp snare, **with swing**" | **정확 — 4곡 중 처음으로 필 단어(swing)가 태그에 등장.** 드럼 그리드 스윙은 전달된다 (star 의 선율 스윙은 안 됐음). 라이드는 누락 |
+| 핑거베이스 근음 | "warm synth bass **follows piano root notes**" | 음색 오인(신스) — 그러나 **"근음만" 이라는 설계가 단어로 읽힘** |
+| EP 6도 도약 훅 | "clean electric guitar, melodic lead lines" | 멜로디를 기타로 (골든아워와 같은 패턴: 선율은 기타로 귀속되는 경향) |
+| (없음) | "vinyl crackle and hiss" | **발명** — 로파이 장르 어휘 |
+| (없음 — 1:32, 벌스/코러스뿐) | "[Bridge] airy flute melody, guitar chorus+delay" | **발명** — 짧은 원곡을 ~3분으로 채우며 섹션·악기를 새로 씀 |
+| (없음 — 40마디 컷) | "[Outro] drums/bass fade, Rhodes + crackle remain" | 발명 |
+| 패드 -30% (9th 제거) | 언급 없음 | 누락 (규칙 2·9 재확인) |
+
+**B↔C 대조**: "brushed drums with ride" → 브러시 성격은 "muffled/crisp" 로, **ride 탈락**. "finger bass on root notes" → "root notes" **생존**. "electric-piano melody" → Rhodes **생존**(단 멜로디는 기타로 이관). "sixth-leap hook" → 없음. **"city-pop" → 로파이 재즈 힙합 어휘(vinyl, Rhodes tremolo, flute) 로 장르 표류.** "nothing dreamy or washed out" → 무시 (생성본 2 는 뭉개짐).
+
+**D. 청취 판정**
+
+| | 생성본 1 | 생성본 2 |
+|---|---|---|
+| 도입 | 도입 멜로디를 **그냥 피아노**, 기타가 아르페지오/트레몰로 코드로 받침 | 1 보다 **뭉개지고 낮음** |
+| 진행 | 기타가 주선율 인계 → 메인 테마를 피아노가 받음. **두 악기 조합 괜찮음** | 드럼 골자 동일 |
+| 브릿지 전 | **피아노 변주 훌륭** | — |
+| 브릿지 | **플루트가 잘 어울림** (발명된 섹션·악기가 호평) | — |
+| 드럼 | 필인 과하지 않음. **하이햇 셋잇단 처리 훌륭. 스네어 선택 영리 — 림샷을 필요한 곳에** | — |
+| 태그 이행 | `[Outro]` 의 **바이닐 크래클 없음** — 태그가 실행되지 않은 첫 사례 | — |
+| 차이 | — | "의외로 차이가 별로 없어?" |
+
+**"둘이 왜 비슷한가"** — 4곡 대조로 나오는 가설: 이 곡의 태그는 섹션마다 **악기가 특정**되어 있다(Rhodes / 기타 / 플루트 / 스윙). 골든아워·스타의 태그는 "synth lead / pad / bass" 수준으로 범주만 있었고 생성본 간 차이가 컸다(도입부 음색, 젠틀 vs 디스코). 고스트는 베이스 태그가 범주("16th-note bassline")라 그 자리만 갈렸다. → **태그가 구체적일수록 주사위가 작다.** 변주를 원하면 범주 태그, 고정을 원하면 악기·주법 태그.
+
+**이 곡에서 얻은 규칙 후보**
+20. **원곡이 짧으면(1:32) Suno 가 섹션을 발명한다** — 브릿지·플루트·아웃트로가 새로 생겼고 전부 호평. 규칙 8(1:30 골격이면 충분)의 확인이자 조건: 발명된 섹션은 **장르 어휘 안에서** 만들어지므로, 장르 판단이 맞아야 발명도 맞는다.
+21. **장르 표류**: "city-pop" Style 은 안 잡히고 오디오(브러시 + EP + 오르간 롱코드)가 로파이 재즈로 읽힘. 시티팝을 원하면 오디오에 시티팝 표지(16분 신코페이션 베이스, 밝은 코러스 기타 컷팅, 4온플로어 디스코 햇)가 있어야 함 — v5(나일론 16분 신코페이션)가 오히려 시티팝으로 읽혔을 가능성.
+22. **드럼 스윙은 전달된다** (`hum`/SW 그리드 → "with swing"). 선율 스윙(star 솔로)은 안 됨. 필은 드럼으로 써라.
+23. **베이스 "근음만" 설계는 단어로 전달된다** ("follows root notes"). 베이스 절제(§2-7)는 Suno 까지 살아남는 몇 안 되는 설계.
+24. **오르간 패치는 무의미** — Suno 도 사용자도 EP/신스로 들음. 코드 악기 3종 분기(v4/v5/v6)는 Suno 앞에서는 "어쿠스틱 기타 vs 건반" 2종이었던 셈.
+25. 태그의 **악기·구조 지시는 실행되지만 텍스처 FX(vinyl crackle)는 불확실** — 규칙 16 의 범위 한정.
+26. **태그 구체성 ∝ 생성본 일관성** (위 가설). 메타태그 편집 실험 설계에 반영: 고정하고 싶은 구간만 구체적으로.
+
+**상태**: chrome-sunset **완성 (Suno final, 생성본 2)** — "굳이 고르라면 **피아노가 좀 더 우세한** 2". 뭉개짐·낮음보다 주선율 악기의 비중이 결정. 1 의 장점(피아노 변주·플루트·림샷)은 2 에도 골자가 같아 대부분 공유. Logic v6 판정 완료.
+
+**4곡 채택 요인 정리**: golden = 도입부 분위기 / star = 브레이크 슬롯의 질감 / ghost = 브릿지 리듬·연결 멜로디 / chrome = 주선율 악기(피아노) 비중. 넷 다 **한 구간 또는 한 악기의 질감**이 결정했고, 구성·길이·마무리는 한 번도 결정 요인이 아니었다(미련으로만 남음). → 다음 판정은 "의도한 감정·질감이 어느 구간에서 들리는가" 한 줄이면 충분하고, 그 구간을 고정하는 메타태그 편집이 재도전의 형식이다.
+
 ## 다음 세션 진입점
 
-1. 로직 버전 청취 판정(6개) — 기준을 "Suno 가 의도대로 받았는가"로 가볍게.
+1. ~~로직 버전 청취 판정(6개)~~ **완료 (09-19)** — 기존 4곡 Suno final 확정, 규칙 `PROMPT_GUIDELINES.md` §7 승격. 다음: **메타태그 편집 실험** — ghost-signal 채택본(1) 태그에서 `[Outro]` 만 종지 서술로 교체해 재생성, 마무리가 바뀌는지 1건 확인 (§7.4-2). 결과에 따라 §7.4-3(구체성 가설) 검증.
 2. `LEARNING_PLAN.md` v3 — 기초 화성학(다이어토닉·기능·관용 진행) + 작곡 기초(모티프→프레이즈→섹션)를 본편으로.
 3. 스케치 4곡(neon-rain / highway-zero / midnight-arcade / analog-heart) v0 첫 피드백 → Suno 투입 후보.
 4. Logic 백그라운드 구동(키 입력 제거·`open -g`·frontmost 제거) — 다음 제작 사이클 전에 chrome 1곡으로 실측.

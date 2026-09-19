@@ -67,18 +67,23 @@ def meta(tick, mtype, payload, order=0):
     return (tick, order, bytes([0xFF, mtype, len(payload)]) + payload)
 
 
-def build_smf(title, bpm, keysig_sf, minor, n_bars, tracks, pcs, nt, cc, markers=()):
+def build_smf(title, bpm, keysig_sf, minor, n_bars, tracks, pcs, nt, cc, markers=(), timesig=(4, 4), tempos=()):
     """tracks: [(name, midi_ch)], pcs: {idx: program}, nt: {idx: [(tick,dur,pitch,vel)]},
-    cc: {idx: [(tick, cc, val)]}, markers: [(bar, text)]"""
+    cc: {idx: [(tick, cc, val)]}, markers: [(bar, text)], timesig: (num, den),
+    tempos: [(tick, bpm)] 추가 템포 이벤트 (루바토·아첼레란도)."""
+    num, den = timesig
+    bar_ticks = num * (PPQ * 4 // den)
     cond = [
         meta(0, 0x03, title.encode()),
         meta(0, 0x51, struct.pack('>I', round(60_000_000 / bpm))[1:]),
-        meta(0, 0x58, bytes([4, 2, 24, 8])),
+        meta(0, 0x58, bytes([num, den.bit_length() - 1, 24, 8])),
         meta(0, 0x59, struct.pack('>bB', keysig_sf, 1 if minor else 0)),
-        meta(bt(n_bars) + BAR, 0x06, b'END'),
+        meta(n_bars * bar_ticks, 0x06, b'END'),
     ]
+    for tick, tb in tempos:
+        cond.append(meta(tick, 0x51, struct.pack('>I', round(60_000_000 / tb))[1:]))
     for bar, text in markers:
-        cond.append(meta(bt(bar), 0x06, text.encode()))
+        cond.append(meta((bar - 1) * bar_ticks, 0x06, text.encode()))
     chs = [track_chunk(cond)]
     for i, (name, mch) in enumerate(tracks):
         evs = [meta(0, 0x03, name.encode()), (0, 0, bytes([0xC0 | mch, pcs[i]]))]
@@ -254,9 +259,14 @@ end tell
 end tell''')
 
 
+def open_in_logic(path):
+    """`open -a` 는 Logic 창이 0개인 상태에서 무시된다(2026-09-12·09-18 재현). AppleScript `open` 은 같은 상태에서도 임포트 시트를 띄운다."""
+    osa(f'tell application "{APP}"\nactivate\nopen POSIX file "{os.path.abspath(path)}"\nend tell', timeout=120)
+
+
 def open_mid(path, timeout=150):
     """SMF 임포트 → '무제 - 트랙' 창 등장까지 대기. 임포트가 수 분 지연되는 경우가 있어 넉넉히."""
-    subprocess.run(['open', '-a', APP, path], capture_output=True)
+    open_in_logic(path)
     t0 = time.time()
     while time.time() - t0 < timeout:
         if any(w.startswith('무제') and w.endswith('- 트랙') for w in windows()):
@@ -624,7 +634,7 @@ def produce(sid, title, ver, mid_path, log=print):
     """열린 프로젝트 정리 → SMF 임포트(벽시계 기준 대기; 임포트 중 System Events 는 ~2분씩 블록) → finish()."""
     t0 = time.time()
     close_all_projects(save=False)
-    subprocess.run(['open', '-a', APP, mid_path], capture_output=True)
+    open_in_logic(mid_path)
     while time.time() - t0 < 900:
         if any(w.startswith('무제') and w.endswith('- 트랙') for w in windows()):
             break

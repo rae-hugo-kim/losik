@@ -1,7 +1,9 @@
-# Suno 투입 프롬프트 (2026-09-05 최신판 기준)
+# Suno 투입 프롬프트
 
-각 곡: **Style** = Suno 스타일 필드(짧게, 장르·무드·악기·템포), **Description** = 커스텀 모드 설명/가사란에 넣는 확장 프롬프트.
-오디오 업로드(Extend/Cover) 시 해당 WAV 와 함께 사용한다. 모두 instrumental.
+각 곡: **Style** = Suno 스타일 필드, **Description** = 커스텀 모드 설명/가사란에 넣는 확장 프롬프트. 오디오 업로드(Cover) 시 해당 WAV 와 함께 사용한다. 모두 instrumental.
+
+> **실투입 기록 (2026-09-19 확인)**: 09-05 의 4곡(star v6 / ghost v4 / chrome **v6** / golden v3)은 아래 **Description 전문이 Style 필드에** 들어갔다 (마침표→쉼표, "3.5 minutes" → "3, 5 minutes" 로 깨짐). Style 100자 제한은 09-12 부터. Cover 가 실제로 받은 텍스트는 Suno 가 오디오에서 자동 생성한 **메타태그**이며, 곡별 원문·대조·판정은 `FEEDBACK_LOG.md` "Suno 완성본 판정" 절, 승격 규칙은 `PROMPT_GUIDELINES.md` §7.
+> 4곡 채택본: golden 생성본 1 / star 1 / ghost 1 / chrome 2. 재도전은 채택본 태그의 `[Outro]` 편집부터 (§7.4-2).
 
 ## star-cruiser-v6
 **Style**
@@ -111,6 +113,101 @@ Ends quietly — the theme alone over a soft pad, long chords fading to the toni
 
 **long-bridge-v1 Style**: `korean modern rock, 116 BPM, C major, clean electric guitar repeated-note pedal melody opening over drums alone, gradually building band, acoustic strums, strings, driving and wide, quiet outro, instrumental`
 — KEY C major · VERSE Am–F–C–G · CHORUS C–G–Dm–F · MOTIF an insistent repeated G pedal note that finally steps away
+
+## Rebetiko 5 버전 (2026-09-18 v1 → 09-19 v2) — SMF `sketches/rebetiko-{1..5}-*-v2.mid`, 엔진 `tools/rebetiko.py`
+v1 판정 "그리스가 아니라 이스탄불/알라딘" → v2: 1번 Hitzaz→Minore, 전곡 선율을 코드톤 아르페지오 문법으로, 3번 프레임드럼→붐뱁 킷. 아래 프롬프트는 v2 기준.
+Style 100자 이하 / Description 1000자 이하. 1·3번은 보컬 버전 — 가사는 미작성이므로 Suno 가사란에 아래 섹션 태그만 넣고 Suno 자동 가사(그리스어)에 맡기거나, 가사 확정 후 채운다. 2·4·5번은 instrumental.
+
+### rebetiko-1-piraeus (Minore · zeibekiko 9/8 · 66)
+**Style**: `1930s Piraeus rebetiko, zeibekiko 9/8, bouzouki, baglamas, raw male vocal, lo-fi, minor key, heavy`
+
+**Description**
+```
+1930s Piraeus rebetiko in slow zeibekiko 9/8 at about 66 BPM, D minor (Greek "minore": natural minor with a major A chord at cadences — NOT oriental, no augmented seconds).
+Opens with a short solo bouzouki taximi (8–10 seconds) outlining the D minor chord — then the guitar enters
+with the zeibekiko pattern: bass note, chord, bass, chord, bass, chord, and a heavy weight on the final 3-beat group (2+2+2+3).
+Trichordo bouzouki carries the melody doubled an octave below: simple arpeggios of the chord, repeated notes, leaps of a third, tremolo only on the last long note of a phrase. A baglamas shimmers high above in constant tremolo.
+A single frame drum, barely there. Raw, unpolished male vocal, singing close to the mic, phrases starting high and falling.
+Form: taximi → verse → bouzouki interlude → verse → short coda ending on a long tremolo D. No chorus.
+Sound: mono-like, narrow, lo-fi 78rpm warmth, small room. Vamvakaris / Batis lineage. Heavy, slow, solitary. About 2 min.
+```
+가사란 골격: `[Taximi - bouzouki solo, no drums]` `[Verse 1]` `[Bouzouki interlude]` `[Verse 2]` `[Outro - tremolo]`
+
+### rebetiko-2-hasapiko (Kiourdi · hasapiko 2/4 · 80)
+**Style**: `rebetiko hasapiko, twin bouzouki in thirds, walking guitar bass, accordion, melancholy, instrumental`
+
+**Description**
+```
+Instrumental rebetiko hasapiko in 2/4 at 80 BPM, D minor (Kiourdi, natural minor with a C# leading tone at cadences).
+Two bouzoukis play the same melody a third apart — the twin-bouzouki harmony is the core of the sound — with tremolo on held notes.
+A nylon-string guitar walks: bass note on beat 1, fifth on beat 2, soft chords on the off-beats. No drums at all; the guitar is the pulse.
+Form: guitar-and-single-bouzouki intro → verse (Dm–Gm–C–F–Dm–Gm–A–Dm) → interlude → second verse with an accordion sustaining the chords underneath → interlude with the bouzoukis an octave higher → quiet outro fading on a Dm tremolo.
+Feel: walking slowly through a grey Sunday — lyrical, melancholic, steady, like Tsitsanis "Synnefiasmeni Kyriaki" or Vamvakaris "Frangosyriani". 1950s recording warmth, small ensemble, no reverb wash. About 1 minute 40 seconds.
+```
+
+### rebetiko-3-smyrna (Hitzazkiar · tsifteteli 4/4 · 100 · 붐뱁 킷)
+**Style**: `Smyrna rebetiko meets boom bap, violin, santouri, oud, punchy hip-hop drums, female vocal, oriental`
+
+**Description**
+```
+1920s Smyrna-style rebetiko in tsifteteli 4/4 at about 100 BPM, D Hitzazkiar (D Eb F# G A Bb C#).
+Opens with a free, slow violin taximi, sliding into notes, for about 12 seconds. Then a punchy boom-bap drum kit drops in —
+fat kick on 1 and the and-of-2, cracking snare on 2 and 4, swung eighth-note hi-hats, an open hat every other bar, a snare fill every eighth bar — and the piece locks in.
+Violin leads the melody with slides and ornaments, doubling a warm female voice; a santouri rings in constant tremolo behind;
+an oud plays the low root notes and short turns. The drums are the only modern element; everything else stays 1920s.
+Form: violin taximi → verse → verse → violin solo → verse (an octave higher) → second solo → short coda on a drum hit and a held D.
+Feel: ornate, sensual, oriental café-aman on top of a head-nodding hip-hop beat — Rosa Eskenazi sampled by a boom-bap producer. About 1 minute 50 seconds.
+```
+가사란 골격: `[Violin taximi]` `[Verse 1]` `[Verse 2]` `[Violin solo]` `[Verse 3]` `[Solo]` `[Outro]`
+
+### rebetiko-4-teke (Sabah · slow zeibekiko 9/8 · 56, 루바토)
+**Style**: `rebetiko taximi, solo bouzouki, baglamas, minor oriental scale, smoky, intimate, 1930s, instrumental`
+
+**Description**
+```
+Instrumental 1930s teke (hashish den) rebetiko, dark and unstable, D Sabah (D E F Gb A Bb C — the flattened fourth makes it uneasy).
+The first half is a long, free bouzouki taximi with no beat at all: phrases circle around F, lean into the unstable Gb, and fall back to D;
+the tempo breathes, long pauses between phrases; a guitar plays a single low D drone only twice, very quietly.
+Then a very slow zeibekiko 9/8 (about 56 BPM) emerges: only bouzouki and baglamas — the baglamas strums the off-beats and the heavy final beat,
+the bouzouki melody doubled an octave below with tremolo. No drums, no bass. Near the end the beat dissolves back into a short taximi fragment on a final low D.
+Sound: tiny room, short dry reverb, smoke, lo-fi filtered highs, close and intimate — like "Minore tou Teke". About 2 minutes.
+```
+
+### rebetiko-5-serviko (Rast · hasaposerviko 2/4 · 138→170 아첼레란도)
+**Style**: `upbeat rebetiko hasaposerviko, fast bouzouki, accordion, baglamas tremolo, hand drum, instrumental`
+
+**Description**
+```
+Instrumental upbeat rebetiko hasaposerviko in fast 2/4, starting around 138 BPM, D Rast (major-like, with a natural C when descending).
+Guitar hammers eighth-note downstrokes (bass + chord together); a baglamas plays constant sixteenth tremolo high up, doing the hi-hat's job;
+a hand drum plays doum-tek-doum-tek with tambourine on every off-beat; an accordion sustains the chords from the second verse.
+Bright bouzouki melody in sixteenth-note ornaments over D–G–A7–D and D–Bm–G–A7 turns.
+Form: intro → A → B → A (accordion joins) → B (bouzouki solo an octave up) → A → B → A, and from the sixth section onward the whole band
+accelerates steadily, bar by bar, up to about 170 BPM for the final section, ending with three hard D hits and a final strum-and-tremolo.
+Feel: taverna dance, joyful, sweaty, plates about to fly — late Tsitsanis / Papaioannou fast tunes. Live small-room recording. About 1 minute 30 seconds.
+```
+
+메모: 부주키·바글라마스·산투리·우드·바이올린·아코디언은 Logic 에 전용 패치가 없어 SMF 는 GM 25(Acoustic Guitar)·24(Classical Acoustic Guitar)·46(Space Harp)·110(Authentic Strings)·21(Cheap Organ)으로 대용 (09-19 스트립 실측). Suno 에는 원 악기명을 그대로 쓴다.
+
+## canon-lofi-citypop (2026-09-19) — 프롬프트만, SMF 없음
+**Style** (98자)
+`lo-fi city pop, 88 BPM, D major, Pachelbel Canon variations, Rhodes, finger bass, tape hiss, instrumental`
+
+**Description** (1000자 이하)
+```
+Instrumental lo-fi city pop built as a set of variations on Pachelbel's Canon in D, 88 BPM, D major,
+the eight-bar ground bass looping the whole time: D–A–Bm–F#m–G–D–G–A.
+Sound: warm Rhodes electric piano with light chorus, round finger bass walking the ground line, soft lo-fi drums
+(dusty kick, brushed or tape-saturated snare on 2 and 4, lightly swung hi-hats), muted clean guitar on off-beats.
+Tape hiss and faint vinyl crackle throughout; highs gently rolled off, nothing sharp.
+Form: the ground bass alone with drums → the Canon theme on Rhodes, slow and simple → variation 1: guitar takes
+the melody while Rhodes comps syncopated chords → variation 2: the famous descending eighth-note line on Rhodes
+over a half-time drum feel → breakdown to bass, hi-hat and a wide pad → final variation: everything together,
+melody doubled an octave up, a short synth counter-line answering each phrase → outro fading on the ground bass alone.
+Feel: a late-summer Tokyo night drive at golden hour, nostalgic and unhurried — Casiopea softness meets a lo-fi
+hip-hop beat, never busy, never loud. About 3 minutes.
+```
+메모: Suno 가 "Canon" 을 클래식 편곡으로 끌고 가면 Style 에서 `Pachelbel Canon variations` 를 `Canon in D chord loop` 로 낮춘다. 반대로 진행이 사라지면 Description 첫 줄의 코드 나열을 두 번 반복해 준다.
 
 ## 사용 메모
 - Suno 는 스타일 필드가 짧을수록 안정적. Description 은 커스텀 모드의 가사란에 `[Instrumental]` 태그와 함께 넣거나, Cover/Extend 시 참고용.
