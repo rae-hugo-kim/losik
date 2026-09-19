@@ -1,0 +1,49 @@
+{
+  "path": "/Volumes/Netac 2TB/music/bounces/after-the-rain-astra-v1.wav",
+  "bytes": 77418496,
+  "sha256": "f8b28222931ab1f75f68d7e822320fe5c4a7e8f72527aa9e3f629413f4981d6a",
+  "sample_rate": 48000,
+  "channels": 2,
+  "bits": 24,
+  "frames": 12902400,
+  "seconds": 268.8,
+  "peak_dbfs": [
+    -0.62,
+    -0.31
+  ],
+  "full_scale_samples": 0,
+  "section_rms_dbfs": {
+    "Intro A": -23.49,
+    "Intro B": -21.31,
+    "Verse 1": -21.63,
+    "Pre 1": -20.0,
+    "Chorus 1": -16.82,
+    "Verse 2": -21.3,
+    "Pre 2": -19.98,
+    "Chorus 2": -16.85,
+    "Bridge": -33.76,
+    "Final Chorus": -16.13,
+    "Outro": -26.02
+  },
+  "chorus_impact_db": {
+    "41": 14.83,
+    "73": 11.96,
+    "89": 7.31
+  },
+  "final_first_half_dbfs": -16.42,
+  "climax_dbfs": -15.85,
+  "last_second_dbfs": -57.63,
+  "final_frame": [
+    0,
+    0
+  ],
+  "release_fade_ms": 100,
+  "all_zero_internal_blocks": [],
+  "title": "After the Rain Astra v1",
+  "project": "/Volumes/Netac 2TB/music/projects/After the Rain Astra v1.logicx",
+  "control_bar": "AXGroup|\ucee8\ud2b8\ub864 \ub9c9\ub300|missing value\nAXGroup|\ucee8\ud2b8\ub864 \ub9c9\ub300|missing value\nAXPopUpButton|\ud31d\uc5c5 \ubc84\ud2bc|\ube44\ud2b8 \ubc0f \ud504\ub85c\uc81d\ud2b8\nAXGroup|\uc7ac\uc0dd\ud5e4\ub4dc \uc704\uce58|missing value\nAXSlider|\ub9c8\ub514|1.0\nAXSlider|\ube44\ud2b8|1.0\nAXSlider|\ud15c\ud3ec|100.0\nAXPopUpButton||missing value\nAXPopUpButton|\ubc15\uc790\ud45c|4/4\nAXPopUpButton|\uc870\ud45c|D \uba54\uc774\uc800\nAXCheckBox|\uccb4\ud06c\uc0c1\uc790|0\nAXButton|\ubc84\ud2bc|0\nAXCheckBox|\uccb4\ud06c\uc0c1\uc790|0\nAXCheckBox|\uccb4\ud06c\uc0c1\uc790|0\nAXCheckBox|\uccb4\ud06c\uc0c1\uc790|0\nAXButton|\ubc84\ud2bc|0\nAXCheckBox|\uccb4\ud06c\uc0c1\uc790|0\nAXCheckBox|\uccb4\ud06c\uc0c1\uc790|0\nAXCheckBox|\uccb4\ud06c\uc0c1\uc790|0\nAXCheckBox|\uccb4\ud06c\uc0c1\uc790|1\nAXCheckBox|\uccb4\ud06c\uc0c1\uc790|0\nAXCheckBox|\ub77c\uc774\ube0c\ub7ec\ub9ac|0\nAXCheckBox|\uc778\uc2a4\ud399\ud130|1\nAXCheckBox|\ube60\ub978 \ub3c4\uc6c0\ub9d0|0\nAXCheckBox|\ub3c4\uad6c \ub9c9\ub300|0\nAXCheckBox|Smart\u00a0Controls|0\nAXCheckBox|\ubbf9\uc11c|0\nAXCheckBox|\ud3b8\uc9d1\uae30|0\nAXCheckBox|\ubaa9\ub85d \ud3b8\uc9d1\uae30|0\nAXCheckBox|\uba54\ubaa8\uc7a5|0\nAXCheckBox|\ub8e8\ud504 \ube0c\ub77c\uc6b0\uc800|0\nAXCheckBox|\ube0c\ub77c\uc6b0\uc800|0",
+  "observed_patches": "[SoCal] [Simple Foundation] [Acoustic Guitar] [Studio Grand] [Authentic Strings] [Deluxe Classic] [Studio Grand] [Hard Rock] [Stereo Out] [Master]",
+  "bounce_mode": "offline",
+  "metronome": "off; unchanged from verified native project",
+  "limiter_samples": 45
+}

@@ -1,0 +1,47 @@
+{
+  "path": "/Volumes/Netac 2TB/music/bounces/blue-window-astra-v1.wav",
+  "bytes": 77418496,
+  "sha256": "90f2e81bdf689bf9f481e3d76a9130c1ba6c17ba084bcce3306fdbc33b8b9782",
+  "sample_rate": 48000,
+  "channels": 2,
+  "bits": 24,
+  "frames": 12902400,
+  "seconds": 268.8,
+  "peak_dbfs": [
+    -0.31,
+    -0.386
+  ],
+  "full_scale_samples": 0,
+  "section_rms_dbfs": {
+    "Intro A": -24.11,
+    "Intro B": -21.69,
+    "Verse 1": -22.61,
+    "Pre 1": -20.85,
+    "Chorus 1": -17.86,
+    "Verse 2": -22.38,
+    "Pre 2": -20.66,
+    "Chorus 2": -17.93,
+    "Bridge": -34.94,
+    "Final Chorus": -16.91,
+    "Outro": -26.25
+  },
+  "chorus_impact_db": {
+    "41": 13.95,
+    "73": 11.79,
+    "89": 6.97
+  },
+  "final_first_half_dbfs": -17.3,
+  "climax_dbfs": -16.55,
+  "last_second_dbfs": -58.08,
+  "final_frame": [
+    0,
+    0
+  ],
+  "release_fade_ms": 100,
+  "title": "Blue Window Astra v1",
+  "project": "/Volumes/Netac 2TB/music/projects/Blue Window Astra v1.logicx",
+  "metronome": "clicked; before=2",
+  "observed_patches": "[SoCal] [Simple Foundation] [Acoustic Guitar] [Studio Grand] [Authentic Strings] [Deluxe Classic] [Studio Grand] [Hard Rock] [Stereo Out] [Master]",
+  "control_bar": "AXGroup|\ucee8\ud2b8\ub864 \ub9c9\ub300|missing value\nAXGroup|\ucee8\ud2b8\ub864 \ub9c9\ub300|missing value\nAXPopUpButton|\ud31d\uc5c5 \ubc84\ud2bc|\ube44\ud2b8 \ubc0f \ud504\ub85c\uc81d\ud2b8\nAXGroup|\uc7ac\uc0dd\ud5e4\ub4dc \uc704\uce58|missing value\nAXSlider|\ub9c8\ub514|1.0\nAXSlider|\ube44\ud2b8|1.0\nAXSlider|\ud15c\ud3ec|100.0\nAXPopUpButton||missing value\nAXPopUpButton|\ubc15\uc790\ud45c|4/4\nAXPopUpButton|\uc870\ud45c|D \uba54\uc774\uc800\nAXCheckBox|\uccb4\ud06c\uc0c1\uc790|0\nAXButton|\ubc84\ud2bc|0\nAXCheckBox|\uccb4\ud06c\uc0c1\uc790|0\nAXCheckBox|\uccb4\ud06c\uc0c1\uc790|0\nAXCheckBox|\uccb4\ud06c\uc0c1\uc790|0\nAXButton|\ubc84\ud2bc|0\nAXCheckBox|\uccb4\ud06c\uc0c1\uc790|0\nAXCheckBox|\uccb4\ud06c\uc0c1\uc790|0\nAXCheckBox|\uccb4\ud06c\uc0c1\uc790|0\nAXCheckBox|\uccb4\ud06c\uc0c1\uc790|1\nAXCheckBox|\uccb4\ud06c\uc0c1\uc790|0\nAXCheckBox|\ub77c\uc774\ube0c\ub7ec\ub9ac|0\nAXCheckBox|\uc778\uc2a4\ud399\ud130|1\nAXCheckBox|\ube60\ub978 \ub3c4\uc6c0\ub9d0|0\nAXCheckBox|\ub3c4\uad6c \ub9c9\ub300|0\nAXCheckBox|Smart\u00a0Controls|0\nAXCheckBox|\ubbf9\uc11c|0\nAXCheckBox|\ud3b8\uc9d1\uae30|0\nAXCheckBox|\ubaa9\ub85d \ud3b8\uc9d1\uae30|0\nAXCheckBox|\uba54\ubaa8\uc7a5|0\nAXCheckBox|\ub8e8\ud504 \ube0c\ub77c\uc6b0\uc800|0\nAXCheckBox|\ube0c\ub77c\uc6b0\uc800|0",
+  "limiter_samples": 18
+}

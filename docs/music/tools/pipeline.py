@@ -305,6 +305,8 @@ end tell''', timeout=60)
 
 
 def save_project_as(name):
+    if os.path.exists(os.path.join(PROJ_DIR, f'{name}.logicx')):
+        return False, f'Project already exists: {name}'
     rc, out, err = osa(f'''tell application "System Events"
 tell process "{APP}"
 set frontmost to true
@@ -314,32 +316,27 @@ delay 0.6
 click menu item "저장" of menu 1 of menu bar item "파일" of menu bar 1
 delay 2.5
 set w to window "저장"
+key code 5 using {{command down, shift down}}
+delay 1
+set value of text field 1 of sheet 1 of w to "{PROJ_DIR}"
+set focused of text field 1 of sheet 1 of w to true
+key code 36
+delay 1
 set sg to splitter group 1 of w
 set nameField to missing value
-set btns to {{}}
 repeat with c in (every UI element of sg)
 try
 if role of c is "AXTextField" and description of c is "텍스트 필드" then set nameField to c
-if role of c is "AXButton" and description of c is "버튼" then set end of btns to c
 end try
 end repeat
 set value of nameField to "{name}"
-delay 0.5
-click (item (count of btns) of btns)
+delay 1
+if not enabled of button "저장" of sg then error "Project save button is disabled"
+click button "저장" of sg
 return "saved"
 end tell
 end tell''', timeout=90)
-    ok = wait_window(f'{name} - 트랙', timeout=60)
-    if not ok and any(w == '저장' for w in windows()):
-        # 동일 이름 번들이 sketches/ 에 남아 있으면 "대치하겠습니까?" 시트 → 대치
-        osa(f'''tell application "System Events"
-tell process "{APP}"
-try
-click button "대치" of sheet 1 of window "저장"
-end try
-end tell
-end tell''')
-        ok = wait_window(f'{name} - 트랙', timeout=60)
+    ok = wait_window(name, timeout=60)
     close_stray()
     return rc == 0 and ok, out or err
 
@@ -465,6 +462,19 @@ repeat with w2 in windows
 if (name of w2) contains "바운스" then set w to w2
 end repeat
 if w is missing value then return "no bounce window"
+set offlineReady to false
+repeat with modeButton in pop up buttons of w
+if value of modeButton is "자동" or value of modeButton is "실시간" or value of modeButton is "오프라인" then
+if value of modeButton is not "오프라인" then
+click modeButton
+click menu item "오프라인" of menu 1 of modeButton
+delay 0.5
+end if
+set offlineReady to (value of modeButton is "오프라인")
+exit repeat
+end if
+end repeat
+if not offlineReady then error "Offline bounce mode was not selected"
 try
 set tbl to table 1 of scroll area 1 of w
 repeat with theRow in (every row of tbl)
@@ -484,22 +494,34 @@ delay 0.5
 perform action "AXRaise" of w
 key code 36
 delay 3
+key code 5 using {{command down, shift down}}
+delay 1
+keystroke "{BOUNCE_DIR}"
+key code 36
+delay 1.5
 set sg to splitter group 1 of w
 set nameField to missing value
-set btns to {{}}
 repeat with c in (every UI element of sg)
 try
 if role of c is "AXTextField" and description of c is "텍스트 필드" then set nameField to c
-if role of c is "AXButton" and description of c is "버튼" then set end of btns to c
 end try
 end repeat
 set value of nameField to "{file_name}"
+delay 1
+repeat 20 times
+if enabled of button "바운스" of splitter group 1 of w then exit repeat
 delay 0.5
-click (item (count of btns) of btns)
+end repeat
+if not enabled of button "바운스" of splitter group 1 of w then error "Bounce button is disabled"
+click button "바운스" of splitter group 1 of w
 return "bounce started"
 end tell
 end tell''', timeout=120)
-    return 'bounce started' in out, out or err
+    if 'bounce started' not in out:
+        return False, out or err
+    if not wait_window('바운스', present=False, timeout=20):
+        return False, 'Bounce save dialog did not close'
+    return True, out
 
 
 def wait_file_stable(path, min_size=500000, timeout=240):

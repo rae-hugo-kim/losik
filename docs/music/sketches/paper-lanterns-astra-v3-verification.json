@@ -1,0 +1,144 @@
+{
+  "path": "/Volumes/Netac 2TB/music/bounces/paper-lanterns-astra-v3.wav",
+  "seconds": 248.5714375,
+  "bytes": 71592670,
+  "sha256": "a99d1778ce3fb4198f8218d7ecec7afe344f70151eb152668bb1fbeb908a37b1",
+  "sample_rate": 48000,
+  "channels": 2,
+  "bits": 24,
+  "data_offset": 4096,
+  "data_bytes": 71588574,
+  "frames": 11931429,
+  "peak_dbfs": [
+    -0.317,
+    -0.31
+  ],
+  "peak_samples": [
+    8087993,
+    8094696
+  ],
+  "full_scale_samples": 0,
+  "section_rms_dbfs": {
+    "Breath": -21.568,
+    "Verse 1": -19.783,
+    "Refrain 1": -19.032,
+    "Turnaround": -19.829,
+    "Verse 2": -19.744,
+    "Refrain 2": -19.046,
+    "Weightless": -24.668,
+    "Harmonica Flight": -23.578,
+    "Open Sky": -19.088,
+    "Drift": -22.515
+  },
+  "section_frames": {
+    "Breath": [
+      0,
+      822857
+    ],
+    "Verse 1": [
+      822857,
+      2468570
+    ],
+    "Refrain 1": [
+      2468570,
+      3702855
+    ],
+    "Turnaround": [
+      3702855,
+      4114284
+    ],
+    "Verse 2": [
+      4114284,
+      5759997
+    ],
+    "Refrain 2": [
+      5759997,
+      6994282
+    ],
+    "Weightless": [
+      6994282,
+      7817139
+    ],
+    "Harmonica Flight": [
+      7817139,
+      9462852
+    ],
+    "Open Sky": [
+      9462852,
+      11108566
+    ],
+    "Drift": [
+      11108566,
+      11931422
+    ]
+  },
+  "zero_runs": [
+    {
+      "start_frame": 11718544,
+      "end_frame": 11744788,
+      "frames": 26244,
+      "start": 244.13633333333334,
+      "end": 244.68308333333334,
+      "seconds": 0.54675
+    },
+    {
+      "start_frame": 11811844,
+      "end_frame": 11828572,
+      "frames": 16728,
+      "start": 246.08008333333333,
+      "end": 246.42858333333334,
+      "seconds": 0.3485
+    },
+    {
+      "start_frame": 11921237,
+      "end_frame": 11931429,
+      "frames": 10192,
+      "start": 248.35910416666667,
+      "end": 248.5714375,
+      "seconds": 0.21233333333333335
+    }
+  ],
+  "unexpected_zero_runs": [],
+  "final_frame": [
+    0,
+    0
+  ],
+  "release_tail_frames": 4800,
+  "last_100ms_rms_dbfs": -300.0,
+  "title": "Paper Lanterns Astra v3",
+  "project": "/Volumes/Netac 2TB/music/projects/Paper Lanterns Astra v3.logicx",
+  "bpm": 112,
+  "bars": 116,
+  "mode": "offline",
+  "metronome": "clicked; before=2",
+  "control_bar": "AXGroup|\ucee8\ud2b8\ub864 \ub9c9\ub300|missing value\nAXGroup|\ucee8\ud2b8\ub864 \ub9c9\ub300|missing value\nAXPopUpButton|\ud31d\uc5c5 \ubc84\ud2bc|\ube44\ud2b8 \ubc0f \ud504\ub85c\uc81d\ud2b8\nAXGroup|\uc7ac\uc0dd\ud5e4\ub4dc \uc704\uce58|missing value\nAXSlider|\ub9c8\ub514|1.0\nAXSlider|\ube44\ud2b8|1.0\nAXSlider|\ud15c\ud3ec|112.0\nAXPopUpButton||missing value\nAXPopUpButton|\ubc15\uc790\ud45c|4/4\nAXPopUpButton|\uc870\ud45c|G \uba54\uc774\uc800\nAXCheckBox|\uccb4\ud06c\uc0c1\uc790|0\nAXButton|\ubc84\ud2bc|0\nAXCheckBox|\uccb4\ud06c\uc0c1\uc790|0\nAXCheckBox|\uccb4\ud06c\uc0c1\uc790|0\nAXCheckBox|\uccb4\ud06c\uc0c1\uc790|0\nAXButton|\ubc84\ud2bc|0\nAXCheckBox|\uccb4\ud06c\uc0c1\uc790|0\nAXCheckBox|\uccb4\ud06c\uc0c1\uc790|0\nAXCheckBox|\uccb4\ud06c\uc0c1\uc790|0\nAXCheckBox|\uccb4\ud06c\uc0c1\uc790|1\nAXCheckBox|\uccb4\ud06c\uc0c1\uc790|0\nAXCheckBox|\ub77c\uc774\ube0c\ub7ec\ub9ac|0\nAXCheckBox|\uc778\uc2a4\ud399\ud130|1\nAXCheckBox|\ube60\ub978 \ub3c4\uc6c0\ub9d0|0\nAXCheckBox|\ub3c4\uad6c \ub9c9\ub300|0\nAXCheckBox|Smart\u00a0Controls|0\nAXCheckBox|\ubbf9\uc11c|0\nAXCheckBox|\ud3b8\uc9d1\uae30|0\nAXCheckBox|\ubaa9\ub85d \ud3b8\uc9d1\uae30|0\nAXCheckBox|\uba54\ubaa8\uc7a5|0\nAXCheckBox|\ub8e8\ud504 \ube0c\ub77c\uc6b0\uc800|0\nAXCheckBox|\ube0c\ub77c\uc6b0\uc800|0",
+  "patches": "[SoCal] [Fingerstyle Electric Bass] [Astra Air Harmonica] [Acoustic Guitar] [Deluxe Classic] [Stereo Out] [Master]",
+  "instrument_overrides": [
+    {
+      "track": 1,
+      "path": "/Library/Application Support/Logic/Sampler Instruments/02 Bass/02 Electric Bass/Fingerstyle Electric Bass.exs",
+      "preset": "Fingerstyle Electric Bass"
+    },
+    {
+      "track": 2,
+      "path": "/Users/hugom4/Music/Audio Music Apps/Sampler Instruments/Astra Air Harmonica.exs",
+      "preset": "Astra Air Harmonica"
+    }
+  ],
+  "mastering": {
+    "path": "/Volumes/Netac 2TB/music/bounces/paper-lanterns-astra-v3.wav",
+    "source_aiff": "/Volumes/Netac 2TB/music/bounces/paper-lanterns-astra-v3.aif",
+    "bytes": 71592670,
+    "data_offset": 4096,
+    "data_bytes": 71588574,
+    "frames": 11931429,
+    "seconds": 248.5714375,
+    "sample_rate": 48000,
+    "channels": 2,
+    "bits": 24,
+    "limiter_samples": 18,
+    "changed_samples": 18,
+    "limiter_ceiling_dbfs": -0.1,
+    "release_fade_ms": 100
+  }
+}

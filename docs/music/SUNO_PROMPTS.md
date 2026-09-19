@@ -1,7 +1,9 @@
-# Suno 투입 프롬프트 (2026-09-05 최신판 기준)
+# Suno 투입 프롬프트 — 2026-09-05 배치 기록
 
 각 곡: **Style** = Suno 스타일 필드(짧게, 장르·무드·악기·템포), **Description** = 커스텀 모드 설명/가사란에 넣는 확장 프롬프트.
 오디오 업로드(Extend/Cover) 시 해당 WAV 와 함께 사용한다. 모두 instrumental.
+
+현재 Astra 다섯 곡은 [v3 Suno 프롬프트](SUNO_PROMPTS_ASTRA_V3.md)를 사용한다. 아래는 이전 배치의 기록이며, 입력란 사용 안내는 새 문서를 우선한다. 다음 다곡 배치의 설계 방법은 [다곡 제작 지시문](MULTI_SONG_BRIEF.md)에 정리했다.
 
 ## star-cruiser-v6
 **Style**
