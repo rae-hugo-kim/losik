@@ -199,7 +199,7 @@ def comp_lowtide(prog):
             nt[1].append((hum_t(bt(b, beat), 5), dur, p, hum_v(v, 5)))
         # EP 소프트 스탭: 1 / 1.75 / 3.5 (3.5 는 다음 코드 선행)
         for beat, dur, v, src in ((0, 300, 62, voi), (1.75, 160, 54, voi),
-                                  (3.5, 380 if b < N_BARS else 220, 58, chord(prog, b + 1)[1] if b < N_BARS else voi)):
+                                  (3.5, 220, 58, chord(prog, b + 1)[1] if b < N_BARS else voi)):
             t = hum_t(bt(b, beat), 6)
             for p in src:
                 nt[2].append((t, dur, p, hum_v(v, 5)))

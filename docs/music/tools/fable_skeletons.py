@@ -136,24 +136,24 @@ def c_faded(m, add, pedal):
     sid = m['sid']
     for b in range(1, N_BARS + 1):
         brk = in_break(b)
-        # 킥 4/4 (넓은 휴머나이즈), 브레이크에서도 유지하되 여리게
+        # 킥 4/4 (휴머나이즈 상한 ±10, PROMPT_GUIDELINES §2-4), 브레이크에서도 유지하되 여리게
         for beat in range(4):
-            add(0, bt(b, beat), 120, KICK, 74 if brk else 90, 12, 12)
+            add(0, bt(b, beat), 120, KICK, 74 if brk else 90, 10, 12)
         for beat in (1, 3):
-            add(0, bt(b, beat), 120, SNARE, 78, 12, 12)
-            add(0, bt(b, beat) + 6, 120, CLAP, 54, 12, 12)
+            add(0, bt(b, beat), 120, SNARE, 78, 10, 12)
+            add(0, bt(b, beat) + 6, 120, CLAP, 54, 10, 12)
         # 햇: 16분 중 하나 걸러 → 8분만, 오프비트에 SW 스윙. 브레이크에서는 햇 전부 제거
         if not brk:
             for e8 in range(8):
                 tick = bt(b) + e8 * E + (SW if e8 % 2 else 0)
                 if e8 == 7 and b % 2 == 0:
-                    add(0, tick, 200, OHAT, 60, 14, 12)
+                    add(0, tick, 200, OHAT, 60, 10, 12)
                 else:
-                    add(0, tick, 60, HAT, 66 if e8 % 2 else 44, 14, 12)
+                    add(0, tick, 60, HAT, 66 if e8 % 2 else 44, 10, 12)
         # 베이스: 점4분 3+3+2 홀드 (근음·근음·5도), 12틱 지각
         r = root(sid, b)
         for beat, dur, p in ((0, 660, r), (1.5, 660, r), (3, 400, r + 7)):
-            add(1, bt(b, beat) + 12, dur, p, 70, 12, 8)
+            add(1, bt(b, beat) + 12, dur, p, 70, 10, 8)
         # 오르간 롱코드: 매 마디 리트리거, 약하게
         _, _, voi = chord(sid, b)
         t0 = hum_t(bt(b) + 10, 10)
