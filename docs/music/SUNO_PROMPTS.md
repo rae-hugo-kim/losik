@@ -296,3 +296,133 @@ The number of kick and bass notes stays the same; bass remains root-only and fol
 Bars 9–12 remove all hats; restore the full loop with a crash on bar 13 beat 1, ending within bar 16.
 Compare the syncopated pocket against the anchored one without switching to half-time or adding new material. No vocals or melody.
 ```
+
+## copper-tram-minor-v1
+**Style**
+```
+Instrumental house, 124 BPM, G minor, four-on-the-floor electronic drums, clap layered under snare on 2 and 4, offbeat open hats, octave-leaping eighth-note synth bass, bright short grand piano stabs, no lead, no vocals.
+```
+
+**Description**
+```
+A 16-bar drums-bass-chords loop over Gm7–Cm7–Ebmaj7–F7, one chord per bar.
+Kick on every beat, snare with a clap underneath on 2 and 4, closed hat on the beats and an open hat on every offbeat.
+Pulse synth bass plays eight eighths per bar: root, root, octave, root, fifth, root, octave, root.
+Bright four-note grand piano stabs land on the and-of-1, and-of-2 and beat 4 in odd bars, and on all four offbeats in even bars.
+Bars 9–12 remove the piano stabs so only drums and bass run; a crash on bar 13 beat 1 brings the stabs back through bar 16.
+Minor-key member of a parallel-mode pair with Copper Tram Major. No melody, no vocals, no extra layers.
+```
+
+## copper-tram-major-v1
+**Style**
+```
+Instrumental house, 124 BPM, G major, four-on-the-floor electronic drums, clap layered under snare on 2 and 4, offbeat open hats, octave-leaping eighth-note synth bass, bright short grand piano stabs, no lead, no vocals.
+```
+
+**Description**
+```
+A 16-bar drums-bass-chords loop over Gmaj7–Cmaj7–Em7–D7, one chord per bar.
+Every drum hit, the eighth-note bass cell and the stab rhythm are identical to Copper Tram Minor; only the chord qualities and the E and D roots change.
+Kick on every beat, snare plus clap on 2 and 4, open hats on the offbeats, root-octave-fifth synth bass in eighths.
+Bright grand piano stabs on the offbeats, three per odd bar and four per even bar.
+Bars 9–12 drop the stabs; a crash on bar 13 beat 1 restores the full loop through bar 16.
+Major-key member of a parallel-mode pair. No melody, no vocals, no extra layers.
+```
+
+## harbor-fog-minor-v1
+**Style**
+```
+Instrumental deep house, 120 BPM, D minor, soft kick, accented sixteenth closed hats, long warm sub bass, rootless electric piano ninth chords with sustain pedal, thin root-and-fifth synth pad, no lead, no vocals.
+```
+
+**Description**
+```
+A 16-bar loop over Dm9–Gm9–Bbmaj9–A7(b9), one chord per bar.
+Soft kick on every beat, light snare with a quieter clap underneath on 2 and 4, closed hats on every sixteenth with the offbeat eighths accented and an open hat on the last eighth of even bars.
+Sub bass holds the root from beat 1 for almost two beats, repeats it on the and-of-2, then drops to the fifth below on the and-of-4 (root on every fourth bar).
+Rootless electric piano ninths are held for two beats then softly re-touched on the and-of-2, with sustain pedal re-pedalled every bar; a quiet root-and-fifth pad sustains under each bar.
+Bars 9–12 remove kick, snare and clap so only hats, bass, EP and pad remain; a crash on bar 13 beat 1 brings the drums back through bar 16.
+Minor-key member of a parallel-mode pair with Harbor Fog Major. No melody, no vocals.
+```
+
+## harbor-fog-major-v1
+**Style**
+```
+Instrumental deep house, 120 BPM, D major, soft kick, accented sixteenth closed hats, long warm sub bass, rootless electric piano ninth chords with sustain pedal, thin root-and-fifth synth pad, no lead, no vocals.
+```
+
+**Description**
+```
+A 16-bar loop over Dmaj9–Gmaj9–Bm9–A9, one chord per bar.
+Drums, sub bass cell, electric piano rhythm, pedalling and pad rhythm are identical to Harbor Fog Minor; only the chord qualities and the B root change.
+Soft four-on-the-floor kick, light snare and clap on 2 and 4, accented sixteenth hats, long sub bass with a fifth-below pickup on the and-of-4.
+Electric piano ninths held two beats then re-touched softly, root-and-fifth pad under each bar.
+Bars 9–12 drop kick, snare and clap; a crash on bar 13 beat 1 restores the full loop through bar 16.
+Major-key member of a parallel-mode pair. No melody, no vocals.
+```
+
+## attic-radio-minor-v1
+**Style**
+```
+Instrumental lo-fi house, 121 BPM, A minor, loose four-on-the-floor electronic drums, sparse swung closed hats, lagging synth bass, low muffled electric piano shell chords on the offbeats, no lead, no vocals.
+```
+
+**Description**
+```
+A 16-bar loop over Am9–Fmaj9–Dm9–E7(b9), one chord per bar.
+Kick on every beat at moderate velocity, snare with a clap underneath on 2 and 4, and only five closed hats per bar (and-of-1, and-of-2, beat 3, and-of-3, and-of-4) with a 22-tick swing on the offbeats; an open hat replaces the and-of-2 hat every fourth bar.
+All timing is humanized up to 10 ticks at 480 PPQ.
+Synth bass plays root on beats 1, and-of-2 and 3 and the octave on the and-of-4, sitting about 9 ticks behind the grid.
+Low rootless electric piano shells are stabbed quietly on the swung and-of-1, and-of-2 and and-of-4.
+Bars 9–12 remove the bass; a crash on bar 13 beat 1 brings it back through bar 16.
+Minor-key member of a parallel-mode pair with Attic Radio Major. No melody, no vocals.
+```
+
+## attic-radio-major-v1
+**Style**
+```
+Instrumental lo-fi house, 121 BPM, A major, loose four-on-the-floor electronic drums, sparse swung closed hats, lagging synth bass, low muffled electric piano shell chords on the offbeats, no lead, no vocals.
+```
+
+**Description**
+```
+A 16-bar loop over Amaj9–F#m9–Dmaj9–E9, one chord per bar.
+Drums, bass lag and rhythm, stab rhythm and humanization are identical to Attic Radio Minor; only the chord qualities and the F# root change.
+Five swung closed hats per bar over a moderate four-on-the-floor kick, snare plus clap on 2 and 4.
+Synth bass about 9 ticks behind the beat, low rootless electric piano shells stabbed quietly on swung offbeats.
+Bars 9–12 drop the bass; a crash on bar 13 beat 1 restores the full loop through bar 16.
+Major-key member of a parallel-mode pair. No melody, no vocals.
+```
+
+## late-bus-minor-v1
+**Style**
+```
+Instrumental lo-fi hip hop, 80 BPM, C minor, sparse boom-bap acoustic drums, snare ghost notes, swung eighth hats, finger bass locked to the kick, pedalled jazzy grand piano ninths, no lead, no vocals.
+```
+
+**Description**
+```
+A 16-bar loop over Cm9–Abmaj9–Fm9–G7(b9), one chord per bar.
+Odd bars: kick on beat 1, the last sixteenth of beat 2 and the and-of-3; even bars: kick on beat 1, the and-of-3 and the last sixteenth of beat 4.
+Snare on 2 and 4 with two quiet ghost notes per bar, eight closed hats with a 22-tick swing on the offbeats and an open hat on the last eighth of every fourth bar.
+Finger bass hits exactly where the kick hits, root first, with a fifth-below and a fifth-above passing tone.
+Rootless grand piano ninths are held for most of each bar with a slight upward roll, re-hit softly on the and-of-2 in even bars, sustain pedal re-pedalled every bar.
+Bars 9–12 remove all drums so piano and bass play alone; two snare sixteenths at the end of bar 12 and a crash on bar 13 beat 1 bring the drums back through bar 16.
+Minor-key member of a parallel-mode pair with Late Bus Major. No melody, no vocals.
+```
+
+## late-bus-major-v1
+**Style**
+```
+Instrumental lo-fi hip hop, 80 BPM, C major, sparse boom-bap acoustic drums, snare ghost notes, swung eighth hats, finger bass locked to the kick, pedalled jazzy grand piano ninths, no lead, no vocals.
+```
+
+**Description**
+```
+A 16-bar loop over Cmaj9–Am9–Fmaj9–G9, one chord per bar.
+Drums, kick-locked finger bass cell, piano rhythm and pedalling are identical to Late Bus Minor; only the chord qualities and the A root change.
+Boom-bap kick with two ghost snares per bar, backbeat on 2 and 4, swung eighth hats.
+Rootless grand piano ninths held per bar with a soft and-of-2 re-hit in even bars and sustain pedal re-pedalled every bar.
+Bars 9–12 drop all drums; a snare pickup at the end of bar 12 and a crash on bar 13 beat 1 restore the full loop through bar 16.
+Major-key member of a parallel-mode pair. No melody, no vocals.
+```

@@ -1,4 +1,4 @@
-"""2026-10-12 장르 뼈대 라운드: Fable 세트 8곡 + Astra(gpt) 세트 8곡을 Logic으로 순차 바운스한다. 한 번에 한 프로젝트만 연다.
+"""2026-10-12 장르 뼈대 라운드: Claude(opus) 8곡 + Astra(gpt) 8곡 + Fable(claude-fable) 8곡을 Logic으로 순차 바운스한다. 한 번에 한 프로젝트만 연다.
 
 주의: produce()는 시작할 때 열려 있는 Logic 프로젝트를 **저장하지 않고 전부 닫는다**
 (pipeline.close_all_projects(save=False)). 실행 전 Logic에 저장 안 한 작업이 없는지 확인할 것.
@@ -29,6 +29,15 @@ JOBS = [
     ('paper-lantern-five', 'Paper Lantern Five'),
     ('porch-pocket-anchor', 'Porch Pocket Anchor'),
     ('porch-pocket-skip', 'Porch Pocket Skip'),
+    # Fable (claude-fable-5-1) 세트
+    ('copper-tram-minor', 'Copper Tram Minor'),
+    ('copper-tram-major', 'Copper Tram Major'),
+    ('harbor-fog-minor', 'Harbor Fog Minor'),
+    ('harbor-fog-major', 'Harbor Fog Major'),
+    ('attic-radio-minor', 'Attic Radio Minor'),
+    ('attic-radio-major', 'Attic Radio Major'),
+    ('late-bus-minor', 'Late Bus Minor'),
+    ('late-bus-major', 'Late Bus Major'),
 ]
 
 if __name__ == '__main__':
