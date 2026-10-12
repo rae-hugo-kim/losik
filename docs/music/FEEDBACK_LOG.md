@@ -163,5 +163,6 @@ neon-rain / highway-zero / midnight-arcade / analog-heart: 개별 피드백 **�
 ### 라운드 상태 (2026-10-12)
 
 - 8곡 `.mid` 작성 완료. 바운스 러너는 `tools/bounce_20261012.py`(8곡 순차, 인자로 sid를 주면 일부만)입니다.
-- Logic 바운스는 **화면 잠금** 상태에서 시도해 실패했습니다 — `produce()`가 15분간 창 대기 후 타임아웃, Logic은 창 없이 떠 있었습니다. 잠금을 풀고 `cd docs/music/tools && python3 bounce_20261012.py`로 재실행하면 됩니다(곡당 2~5분, 실행 중 키보드·마우스 사용 금지). **러너는 시작 시 열려 있는 Logic 프로젝트를 저장 없이 닫으니** 미저장 작업이 없는지 먼저 확인해야 합니다.
+- 바운스 완료 (8/8): `/Volumes/Netac 2TB/music/bounces/{sid}-v1.wav`, 프로젝트 `/Volumes/Netac 2TB/music/projects/{Title} v1.logicx`. 첫 시도는 화면 잠금으로 실패했고(창 대기 15분 타임아웃), 잠금 해제 후 5곡 성공 → `close_all_projects`가 **믹서 창**(`… - 믹서: 트랙`)을 닫지 못해 "저장하시겠습니까" 시트가 남으며 3곡이 창 대기로 실패 → 시트를 "저장하지 않음"으로 닫고 3곡 재실행해 완료했습니다. 러너는 시작 시 열려 있는 Logic 프로젝트를 저장 없이 닫으니 미저장 작업이 없는지 먼저 확인해야 합니다.
+- 다음 라운드 전 손볼 것: `pipeline.close_all_projects`가 믹서 창과 그에 딸린 저장 시트를 처리하도록 보강(이번엔 수동 처리).
 - 비교 묶음 제안: 같은 코드 계열인 low-tide-shuffle(deep house, 118)과 rainy-window-beat(lo-fi hip hop, 80)을 나란히 들으면 드럼·베이스 골격만으로 장르가 바뀌는 것을 확인할 수 있습니다.
