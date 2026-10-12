@@ -1,3 +1,7 @@
 {
-  "test": ["python3 docs/music/tools/astra_skeletons.py", "python3 docs/music/tools/fable_skeletons.py"]
+  "test": [
+    "python3 docs/music/tools/astra_skeletons.py",
+    "python3 docs/music/tools/fable_skeletons.py",
+    "python3 docs/music/tools/astra2_skeletons.py"
+  ]
 }

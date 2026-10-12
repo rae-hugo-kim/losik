@@ -167,3 +167,132 @@ Electric piano plays soft, short ninth-chord stabs on a syncopated rhythm (1, th
 Bars 9-12 drop the hats so kick and bass carry the groove, then a crash returns to the full loop.
 Feel: low tide at dusk, understated, rolling, groovy. No lead, no vocals.
 ```
+
+## citrus-root-grid-v1
+**Style**
+```
+Instrumental bright house, 124 BPM, E major, drum machine, four-on-the-floor, off-beat open hats, root-only eighth-note pulse bass, short grand piano chord stabs, no vocals, no lead.
+```
+
+**Description**
+```
+A 16-bar drums-bass-chords learning loop over E–F#m–A–B, one chord per bar.
+Use a steady quarter-note kick, snare on beats 2 and 4 with a quieter clap directly underneath, and open hats on every off-beat.
+The bass repeats only each chord's root in eight short eighth notes per bar.
+Bright grand piano chord stabs land at beat 1 + three sixteenths, beat 3 + one sixteenth, and the and-of-four.
+Bars 1–8 play the full loop; bars 9–12 remove all hats; bar 13 beat 1 adds a crash as the full loop returns through bar 16.
+This is the control for Citrus Fifth Grid: preserve all parts except the specified bass pitch changes in that companion. No melody or extra instruments.
+```
+
+## citrus-fifth-grid-v1
+**Style**
+```
+Instrumental bright house, 124 BPM, E major, drum machine, four-on-the-floor, off-beat open hats, root-and-fifth eighth-note pulse bass, short grand piano chord stabs, no vocals, no lead.
+```
+
+**Description**
+```
+A 16-bar drums-bass-chords learning loop over E–F#m–A–B, one chord per bar.
+Keep Citrus Root Grid's kick, snare with quiet layered clap on 2 and 4, open off-beat hats, and short syncopated grand piano chords.
+Play eight bass eighth notes per bar, but raise only the fourth and eighth bass attacks from the root to the fifth above it.
+Keep the bass timing, note lengths and accents unchanged, so pitch contour is the only comparison variable.
+Bars 9–12 remove all hats; the full loop returns with a crash on bar 13 beat 1 and ends within bar 16.
+No melody, lead, vocals, pads or additional instrumentation.
+```
+
+## indigo-held-room-v1
+**Style**
+```
+Instrumental deep house, 120 BPM, B minor, soft four-on-the-floor kick, accented closed sixteenth hats, long low pulse bass, warm sustained electric piano ninth chords, no pad, no lead.
+```
+
+**Description**
+```
+A 16-bar drums-bass-chords loop over Bm9–Gmaj9–Em9–F#m7, one chord per bar.
+Use softer kick velocities, a restrained snare with a quieter clap layer on 2 and 4, and closed sixteenth hats accented on the off-beat eighths.
+Hold one low bass root nearly a full bar. Electric piano also holds one chord nearly a full bar, re-pedaling at each new chord.
+Bars 9–12 remove the bass only, keeping the kick, hats and chords; bar 13 beat 1 restores bass with a crash.
+Compare with Indigo Soft Steps by changing only the electric piano chord attack rhythm and duration. No melody, vocals or extra layers.
+```
+
+## indigo-soft-steps-v1
+**Style**
+```
+Instrumental deep house, 120 BPM, B minor, soft four-on-the-floor kick, accented closed sixteenth hats, long low pulse bass, softly stabbed electric piano ninth chords, no pad, no lead.
+```
+
+**Description**
+```
+A 16-bar drums-bass-chords loop over Bm9–Gmaj9–Em9–F#m7, one chord per bar.
+Keep Indigo Held Room's exact soft kick, layered snare/clap backbeat, accented sixteenth closed hats and nearly bar-long bass roots.
+Replace only the held electric piano chords with two soft chord stabs per bar, on the and-of-one and the and-of-three.
+Use the same chord voicings and comparable touch; release the sustain pedal after each short chord.
+Bars 9–12 remove the bass only; a crash on bar 13 beat 1 restores the full loop through bar 16.
+The contrast is sustained harmony versus gently pulsing harmony, not a change of bass line or drum density. No melody or vocals.
+```
+
+## paper-lantern-eight-v1
+**Style**
+```
+Instrumental lo-fi house, 121 BPM, C minor, loose four-on-the-floor, eight swung closed hats per bar, low soft electric piano stabs, slightly late pulse bass, dusty understated feel, no lead.
+```
+
+**Description**
+```
+A 16-bar drums-bass-chords loop over Cm9–Abmaj9–Fm9–Bb9, one chord per bar.
+Use a soft four-on-the-floor kick and snare on 2 and 4 with a quiet clap underneath.
+Play eight closed eighth-note hats per bar, delaying alternate hats by 22 ticks at 480 PPQ, with up to 10 ticks of humanized timing.
+Low-register, low-velocity electric piano stabs land at beat 1 + three sixteenths and the and-of-three.
+The bass holds root notes beginning on the and-of-one and and-of-three, sitting 6–10 ticks late.
+Bars 9–12 remove only the kick; a crash on bar 13 beat 1 restores the full groove. End within bar 16.
+Compare with Paper Lantern Five by hat density alone. No melody, pads or vocals; do not add effects as a substitute for the groove.
+```
+
+## paper-lantern-five-v1
+**Style**
+```
+Instrumental lo-fi house, 121 BPM, C minor, loose four-on-the-floor, five sparse swung closed hats per bar, low soft electric piano stabs, slightly late pulse bass, airy dusty pocket, no lead.
+```
+
+**Description**
+```
+A 16-bar drums-bass-chords loop over Cm9–Abmaj9–Fm9–Bb9, one chord per bar.
+Preserve Paper Lantern Eight's drums, low electric piano voicings and stabs, and slightly late held bass notes.
+Change only the hat density: retain the first, second, fourth, fifth and eighth attacks from the eight-eighth-note hat grid.
+Keep each retained hat's original velocity, 22-tick alternate swing and humanized timing; do not redistribute the five hats evenly.
+Bars 9–12 remove only the kick, then restore it with a crash on bar 13 beat 1 for the final four bars.
+The extra rests are the experiment. No new fill, melody, pad, vocal or additional instrument.
+```
+
+## porch-pocket-anchor-v1
+**Style**
+```
+Instrumental lo-fi hip hop, 82 BPM, E-flat major, sparse boom-bap acoustic drums, snare ghost notes, swung eighth hats, finger bass locked to kick, sustained jazzy electric piano, no lead.
+```
+
+**Description**
+```
+A 16-bar drums-bass-chords loop over Ebmaj9–Cm9–Abmaj9–Bb9, one chord per bar.
+Keep snare backbeats on beats 2 and 4 with soft ghosts on the last sixteenth of beats 2 and 4, no clap.
+Play three kick attacks per bar on beat 1, beat 3 and the and-of-three; finger bass hits the chord root at exactly those kick onsets.
+Use eight closed hats per bar with a modest 22-tick alternate delay at 480 PPQ and up to 10 ticks of humanized timing.
+Electric piano holds a warm chord each bar with sustain-pedal release and re-pedaling between voicings.
+Bars 9–12 remove all hats; a crash on bar 13 beat 1 restores the original loop through bar 16.
+This is the anchored control for Porch Pocket Skip. No lead, melody, vocals or extra layers.
+```
+
+## porch-pocket-skip-v1
+**Style**
+```
+Instrumental lo-fi hip hop, 82 BPM, E-flat major, syncopated boom-bap kick and finger bass, steady 2-and-4 snare, ghost notes, swung eighth hats, sustained jazzy electric piano, no lead.
+```
+
+**Description**
+```
+A 16-bar drums-bass-chords loop over Ebmaj9–Cm9–Abmaj9–Bb9, one chord per bar.
+Keep Porch Pocket Anchor's electric piano voicings and sustain, snare on 2 and 4, ghost notes, and swung hats unchanged.
+Move only the three linked kick-and-bass attacks to beat 1, the final sixteenth of beat 1, and the final sixteenth of beat 3.
+The number of kick and bass notes stays the same; bass remains root-only and follows each kick exactly.
+Bars 9–12 remove all hats; restore the full loop with a crash on bar 13 beat 1, ending within bar 16.
+Compare the syncopated pocket against the anchored one without switching to half-time or adding new material. No vocals or melody.
+```
