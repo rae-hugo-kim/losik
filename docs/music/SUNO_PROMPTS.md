@@ -426,3 +426,186 @@ Rootless grand piano ninths held per bar with a soft and-of-2 re-hit in even bar
 Bars 9–12 drop all drums; a snare pickup at the end of bar 12 and a crash on bar 13 beat 1 restore the full loop through bar 16.
 Major-key member of a parallel-mode pair. No melody, no vocals.
 ```
+
+---
+
+# 2026-10-12 장르 뼈대 라운드 — 쌍 단위 프롬프트 (3모델 × 4장르 = 12)
+
+위의 곡별 `*-v1` 블록은 각 곡 하나를 Cover 할 때 쓰고, 아래는 **쌍 하나를 한 프롬프트**로 묶어 그 모델이 던진 질문이 결과에 남도록 쓴 것입니다. 쌍의 두 WAV 를 각각 Cover 하되 Style·Description 은 동일하게 쓰고, 끝의 `Variant` 한 줄만 바꿉니다. Suno 는 키를 자주 무시하므로 무드·악기 단어를 앞에 두고, 바뀌는 축은 Description 마지막 두 줄에 명시했습니다. 전부 instrumental.
+
+## 모델별 설계 의도 (프롬프트에 반영된 것)
+
+| 모델 | 쌍에서 바꾼 것 | 프롬프트에 남긴 방식 |
+|---|---|---|
+| Claude-opus | 여러 요소 동시 — 장르 안의 두 얼굴 | 두 곡의 성격을 대비 단어로 각각 서술 |
+| gpt-6-astra | 한 축만 — 통제 실험 | "everything else identical, only X differs" 를 명시 |
+| claude-fable | 조성만(단조↔병행 장조) — 화성 기여도 측정 | 리듬 섹션 동일을 못 박고 minor/major 한 줄만 교체 |
+
+---
+
+## Claude-opus 세트
+
+### house — warehouse-jack / mirrorball-rise
+**Style**
+`house, 124–126 BPM, four-on-the-floor, drum machine kit, synth bass, organ and electric piano stabs, bright, club, instrumental`
+
+**Description**
+```
+Instrumental 16-bar house skeleton: four-on-the-floor kick, clap under the snare on 2 and 4, open hats on the off-beats.
+Drums, bass and chords only — no lead, no vocals. Bars 9–12 strip a layer, a crash on bar 13 brings the full loop back.
+Two contrasting faces of house:
+Variant A (Warehouse Jack, A minor, Am7–D9 two-chord loop): Chicago jack — bass only on the off-beats so it bounces against the kick, sparse tonewheel organ stabs leaving space, hypnotic repetition. Break drops kick and bass.
+Variant B (Mirrorball Rise, D major, Dmaj7–Bm7–Gmaj7–A(add9)): disco-house — octave-jumping eighth-note finger bass that runs, electric piano stabbing every off-beat, four-chord cycle with lift. Break drops the hats.
+```
+
+### deep house — velvet-hour / low-tide-shuffle
+**Style**
+`deep house, 118–120 BPM, soft kick, closed sixteenth hats, warm sub bass, jazzy ninth chords on electric piano, late night, instrumental`
+
+**Description**
+```
+Instrumental 16-bar deep house skeleton: softened four-on-the-floor, closed sixteenth hats with light accents, rim-shot backbeat, no lead, no vocals.
+Bars 9–12 thin out, crash on bar 13 restores the loop.
+Two ways to be "deep":
+Variant A (Velvet Hour, F minor, Fm9–B♭m9–D♭maj9–C7♭9): space is the subject — electric piano ninths held with sustain, a soft pad on root and fifth underneath, dotted sub bass that barely moves. Break drops the kick and leaves the pad floating.
+Variant B (Low Tide Shuffle, G minor, Gm9–C9–Fmaj9–E♭maj9): groove is the subject — no pad, short soft electric piano stabs on 1, the a-of-1 and the and-of-3, walking finger bass with octave lifts and approach notes, accented back-sixteenth hats. Break drops the hats.
+```
+
+### lo-fi house — dusty-tape-house / faded-organ-house
+**Style**
+`lo-fi house, 120–122 BPM, dusty, swung hats, muffled electric piano, tape warmth, hazy, instrumental`
+
+**Description**
+```
+Instrumental 16-bar lo-fi house skeleton: four-on-the-floor on a soft drum machine, loose timing, no lead, no vocals.
+Bars 9–12 strip a layer, crash on bar 13.
+Two kinds of looseness:
+Variant A (Dusty Tape House, A minor, Am9–Dm9): bouncy — swung sixteenth hats, off-beat synth bass that lands slightly late behind the kick, muffled electric piano ninth stabs on the off-beats. Break drops the kick.
+Variant B (Faded Organ House, F minor, Fm7–D♭maj7–B♭m7–C7): flowing — hats halved to eighths, tonewheel organ long chords with a glistening pad on root and fifth, bass holding a dotted 3+3+2 figure, wider human timing. Break drops the hats.
+```
+
+### lo-fi hip hop — rainy-window-beat / slow-room-piano
+**Style**
+`lo-fi hip hop, 74–80 BPM, boom bap, swung hats, ghost snares, jazzy keys with sustain, rainy, sparse, instrumental`
+
+**Description**
+```
+Instrumental 16-bar lo-fi hip hop skeleton over acoustic-style drums, finger bass and keys — no melody, no vocals.
+Bars 9–12 drop a layer, crash on bar 13.
+Two tempos of nodding:
+Variant A (Rainy Window Beat, 80 BPM, F major, Gm9–C9–Fmaj9–Dm9): backbeat on 2 and 4 with ghost snares, heavily swung hats, finger bass following the kick, electric piano ninths re-pedalled every bar. Break drops the kick, bass holds the root.
+Variant B (Slow Room Piano, 74 BPM, E♭ major, A♭maj7–Gm7–Fm9–B♭13): half-time — snare only on 3, rim instead of snare on even bars, bass holding roots for two beats, grand piano chords with sustain. Break drops the hats.
+```
+
+---
+
+## gpt-6-astra 세트 (한 축 통제 실험)
+
+### house — citrus-root-grid / citrus-fifth-grid
+**Style**
+`house, 124 BPM, four-on-the-floor, bright grand piano stabs, root-note eighth bass, off-beat open hats, sunny, instrumental`
+
+**Description**
+```
+Instrumental 16-bar house skeleton in E major over E–F♯m–A–B, one chord per bar.
+Four-on-the-floor drum machine, clap under snare on 2 and 4, closed hats on the beat, open hats on the off-beats, bright short grand piano stabs, straight eighth-note bass. Bars 9–12 drop the hats; crash on bar 13.
+Controlled pair — everything is identical except the bass contour:
+Variant A (Citrus Root Grid): bass repeats the root on every eighth.
+Variant B (Citrus Fifth Grid): the 4th and 8th eighth of each bar lift from root to fifth; timing, length and velocity unchanged.
+```
+
+### deep house — indigo-held-room / indigo-soft-steps
+**Style**
+`deep house, 120 BPM, soft kick, accented sixteenth hats, long sub bass, electric piano ninths, dim room, instrumental`
+
+**Description**
+```
+Instrumental 16-bar deep house skeleton in B minor over Bm9–Gmaj9–Em9–F♯m7.
+Soft four-on-the-floor, accented closed sixteenth hats, long warm sub bass, rootless electric piano ninths. Bars 9–12 drop the bass; crash on bar 13.
+Controlled pair — drums and bass identical, only the chord rhythm differs:
+Variant A (Indigo Held Room): electric piano holds one chord per bar with sustain — space first.
+Variant B (Indigo Soft Steps): the same voicings are softly stabbed twice per bar on the and-of-1 and the and-of-3 — motion first.
+```
+
+### lo-fi house — paper-lantern-eight / paper-lantern-five
+**Style**
+`lo-fi house, 121 BPM, swung hats, low muffled electric piano, late bass, dusty, lantern-lit, instrumental`
+
+**Description**
+```
+Instrumental 16-bar lo-fi house skeleton in C minor over Cm9–A♭maj9–Fm9–B♭9.
+Soft four-on-the-floor, swung hats, low quiet electric piano ninth stabs, bass dragging slightly behind the kick. Bars 9–12 drop the kick; crash on bar 13.
+Controlled pair — only the hat density differs:
+Variant A (Paper Lantern Eight): eight swung hats per bar.
+Variant B (Paper Lantern Five): five of those eight remain, same timing and velocity on the survivors — more empty space, same groove underneath.
+```
+
+### lo-fi hip hop — porch-pocket-anchor / porch-pocket-skip
+**Style**
+`lo-fi hip hop, 82 BPM, boom bap, ghost snares, swung hats, kick-locked bass, electric piano ninths with sustain, porch at dusk, instrumental`
+
+**Description**
+```
+Instrumental 16-bar lo-fi hip hop skeleton in E♭ major over E♭maj9–Cm9–A♭maj9–B♭9.
+Acoustic-style boom bap, backbeat on 2 and 4, ghost snares, swung hats, electric piano ninths held with sustain. Kick and bass always strike together, three hits per bar. Bars 9–12 drop the hats; crash on bar 13.
+Controlled pair — only where the three kick-and-bass hits land differs:
+Variant A (Porch Pocket Anchor): on 1, on 3, and the and-of-3 — anchored.
+Variant B (Porch Pocket Skip): on 1, the last sixteenth of 1, and the last sixteenth of 3 — pushed ahead, skipping.
+Both keep the 2-and-4 backbeat; this is not a half-time comparison.
+```
+
+---
+
+## claude-fable 세트 (병행조 대조)
+
+### house — copper-tram-minor / copper-tram-major
+**Style**
+`house, 124 BPM, tight four-on-the-floor, drum machine, pulse synth bass, bright grand piano four-note stabs, city tram, instrumental`
+
+**Description**
+```
+Instrumental 16-bar house skeleton in G. Tight, almost machine-straight four-on-the-floor, clap under snare on 2 and 4, closed hats on the beat and open hats on the off-beats.
+Eighth-note synth bass cell: root–root–octave–root–fifth–root–octave–root. Grand piano four-note stabs, three per odd bar and four per even bar. Bars 9–12 drop the stabs; crash on bar 13.
+Parallel-mode pair — drums, bass rhythm and stab rhythm are note-for-note identical; only the key mode changes:
+Variant A (Copper Tram Minor): G minor, Gm7–Cm7–E♭maj7–F7.
+Variant B (Copper Tram Major): G major, Gmaj7–Cmaj7–Em7–D7.
+```
+
+### deep house — harbor-fog-minor / harbor-fog-major
+**Style**
+`deep house, 120 BPM, soft kick, sixteenth hats with back-eighth accents, sub bass, rootless electric piano ninths with sustain, soft pad, harbor fog, instrumental`
+
+**Description**
+```
+Instrumental 16-bar deep house skeleton in D. Soft four-on-the-floor, closed sixteenth hats accenting the back eighths, an open hat on the and-of-4 every other bar.
+Sub bass cell: long note on 1, short on the and-of-2 and the and-of-3 a fifth below. Rootless electric piano ninths held for two beats with a soft re-touch, sustain re-pedalled each bar; classic pad on root and fifth underneath. Bars 9–12 drop kick and snare, leaving hats, bass, keys and pad; crash on bar 13.
+Parallel-mode pair — rhythm section and pad identical; only the mode changes:
+Variant A (Harbor Fog Minor): D minor, Dm9–Gm9–B♭maj9–A7♭9.
+Variant B (Harbor Fog Major): D major, Dmaj9–Gmaj9–Bm9–A9.
+```
+
+### lo-fi house — attic-radio-minor / attic-radio-major
+**Style**
+`lo-fi house, 121 BPM, sparse swung hats, late pulse bass, low rootless electric piano shells, attic radio, dusty, instrumental`
+
+**Description**
+```
+Instrumental 16-bar lo-fi house skeleton in A. Soft four-on-the-floor, clap under snare, only five swung hats per bar with an open hat every fourth bar.
+Synth bass sits a touch behind the kick on 1, the and-of-1, 2 and the and-of-3 with octave jumps. Low rootless electric piano shells touched softly on three swung off-beats. Bars 9–12 drop the bass; crash on bar 13.
+Parallel-mode pair — drums, bass delay and stab rhythm identical; only the mode changes:
+Variant A (Attic Radio Minor): A minor, Am9–Fmaj9–Dm9–E7♭9.
+Variant B (Attic Radio Major): A major, Amaj9–F♯m9–Dmaj9–E9.
+```
+
+### lo-fi hip hop — late-bus-minor / late-bus-major
+**Style**
+`lo-fi hip hop, 80 BPM, boom bap, two ghost snares, swung eighth hats, kick-locked finger bass, rootless grand piano ninths with sustain, late bus, instrumental`
+
+**Description**
+```
+Instrumental 16-bar lo-fi hip hop skeleton in C. Acoustic-style boom bap: kick on 1, the a-of-2 and the and-of-3 in odd bars, 1, the and-of-3 and the a-of-4 in even bars; snare on 2 and 4 with two ghost notes; swung eighth hats.
+Finger bass follows the kick exactly with fifth-below and fifth-above passing notes. Rootless grand piano ninths held a whole bar with a light roll, soft re-hit on the and-of-3 in even bars, sustain re-pedalled every bar. Bars 9–12 drop all drums, leaving piano and bass; a two-note snare pickup at the end of bar 12 and a crash on bar 13 bring everything back.
+Parallel-mode pair — drums, bass and pedalling identical; only the mode changes:
+Variant A (Late Bus Minor): C minor, Cm9–A♭maj9–Fm9–G7♭9.
+Variant B (Late Bus Major): C major, Cmaj9–Am9–Fmaj9–G9.
+```
