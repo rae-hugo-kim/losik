@@ -7,7 +7,7 @@
 import test from 'node:test';
 import assert from 'node:assert';
 import { resolve } from 'node:path';
-import { readTarget, READ_SELECTOR, resolvedAstEditFiles, searchTrackTargets } from '../gates/read-path.mjs';
+import { readTarget, localFileTarget, READ_SELECTOR, resolvedAstEditFiles, searchTrackTargets } from '../gates/read-path.mjs';
 
 const CWD = '/work';
 const BARE = resolve(CWD, 'src/foo.ts');
@@ -66,6 +66,39 @@ test('READ_SELECTOR matches raw in EITHER order, plain/multi ranges; not a bare 
   }
 });
 
+// #42 (omp 18.2.9–18.3.0, measured 2026-09-24): `:img` is the mandatory selector for SVG
+// rendering. Unstripped, `logo.svg:img` landed in read-log and a later edit of `logo.svg`
+// false-blocked in context-gate. Standalone only — read.md documents no range combination,
+// and the selector regex mirrors that grammar EXACTLY.
+test('strips the :img selector (standalone only) — the F1 phantom class for SVG reads', () => {
+  assert.equal(T('assets/logo.svg:img'), resolve(CWD, 'assets/logo.svg'));
+  assert.match('x:img', READ_SELECTOR);
+  assert.doesNotMatch('x:image', READ_SELECTOR);
+  assert.equal(T('src/img'), resolve(CWD, 'src/img'), 'a path component named img is not a selector');
+});
+
+// `:-N` (last N lines) is advertised by the read tool and accepted live (omp 18.3.0, 2026-09-24:
+// `read current-scope.md:-3` returned the tail AND logged the phantom `current-scope.md:-3`).
+test('strips the :-N tail selector — the same phantom class', () => {
+  assert.equal(T('docs/harness/current-scope.md:-3'), resolve(CWD, 'docs/harness/current-scope.md'));
+  assert.equal(T('src/foo.ts:-60'), BARE);
+  assert.equal(T('src/foo.ts:raw:-60'), BARE, ':raw:-N is accepted live (omp 18.3.0)');
+  assert.equal(T('src/foo.ts:-60:raw'), BARE);
+  assert.match('x:-60', READ_SELECTOR);
+  assert.doesNotMatch('x:-', READ_SELECTOR);
+  assert.equal(T('src/a-b:-c'), resolve(CWD, 'src/a-b:-c'), 'a non-numeric tail is a path, not a selector');
+});
+
+// #42: 18.3.0 job/service control (`write proc://<id>/kill`, `proc://<name>/mode`, `read proc://`)
+// and write-only `conflict://` must never enter the ledgers — in the canonical `://` form OR the
+// single-slash form the event plumbing has been observed to emit for xd (`xd:/retain`).
+test('proc:// and conflict:// are virtual in both slash forms — never a ledger path', () => {
+  for (const p of ['proc://', 'proc://bg_1', 'proc:/', 'proc:/bg_1/kill', 'proc:/web/mode', 'conflict://src/a.ts', 'conflict:/src/a.ts']) {
+    assert.equal(readTarget({ path: p }, CWD), '', `read must not track: ${p}`);
+    assert.equal(localFileTarget(p, CWD), null, `write must not track: ${p}`);
+  }
+});
+
 test('resolvedAstEditFiles extracts apply file paths from a resolve result', () => {
   // upstream shape: details.sourceResultDetails.files is string[]
   assert.deepEqual(
@@ -92,12 +125,12 @@ test('searchTrackTargets: details.files is the trusted primary source', () => {
   // structured list is present.
   assert.deepEqual(
     searchTrackTargets({ files: ['/abs/a.ts', 'rel/b.ts', '/abs/a.ts'] }, '[ignored.ts#AB12]\n*1:x', CWD),
-    ['/abs/a.ts', resolve(CWD, 'rel/b.ts')],
+    [resolve('/abs/a.ts'), resolve(CWD, 'rel/b.ts')],
   );
   // internal URIs / non-strings / empties are skipped
   assert.deepEqual(
     searchTrackTargets({ files: ['omp://doc.md', 'skill://x/f.ts', '', 42, null, '/ok.ts'] }, '', CWD),
-    ['/ok.ts'],
+    [resolve('/ok.ts')],
   );
   // an EMPTY array is trusted as "nothing anchored" — no text fallback kicks in
   assert.deepEqual(searchTrackTargets({ files: [] }, '[foo.ts#AB12]\n*1:x', CWD), []);
@@ -105,7 +138,7 @@ test('searchTrackTargets: details.files is the trusted primary source', () => {
 
 test('searchTrackTargets: bracketed-header fallback when details.files is absent/misshaped', () => {
   const text = '[src/foo.ts#1A2B]\n*42:hit\n 43:context\n\n[/abs/bar.ts#FFFF]\n*1:hit';
-  const expected = [resolve(CWD, 'src/foo.ts'), '/abs/bar.ts'];
+  const expected = [resolve(CWD, 'src/foo.ts'), resolve('/abs/bar.ts')];
   assert.deepEqual(searchTrackTargets(undefined, text, CWD), expected);
   assert.deepEqual(searchTrackTargets({}, text, CWD), expected);
   assert.deepEqual(searchTrackTargets({ files: 'nope' }, text, CWD), expected);
