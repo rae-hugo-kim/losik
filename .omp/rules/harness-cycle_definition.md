@@ -1,8 +1,11 @@
+---
+description: "1-cycle intake judgement: completion sentence, single deliverable, one-session scale; split proposals; estimate record"
+---
 # Cycle Definition (1사이클 정의)
 
 <!-- Intake-time agent behavior rule (L1, cf. docs/rules/scope_self_detect_policy.md).
-     Placed in rules/ (not docs/rules/) deliberately: rules/ is in the harness-sync
-     deploy whitelist, so consumer repos receive this policy. -->
+     Lives in .omp/rules/ as a harness-* rulebook file (not docs/rules/) deliberately: the
+     harness-sync whitelist ships .omp/rules/harness-*.md, so consumer repos receive this policy. -->
 
 ## 목적
 
@@ -45,7 +48,40 @@ high-risk 커밋을 함의하면 분할을 *의심*한다(어차피 커밋에서
 ```
 판정: 1사이클 | 분할 제안 | 확인문장 필요
 확인 문장: <한 줄 — 실행/관찰 가능. 못 채우면 판정을 "1사이클"로 둘 수 없다>
+예상: 위험 <low|medium|high|critical> / 파일 <n> / 깊이 <low|high>
 ```
+
+### 예상 레코드 (MUST — 1사이클 판정 시)
+
+`예상:` 줄의 값은 **예측**이며 실측이 아니다. 판정이 "1사이클"이면 같은 값을
+`.omp/harness-state/cycle-estimate`에 한 줄 JSON 튜플로 기록한다(기존 one-shot 플래그
+관례: JSON 튜플 + 버전 태그):
+
+```
+["omp-estimate/v1", <risk>, <files>, <depth>, <model>, <effort>, <ts>]
+  risk   : "low" | "medium" | "high" | "critical"   — risk-assess taxonomy 그대로 (폭발 반경)
+  files  : 정수 (예상 변경 파일 수)
+  depth  : "low" | "high"                            — 추론 깊이. risk와 독립 축 (500줄 기계적 rename = high/low, 20줄 동시성 버그 = medium/high)
+  model  : 문자열 (세션이 아는 값, 예: "claude-fable-5-1")
+  effort : 문자열 또는 null (예: "medium", "high")
+  ts     : ISO 8601 날짜-시각 + 존 지정자 (예: "2026-09-18T02:00:00Z" — `date -u +%Y-%m-%dT%H:%M:%SZ`)
+```
+
+커밋이 착지하면 review-gate가 이 레코드를 `risk-assess` 실측과 붙여
+`docs/harness/audit.jsonl`에 `estimate_vs_actual` 이벤트로 남기고 소비한다.
+레코드는 **어떤 게이트의 판정에도 관여하지 않는다** — 예측 기반 완화는 금지.
+목적은 자동 라우팅이 아니라 몇 달 뒤 `harness-agent_routing.md`의 모델·에포트 기준을 실측
+근거로 갱신할 원자료다(`.omp/extensions/harness/estimate-report.mjs`로 읽는다).
+
+**사이클 미만(오타 수정 등)은 판정과 함께 레코드도 생략한다** — 과잉 발동 금지 조항과
+같은 경계. 분할 제안·확인문장 필요 상태에서는 아직 쓰지 않고, 합의된 사이클이 시작될
+때(사이클마다 1건) 쓴다. 하나의 커밋에 여러 사이클이 실리면 마지막 레코드만 대조된다
+(one-shot).
+
+**AC는 커밋 시점에 판정 가능해야 한다** — 범프 태그·배포·머지처럼 그 커밋 *뒤에* 생기는 것은
+AC가 아니라 후속 절차로 적는다(`- … 는 이 AC의 판정 대상이 아님`). 커밋 전에 `[x]`로 체크할
+수 없는 AC는 acceptance-gate 통과를 위해 거짓 체크를 유도한다(2026-09-24 실측: 3-pass 리뷰가
+"2026.80 태그" AC의 선체크를 medium으로 지적, `AC5-bump-ready`로 재작성).
 
 ## 인테이크 프로토콜
 
@@ -59,7 +95,7 @@ high-risk 커밋을 함의하면 분할을 *의심*한다(어차피 커밋에서
    합의된 분할의 기록 위치는 지시 채널에 따라 다르다 — 아래 "지시 채널" 절 참조.
 4. **확인문장 필요** (경계) → 확인 방법을 함께 만들어 1사이클로 **승격**시키는
    질문을 한다. 되묻기의 목적은 게이트가 아니라 승격이다.
-5. **프로젝트/신규 기능급 스코프** → kickoff(`../.omp/skills/kickoff/SKILL.md`)를
+5. **프로젝트/신규 기능급 스코프** → kickoff(`../../.omp/skills/kickoff/SKILL.md`)를
    추천한다 — 인터뷰가 seed/AC까지 산출하는 무거운 정식 경로.
 
 **그레이존 규칙**: 애매하면 분할 제안 쪽으로 기운다. 단 **제안은 1회** — 사용자가
@@ -81,7 +117,7 @@ high-risk 커밋을 함의하면 분할을 *의심*한다(어차피 커밋에서
 
 | 상황 | 기록 위치 |
 |------|----------|
-| 지시 문서가 있음 | 그 문서의 사이클 큐 ([`templates/scratchboard.md`](../templates/scratchboard.md) 형식) |
+| 지시 문서가 있음 | 그 문서의 사이클 큐 ([`templates/scratchboard.md`](../../templates/scratchboard.md) 형식) |
 | 문서 없음 + 이번 세션에서 완결 | todo 도구로 충분 (세션과 함께 소멸해도 무방) |
 | 문서 없음 + 다세션 규모(2사이클 이상) | 영속 큐 생성을 제안 — 템플릿 복사 또는 `docs/harness/current-scope.md`의 AC 체크박스(acceptance-gate 연동) |
 
@@ -150,7 +186,7 @@ high-risk 커밋을 함의하면 분할을 *의심*한다(어차피 커밋에서
 
 ## 관련 규칙
 
-- 사이클 경계의 컨텍스트 처리(sum → `/clear`): [`context_management.md`](context_management.md), [`session_persistence.md`](session_persistence.md)
-- 사이클 진행 중 새 요구 발견 → 체크리스트/AC 추가: [`../docs/rules/scope_self_detect_policy.md`](../docs/rules/scope_self_detect_policy.md)
-- high-risk 커밋의 리뷰 증거(분할 사유가 아니라 비용 예고): [`../AGENTS.md`](../AGENTS.md) Agent Routing 절
-- 무거운 정식 경로(신규 기능/프로젝트급): [`../.omp/skills/kickoff/SKILL.md`](../.omp/skills/kickoff/SKILL.md)
+- 사이클 경계의 컨텍스트 처리(sum → `/clear`): [`harness-context_management.md`](harness-context_management.md), [`harness-session_persistence.md`](harness-session_persistence.md)
+- 사이클 진행 중 새 요구 발견 → 체크리스트/AC 추가: [`../../docs/rules/scope_self_detect_policy.md`](../../docs/rules/scope_self_detect_policy.md)
+- high-risk 커밋의 리뷰 증거(분할 사유가 아니라 비용 예고): [`../../AGENTS.md`](../../AGENTS.md) Agent Routing 절
+- 무거운 정식 경로(신규 기능/프로젝트급): [`../../.omp/skills/kickoff/SKILL.md`](../../.omp/skills/kickoff/SKILL.md)

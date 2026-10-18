@@ -1,10 +1,13 @@
+---
+description: "Language-agnostic code shape constraints that prevent quality drift"
+---
 # Coding Standards
 
-<!-- Inspired by ECC coding-style and patterns rules. Covers code shape constraints complementing change_control.md (process/scope). -->
+<!-- Inspired by ECC coding-style and patterns rules. Covers code shape constraints complementing harness-change_control.md (process/scope). -->
 
 ## Purpose
 
-Enforceable code shape constraints that prevent quality drift. These are language-agnostic — language-specific rules belong in project-level `rules/`.
+Enforceable code shape constraints that prevent quality drift. These are language-agnostic — language-specific rules belong in a project-level `.omp/rules/<name>.md`.
 
 ---
 
@@ -41,6 +44,7 @@ Internal function calls between trusted modules do NOT need redundant validation
 - Log detailed error context server-side (stack trace, input values, timestamp).
 - Provide user-friendly messages client-side (no raw stack traces or internal IDs).
 - Propagate or wrap errors — do not discard them.
+- Child-process pipes: any write to a child's stdin (`stdin.end(payload)`) needs an `error` listener — the child exiting before it reads is a normal path, and an unhandled EPIPE on that stream is an uncaught exception that kills the host process (omp 18.1.13 + harness `runGate`, 2026-09-07). This is not swallowing: the verdict/result must come from `close`, never from the write succeeding.
 
 ---
 
@@ -84,6 +88,14 @@ Exception: Small projects where type-based organization is simpler.
 Use constants, configuration, or environment variables instead of magic numbers and inline strings.
 
 ---
+
+## SHOULD: Shell scripts that ship to consumers
+
+(2026-09-26, harness-sync 3-pass review ×9 rounds) Target bash 3.2 (macOS): no `mapfile`/`readarray`/associative arrays. Frame file-name streams with NUL (`printf '%s\0'` + `read -r -d ''`) — a newline in a matched name otherwise becomes a second `rm` target. Under `set -euo pipefail`, wrap any grep that may legitimately match nothing in `{ grep … || true; }` — an empty result silently aborts the script. Reuse the script's existing containment/wrapper helpers (`_realdir`, `git_literal`) for every new file or git call instead of re-deriving them.
+
+## MUST: Gates never emulate document structure
+
+(2026-09-29, acceptance-gate #56 3-pass review ×10 rounds; same conclusion as review-gate's retired CommonMark evidence parser) A gate that decides by parsing markdown structure — fence boundaries, heading sections, HTML comments/blocks — is a non-convergent attack surface: every review round produced a fresh valid-markdown shape that hid a real item. Judge by a rule that has no boundary to spoof (a strict JSON tuple; "every checkbox from the first `Acceptance Criteria` heading to end of file"), and let a mistake err toward counting MORE, never fewer. Session record: `docs/sum/session_2026-09-29_issue56-closeout-ac-record-pr59.md` D2. The same holds for diff text: a header line is identified by position — everything before the first `@@` hunk — never by a `--- `/`+++ ` prefix; a removed content row that starts with `-- ` prints as `--- …` and slipped through a prefix test (2026-10-01, #62 r1 high; `acceptance-gate.mjs` `hunkLines`; session record `docs/sum/session_2026-10-01_restart-pr59-web-merge-ghloop62-pr64.md` Fix 2).
 
 ## Self-Check
 

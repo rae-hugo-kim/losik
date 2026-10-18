@@ -1,3 +1,6 @@
+---
+description: "How lessons from sessions are captured and promoted into durable rules"
+---
 # Learning Policy
 
 <!-- Inspired by ECC continuous-learning-v2, which captures atomic "instincts"
@@ -26,7 +29,7 @@
 |-------|---------------|
 | Session-specific (ephemeral) | Session retro (`templates/session_retro.md`) |
 | Cross-session, project-level | `MEMORY.md` in the repo root |
-| Policy-level (recurring rule) | `rules/` — propose a rule update or new rule file |
+| Policy-level (recurring rule) | `.omp/rules/harness-*.md` (harness source repo) or a project `.omp/rules/<name>.md` — propose a rule update or new rule file |
 
 ## MUST NOT: capture anti-pattern learnings
 

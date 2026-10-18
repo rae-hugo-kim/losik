@@ -1,3 +1,6 @@
+---
+description: "3-pass adversarial verification layer: reviewer + heterogeneous adversary + code-reviewer, evidence tuples"
+---
 # Adversarial Review Policy
 
 <!-- Harness: adversarial gates are automatic triggers, not opt-in -->
@@ -5,7 +8,7 @@
 이 문서는 하네스 시스템의 적대적 검증(adversarial verification) 계층을 정의한다.
 모든 게이트는 자동 트리거이며, CRITICAL 판정 시 다음 단계 진행을 블로킹한다.
 
-관련 문서: [`rules/quality_gates.md`](quality_gates.md), [`rules/harness_integration_contract.md`](harness_integration_contract.md)
+관련 문서: [`.omp/rules/harness-quality_gates.md`](harness-quality_gates.md), [`.omp/rules/harness-harness_integration_contract.md`](harness-harness_integration_contract.md)
 
 ---
 
@@ -21,7 +24,7 @@
 
 ## 3-pass 코드 리뷰 불변식 (실행 토폴로지 공통)
 
-3-pass 적대 리뷰(`.omp/agents/reviewer.md`)는 실행 토폴로지가 둘이다 — depth 0 세션이 reviewer 에이전트를 스폰하거나, task capability를 가진 depth 1 세션이 프로토콜을 직접 수행한다(진입점 우선순위와 디스패치 preflight: [`rules/agent_routing.md`](agent_routing.md)). 어느 토폴로지든 아래 3개 불변식이 동일하게 적용된다 — 수행 주체의 유연성(에이전트든 세션이든)은 게이트 우회가 아니다.
+3-pass 적대 리뷰(`.omp/agents/reviewer.md`)는 실행 토폴로지가 둘이다 — depth 0 세션이 reviewer 에이전트를 스폰하거나, task capability를 가진 depth 1 세션이 프로토콜을 직접 수행한다(진입점 우선순위와 디스패치 preflight: [`.omp/rules/harness-agent_routing.md`](harness-agent_routing.md)). 어느 토폴로지든 아래 3개 불변식이 동일하게 적용된다 — 수행 주체의 유연성(에이전트든 세션이든)은 게이트 우회가 아니다.
 
 1. **이종성 증거는 실측만**: 사이드카의 models 배열은 자식(adversary) 트랜스크립트의 `model_change` 레코드 실측으로만 기재한다. 자기 신고·thread id·세션 id는 증거가 아니다.
 2. **리뷰 수행 세션 ≠ 변경 작성 세션**: 세션이 프로토콜을 직접 수행하는 경로에서 Pass 1(셀프 분석)의 독립성 조건이다. 변경을 작성한 세션이 자기 변경을 Pass 1으로 심사하면 self-review bias 제거라는 프로토콜의 목적이 무너진다.
@@ -36,6 +39,8 @@
    실측 근거(2026-08-03, docs/sum/session_2026-08-03_pr-cleanup-gate-override-codex-auth.md): openai-codex 토큰이 서버측 회수된 상태에서 adversary/code-reviewer 스폰 5회 전부 1.6~3.9초 만에 0바이트 즉사(`authentication token has been invalidated`), 리뷰어가 7분 완주한 뒤에야 이종성 불성립이 판명되어 감사 오버라이드로 우회했다. 프로브 1회(~5초)가 완주 후 발견보다 싸다.
 
 부기 — 세션 수행 경로의 모델 회계: Pass 1의 모델은 `@slow`가 아니라 그 세션의 모델이며, 이종성(≥2 distinct family) 판정의 기준 계열도 세션 모델 계열이다.
+
+부기 — 가용성 판단: `omp usage`의 100% 표시는 모델을 쓸 수 없다는 증거가 아니다. 2026-09-26 openai-codex 7d 창이 100%로 보였지만 omp는 이를 `warning`으로 분류했고 `gpt-6-astra` 요청은 정상 응답했다. 이종 패스를 포기하거나 우회하기 전에 5번의 원샷 프로브로 확인한다. 불변식 2의 보완(독립 Pass 1)에는 비작성 세션만 있으면 되고, 다른 모델 계열은 필요하지 않다.
 
 ---
 
@@ -75,6 +80,7 @@
 
 1. **정상 해제**: CRITICAL 항목 수정 후 해당 게이트 재실행.
 2. **사용자 명시적 override**: `docs/harness/audit.jsonl`에 `adversarial_override` 이벤트 기록 후 진행.
+3. **PASS 이후의 low 항목**: 사이드카는 diff 해시에 바인딩되므로 PASS(WITH NOTES)를 받은 diff는 동결하고, 남은 low·문서 정밀도 항목은 커밋 뒤 **별도 docs 커밋**에서 고친다 — 같은 diff를 손대면 해시가 바뀌어 재리뷰 라운드가 필요하다(2026-09-29 #56 r10, `docs/sum/session_2026-09-29_issue56-closeout-ac-record-pr59.md` D4).
 
 ---
 

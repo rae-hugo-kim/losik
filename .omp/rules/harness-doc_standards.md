@@ -1,3 +1,6 @@
+---
+description: "Markdown as source of truth, docs/sum untracked policy, HTML as derived artifact only"
+---
 # Documentation Standards
 
 저작 매체는 마크다운(SST). HTML은 *파생* 산출물 또는 *1회성* 사람용 아티팩트에만
@@ -44,6 +47,10 @@
   ([anthropics/skills#314](https://github.com/anthropics/skills/issues/314)).
 - 글로벌(`~/.claude/skills/` — OMC 스킬은 OMP에서도 여기서 로드됨)·로컬(`.omp/skills/`) 양쪽 모두 동일.
 
+### R6. 시점 기록 문서는 경로 이동 뒤에도 옛 경로 인용을 유지
+
+- 원본 스냅샷(`claudedocs/CLAUDE_original.md`), 분석·업그레이드 기록, `docs/handoff/`, 보관 seed(`docs/harness/archive/`), CHANGELOG 과거 항목, `docs/sum/`은 작성 시점을 인용하는 문서다. 파일이 옮겨져도(예: 2026-09-26 `rules/` → `.omp/rules/harness-*.md`) 이들 안의 경로는 치환하지 않는다 — 살아 있는 문서(AGENTS.md, README, 스킬, 규칙, 현행 계약)만 치환한다.
+
 ## Local Archives (untracked + vault backup)
 
 세션 서사 아카이브 — `docs/sum/`(세션 요약), `docs/reviews/`(리뷰 문서),
@@ -64,7 +71,7 @@
 
 ## View
 
-- 뷰어: **Obsidian** — vault 루트 = repo 루트 (`rules/`·`checklists/`·`docs/` 크로스링크 유지).
+- 뷰어: **Obsidian** — vault 루트 = repo 루트 (`.omp/rules/`·`checklists/`·`docs/` 크로스링크 유지).
   WSL 경로: `\\wsl.localhost\<distro>\...\omp`
 - 권장 설정: 기본 보기 모드 Reading / 위키링크 끄기 + 링크 형식 상대 경로 / 가독 폭 켜기
 - 진입점: `docs/README.md` (섹션별 안내 색인). vault 설정 디렉터리 `.obsidian/`은 gitignore.
@@ -75,5 +82,7 @@
 - 본 표준의 원 출처는 docs-viewer 미션(2026-06) seed의 AC였다 — 이후 `seed.yaml`은
   미션별로 회전하므로 현행 원본은 본 문서다. (mdBook+mmdc 파이프라인은 2026-07
   Obsidian 전환으로 폐지, 검증은 하네스 게이트로 이관)
-- `rules/change_control.md` — 최소 변경 원칙 (본 표준의 over-prescription 방지)
+- `.omp/rules/harness-change_control.md` — 최소 변경 원칙 (본 표준의 over-prescription 방지)
 - `artifacts/` — 1회성 HTML 산출물 격리 위치 (R4에 정책 인라인; 디렉터리 README는 소비 리포 소유)
+- `docs/handoff/` — 세션 간 핸드오프 문서. 위치·커밋 시점·마감 후 처분은
+  `docs/rules/artifact_roles_contract.md` §Handoff 가 정의한다(seed의 전신, 3-tier 밖 입력).

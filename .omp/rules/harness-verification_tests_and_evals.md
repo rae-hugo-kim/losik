@@ -1,3 +1,6 @@
+---
+description: "Required verification artifacts: tests, evals, docs-only path, evidence format"
+---
 # Verification: Tests + Evals
 
 ## Global enforcement assumed (provided by oh-my-claudecode)
@@ -133,6 +136,10 @@ In the final summary/PR body, include:
 - What passed/failed
 - Any skipped gates and why
 
+### SHOULD (owner: local-policy): pin environment sensitivity with a polluted fixture
+
+A fixture that sanitises the environment (e.g. strips every `GIT_*` variable) cannot see a defect that only an ambient variable triggers — the `:(literal)` pathspec magic that `GIT_LITERAL_PATHSPECS=1` defeated stayed invisible until a reviewer set the variable by hand (2026-09-26). For code that reads or shells out under a user's environment, add one fixture per relevant variable that runs WITH it set.
+
 ## Eval-Driven Development (EDD) Workflow
 
 When a task involves a quality surface (LLM output, ranking, visual output, performance), follow EDD:
@@ -144,8 +151,8 @@ When a task involves a quality surface (LLM output, ranking, visual output, perf
 5. **Run evals during implementation**: after each significant change, not just at the end.
 6. **Generate eval report**: document results using `templates/eval_report.md`.
 
-Templates: [`templates/eval_definition.md`](../templates/eval_definition.md), [`templates/eval_report.md`](../templates/eval_report.md)
-Checklist: [`checklists/eval.md`](../checklists/eval.md)
+Templates: [`templates/eval_definition.md`](../../templates/eval_definition.md), [`templates/eval_report.md`](../../templates/eval_report.md)
+Checklist: [`checklists/eval.md`](../../checklists/eval.md)
 
 ### Eval Anti-Patterns (MUST NOT)
 
