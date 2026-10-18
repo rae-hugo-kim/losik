@@ -178,7 +178,9 @@ def wait_window(substr, present=True, timeout=40):
 
 
 def project_windows():
-    return [w for w in windows() if w.endswith('- 트랙')]
+    # '… - 트랙' 메인 창 외에 메인 창 없이 남은 '… - 믹서: 트랙' 창도 프로젝트로 본다
+    # (2026-10-18 실측: 바운스 뒤 믹서 창만 남으면 임포트가 그 뒤에서 막힘).
+    return [w for w in windows() if w.endswith('- 트랙') or w.endswith('- 믹서: 트랙')]
 
 
 def close_stray():
@@ -203,17 +205,29 @@ end tell''')
         time.sleep(1.5)
 
 
+# Logic 의 '저장하겠습니까?' 대화상자는 무제 문서면 '저장 안 함', 제목 있는 문서면 '저장하지 않음' 으로
+# 버튼 라벨이 다르다 (2026-10-18 실측). 둘 다 시도한다.
+DONT_SAVE = ('저장 안 함', '저장하지 않음')
+
+
+def _click_any(labels):
+    tries = '\n'.join(f'try\nclick button "{b}" of w\nexit repeat\nend try' for b in labels)
+    return f'repeat with w in windows\n{tries}\nend repeat'
+
+
 def close_all_projects(save=None):
     """save=None: 무제는 저장 안 함, 제목 있으면 저장. save=False: 전부 저장 안 함."""
+    osa(f'''tell application "System Events"
+tell process "{APP}"
+{_click_any(DONT_SAVE)}
+end tell
+end tell''')   # 이전 실행이 남긴 '저장하겠습니까?' 대화상자부터 치운다
     for _ in range(4):
         pws = project_windows()
         if not pws:
             return True
         title = pws[0]
-        if save is False or title.startswith('무제'):
-            btn = '저장 안 함'
-        else:
-            btn = '저장'
+        btns = DONT_SAVE if (save is False or title.startswith('무제')) else ('저장',)
         osa(f'''tell application "System Events"
 tell process "{APP}"
 set frontmost to true
@@ -221,12 +235,7 @@ perform action "AXRaise" of window "{title}"
 delay 0.5
 keystroke "w" using command down
 delay 2
-repeat with w in windows
-try
-click button "{btn}" of w
-exit repeat
-end try
-end repeat
+{_click_any(btns)}
 end tell
 end tell''')
         time.sleep(3)
@@ -495,14 +504,29 @@ end try
 end repeat
 set value of nameField to "{file_name}"
 delay 0.5
+-- 저장 위치를 명시한다: Logic 재시작 후 대화상자 기본 위치가 .mid 폴더로 되돌아간 사례(2026-10-18 dh20).
+keystroke "g" using {{command down, shift down}}
+delay 1.5
+keystroke "{BOUNCE_DIR}"
+delay 1
+key code 36
+delay 2
+set value of nameField to "{file_name}"
+delay 0.5
 click (item (count of btns) of btns)
+delay 2
+repeat with w3 in windows
+try
+click button "대치" of w3
+end try
+end repeat
 return "bounce started"
 end tell
 end tell''', timeout=120)
     return 'bounce started' in out, out or err
 
 
-def wait_file_stable(path, min_size=500000, timeout=240):
+def wait_file_stable(path, min_size=500000, timeout=600):
     t0 = time.time()
     while time.time() - t0 < timeout:
         if os.path.exists(path) and os.path.getsize(path) > min_size:
