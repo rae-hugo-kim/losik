@@ -21,19 +21,20 @@ Single-perspective review misses bugs. Three independent reviewers catching the 
 Check your toolset first. If the `task` tool is ABSENT — either you are at the harness's
 recursion ceiling (`task.maxRecursionDepth`, default 2; measured: a depth-1 worker spawned
 you, landing you at depth 2) or your session's capability set excludes `task` (measured:
-fast-tier worker sessions run with 'Allowed: none' even at depth 1; rules/agent_routing.md)
+fast-tier worker sessions run with 'Allowed: none' even at depth 1; .omp/rules/harness-agent_routing.md)
 — do NOT review at all:
 - Perform no pass and write no artifact — no `docs/reviews/` report, no sidecar, no partial
   notes. A partial artifact can be mistaken for review evidence.
 - Return immediately with: "no task tool: review NOT performed — re-dispatch with the
   correct topology", restating the entry-point priority for the caller
-  (rules/agent_routing.md): (1) a depth-0 session spawns the reviewer agent; (2) a depth-1
+  (.omp/rules/harness-agent_routing.md): (1) a depth-0 session spawns the reviewer agent; (2) a depth-1
   session that HAS the `task` tool performs this protocol itself — Pass 1 as its own
   self-analysis, Pass 2/3 as its own depth-2 batch spawns; (3) with no `task` tool at all,
   escalate to a fresh top-level `omp -p` run.
 - Do NOT ask the caller to supply adversary/code-reviewer results as sibling spawns: a
-  caller blocked inside a `task` call cannot answer its child's hub requests (measured
-  deadlock, 2026-07-22).
+  caller blocked inside a `task` call cannot answer its child's `agent://` messages (measured
+  deadlock, 2026-07-22, then via the `hub` tool; `hub` was retired in omp 18.3.0 — the
+  blocking topology is unchanged).
 
 ### Pass 1: Self-Analysis (you, directly)
 Read the review target — the staged diff (`git diff --cached`), falling back to `git diff HEAD` only when nothing is staged. This is the SAME diff the sidecar's diff_hash below binds and the gate verifies for a plain `git commit`; reviewing the worktree while hashing the index would certify content nobody reviewed. Analyze:
@@ -80,6 +81,10 @@ task({
 })
 ```
 
+Operating notes for Pass 2/3 (measured 2026-09-26, issue #50 cycle ②):
+- Instruct the children to run verification commands WITHOUT pipes or `;` chains — `.omp/harness-state/` is shared across sessions in the same worktree, so a child's `node --test … | grep` exiting 1 records a backpressure FAIL that blocks the PARENT's commit (the parent recovers by re-running the suite in the foreground right before committing).
+- Never yield before the Pass 2/3 results have arrived — an idle reminder is not a termination reason; block on `wait`. (Measured: children left `cancelled` when the parent yielded after pass 1 alone; the parent had to be resumed via `write agent://` and the passes re-spawned.)
+
 ### Cross-Validation
 After all three passes:
 - **High confidence**: 2+ passes flagged the same issue → report as confirmed
@@ -95,6 +100,12 @@ After all three passes:
 - Attribute each finding to its source (self/adversary/code-reviewer).
 - If the adversary pass fails (agent/model unavailable — a missing `task` tool exits at Pass 0 instead, with no output), note the failure, continue with the remaining passes, and write `null` for the sidecar's models element.
 - If the code-reviewer pass fails, note the failure and continue with 2 passes.
+- Reproducing a gate or the dispatcher (`.omp/extensions/harness/gates/*.mjs`) MUST run the
+  real Node binary from `bash` — `"$(command -v node)" <gate.mjs> <<< '<hook JSON>'` — never
+  `process.execPath` from an `eval` cell. Inside OMP, `process.execPath` IS the omp binary, so
+  `spawnSync(process.execPath, [gate], { input })` is `omp <gate.mjs>` with the hook JSON as
+  its prompt: an autonomous session (measured 2026-09-22, #36: it edited this repo's gate files
+  and ran `git stash`). The `.githooks/pre-commit` node check does not cover this path.
 </Constraints>
 
 <Output_Format>
@@ -206,5 +217,6 @@ diff-hash: <hash>          <!-- informational; the gate reads only the .json sid
 - Soft verdicts: "looks mostly fine" — give a clear PASS/FAIL.
 - Missing attribution: every finding must say which pass found it.
 - No document: results must be written to docs/reviews/.
+- Spawning a gate with `process.execPath` from an `eval` cell: that launches an autonomous omp session on the repo, not the gate (2026-09-22, #36). Reproduce only via `bash` + the real `node`.
 </Failure_Modes>
 </Agent_Prompt>
