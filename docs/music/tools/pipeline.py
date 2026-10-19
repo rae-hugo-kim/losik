@@ -493,6 +493,8 @@ delay 0.5
 perform action "AXRaise" of w
 key code 36
 delay 3
+-- 저장 위치는 건드리지 않는다. ⌘⇧G '폴더로 이동' 팝오버는 합성 입력(키·클릭·AX)을 전혀 받지 않아
+-- 모달로 남아 세션을 막는다(2026-10-19 실측). 대신 bounce_and_post() 가 후보 폴더에서 파일을 찾아 옮긴다.
 set sg to splitter group 1 of w
 set nameField to missing value
 set btns to {{}}
@@ -502,15 +504,7 @@ if role of c is "AXTextField" and description of c is "텍스트 필드" then se
 if role of c is "AXButton" and description of c is "버튼" then set end of btns to c
 end try
 end repeat
-set value of nameField to "{file_name}"
-delay 0.5
--- 저장 위치를 명시한다: Logic 재시작 후 대화상자 기본 위치가 .mid 폴더로 되돌아간 사례(2026-10-18 dh20).
-keystroke "g" using {{command down, shift down}}
-delay 1.5
-keystroke "{BOUNCE_DIR}"
-delay 1
-key code 36
-delay 2
+if nameField is missing value then return "no name field"
 set value of nameField to "{file_name}"
 delay 0.5
 click (item (count of btns) of btns)
@@ -524,6 +518,34 @@ return "bounce started"
 end tell
 end tell''', timeout=120)
     return 'bounce started' in out, out or err
+
+
+# 바운스 대화상자의 저장 위치는 Logic 이 마지막으로 쓴 곳(재시작 후에는 .mid 폴더)이라 통제하지 않는다.
+# 파일명으로 후보 폴더를 뒤져 bounces/ 로 옮긴다 (2026-10-18 dh20, 2026-10-19 v2 실측).
+BOUNCE_SEARCH = [BOUNCE_DIR, SK_DIR, PROJ_DIR, os.path.expanduser('~/Music'), os.path.expanduser('~/Desktop'),
+                 os.path.expanduser('~/Documents'), os.path.expanduser('~/Downloads')]
+
+
+def wait_bounce_file(name, timeout=600):
+    """후보 폴더 중 하나에 name 이 안정적으로 생기면 BOUNCE_DIR 로 옮긴 경로를, 아니면 None."""
+    import shutil
+    t0 = time.time()
+    while time.time() - t0 < timeout:
+        for d in BOUNCE_SEARCH:
+            p = os.path.join(d, name)
+            try:
+                if os.path.exists(p) and os.path.getsize(p) > 500000:
+                    s = os.path.getsize(p)
+                    time.sleep(3)
+                    if os.path.getsize(p) == s:
+                        dst = os.path.join(BOUNCE_DIR, name)
+                        if p != dst:
+                            shutil.move(p, dst)
+                        return dst
+            except OSError:
+                continue   # Logic 이 아직 쓰는 중이거나 사라짐 — 다음 폴링에서 다시 본다
+        time.sleep(3)
+    return None
 
 
 def wait_file_stable(path, min_size=500000, timeout=600):
@@ -680,10 +702,11 @@ def finish(sid, title, ver, log=print):
 
 def bounce_and_post(sid, proj, ver):
     """저장된 프로젝트(창 '{proj} - 트랙')를 AIFF 바운스 → 리미터 → WAV → .aif 삭제 → 저장·닫기 → 번들 이동."""
-    for old in (f'{sid}-{ver}.aif', f'{sid}-{ver}.wav'):
-        p = os.path.join(BOUNCE_DIR, old)
-        if os.path.exists(p):
-            os.remove(p)
+    # 탐색 폴더 전부에서 동명 잔재를 지운다 — 다른 폴더의 옛 .aif 를 새 바운스로 오인하지 않도록.
+    for d in BOUNCE_SEARCH:
+        for old in (f'{sid}-{ver}.aif', f'{sid}-{ver}.wav' if d == BOUNCE_DIR else None):
+            if old and os.path.exists(os.path.join(d, old)):
+                os.remove(os.path.join(d, old))
     close_stray()
     osa(f'''tell application "System Events"
 tell process "{APP}"
@@ -697,8 +720,8 @@ end tell''')
     ok2, m2 = start_bounce_aiff(proj, f'{sid}-{ver}')
     if not ok2:
         return dict(ok=False, stage='bounce', msg=m2)
-    aif = os.path.join(BOUNCE_DIR, f'{sid}-{ver}.aif')
-    if not wait_file_stable(aif):
+    aif = wait_bounce_file(f'{sid}-{ver}.aif')
+    if not aif:
         return dict(ok=False, stage='file', msg='aif missing')
     hits = limit_aiff(aif)
     wav = os.path.join(BOUNCE_DIR, f'{sid}-{ver}.wav')

@@ -6,6 +6,9 @@
     "python3 docs/music/tools/fable2_skeletons.py",
     "python3 docs/music/tools/dh_astra.py",
     "python3 docs/music/tools/dh_fable.py",
-    "python3 docs/music/tools/dh_opus.py"
+    "python3 docs/music/tools/dh_opus.py",
+    "python3 docs/music/tools/dh_astra_v2.py",
+    "python3 docs/music/tools/dh_fable_v2.py",
+    "python3 docs/music/tools/dh_opus_v2.py"
   ]
 }
