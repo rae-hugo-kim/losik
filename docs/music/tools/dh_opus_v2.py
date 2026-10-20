@@ -17,8 +17,11 @@ come from dh_opus.py (v1). What changes:
   break compressed to four bars, same survivors), A2 41-56 (crash on 41), outro 57-end
   (drums + bass). Pad and keys end with bar 56; the closer (72 bars) keeps a four-bar tonic
   pad tail into its 16-bar outro and its v1 outro thinning (61-72).
+- 96-bar form ('## 96마디 시험판', 64-bar slots only): A 9-48, break 49-56 (each v2 break bar
+  doubled: 37-38 -> 49-52, 39-40 -> 53-56), A2 57-88, outro 89-96; keys and pad end with 88.
 """
 import os
+from collections import namedtuple
 
 from pipeline import BAR, PPQ, SK_DIR, SW, bt, hum_t, hum_v, seed
 from pipeline import build_smf, write_smf
@@ -26,9 +29,8 @@ import dh_opus
 from dh_opus import BACK, CLAP, CRASH, HAT, KICK, OHAT, RIM, S16, SNARE, clamp, m
 
 TRACKS = [('Drums', 9), ('Bass', 0), ('Keys', 1), ('Pad', 2), ('Tex', 3), ('Perc', 9)]
-MARKERS = [(1, 'intro'), (9, 'A'), (37, 'break'), (41, 'A2'), (57, 'outro')]
 SHAKER, CONGA_HI, CONGA_LO = 82, 63, 64
-KEYS_FROM, KEYS_LAST = 9, 56     # keys, tex and perc stop before the outro (bar 57)
+KEYS_FROM = 9                    # keys, tex and perc stop before the outro (form.keys_last)
 TEX_FROM, SHAKER_FROM, CONGA_FROM = 17, 9, 13
 PAD_VEL = {'intro_lo': 58, 'intro': 62, 'A': 66, 'break': 70, 'A2': 68, 'outro': 58}
 SHAKER_ACC = {0: 40, 1: 38, 2: 50, 3: 40}
@@ -43,6 +45,17 @@ def v2(slot, **kw):
     sp = dict(V1[slot], keys_up=12, pad_last=56)
     sp.update(kw)
     return sp
+
+
+# Section starts: intro 1-8, A from 9, then break / A2 / outro. The closer's 72 bars keep the
+# 64-bar sections (longer outro); 96 bars stretch A, break and A2.
+Form = namedtuple('Form', 'brk a2 outro keys_last markers')
+
+
+def form(n_bars):
+    brk, a2, outro = (49, 57, 89) if n_bars == 96 else (37, 41, 57)
+    return Form(brk, a2, outro, outro - 1,
+                [(1, 'intro'), (9, 'A'), (brk, 'break'), (a2, 'A2'), (outro, 'outro')])
 
 
 # keys: (bar_in_cycle, beat, length_beats, velocity); chord = the one in force half a beat
@@ -128,21 +141,42 @@ SKETCHES = [
 ]
 
 
-def section(b):
-    return ('intro' if b <= 8 else 'A' if b <= 36 else 'break' if b <= 40
-            else 'A2' if b <= 56 else 'outro')
+def section(b, fm):
+    return ('intro' if b <= 8 else 'A' if b < fm.brk else 'break' if b < fm.a2
+            else 'A2' if b < fm.outro else 'outro')
 
 
 def dropped(sp, b, part):
     return any(lo <= b <= hi and part in parts for lo, hi, parts in sp['drops'])
 
 
-def compose(sid):
+def on_form(sp, n_bars=None):
+    """The sketch laid on an n_bars form (default: its own length, returned unchanged). 64 -> 96
+    doubles each v2 break bar and holds the pad to the bar before the outro."""
+    if n_bars is None or n_bars == sp['n_bars']:
+        return sp
+    if (sp['n_bars'], n_bars) != (64, 96):
+        raise ValueError(f"{sp['sid']}: no {n_bars}-bar form for a {sp['n_bars']}-bar sketch")
+    f64, fm = form(64), form(96)
+    drops = []
+    for lo, hi, parts in sp['drops']:
+        if f64.brk <= lo and hi < f64.a2:
+            lo, hi = fm.brk + 2 * (lo - f64.brk), fm.brk + 2 * (hi - f64.brk) + 1
+        elif hi >= f64.brk:
+            raise ValueError(f"{sp['sid']}: drop {lo}-{hi} outside the intro/break")
+        drops.append((lo, hi, parts))
+    return dict(sp, n_bars=n_bars, drops=drops, pad_last=fm.keys_last)
+
+
+def compose(sid, n_bars=None):
     """Return nt, cc, pcs, n_bars, bpm, title, keysig_sf, minor."""
     sp = next((s for s in SKETCHES if s['sid'] == sid), None)
     if sp is None:
         raise ValueError('Unknown sketch: ' + sid)
+    sp = on_form(sp, n_bars)
     n_bars = sp['n_bars']
+    fm = form(n_bars)
+    keys_last = fm.keys_last
     end = n_bars * BAR
     pad_last = sp['pad_last']
     nt = {i: [] for i in range(len(TRACKS))}
@@ -177,7 +211,7 @@ def compose(sid):
         return loop[chord_idx(b)][0]
 
     for b in range(1, n_bars + 1):
-        sec = section(b)
+        sec = section(b, fm)
         o = bt(b)
 
         # ---- drums (v1 recipe; kick from bar 5)
@@ -209,7 +243,7 @@ def compose(sid):
                     note(0, t, int(PPQ * .45), OHAT, clamp(hum_v(ovel, 4), 46, 60))
                 else:
                     note(0, t, 50, HAT, clamp(hum_v(steps[step], 5), 40, 64))
-        if b == 41:
+        if b == fm.a2:
             note(0, o, PPQ, CRASH, 80)
 
         # ---- bass (v1 cell): tonic in outro, chord root in A / break / A2
@@ -227,17 +261,17 @@ def compose(sid):
 
         # ---- keys: octave up, 72-92; CC64 catch / bar re-pedal / release; cut at a keys drop
         seed(base + b * 10 + 3)
-        if KEYS_FROM <= b <= KEYS_LAST and not drop(b, 'keys'):
+        if KEYS_FROM <= b <= keys_last and not drop(b, 'keys'):
             pos = (b - 1) % cycle
             lift = 4 if sec == 'A2' else -4 if sec == 'break' else 0
             for _, beat, dur, v in (ev for ev in sp['keys'] if ev[0] == pos):
                 s = hum_t(bt(b, beat), 6)
                 cb = (bt(b, beat) + PPQ // 2) // BAR + 1
-                if cb > KEYS_LAST or drop(cb, 'keys'):
+                if cb > keys_last or drop(cb, 'keys'):
                     continue
-                e = min(s + int(dur * PPQ), bt(KEYS_LAST + 1) - 1)
+                e = min(s + int(dur * PPQ), bt(keys_last + 1) - 1)
                 nb = cb + 1
-                while nb <= KEYS_LAST and bt(nb) < e:
+                while nb <= keys_last and bt(nb) < e:
                     if drop(nb, 'keys'):
                         e = bt(nb) - 1
                         break
@@ -259,14 +293,14 @@ def compose(sid):
         if b <= 8:
             fresh, nb = b in (1, 5), (5 if b < 5 else 9)
             voice = pad_notes[0]
-        elif b <= KEYS_LAST:
+        elif b <= keys_last:
             fresh = b == 9 or pos in starts or drop(b - 1, 'pad')
             nb = b + 1
-            while nb <= KEYS_LAST and (nb - 1) % cycle not in starts and not drop(nb, 'pad'):
+            while nb <= keys_last and (nb - 1) % cycle not in starts and not drop(nb, 'pad'):
                 nb += 1
             voice = pad_notes[chord_idx(b)]
         else:
-            fresh, nb = b == KEYS_LAST + 1, pad_last + 1
+            fresh, nb = b == keys_last + 1, pad_last + 1
             voice = pad_notes[0]
         if b <= pad_last and fresh and not drop(b, 'pad'):
             seed(base + b * 10 + 4)
@@ -326,12 +360,13 @@ def audit(sp, nt, n_bars):
     tp = [p for _, _, p, _ in nt[4]]
     tv = [v for _, _, _, v in nt[4]]
     tex_bars = {bar_of(t) for t, _, _, _ in nt[4]}
-    in_a, in_a2 = set(range(9, 37)), set(range(41, 57))
+    fm = form(n_bars)
+    in_a, in_a2 = set(range(9, fm.brk)), set(range(fm.a2, fm.outro))
     last_end = max(t + d for tr in nt.values() for t, d, _, _ in tr)
     ok = (28 <= min(bass) and max(bass) <= 45
           and 60 <= min(kp) and max(kp) <= 84 and 72 <= min(kv) and max(kv) <= 92
           and 55 <= min(pv) and max(pv) <= 72 and pad_voices == {3} and first_bar(nt[3]) == 1
-          and last_bar(nt[3]) <= sp['pad_last'] and last_bar(nt[2]) <= KEYS_LAST
+          and last_bar(nt[3]) <= sp['pad_last'] and last_bar(nt[2]) <= fm.keys_last
           and max(tp) - min(tp) <= 12 and 55 <= min(tv) and max(tv) <= 70
           and tex_bars <= in_a | in_a2 and tex_bars & in_a and tex_bars & in_a2
           and last_end <= n_bars * BAR)
@@ -349,7 +384,8 @@ if __name__ == '__main__':
     lines = []
     for sk in (s for s in SKETCHES if s['sid'] in want):
         nt, cc, pcs, n_bars, bpm, title, sf, minor = compose(sk['sid'])
-        smf = build_smf(title, bpm, sf, minor, n_bars, TRACKS, pcs, nt, cc, markers=MARKERS)
+        smf = build_smf(title, bpm, sf, minor, n_bars, TRACKS, pcs, nt, cc,
+                        markers=form(n_bars).markers)
         print(f'slot {sk["slot"]:02d} ' + write_smf(os.path.join(SK_DIR, sk['sid'] + '-v2.mid'), smf))
         lines.append(audit(sk, nt, n_bars))
         print(lines[-1])

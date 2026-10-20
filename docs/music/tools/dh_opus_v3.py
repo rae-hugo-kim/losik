@@ -20,6 +20,8 @@ rebuilt. Every element owns its slot (sixteenth steps 0-15 of a bar):
 - Shaker: removed. Perc (PC0 SoCal) is a per-slot two-bar conga cell on free steps
   (1/3/5/7/9/11), 70-85, A from bar 13 and A2.
 - Humanize: timing +-8, velocity +-8, clamped inside each role's band so accents hold.
+- `--bars 96` (or compose(sid, n_bars=96)) lays a 64-bar slot on the '## 96마디 시험판' form
+  (dh_opus_v2.on_form): ride/crash from A2 bar 57, toms on 16/48/88, break 49-56 -> {sid}-v3l.mid.
 """
 import os
 import struct
@@ -29,8 +31,8 @@ from pipeline import BAR, PPQ, SK_DIR, SW, bt, hum_t, hum_v, seed
 from pipeline import build_smf, write_smf
 import dh_opus_v2
 from dh_opus import CLAP, CRASH, HAT, KICK, OHAT, S16, SNARE, clamp
-from dh_opus_v2 import (CONGA_FROM, CONGA_HI, CONGA_LO, MARKERS, TRACKS, bar_of, dropped,
-                        first_bar, last_bar, section)
+from dh_opus_v2 import (CONGA_FROM, CONGA_HI, CONGA_LO, TRACKS, bar_of, dropped, first_bar,
+                        form, last_bar, on_form, section)
 
 RIDE, TOM_LO, TOM_MID, TOM_HI = 51, 45, 47, 50
 HUM = 8
@@ -39,19 +41,23 @@ HAT_ON, HAT_OFF, HAT_16 = (56, (50, 62)), (82, (74, 90)), (45, (40, 49))
 ON_STEPS, OFF_STEPS, OH_STEPS, CONGA_STEPS = (0, 4, 8, 12), (2, 10), (6, 14), {1, 3, 5, 7, 9, 11}
 OH_VEL = {'intro': 68, 'A': 72, 'break': 66, 'A2': 76, 'outro': 70}
 RIDE_V = {0: (72, (68, 75)), 1: (64, (60, 67))}
-RIDE_BARS, BACK_FROM, FILL_BARS, BREAK = (41, 56), 9, (16, 36, 56), range(37, 41)
+BACK_FROM = 9
 E_OFF = {1: -4, 2: -2, 2.5: -1, 3: 0}                        # open hat / snare level by energy
 
 V2 = {s['slot']: s for s in dh_opus_v2.SKETCHES}
 
 
+def fill_bars(fm):
+    """Tom fill bars: 16, the last A bar, the last A2 bar (16/36/56 at 64, 16/48/88 at 96)."""
+    return 16, fm.brk - 1, fm.keys_last
+
+
 def v3(slot, fills, conga, notes):
-    """fills: three (pitch_step13, pitch_step15) pairs for bars 16/36/56;
+    """fills: three (pitch_step13, pitch_step15) pairs for the fill bars;
     conga: two-bar cell [(step, pitch, velocity)] per bar."""
     sp = V2[slot]
     return dict(sp, pcs=(16,) + sp['pcs'][1:5] + (0,), notes=notes,
-                fills={b: [(13, a, 84 + 2 * i), (15, c, 92 + 2 * i)]
-                       for i, (b, (a, c)) in enumerate(zip(FILL_BARS, fills))},
+                fills=[[(13, a, 84 + 2 * i), (15, c, 92 + 2 * i)] for i, (a, c) in enumerate(fills)],
                 conga=conga, s16=(13,) if sp['energy'] >= 2 else ())
 
 
@@ -95,12 +101,19 @@ SKETCHES = [
 ]
 
 
-def compose(sid):
-    """Return nt, cc, pcs, n_bars, bpm, title, keysig_sf, minor."""
+def sketch(sid, n_bars=None):
+    """The v3 sketch on an n_bars form, fills keyed by that form's fill bars."""
     sp = next((s for s in SKETCHES if s['sid'] == sid), None)
     if sp is None:
         raise ValueError('Unknown sketch: ' + sid)
-    nt, cc, _, n_bars, bpm, title, sf, minor = dh_opus_v2.compose(sid)
+    sp = on_form(sp, n_bars)
+    return dict(sp, fills=dict(zip(fill_bars(form(sp['n_bars'])), sp['fills'])))
+
+
+def compose(sid, n_bars=None):
+    """Return nt, cc, pcs, n_bars, bpm, title, keysig_sf, minor."""
+    sp = sketch(sid, n_bars)
+    nt, cc, _, n_bars, bpm, title, sf, minor = dh_opus_v2.compose(sid, sp['n_bars'])
     pcs = {i: sp['pcs'][i] for i in range(len(TRACKS))}
     nt[0], nt[5] = drums(sp, n_bars)
     return nt, cc, pcs, n_bars, bpm, title, sf, minor
@@ -116,6 +129,7 @@ def kick_beats(sp, b):
 def drums(sp, n_bars):
     """Drums and Perc note lists; each element on its own steps."""
     end = n_bars * BAR
+    fm = form(n_bars)
     base = sp['slot'] * 100000 + 31
     off = E_OFF[sp['energy']]
     dr, pc = [], []
@@ -135,10 +149,10 @@ def drums(sp, n_bars):
         return hum_t(o + step * S16 + shift, HUM)
 
     for b in range(1, n_bars + 1):
-        sec = section(b)
+        sec = section(b, fm)
         o = bt(b)
         fill = sp['fills'].get(b, [])
-        ride_on = RIDE_BARS[0] <= b <= RIDE_BARS[1]
+        ride_on = fm.a2 <= b <= fm.keys_last
 
         # ---- kick, backbeat, toms, crash
         seed(base + b * 10)
@@ -152,7 +166,7 @@ def drums(sp, n_bars):
                 note(dr, t, 110, CLAP, clamp(hum_v(86 + off // 2, HUM), 80, 92))
         for step, pitch, v in fill:
             note(dr, hum_t(o + step * S16, HUM), 160, pitch, clamp(hum_v(v, HUM), 80, 100))
-        if b == 41:
+        if b == fm.a2:
             note(dr, o, PPQ, CRASH, 80)
 
         # ---- cymbals: closed hat + open hat together (a hats-out bar loses both), ride
@@ -169,7 +183,7 @@ def drums(sp, n_bars):
                 note(dr, at(o, step), 180, OHAT, clamp(hum_v(OH_VEL[sec] + off, HUM), 65, 80))
         if ride_on:
             for beat in range(4):
-                if b == 41 and beat == 0:
+                if b == fm.a2 and beat == 0:
                     continue
                 note(dr, hum_t(bt(b, beat), HUM), int(PPQ * .9), RIDE, hv(RIDE_V[beat % 2]))
 
@@ -239,6 +253,8 @@ def audit(sp, nt, n_bars):
     """Drum ranges and slot ownership vs the v3 table + rollout fixes; FAIL flags misses."""
     dr, pc = nt[0], nt[5]
     bars = range(1, n_bars + 1)
+    fm = form(n_bars)
+    brk = range(fm.brk, fm.a2)
 
     def sel(pitches, steps=None):
         return [(t, v) for t, _, p, v in dr if p in pitches
@@ -252,15 +268,15 @@ def audit(sp, nt, n_bars):
     hoff = [v for t, v in sel({HAT}, set(OFF_STEPS))]
     h16 = [v for t, v in sel({HAT}, {13})]
     hat_steps = {step_of(t)[1] for t, _ in sel({HAT})}
-    a2_on = [t for t, _ in sel({HAT}, set(ON_STEPS)) if RIDE_BARS[0] <= bar_of(t) <= RIDE_BARS[1]]
+    a2_on = [t for t, _ in sel({HAT}, set(ON_STEPS)) if fm.a2 <= bar_of(t) <= fm.keys_last]
     ohs = sel({OHAT})
     ohv = [v for _, v in ohs]
     oh_bar = Counter(bar_of(t) for t, _ in ohs)
     hat_bars = {bar_of(t) for t, _ in sel({HAT})}
     oh_ok = all(oh_bar.get(b, 0) == (2 if b in hat_bars else 0) for b in bars)
-    oh_out = [oh_bar.get(b, 0) for b in bars if b not in BREAK]
-    oh_zero = [b for b in bars if b not in BREAK and not oh_bar.get(b)]
-    oh_brk = [oh_bar.get(b, 0) for b in BREAK]
+    oh_out = [oh_bar.get(b, 0) for b in bars if b not in brk]
+    oh_zero = [b for b in bars if b not in brk and not oh_bar.get(b)]
+    oh_brk = [oh_bar.get(b, 0) for b in brk]
     sn = [v for _, v in sel({SNARE})]
     cl = [v for _, v in sel({CLAP})]
     want_back = {b for b in bars if b >= BACK_FROM and not dropped(sp, b, 'back')}
@@ -283,7 +299,7 @@ def audit(sp, nt, n_bars):
           and oh_ok and 65 <= min(ohv) and max(ohv) <= 80
           and all(d == 180 for t, d, p, _ in dr if p == OHAT and t + 180 < n_bars * BAR)
           and 88 <= min(sn) and max(sn) <= 100 and 80 <= min(cl) and max(cl) <= 92 and back_ok
-          and ri_bars == list(range(RIDE_BARS[0], RIDE_BARS[1] + 1))
+          and ri_bars == list(range(fm.a2, fm.keys_last + 1))
           and 60 <= min(riv) and max(riv) <= 75
           and tom_slots == want_toms and 80 <= min(tov) and max(tov) <= 100
           and all(p in (CONGA_HI, CONGA_LO) for _, _, p, _ in pc)
@@ -294,17 +310,52 @@ def audit(sp, nt, n_bars):
                 f'16th@13 {rng(h16)} steps {sorted(hat_steps)} '
                 f'step15={"PRESENT" if 15 in hat_steps else "none"} A2-on-beat={len(a2_on)} '
                 f'| open-hat {rng(ohv)} per bar outside break {min(oh_out)}-{max(oh_out)}{zero}, '
-                f'break 37-40 {oh_brk} | snare {rng(sn)} clap {rng(cl)} bars '
+                f'break {spans(brk)} {oh_brk} | snare {rng(sn)} clap {rng(cl)} bars '
                 f'{spans({bar_of(t) for t, _ in sel({SNARE})})} | ride {rng(riv)} bars '
                 f'{spans(ri_bars)} | tom {rng(tov)} bars {spans({b for b, _ in tom_slots})} '
                 f'| conga {rng(cg)} n={len(cg)}')
 
 
-def identical(sid, nt, cc, smf):
+def form_check(sp, nt, n_bars):
+    """Section map read back from the notes: hats/bass/kick-out bars equal the slot's (stretched)
+    drops (bass bars counted while sounding; the v1 cell's rest bars aside), one crash on the A2
+    downbeat, Tex only in A (from 17) and A2, keys 9 to the bar before the outro, pad 1 to pad_last."""
+    fm = form(n_bars)
+    bars = range(1, n_bars + 1)
+
+    def on(track, pitches=None):
+        return {bar_of(t) for t, _, p, _ in nt[track] if pitches is None or p in pitches}
+
+    hats_out = [b for b in bars if b not in on(0, {HAT})]
+    rest = {b for b in range(9, n_bars + 1) if not sp['bass'][(b - 1) % len(sp['bass'])]}
+    bass_on = {b for t, d, _, _ in nt[1] for b in range(bar_of(t), (t + d - 1) // BAR + 2)}
+    bass_out = [b for b in range(9, n_bars + 1) if b not in bass_on | rest]
+    kick_out = [b for b in bars if b not in on(0, {KICK})]
+    crash = sorted(bar_of(t) for t, _, p, _ in nt[0] if p == CRASH)
+    tex = on(4)
+    want_tex = set(range(dh_opus_v2.TEX_FROM, fm.brk)) | set(range(fm.a2, fm.outro))
+    keys = (first_bar(nt[2]), last_bar(nt[2]))
+    pad = (first_bar(nt[3]), last_bar(nt[3]))
+    ok = (hats_out == [b for b in bars if dropped(sp, b, 'hats')]
+          and bass_out == [b for b in range(9, n_bars + 1)
+                           if b not in rest and dropped(sp, b, 'bass')]
+          and kick_out == [b for b in bars if dropped(sp, b, 'kick')]
+          and crash == [fm.a2] and tex == want_tex
+          and keys == (dh_opus_v2.KEYS_FROM, fm.keys_last) and pad == (1, sp['pad_last']))
+    return ok, (f'  form {"OK" if ok else "FAIL"} {n_bars} bars markers '
+                f'{" / ".join(f"{name} {b}" for b, name in fm.markers)} | hats-out '
+                f'{spans(hats_out)} | bass-out {spans(bass_out)} (+{len(rest)} cell-rest bars) '
+                f'| kick-out {spans(kick_out)} '
+                f'| crash {spans(crash)} | tex {spans(tex)} | keys {keys[0]}-{keys[1]} '
+                f'| pad {pad[0]}-{pad[1]}')
+
+
+def identical(sid, nt, cc, smf, n_bars):
     """Non-drum tracks (Bass, Keys, Pad, Tex) vs a fresh v2 build: note/CC lists and MTrk bytes."""
-    nt2, cc2, pcs2, n_bars, bpm, title, sf, minor = dh_opus_v2.compose(sid)
+    nt2, cc2, pcs2, n_bars, bpm, title, sf, minor = dh_opus_v2.compose(sid, n_bars)
     same_lists = all(nt[i] == nt2[i] and cc[i] == cc2[i] for i in range(1, 5))
-    mem = build_smf(title, bpm, sf, minor, n_bars, TRACKS, pcs2, nt2, cc2, markers=MARKERS)
+    mem = build_smf(title, bpm, sf, minor, n_bars, TRACKS, pcs2, nt2, cc2,
+                    markers=form(n_bars).markers)
     same_mem = chunks(smf)[2:6] == chunks(mem)[2:6]
     n = sum(len(nt[i]) for i in range(1, 5))
     ok = same_lists and same_mem
@@ -334,30 +385,46 @@ def drum_diff(old, new):
 
 
 if __name__ == '__main__':
+    import argparse
     import sys
+    ap = argparse.ArgumentParser()
+    ap.add_argument('--bars', type=int, default=None, help='64(기본) 또는 96; 96 은 64마디 슬롯에만, 파일명 {sid}-v3l.mid')
+    ap.add_argument('sids', nargs='*')
+    a = ap.parse_args()
+    n = a.bars
+    known = {s['sid'] for s in SKETCHES}
+    if set(a.sids) - known:
+        ap.error(f'unknown sid: {sorted(set(a.sids) - known)}')
+    if n not in (None, 64) and not a.sids:
+        ap.error('--bars 96 requires explicit sids (the 72-bar closer cannot be stretched)')
+    tag = 'v3l' if n not in (None, 64) else 'v3'
     oks = []
-    for sk in SKETCHES:
-        nt, cc, pcs, n_bars, bpm, title, sf, minor = compose(sk['sid'])
-        smf = build_smf(title, bpm, sf, minor, n_bars, TRACKS, pcs, nt, cc, markers=MARKERS)
-        path = os.path.join(SK_DIR, sk['sid'] + '-v3.mid')
+    for sk in (s for s in SKETCHES if not a.sids or s['sid'] in a.sids):
+        sp = sketch(sk['sid'], n)
+        nt, cc, pcs, n_bars, bpm, title, sf, minor = compose(sk['sid'], n)
+        smf = build_smf(title, bpm, sf, minor, n_bars, TRACKS, pcs, nt, cc,
+                        markers=form(n_bars).markers)
+        path = os.path.join(SK_DIR, f'{sk["sid"]}-{tag}.mid')
         old = None
         if os.path.exists(path):
             with open(path, 'rb') as f:
                 old = f.read()
         print(f'slot {sk["slot"]:02d} ' + write_smf(path, smf))
-        ok1, line = audit(sk, nt, n_bars)
-        ok2, ident = identical(sk['sid'], nt, cc, smf)
-        layers = dh_opus_v2.audit(sk, nt, n_bars)
+        ok1, line = audit(sp, nt, n_bars)
+        ok2, ident = identical(sk['sid'], nt, cc, smf, n_bars)
+        ok3, fline = form_check(sp, nt, n_bars)
+        layers = dh_opus_v2.audit(sp, nt, n_bars)
         total = sum(len(v) for v in nt.values())
         last_end = max(t + d for tr in nt.values() for t, d, _, _ in tr)
         print(line)
         print(layers)
+        print(fline)
         print(ident)
         print(f'  total notes {total} | last note ends in bar {(last_end - 1) // BAR + 1}/{n_bars} '
               f'| pcs {[pcs[i] for i in range(len(TRACKS))]}')
         if old is not None:
-            print(f'  on-disk v3 bytes {"identical" if old == smf else "changed"}')
+            print(f'  on-disk {tag} bytes {"identical" if old == smf else "changed"}')
             if old != smf:
                 print(drum_diff(old, smf))
-        oks.append(ok1 and ok2 and 'FAIL' not in layers)
+        oks.append(ok1 and ok2 and ok3 and 'FAIL' not in layers)
     sys.exit(0 if all(oks) else 1)

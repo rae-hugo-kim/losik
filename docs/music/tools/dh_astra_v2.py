@@ -15,33 +15,62 @@ SKETCHES = [dict(sp, pad=True, key_v=80, held=True) for sp in v1.SKETCHES]
 SHAKER, CONGA_HIGH, CONGA_LOW = 82, 63, 64
 
 
-def is_a(bar):
-    return 9 <= bar <= 36 or 41 <= bar <= 56
+def markers(n_bars=64):
+    if n_bars == 64:
+        return MARKERS
+    if n_bars == 96:
+        return [(1, 'intro'), (9, 'A'), (49, 'break'), (57, 'A2'), (89, 'outro')]
+    raise ValueError('n_bars must be 64 or 96')
 
 
-def active_parts(sp, bar):
-    """Compress the original break into two two-bar rooms."""
-    source_bar = (33, 34, 37, 38)[bar - 37] if 37 <= bar <= 40 else 1
+def is_a(bar, n_bars=64):
+    section = markers(n_bars)
+    return section[1][0] <= bar < section[2][0] or section[3][0] <= bar < section[4][0]
+
+
+def active_parts(sp, bar, n_bars=64):
+    """Preserve v2's two break rooms, stretching each to four bars at 96."""
+    break_start, a2_start = markers(n_bars)[2][0], markers(n_bars)[3][0]
+    source_bar = 1
+    if break_start <= bar < a2_start:
+        offset = bar - break_start
+        room_length = (a2_start - break_start) // 2
+        source_bar = 33 + 4 * (offset // room_length) + offset % 2
     return v1.active_parts(sp, source_bar)
 
-def compose(sid):
+
+def compose(sid, n_bars=64):
     """Return nt, cc, pcs, n_bars, bpm, title, keysig_sf, minor."""
+    section = markers(n_bars)
+    a2_start, outro_start = section[3][0], section[4][0]
     sp = next(item for item in SKETCHES if item['sid'] == sid)
-    original, _, _, n_bars, bpm, title, keysig_sf, minor = v1.compose(sid)
+    original, _, _, _, bpm, title, keysig_sf, minor = v1.compose(sid)
     nt = {i: [] for i in range(len(TRACKS))}
     cc = {i: [] for i in range(len(TRACKS))}
     pcs = {0: 25, 1: sp['bass_pc'], 2: sp['key_pc'], 3: 89, 4: 4, 5: 25}
     for bar in range(1, n_bars + 1):
         source_bar = (bar - 8 if 33 <= bar <= 36 else
                       (33, 34, 37, 38)[bar - 37] if 37 <= bar <= 40 else bar)
+        if n_bars == 96:
+            source_bar = (bar if bar < 17 else
+                          57 + bar - outro_start if bar >= outro_start else
+                          41 + (bar - a2_start) % 16 if bar >= a2_start else
+                          17 + (bar - 17) % 16)
         for tick, duration, pitch, velocity in original[0]:
             if bt(source_bar) <= tick < bt(source_bar + 1):
+                if n_bars == 96 and (pitch == v1.CRASH and bar != a2_start
+                                     or pitch != v1.CRASH and
+                                     {v1.KICK: 'kick', v1.HAT: 'hats',
+                                      v1.OPEN_HAT: 'hats'}.get(pitch, 'back')
+                                     not in active_parts(sp, bar, n_bars)):
+                    continue
                 if pitch != v1.KICK or bar >= 5:
                     nt[0].append((tick + (bar - source_bar) * BAR,
                                   duration, pitch, velocity))
-        if 'bass' in active_parts(sp, bar):
+        if 'bass' in active_parts(sp, bar, n_bars):
             # Keep the existing cell and humanization wherever it already plays.
-            bass_bar = bar if 'bass' in v1.active_parts(sp, bar) else bar - 8
+            bass_bar = (source_bar if n_bars == 96 else
+                        bar if 'bass' in v1.active_parts(sp, bar) else bar - 8)
             nt[1].extend((tick + (bar - bass_bar) * BAR, duration, pitch, velocity)
                          for tick, duration, pitch, velocity in original[1]
                          if bt(bass_bar) <= tick < bt(bass_bar + 1))
@@ -57,18 +86,18 @@ def compose(sid):
         nt[track].append((onset, stop - onset, pitch, velocity))
 
     for bar in range(1, n_bars + 1):
-        parts = active_parts(sp, bar)
-        if bar <= 56 and 'pad' in parts:
+        parts = active_parts(sp, bar, n_bars)
+        if bar < outro_start and 'pad' in parts:
             velocity = hum_v(63, 7)
             for pitch in pad_voicing:
                 add(3, bar, 0, 3.95, pitch, velocity)
         voicing = tuple(pitch + 12 for pitch in v1.chord_at(sp, bar))
-        if 9 <= bar <= 56 and 'keys' in parts:
-            velocity = hum_v(sp['key_v'] + (4 if bar >= 41 else 0), 8)
+        if 9 <= bar < outro_start and 'keys' in parts:
+            velocity = hum_v(sp['key_v'] + (4 if bar >= a2_start else 0), 8)
             for pitch in voicing:
                 add(2, bar, 0, 3.95, pitch, velocity)
             cc[2].extend(((bt(bar), 64, 100), (bt(bar + 1) - 8, 64, 0)))
-        if not is_a(bar):
+        if not is_a(bar, n_bars):
             continue
 
         # Chord tones cycle within one octave; there is no separate lead phrase.

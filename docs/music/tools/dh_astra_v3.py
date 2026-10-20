@@ -1,6 +1,6 @@
 """Astra's ten v3 tracks: v2 harmonic layers and separated Tough Kit drums."""
+import argparse
 import os
-from collections import Counter
 
 import dh_astra_v2 as v2
 from pipeline import BAR, PPQ, SK_DIR, SW, bt, build_smf, hum_t, hum_v, seed, write_smf
@@ -11,12 +11,14 @@ MARKERS = v2.MARKERS
 KICK, SNARE, CLAP, HAT, OPEN_HAT, RIDE = 36, 38, 39, 42, 46, 51
 TOMS = (45, 47, 50)
 CONGAS = (63, 64)
-FILL_BARS = (16, 36, 56)
 
 
-def compose(sid):
+def compose(sid, n_bars=64):
     """Replace only v2's drum/percussion lists and their kit programs."""
-    nt, cc, pcs, n_bars, bpm, title, keysig_sf, minor = v2.compose(sid)
+    section = v2.markers(n_bars)
+    break_start, a2_start, outro_start = (item[0] for item in section[2:])
+    fill_bars = (16, break_start - 1, outro_start - 1)
+    nt, cc, pcs, n_bars, bpm, title, keysig_sf, minor = v2.compose(sid, n_bars)
     sp = next(item for item in SKETCHES if item['sid'] == sid)
     # Keep the return crash and original backbeat entrance as arrangement cues.
     crash = [note for note in nt[0] if note[2] == v2.v1.CRASH]
@@ -35,7 +37,7 @@ def compose(sid):
         return onset
 
     for bar in range(1, n_bars + 1):
-        parts = v2.active_parts(sp, bar)
+        parts = v2.active_parts(sp, bar, n_bars)
         if 'kick' in parts and bar >= 5:
             base = velocity(103, 100, 106)
             for beat in range(4):
@@ -50,24 +52,24 @@ def compose(sid):
                 add(0, bar, beat, HAT, velocity(82, 74, 90), 48)
             for beat in (1.5, 3.5):
                 add(0, bar, beat, OPEN_HAT,
-                    velocity(74 if 41 <= bar <= 56 else 71, 65, 80), 180)
+                    velocity(74 if a2_start <= bar < outro_start else 71, 65, 80), 180)
         if 'back' in parts and bar >= sp['back_start']:
             for beat in (1, 3):
                 onset = add(0, bar, beat, SNARE, velocity(94, 88, 100), 67)
                 nt[0].append((onset, 67, CLAP, velocity(86, 80, 92)))
-        if 41 <= bar <= 56:
+        if a2_start <= bar < outro_start:
             for beat in range(4):
                 add(0, bar, beat, RIDE, velocity(67, 60, 75), 100)
-        if bar in FILL_BARS:
+        if bar in fill_bars:
             # Two sixteenths leave the &4 open hat its full 180-tick tail.
             add(0, bar, 3.25, 50 if bar == 16 else 47, velocity(88, 80, 96))
             add(0, bar, 3.75, 45, velocity(94, 86, 102))
-        if v2.is_a(bar):
+        if v2.is_a(bar, n_bars):
             cell = ((0.75, 63), (2.75, 64)) if bar % 2 else ((1.75, 63),)
             for beat, pitch in cell:
                 add(5, bar, beat, pitch, velocity(77, 70, 85), 72)
     nt[0] = [note for note in nt[0]
-             if not (note[2] == HAT and bt(41) <= note[0] < bt(57)
+             if not (note[2] == HAT and bt(a2_start) <= note[0] < bt(outro_start)
                      and round((note[0] % BAR) / (PPQ / 4)) % 4 == 0)]
     nt[0].sort()
     nt[5].sort()
@@ -87,13 +89,16 @@ def smf_chunks(smf):
 
 def range_check(sid, result, smf):
     nt, cc, pcs, n_bars, bpm, title, keysig_sf, minor = result
-    original = v2.compose(sid)
+    section = v2.markers(n_bars)
+    break_start, a2_start, outro_start = (item[0] for item in section[2:])
+    fill_bars = (16, break_start - 1, outro_start - 1)
+    original = v2.compose(sid, n_bars)
     old_nt, old_cc, old_pcs = original[:3]
     assert result[3:] == original[3:]
     assert pcs[0] == 16 and pcs[5] == 0
     assert cc == old_cc
     old_smf = build_smf(title, bpm, keysig_sf, minor, n_bars,
-                        v2.TRACKS, old_pcs, old_nt, old_cc, v2.MARKERS)
+                        v2.TRACKS, old_pcs, old_nt, old_cc, section)
     chunks, old_chunks = smf_chunks(smf), smf_chunks(old_smf)
     assert chunks[0] == old_chunks[0]
     for track in (1, 2, 3, 4):
@@ -105,6 +110,8 @@ def range_check(sid, result, smf):
         KICK, SNARE, CLAP, HAT, OPEN_HAT, RIDE, *TOMS, v2.v1.CRASH}
     assert all(0 <= tick < tick + duration < bt(n_bars + 1)
                for notes in nt.values() for tick, duration, _, _ in notes)
+    assert [(t, p) for t, _, p, _ in nt[0] if p == v2.v1.CRASH] == [
+        (bt(a2_start), v2.v1.CRASH)]
 
     def step(note):
         return round((note[0] % BAR) / (PPQ / 4))
@@ -134,13 +141,14 @@ def range_check(sid, result, smf):
         notes = [n for n in nt[0] if bt(bar) <= n[0] < bt(bar + 1)]
         opened = [n for n in notes if n[2] == OPEN_HAT]
         open_counts.append(len(opened))
-        parts = v2.active_parts(sp, bar)
+        parts = v2.active_parts(sp, bar, n_bars)
         assert len(opened) == (2 if 'hats' in parts else 0)
         if opened:
             assert {step(n) for n in opened} == {6, 14}
             assert all(n[1] == 180 for n in opened)
         hats = [n for n in notes if n[2] == HAT]
-        expected_hats = ({2, 10} if 41 <= bar <= 56 else {0, 2, 4, 8, 10, 12})
+        expected_hats = ({2, 10} if a2_start <= bar < outro_start
+                         else {0, 2, 4, 8, 10, 12})
         assert {step(n) for n in hats} == (expected_hats if 'hats' in parts else set())
         assert all(step(n) != 15 for n in hats)
         kicks = [n for n in notes if n[2] == KICK]
@@ -156,13 +164,13 @@ def range_check(sid, result, smf):
         if snares:
             assert {step(n) for n in snares} == {4, 12}
         rides = [n for n in notes if n[2] == RIDE]
-        assert len(rides) == (4 if 41 <= bar <= 56 else 0)
+        assert len(rides) == (4 if a2_start <= bar < outro_start else 0)
         toms = [n for n in notes if n[2] in TOMS]
-        assert len(toms) == (2 if bar in FILL_BARS else 0)
+        assert len(toms) == (2 if bar in fill_bars else 0)
         assert all(step(n) in (13, 15) for n in toms)
     for bar in range(1, n_bars + 1, 2):
         cell = [n for n in nt[5] if bt(bar) <= n[0] < bt(bar + 2)]
-        assert len(cell) == (3 if v2.is_a(bar) else 0)
+        assert len(cell) == (3 if v2.is_a(bar, n_bars) else 0)
     for track in (0, 5):
         for note in nt[track]:
             bar = note[0] // BAR + 1
@@ -171,86 +179,66 @@ def range_check(sid, result, smf):
             assert abs(note[0] - nominal) <= 8
     assert min(n[0] for n in nt[3]) == 0
     assert {n[0] // BAR + 1 for n in nt[4]} == {
-        bar for bar in range(1, n_bars + 1) if v2.is_a(bar)}
+        bar for bar in range(1, n_bars + 1) if v2.is_a(bar, n_bars)}
     layer_ranges = []
     for track, low, high in ((2, 72, 92), (3, 55, 72), (4, 55, 70)):
         velocities = [n[3] for n in nt[track]]
         assert low <= min(velocities) <= max(velocities) <= high
         layer_ranges.append(f'{TRACKS[track][0]}={min(velocities)}..{max(velocities)}')
     for bar in range(1, n_bars + 1):
-        parts = v2.active_parts(sp, bar)
-        for track, active in ((2, 9 <= bar <= 56 and 'keys' in parts),
-                              (3, bar <= 56 and 'pad' in parts)):
+        parts = v2.active_parts(sp, bar, n_bars)
+        for track, active in ((2, 9 <= bar < outro_start and 'keys' in parts),
+                              (3, bar < outro_start and 'pad' in parts)):
             notes = [n for n in nt[track] if bt(bar) <= n[0] < bt(bar + 1)]
             assert bool(notes) == active
-        if v2.is_a(bar):
+        if v2.is_a(bar, n_bars):
             texture = [n[2] for n in nt[4] if bt(bar) <= n[0] < bt(bar + 1)]
             assert max(texture) - min(texture) < 12
+            assert {pitch % 12 for pitch in texture} == {
+                pitch % 12 for pitch in v2.v1.chord_at(sp, bar)}
     total = sum(len(notes) for notes in nt.values())
     last = max(t + d for notes in nt.values() for t, d, _, _ in notes)
     return (
-        f"check {sid} PASS {' '.join(ranges)} "
-        f"open-hat_per_bar_outside_break=2 break={open_counts[36:40]} "
-        f"ride_bars=41-56 tom_bars=16,36,56 step15_hats=0 A2_onbeat_hats=0 "
+        f"check {sid} PASS bars={n_bars} {' '.join(ranges)} "
+        f"open-hat_per_bar_outside_break=2 break={open_counts[break_start - 1:a2_start - 1]} "
+        f"crash_bar={a2_start} ride_bars={a2_start}-{outro_start - 1} "
+        f"tom_bars={','.join(map(str, fill_bars))} step15_hats=0 A2_onbeat_hats=0 "
         f"pad_first_bar=1 Tex=A/A2 {' '.join(layer_ranges)} "
         f"non_drums_v2=byte-identical notes={total} last_note_end_bar={last / BAR:.3f}"
     )
 
 
-def note_on_events(chunk):
-    """Read emitted note-on events for an exact before/after calibration diff."""
-    data = chunk[8:]
-    pos = tick = 0
-    events = Counter()
-    while pos < len(data):
-        delta = 0
-        while True:
-            value = data[pos]
-            pos += 1
-            delta = (delta << 7) | (value & 127)
-            if value < 128:
-                break
-        tick += delta
-        status = data[pos]
-        if status == 0xFF:
-            pos += 3 + data[pos + 2]
-        elif status & 0xF0 in (0xC0, 0xD0):
-            pos += 2
-        else:
-            if status & 0xF0 == 0x90 and data[pos + 2]:
-                events[(tick, data[pos + 1], data[pos + 2])] += 1
-            pos += 3
-    return events
-
-
-def calibration_diff(before, after):
-    old, new = smf_chunks(before), smf_chunks(after)
-    assert all(old[i] == new[i] for i in (0, 2, 3, 4, 5))
-    changes = []
-    for index, name in ((1, 'Drums'), (6, 'Perc')):
-        previous, current = note_on_events(old[index]), note_on_events(new[index])
-        removed, added = previous - current, current - previous
-        for label, events in (('removed', removed), ('added', added)):
-            pitches = Counter()
-            for (_, pitch, _), count in events.items():
-                pitches[pitch] += count
-            changes.append(f'{name}_{label}={dict(sorted(pitches.items()))}')
-    return (f"calibration-diff dh01-unlit-threshold byte_identical={before == after} "
-            f"{' '.join(changes)} non_drums_and_conductor_byte_identical=True")
-
-
-if __name__ == '__main__':
-    calibration_path = os.path.join(SK_DIR, SKETCHES[0]['sid'] + '-v3.mid')
-    with open(calibration_path, 'rb') as calibration:
-        before = calibration.read()
-    os.makedirs(SK_DIR, exist_ok=True)
+def check_64_identity():
+    """Compare all default arrangements to disk without rewriting the references."""
     for sketch in SKETCHES:
         sid = sketch['sid']
         result = compose(sid)
         nt, cc, pcs, n_bars, bpm, title, keysig_sf, minor = result
         smf = build_smf(title, bpm, keysig_sf, minor, n_bars, TRACKS, pcs, nt, cc, MARKERS)
+        range_check(sid, result, smf)
+        with open(os.path.join(SK_DIR, sid + '-v3.mid'), 'rb') as reference:
+            identical = reference.read() == smf
+        print(f'64-bar-byte-identity {sid} {identical}')
+        assert identical, f'{sid}: default 64-bar MIDI changed'
+    print(f'64-bar-byte-identity PASS {len(SKETCHES)}/{len(SKETCHES)}')
+
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--bars', type=int, choices=(64, 96), default=64)
+    parser.add_argument('sid', nargs='?', choices=[sp['sid'] for sp in SKETCHES])
+    args = parser.parse_args()
+    check_64_identity()
+    os.makedirs(SK_DIR, exist_ok=True)
+    for sketch in SKETCHES:
+        sid = sketch['sid']
+        if args.sid is not None and sid != args.sid:
+            continue
+        result = compose(sid, n_bars=args.bars)
+        nt, cc, pcs, n_bars, bpm, title, keysig_sf, minor = result
+        smf = build_smf(title, bpm, keysig_sf, minor, n_bars,
+                        TRACKS, pcs, nt, cc, v2.markers(n_bars))
         line = range_check(sid, result, smf)
-        if sketch['slot'] == 1:
-            print(calibration_diff(before, smf))
-        print(write_smf(os.path.join(SK_DIR, sid + '-v3.mid'), smf))
+        suffix = '-v3l.mid' if n_bars == 96 else '-v3.mid'
+        print(write_smf(os.path.join(SK_DIR, sid + suffix), smf))
         print(line)

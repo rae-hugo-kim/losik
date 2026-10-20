@@ -1560,3 +1560,41 @@ Electric piano eighth-note arpeggio E4-G4-B4 / E4-F#4-B4 in bars 17-36 and 41-56
 Structure: 1-8 intro (pad and hats, kick from bar 5), 9-36 full, 37-40 break with hats, piano and pad (kick, snare, clap and bass out), 41-56 full, then a 16-bar outro: 57-60 drums and bass, snare and clap out at 61, all hats out at 65, bass out at 69 leaving the kick alone, and a single kick on the one of bar 72.
 The lights come up; the set ends. No lead, no vocals, DJ-friendly intro/outro.
 ```
+
+---
+
+# 2026-10-20 96마디 시험판 (Suno 3분 입력 실측) — `{sid}-v3l.wav` 와 함께
+
+구조: 1–8 intro / 9–48 A / 49–56 break(8, 두 단계) / 57–88 A2(57 크래시·라이드) / 89–96 outro. 약 3:10.
+
+## dh01-unlit-threshold-v3l
+**Style**
+`deep house, 117 BPM, A minor, Tough Kit, sub bass, held electric piano, low pad, unlit and spacious, instrumental`
+
+**Description**
+```
+Instrumental deep house at 117 BPM in A minor over a static Am9 rootless shell, with no chord changes.
+Pulse Bass holds A on the and-of-one for most of every other bar, leaving the intervening bar empty; it enters at bar 9.
+Audible electric-piano chords hold through each A/A2 bar with sustain re-pedaled every bar. A low Classic Pad holds A-E-B from bar 1; an eighth-note electric-piano Tex cycle repeats the chord tones C-G-B only in A/A2, never becoming a lead.
+Tough Kit separates a four-on-the-floor kick from bar 5 (beat one 106-112, beats two through four 100-105), soft on-beat closed hats (50-62), stronger closed hats on &1 and &3 (74-90), and 180-tick open hats on &2 and &4 every non-break bar (65-80). No step-15 closed hats.
+Snare (88-100) and layered clap (80-92) enter on beats 2 and 4 at bar 17. A quarter-note ride (60-75) replaces on-beat closed hats in A2; off-beat hats remain. Two tom hits mark beat four of bars 16, 48 and 88, and one crash marks bar 57.
+A separate SoCal Perc track places three conga hits per two-bar cell only in A/A2, on sixteenth gaps away from kicks and open hats; no shaker. Light swing and humanized timing preserve the accents.
+96 bars: 1-8 intro, 9–48 A, 49–56 break, 57–88 A2, 89–96 outro. Start with pad and hats, then add the kick at bar 5. The break removes all drums, percussion, keys, pad and Tex, leaving only the sparse sub-bass cell. The outro removes keys, pad, Tex, congas and ride, leaving drums and bass.
+Feel: an unlit opening room, grounded and patient rather than bright or euphoric; no lead, no vocals, DJ-friendly intro/outro.
+```
+
+## dh15-deep-meridian-v3l
+**Style**
+`peak-time deep house, 122 BPM, B flat minor, punchy four-on-the-floor kick, snare and clap on 2 and 4, off-beat open hats, syncopated sub bass, electric piano minor eleventh and seven-sus chords, organ arpeggio, warm pad, instrumental`
+
+**Description**
+```
+Instrumental deep house at 122 BPM in B flat minor on Bbm11 and Ab7sus4, two bars each; only one voice moves, F to G flat.
+Drums: punchy four-on-the-floor kick with the downbeat accented, snare and clap together on 2 and 4 from bar 9, closed-hat eighths quiet on the beat and accented on the and-of-1 and and-of-3 with one ghost sixteenth after beat 4, an open hat on the and-of-2 and the and-of-4 of every bar that has hats. Bars 57–88 swap the on-beat closed hats for ride quarters, with a crash on bar 57. Two-hit tom fills close bars 16, 48 and 88. A conga figure (four hits per two bars) from bar 13 in the full sections.
+Sub bass from bar 9: a short root on the one, a ghost before beat 3 and a held note on 3; the next bar a root on the one, beat 3 and a short note after beat 4.
+Electric piano an octave up from bar 9: a short stab on the second sixteenth of beat 1 then a hold from the and-of-2; the next bar a hold from the second sixteenth of beat 1 and a short stab after beat 4, sustain pedal.
+Pad from bar 1: three voices (Bb2 F3 C4, then Ab2 Eb3 Bb3), tonic only in the intro.
+Tonewheel organ eighth-note arpeggio F4-Ab4-Db5 / Gb4-Ab4-Db5 in bars 17–48 and 57–88.
+Structure: 1-8 intro (pad and hats, kick from bar 5), 9–48 full, 49–56 break that strips in three steps — all hats out at 49, bass out at 53, kick out at 55, leaving snare, clap, piano and pad — 57–88 full, 89–96 drums and bass only.
+Deep, dark, rolling at the centre of the set. No lead, no vocals, DJ-friendly intro/outro.
+```
