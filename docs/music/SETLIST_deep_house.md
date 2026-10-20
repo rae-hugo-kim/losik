@@ -1,13 +1,13 @@
 # Deep House Set — 2026-10-12
 
-30곡 · 총 **64:19** · 116→123→116 BPM · Camelot 인접 키로 이어짐.
-브리프: `DEEP_HOUSE_SET_BRIEF.md`. 작곡기: `tools/dh_astra.py`(gpt-6-astra) / `tools/dh_fable.py`(claude-fable-5-1) / `tools/dh_opus.py`(claude-opus-5-5). 바운스: `tools/bounce_dh.py` → `/Volumes/Netac 2TB/music/bounces/{sid}-v1.wav`.
+30곡 · 총 **64:18**(v3 WAV 실측) · 116→123→116 BPM · Camelot 인접 키로 이어짐.
+브리프: `DEEP_HOUSE_SET_BRIEF.md`. 작곡기: `tools/dh_astra.py`(gpt-6-astra) / `tools/dh_fable.py`(claude-fable-5-1) / `tools/dh_opus.py`(claude-opus-5-5). 바운스: `tools/bounce_dh.py --ver v3` → `/Volumes/Netac 2TB/music/bounces/{sid}-v3.wav` (v1 은 드럼+베이스 뼈대, v2 는 화성층 보정, **v3 가 현재판**: v2 층 + Tough Kit 드럼. Suno 프롬프트는 `SUNO_PROMPTS.md` 의 `## {sid}-v3` 블록).
 
-모든 곡은 64마디(클로저 72마디) DJ 구조: 1–16 인트로(드럼→베이스→코드) · 17–32 A · 33–40 브레이크 · 41–56 A'(41마디 크래시) · 57–64 아웃트로(드럼+베이스). 인트로/아웃트로가 드럼 위주라 **앞 곡 57마디 ↔ 뒷 곡 1마디를 겹쳐** 믹스하면 된다.
+모든 곡은 64마디(클로저 72마디) DJ 구조(v3): 1–8 인트로(패드+햇 → 5마디 킥) · 9–36 A · 37–40 브레이크 · 41–56 A2(41마디 크래시, 라이드) · 57–64 아웃트로(드럼+베이스). 인트로/아웃트로가 드럼 위주라 **앞 곡 57마디 ↔ 뒷 곡 1마디를 겹쳐** 믹스하면 된다.
 
 ## 셋리스트
 
-| # | sid | 모델 | BPM | 키 | 길이 | E | 코드 루프 | 브레이크(33–40) |
+| # | sid | 모델 | BPM | 키 | 길이 | E | 코드 루프 | 브레이크(37–40, v3) |
 |---|---|---|---|---|---|---|---|---|
 | 1 | dh01-unlit-threshold | astra | 117 | Am | 2:11 | 1 | Am9 정지 | 서브만 |
 | 2 | dh02-ash-corridor | fable | 117 | Am | 2:11 | 1 | Am9 ↔ Bm7♭5/A | 햇만 → 햇+서브 |
@@ -44,7 +44,7 @@
 
 - **1–4 오프닝** (Am→Em, 117–118): 정지 화성·서브 중심. 코드는 암시만.
 - **5–12 안착** (Bm→G♯m, 119–121): 2코드 루프가 드러나고 오르간·EP 색이 하나씩 들어옴.
-- **13–20 deep 피크** (E♭m→Cm, 122–123): 벨로시티 상한, 햇 밀도 최대. 그래도 오픈햇은 2마디에 1개.
+- **13–20 deep 피크** (E♭m→Cm, 122–123): 벨로시티 상한, 햇 밀도 최대. 오픈햇은 & of 2·4(v3).
 - **21–26 드리프트** (Gm→Am, 121–119): 패드·화성 비중 ↑, 브레이크가 길어짐.
 - **27–30 쿨다운** (Dm→Am, 118–116): 드럼이 하나씩 빠지고 클로저는 킥 하나로 끝남.
 

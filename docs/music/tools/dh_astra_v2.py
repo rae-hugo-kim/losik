@@ -1,7 +1,7 @@
-"""Slot 1 v2: audible sustained harmony over the unchanged v1 rhythm cells.
+"""Astra's ten v2 layer recipes, retaining each v1 harmony and bass cell.
 
-Only the intro kick entrance and shortened break alter the drum arrangement.
-The four restored A bars reuse v1 bars 25-28, including their humanization.
+The four-bar break preserves each slot's contrasting original break rooms.
+Slot 1's pitched events retain the original calibration exactly.
 """
 import os
 
@@ -11,14 +11,18 @@ from sketches import PC, mk_chord2
 
 TRACKS = [('Drums', 9), ('Bass', 0), ('Keys', 1), ('Pad', 2), ('Tex', 3), ('Perc', 9)]
 MARKERS = [(1, 'intro'), (9, 'A'), (37, 'break'), (41, 'A2'), (57, 'outro')]
-SKETCHES = [dict(next(sp for sp in v1.SKETCHES if sp['slot'] == 1),
-                 pad=True, key_v=80, held=True)]
+SKETCHES = [dict(sp, pad=True, key_v=80, held=True) for sp in v1.SKETCHES]
 SHAKER, CONGA_HIGH, CONGA_LOW = 82, 63, 64
 
 
 def is_a(bar):
     return 9 <= bar <= 36 or 41 <= bar <= 56
 
+
+def active_parts(sp, bar):
+    """Compress the original break into two two-bar rooms."""
+    source_bar = (33, 34, 37, 38)[bar - 37] if 37 <= bar <= 40 else 1
+    return v1.active_parts(sp, source_bar)
 
 def compose(sid):
     """Return nt, cc, pcs, n_bars, bpm, title, keysig_sf, minor."""
@@ -27,13 +31,21 @@ def compose(sid):
     nt = {i: [] for i in range(len(TRACKS))}
     cc = {i: [] for i in range(len(TRACKS))}
     pcs = {0: 25, 1: sp['bass_pc'], 2: sp['key_pc'], 3: 89, 4: 4, 5: 25}
-    nt[0] = [note for note in original[0]
-             if note[2] != v1.KICK or note[0] >= bt(5)]
-    nt[0].extend((tick + 8 * BAR, duration, pitch, velocity)
-                 for tick, duration, pitch, velocity in original[0]
-                 if bt(25) <= tick < bt(29))
+    for bar in range(1, n_bars + 1):
+        source_bar = (bar - 8 if 33 <= bar <= 36 else
+                      (33, 34, 37, 38)[bar - 37] if 37 <= bar <= 40 else bar)
+        for tick, duration, pitch, velocity in original[0]:
+            if bt(source_bar) <= tick < bt(source_bar + 1):
+                if pitch != v1.KICK or bar >= 5:
+                    nt[0].append((tick + (bar - source_bar) * BAR,
+                                  duration, pitch, velocity))
+        if 'bass' in active_parts(sp, bar):
+            # Keep the existing cell and humanization wherever it already plays.
+            bass_bar = bar if 'bass' in v1.active_parts(sp, bar) else bar - 8
+            nt[1].extend((tick + (bar - bass_bar) * BAR, duration, pitch, velocity)
+                         for tick, duration, pitch, velocity in original[1]
+                         if bt(bass_bar) <= tick < bt(bass_bar + 1))
     nt[0].sort()
-    nt[1] = original[1]
     root = mk_chord2(PC[sp['root']], 'm7')['bass']
     pad_voicing = (root + 24, root + 31, root + 38)
     seed(22000 + sp['slot'])
@@ -45,22 +57,24 @@ def compose(sid):
         nt[track].append((onset, stop - onset, pitch, velocity))
 
     for bar in range(1, n_bars + 1):
-        # Retain the sub-only break and drum/bass-only DJ outro.
-        if bar <= 36 or 41 <= bar <= 56:
+        parts = active_parts(sp, bar)
+        if bar <= 56 and 'pad' in parts:
             velocity = hum_v(63, 7)
             for pitch in pad_voicing:
                 add(3, bar, 0, 3.95, pitch, velocity)
+        voicing = tuple(pitch + 12 for pitch in v1.chord_at(sp, bar))
+        if 9 <= bar <= 56 and 'keys' in parts:
+            velocity = hum_v(sp['key_v'] + (4 if bar >= 41 else 0), 8)
+            for pitch in voicing:
+                add(2, bar, 0, 3.95, pitch, velocity)
+            cc[2].extend(((bt(bar), 64, 100), (bt(bar + 1) - 8, 64, 0)))
         if not is_a(bar):
             continue
-        voicing = tuple(pitch + 12 for pitch in v1.chord_at(sp, bar))
-        velocity = hum_v(sp['key_v'] + (4 if bar >= 41 else 0), 8)
-        for pitch in voicing:
-            add(2, bar, 0, 3.95, pitch, velocity)
-        cc[2].extend(((bt(bar), 64, 100), (bt(bar + 1) - 8, 64, 0)))
 
-        # Fixed C-G-B chord-tone cycle, not a separate melodic phrase.
+        # Chord tones cycle within one octave; there is no separate lead phrase.
+        texture = tuple(min(voicing) + (pitch - min(voicing)) % 12 for pitch in voicing)
         for step in range(8):
-            add(4, bar, step / 2, 0.43, voicing[step % len(voicing)],
+            add(4, bar, step / 2, 0.43, texture[step % len(texture)],
                 hum_v(62, 7), 5, step % 2 == 1)
         cc[4].extend(((bt(bar), 64, 90), (bt(bar + 1) - 8, 64, 0)))
         for step in range(16):
@@ -74,7 +88,7 @@ def compose(sid):
 
 
 def range_check(sp, nt, cc):
-    """Assert the calibration bounds and print each layer's first sounding bar."""
+    """Assert layer bounds, entrances, and each slot's four-bar break."""
     ranges = {}
     first = {}
     for track, (name, _) in enumerate(TRACKS):
@@ -89,23 +103,28 @@ def range_check(sp, nt, cc):
     assert first == dict(Drums=1, Bass=9, Keys=9, Pad=1, Tex=9, Perc=9)
     assert min(t for t, _, p, _ in nt[0] if p == v1.KICK) // BAR + 1 == 5
     assert all(60 <= pitch <= 84 for _, _, pitch, _ in nt[2])
-    assert max(p for _, _, p, _ in nt[4]) - min(p for _, _, p, _ in nt[4]) < 12
     assert {p for _, _, p, _ in nt[5]} == {SHAKER, CONGA_HIGH, CONGA_LOW}
     root = mk_chord2(PC[sp['root']], 'm7')['bass']
     for bar in range(1, 65):
         pad = [p for t, _, p, _ in nt[3] if bt(bar) <= t < bt(bar + 1)]
         assert pad == ([root + 24, root + 31, root + 38]
-                       if bar <= 36 or 41 <= bar <= 56 else [])
-        for track in (2, 4, 5):
+                       if bar <= 56 and 'pad' in active_parts(sp, bar) else [])
+        keys = [n for n in nt[2] if bt(bar) <= n[0] < bt(bar + 1)]
+        assert bool(keys) == (9 <= bar <= 56 and 'keys' in active_parts(sp, bar))
+        for track in (4, 5):
             notes = [n for n in nt[track] if bt(bar) <= n[0] < bt(bar + 1)]
             assert bool(notes) == is_a(bar)
         if is_a(bar):
-            expected = {pitch + 12 for pitch in v1.chord_at(sp, bar)}
-            assert {p for t, _, p, _ in nt[4] if bt(bar) <= t < bt(bar + 1)} == expected
+            expected = {pitch % 12 for pitch in v1.chord_at(sp, bar)}
+            texture = [p for t, _, p, _ in nt[4] if bt(bar) <= t < bt(bar + 1)]
+            assert {p % 12 for p in texture} == expected
+            assert max(texture) - min(texture) < 12
             for track in (2, 4):
                 assert (bt(bar + 1) - 8, 64, 0) in cc[track]
     assert [(t, p) for t, _, p, _ in nt[0] if p == v1.CRASH] == [(bt(41), v1.CRASH)]
-    assert all(not bt(37) <= t < bt(41) for t, _, _, _ in nt[0])
+    for bar in range(37, 41):
+        assert all(p != v1.OPEN_HAT or 'hats' in active_parts(sp, bar)
+                   for t, _, p, _ in nt[0] if bt(bar) <= t < bt(bar + 1))
     velocities = ' '.join(f'{name.lower()}_vel={ranges[name][0]}..{ranges[name][1]}'
                           for name in ('Keys', 'Pad', 'Tex', 'Perc'))
     entrances = ' '.join(f'{name.lower()}_first_bar={first[name]}' for name, _ in TRACKS)

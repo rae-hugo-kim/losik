@@ -60,12 +60,12 @@ def restart_logic(log):
     log('    logic restarted')
 
 
-def run(jobs, log):
+def run(jobs, log, ver='v1'):
     results = {}
     for n, (slot, sid, title) in enumerate(jobs):
         if n and n % RESTART_EVERY == 0:
             restart_logic(log)
-        mid = os.path.join(SK_DIR, f'{sid}-v1.mid')
+        mid = os.path.join(SK_DIR, f'{sid}-{ver}.mid')
         if not os.path.exists(mid):
             log(f'=== {slot:02d} {sid} MISSING {mid}')
             results[sid] = {'ok': False, 'stage': 'missing'}
@@ -76,7 +76,7 @@ def run(jobs, log):
             break
         t0 = time.time()
         log(f'=== {slot:02d} {sid} start')
-        r = produce(sid, title, 'v1', mid, log=lambda m: log('    ' + m))
+        r = produce(sid, title, ver, mid, log=lambda m: log('    ' + m))
         r.pop('strips', None)
         results[sid] = r
         log(f'=== {slot:02d} {sid} {"OK" if r.get("ok") else "FAIL"} {round(time.time() - t0)}s {json.dumps(r, ensure_ascii=False)}')
@@ -85,9 +85,17 @@ def run(jobs, log):
 
 
 if __name__ == '__main__':
-    only = set(sys.argv[1:])
-    jobs = [j for j in JOBS if not only or j[1] in only]
+    import argparse
+    ap = argparse.ArgumentParser(description='Deep house set 를 슬롯 순으로 Logic 바운스한다.')
+    ap.add_argument('--ver', default='v1', help='스케치 버전 접미사 (v1/v2/v3…)')
+    ap.add_argument('sids', nargs='*', help='지정하면 그 sid 만')
+    a = ap.parse_args()
+    known = {j[1] for j in JOBS}
+    unknown = sorted(set(a.sids) - known)
+    if unknown:
+        ap.error(f'unknown sid: {unknown}')
+    jobs = [j for j in JOBS if not a.sids or j[1] in set(a.sids)]
     with NoScreensaver():
-        results = run(jobs, lambda m: print(m, flush=True))
+        results = run(jobs, lambda m: print(m, flush=True), a.ver)
     print(json.dumps({k: v.get('ok') for k, v in results.items()}))
-    sys.exit(0 if all(v.get('ok') for v in results.values()) else 1)
+    sys.exit(0 if results and all(v.get('ok') for v in results.values()) else 1)
