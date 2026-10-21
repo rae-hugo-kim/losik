@@ -96,6 +96,7 @@
 - 저장 위치: 프로젝트 `/Volumes/Netac 2TB/music/projects/`, 바운스 `/Volumes/Netac 2TB/music/bounces/`, MIDI 소스는 리포 `docs/music/sketches/`
 - 구버전은 삭제하지 않고 `music/_archive-*/`로 보관
 - 헤드폰(블루투스) 청취는 Logic이 아니라 **바운스 파일을 Finder/QuickTime으로** (BT HFP 16kHz 강등 이슈)
+- **Suno 프롬프트는 공백 포함 1,000자 이내 (MUST)** — Suno 입력 필드 상한. Description ≤ 1,000자, Style ≤ 300자. 쓰고 나서 `len()` 으로 재서 출력한다(2026-10-21: 30블록이 1,262~1,710자로 넘쳐 전량 재작성). 잘라내는 우선순위는 키·BPM·코드 루프 → 드럼 골격 → 층(패드·텍스처·퍼커션) → 구조 한 줄 → "no lead, no vocals"; 벨로시티 수치·16분 칸 번호 같은 구현 세부는 넣지 않는다. 양식은 `SUNO_PROMPTS.md` 사용 메모
 - 코드는 `docs/music/tools/`(`pipeline.py` AX·SMF·계측 / `sketches.py`·`goldenhour.py` 작곡 / `round_*.py` 라운드별 수정)에 둔다 — 커널 상주 함수는 세션과 함께 휘발됨(2026-09-05 복원 비용 발생)
 - **밸런스는 SMF 의 CC7 로 잡히지 않는다** (계측: star v6 1차 시도 저역-고역 차 25.1→27.4 dB, 무효). 확실한 수단은 ① 편성/음역 정리 ② 악기 교체 ③ 벨로시티 스케일. AX 페이더는 새 임포트마다 리셋되고 성공률이 랜덤
 - 바운스 전/후 `band_balance()` 로 저역-고역 차(dB)를 이전판과 대조해 밸런스 변화 방향을 계측한다 (절대값이 아니라 상대 변화만 의미 있음)
