@@ -22,22 +22,21 @@ def screen_locked():
 
 
 class NoScreensaver:
-    """바운스 동안 화면보호기 유휴 시간을 0(끔)으로, 종료 시 이전 값 복원."""
+    """바운스 동안 화면보호기 유휴 시간이 0(끔)인지 보장한다. 복원은 하지 않는다 —
+    이 Mac 은 2026-10-19 사용자 결정으로 idleTime=0 이 기본값이고, 복원 로직은 세션(워크트리) 셋이
+    동시에 돌 때 먼저 끝난 세션이 남의 바운스 중 화면보호기를 되살리는 문제가 있었다(리뷰 지적)."""
     KEY = ['defaults', '-currentHost']
 
     def __enter__(self):
         r = subprocess.run(self.KEY + ['read', 'com.apple.screensaver', 'idleTime'], capture_output=True, text=True)
-        self.prev = r.stdout.strip() if r.returncode == 0 else None
-        subprocess.run(self.KEY + ['write', 'com.apple.screensaver', 'idleTime', '-int', '0'], check=True)
-        print(f'screensaver idleTime: {self.prev or "(default)"} -> 0', flush=True)
+        cur = r.stdout.strip() if r.returncode == 0 else None
+        if cur != '0':
+            subprocess.run(self.KEY + ['write', 'com.apple.screensaver', 'idleTime', '-int', '0'], check=True)
+            print(f'screensaver idleTime: {cur or "(default)"} -> 0 (kept)', flush=True)
         return self
 
     def __exit__(self, *exc):
-        if self.prev is None:
-            subprocess.run(self.KEY + ['delete', 'com.apple.screensaver', 'idleTime'], capture_output=True)
-        else:
-            subprocess.run(self.KEY + ['write', 'com.apple.screensaver', 'idleTime', '-int', self.prev])
-        print(f'screensaver idleTime restored: {self.prev or "(default)"}', flush=True)
+        pass
 
 
 import importlib

@@ -706,6 +706,7 @@ class LogicLock:
                 os.remove(LOCK_PATH)
         except FileNotFoundError:
             pass
+        time.sleep(3)   # 폴링(2s) 중인 다른 세션이 끼어들 틈을 준다 — 한 세션이 12곡을 독점하지 않도록
 
 
 def restart_logic(log=print, owner=None):
