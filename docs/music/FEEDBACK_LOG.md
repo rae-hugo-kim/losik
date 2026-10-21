@@ -350,3 +350,11 @@ neon-rain / highway-zero / midnight-arcade / analog-heart: 개별 피드백 **�
 - Suno 입력 필드 상한 **공백 포함 1,000자** — 문서 어디에도 없던 규칙이라 v3 블록 30개가 1,262~1,710자였음. 규칙을 `SUNO_PROMPTS.md` 사용 메모와 브리프에 MUST 로 추가.
 - 세 모델이 각자 `docs/music/suno/dh_<model>_v3.md` 를 재작성: Description 788~997자, Style 108~281자. 우선순위(키·BPM·코드 → 드럼 골격 → 층 → 구조 한 줄 → no lead/vocals)대로 잘라내고 벨로시티·16분 칸·휴머나이즈 세부는 제거. 내용(키·코드·브레이크·베이스 음이름 교정)은 유지.
 - `SUNO_PROMPTS.md` 의 v3 30블록을 교체하고 v3l 2블록을 새 dh01/dh15 에서 다시 파생(마디 맵 96 기준).
+
+## 2026-10-21 96마디 롤아웃 — 30/30 완료
+
+- Suno 실측(dh01·dh15 v3l): 3분 입력 → 3분 결과, 구조 유지. 청취 통과 → 30곡 전체 96마디(클로저 104마디)로 재생성·재바운스.
+- `{sid}-v3l.wav` 30개, 합계 **96:19**(곡당 3:07~3:17, 클로저 3:35). 실패 0, 곡당 86~116초.
+- 작곡기: fable 도 `--bars` 매개변수화(64 출력 10/10 바이트 동일), opus 는 클로저용 104마디 Form 추가. 64마디 `{sid}-v3.mid` 전부 바이트 동일 유지.
+- Suno 프롬프트: 모델별 `docs/music/suno/dh_<model>_v3l.md` → `SUNO_PROMPTS.md` 끝 `## {sid}-v3l` 30블록(시험판 2블록 교체). 전부 Description ≤ 997자·Style ≤ 281자, 브레이크 단계 마디는 실제 생성값.
+- `SETLIST_deep_house.md` 를 v3l 기준으로 갱신(총 길이·구조·곡별 길이 열).

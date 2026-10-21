@@ -22,6 +22,7 @@ rebuilt. Every element owns its slot (sixteenth steps 0-15 of a bar):
 - Humanize: timing +-8, velocity +-8, clamped inside each role's band so accents hold.
 - `--bars 96` (or compose(sid, n_bars=96)) lays a 64-bar slot on the '## 96마디 시험판' form
   (dh_opus_v2.on_form): ride/crash from A2 bar 57, toms on 16/48/88, break 49-56 -> {sid}-v3l.mid.
+  `--bars 104` does the same for the 72-bar closer, its outro 89-104 ('## 96마디 롤아웃').
 """
 import os
 import struct
@@ -388,22 +389,29 @@ if __name__ == '__main__':
     import argparse
     import sys
     ap = argparse.ArgumentParser()
-    ap.add_argument('--bars', type=int, default=None, help='64(기본) 또는 96; 96 은 64마디 슬롯에만, 파일명 {sid}-v3l.mid')
+    ap.add_argument('--bars', type=int, default=None,
+                    help='기본: 슬롯 원래 길이(64, 클로저 72) -> {sid}-v3.mid; 96(64마디 슬롯) 또는 '
+                         '104(72마디 클로저) -> {sid}-v3l.mid')
     ap.add_argument('sids', nargs='*')
     a = ap.parse_args()
     n = a.bars
     known = {s['sid'] for s in SKETCHES}
     if set(a.sids) - known:
         ap.error(f'unknown sid: {sorted(set(a.sids) - known)}')
-    if n not in (None, 64) and not a.sids:
-        ap.error('--bars 96 requires explicit sids (the 72-bar closer cannot be stretched)')
-    tag = 'v3l' if n not in (None, 64) else 'v3'
+    if n is not None and not a.sids:
+        ap.error('--bars requires explicit sids (96 for 64-bar slots, 104 for the 72-bar closer)')
+    long_of = {64: 96, 72: 104}
+    bad = [s['sid'] for s in SKETCHES if s['sid'] in a.sids
+           and n not in (None, s['n_bars'], long_of[s['n_bars']])]
+    if bad:
+        ap.error(f'--bars {n} does not fit {bad} (96 for 64-bar slots, 104 for the 72-bar closer)')
     oks = []
     for sk in (s for s in SKETCHES if not a.sids or s['sid'] in a.sids):
         sp = sketch(sk['sid'], n)
         nt, cc, pcs, n_bars, bpm, title, sf, minor = compose(sk['sid'], n)
         smf = build_smf(title, bpm, sf, minor, n_bars, TRACKS, pcs, nt, cc,
                         markers=form(n_bars).markers)
+        tag = 'v3' if n_bars == sk['n_bars'] else 'v3l'
         path = os.path.join(SK_DIR, f'{sk["sid"]}-{tag}.mid')
         old = None
         if os.path.exists(path):

@@ -17,8 +17,11 @@ come from dh_opus.py (v1). What changes:
   break compressed to four bars, same survivors), A2 41-56 (crash on 41), outro 57-end
   (drums + bass). Pad and keys end with bar 56; the closer (72 bars) keeps a four-bar tonic
   pad tail into its 16-bar outro and its v1 outro thinning (61-72).
-- 96-bar form ('## 96마디 시험판', 64-bar slots only): A 9-48, break 49-56 (each v2 break bar
+- 96-bar form ('## 96마디 시험판', 64-bar slots): A 9-48, break 49-56 (each v2 break bar
   doubled: 37-38 -> 49-52, 39-40 -> 53-56), A2 57-88, outro 89-96; keys and pad end with 88.
+- 104-bar form ('## 96마디 롤아웃', the 72-bar closer): the same 1-88, then a 16-bar outro
+  89-104 with the v1 thinning moved 32 bars later (93 backbeat, 97 hats, 101 bass out, one kick
+  on the one of 104) and the four-bar tonic pad tail to 92.
 """
 import os
 from collections import namedtuple
@@ -48,12 +51,12 @@ def v2(slot, **kw):
 
 
 # Section starts: intro 1-8, A from 9, then break / A2 / outro. The closer's 72 bars keep the
-# 64-bar sections (longer outro); 96 bars stretch A, break and A2.
+# 64-bar sections (longer outro); 96 bars (104 for the closer) stretch A, break and A2.
 Form = namedtuple('Form', 'brk a2 outro keys_last markers')
 
 
 def form(n_bars):
-    brk, a2, outro = (49, 57, 89) if n_bars == 96 else (37, 41, 57)
+    brk, a2, outro = (49, 57, 89) if n_bars in (96, 104) else (37, 41, 57)
     return Form(brk, a2, outro, outro - 1,
                 [(1, 'intro'), (9, 'A'), (brk, 'break'), (a2, 'A2'), (outro, 'outro')])
 
@@ -152,20 +155,24 @@ def dropped(sp, b, part):
 
 def on_form(sp, n_bars=None):
     """The sketch laid on an n_bars form (default: its own length, returned unchanged). 64 -> 96
-    doubles each v2 break bar and holds the pad to the bar before the outro."""
+    and 72 -> 104 double each v2 break bar and move the outro (its drops and the pad's end)
+    as many bars later as the outro start moves."""
     if n_bars is None or n_bars == sp['n_bars']:
         return sp
-    if (sp['n_bars'], n_bars) != (64, 96):
+    if (sp['n_bars'], n_bars) not in ((64, 96), (72, 104)):
         raise ValueError(f"{sp['sid']}: no {n_bars}-bar form for a {sp['n_bars']}-bar sketch")
-    f64, fm = form(64), form(96)
+    f0, fm = form(sp['n_bars']), form(n_bars)
+    shift = fm.outro - f0.outro
     drops = []
     for lo, hi, parts in sp['drops']:
-        if f64.brk <= lo and hi < f64.a2:
-            lo, hi = fm.brk + 2 * (lo - f64.brk), fm.brk + 2 * (hi - f64.brk) + 1
-        elif hi >= f64.brk:
-            raise ValueError(f"{sp['sid']}: drop {lo}-{hi} outside the intro/break")
+        if f0.brk <= lo and hi < f0.a2:
+            lo, hi = fm.brk + 2 * (lo - f0.brk), fm.brk + 2 * (hi - f0.brk) + 1
+        elif lo >= f0.outro:
+            lo, hi = lo + shift, hi + shift
+        elif hi >= f0.brk:
+            raise ValueError(f"{sp['sid']}: drop {lo}-{hi} outside the intro/break/outro")
         drops.append((lo, hi, parts))
-    return dict(sp, n_bars=n_bars, drops=drops, pad_last=fm.keys_last)
+    return dict(sp, n_bars=n_bars, drops=drops, pad_last=sp['pad_last'] + shift)
 
 
 def compose(sid, n_bars=None):

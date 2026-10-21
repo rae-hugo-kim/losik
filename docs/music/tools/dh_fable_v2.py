@@ -10,9 +10,13 @@ Changed per the v2 table only:
         chord-tone arpeggio cycling inside one octave, velocity 55-70, A/A2 only, CC64 per bar.
   Perc  new track on ch9: shaker (GM 82) sixteenths 38-52 + conga (63/64) two-bar cell, A/A2 only.
   Form  intro 8 (pad + hats from bar 1, kick from bar 5), A 9-36, break 37-40, A2 41-56, outro 57-64.
+        compose(sid, n_bars=96) lays the same recipe on the '## 96마디 시험판' form: A 9-48,
+        break 49-56 (each two-bar v2 break stage stretched to four: 49-52 / 53-56), A2 57-88
+        (crash 57), outro 89-96. Default 64 is byte-identical to the original.
 Slot 14 is the listened calibration (v2 file on disk); the other nine follow the same table.
 """
 import os
+from collections import namedtuple
 
 from pipeline import BAR, PPQ, SK_DIR, SW, bt, build_smf, hum_t, hum_v, seed, write_smf
 from sketches import PC, mk_chord2
@@ -23,6 +27,18 @@ DRUMS, BASS, KEYS, PAD, TEX, PERC = range(6)
 MARKERS = [(1, 'intro'), (9, 'A'), (37, 'break'), (41, 'A2'), (57, 'outro')]
 N_BARS = 64
 KICK_FROM, A_FROM, BREAK_FROM, A2_FROM, OUTRO_FROM = 5, 9, 37, 41, 57
+Form = namedtuple('Form', 'n_bars break_from a2_from outro_from markers')
+
+
+def form(n_bars=N_BARS):
+    """Section starts for a 64-bar slot (brief form) or its 96-bar version ('## 96마디 시험판')."""
+    if n_bars not in (64, 96):
+        raise ValueError(f'n_bars must be 64 or 96, got {n_bars}')
+    break_from, a2_from, outro_from = (BREAK_FROM, A2_FROM, OUTRO_FROM) if n_bars == 64 else (49, 57, 89)
+    return Form(n_bars, break_from, a2_from, outro_from,
+                [(1, 'intro'), (A_FROM, 'A'), (break_from, 'break'), (a2_from, 'A2'), (outro_from, 'outro')])
+
+
 KICK, SNARE, CLAP, HAT, OPEN_HAT, CRASH = v1.KICK, v1.SNARE, v1.CLAP, v1.HAT, v1.OPEN_HAT, v1.CRASH
 SHAKER, CONGA_HI, CONGA_LO = 82, 63, 64
 KEYS_LO, KEYS_HI = 60, 84       # C4..C6
@@ -101,14 +117,17 @@ BREAKS = {
 }
 
 
-def active_parts(sp, bar):
-    """Intro layers in pad -> hats -> kick -> A; break per the slot's v1 shape; outro drums + bass."""
+def active_parts(sp, bar, n_bars=N_BARS):
+    """Intro layers in pad -> hats -> kick -> A; break per the slot's v1 shape (two equal halves:
+    37-38 / 39-40 at 64 bars, 49-52 / 53-56 at 96); outro drums + bass."""
+    fm = form(n_bars)
     if bar < A_FROM:
         return frozenset({'pad', 'hats'} | ({'kick'} if bar >= KICK_FROM else set()))
-    if bar >= OUTRO_FROM:
+    if bar >= fm.outro_from:
         return frozenset({'kick', 'hats', 'back', 'bass'})
-    if BREAK_FROM <= bar < A2_FROM:
-        return frozenset(BREAKS[sp['break_type']][0 if bar <= 38 else 1])
+    if fm.break_from <= bar < fm.a2_from:
+        half = fm.break_from + (fm.a2_from - fm.break_from) // 2
+        return frozenset(BREAKS[sp['break_type']][0 if bar < half else 1])
     return FULL
 
 
@@ -121,8 +140,9 @@ def chord_at(sp, bar):
     raise AssertionError('empty chord loop')
 
 
-def compose(sid):
+def compose(sid, n_bars=N_BARS):
     """Return nt, cc, pcs, n_bars, bpm, title, keysig_sf, minor."""
+    fm = form(n_bars)
     sp = next(item for item in SKETCHES if item['sid'] == sid)
     seed(22000 + sp['slot'])
     nt = {i: [] for i in range(len(TRACKS))}
@@ -130,7 +150,7 @@ def compose(sid):
     pcs = {DRUMS: 25, BASS: sp['bass_pc'], KEYS: sp['key_pc'], PAD: sp['pad_pc'], TEX: sp['tex_pc'],
            PERC: 25}
     root = mk_chord2(PC[sp['root']], 'm7')['bass']
-    end = bt(N_BARS + 1)
+    end = bt(n_bars + 1)
 
     def add(track, bar, beat, length, pitch, velocity, jitter=6, swing=False):
         start = bt(bar, beat) + (SW if swing else 0)
@@ -153,8 +173,8 @@ def compose(sid):
         cc[track].append((onset, 64, 100))
         cc[track].append((bt(bar + 1) - 8, 64, 0))
 
-    for bar in range(1, N_BARS + 1):
-        parts = active_parts(sp, bar)
+    for bar in range(1, n_bars + 1):
+        parts = active_parts(sp, bar, n_bars)
         # ---- drums: v1 recipe verbatim
         kick_beats = range(4) if 'kick' in parts else (0, 2) if 'half_kick' in parts else ()
         for beat in kick_beats:
@@ -174,14 +194,14 @@ def compose(sid):
                 add(DRUMS, bar, beat, 0.14, sp['back'], hum_v(77, 7), 7)
                 onset, duration, _, _ = nt[DRUMS][-1]
                 nt[DRUMS].append((onset, duration, CLAP, hum_v(55, 6)))
-        if bar == A2_FROM:
+        if bar == fm.a2_from:
             add(DRUMS, bar, 0, 0.50, CRASH, 65, 0)
         # ---- bass: v1 cell, degrees inside A/A2, tonic at the DJ edges; drone break holds the root
         if 'drone' in parts:
             add(BASS, bar, 0, 3.9, root, hum_v(sp['bass_v'] - 4, 3), 4)
         elif 'bass' in parts:
             for beat, length, degree in sp['bass'][(bar - A_FROM) % len(sp['bass'])]:
-                pitch = v1.sub_pitch(root, degree if bar < OUTRO_FROM else 'r')
+                pitch = v1.sub_pitch(root, degree if bar < fm.outro_from else 'r')
                 add(BASS, bar, beat, length, pitch, hum_v(sp['bass_v'], 5), 6, swung(beat))
         # ---- keys: hold or >= 2 stabs per bar, C4-C6, re-pedalled per bar
         if 'keys' in parts:
@@ -189,7 +209,7 @@ def compose(sid):
             first = len(nt[KEYS])
             for _, beat, length in (event for event in sp['keys'] if event[0] == phase):
                 chord(bar, beat, length, chord_at(sp, bar),
-                      hum_v(sp['key_v'] + (2 if bar >= A2_FROM else 0), 4))
+                      hum_v(sp['key_v'] + (2 if bar >= fm.a2_from else 0), 4))
             pedal(KEYS, bar, nt[KEYS][first][0])
         # ---- pad: 1+5+9 from bar 1
         if 'pad' in parts:
@@ -211,7 +231,7 @@ def compose(sid):
                 add(PERC, bar, step / 4, 0.08, SHAKER, hum_v(sp['shaker_v'] + lift, 5), 7)
             for beat, pitch in sp['conga'][(bar - A_FROM) % len(sp['conga'])]:
                 add(PERC, bar, beat, 0.12, pitch, hum_v(sp['conga_v'], 5), 7)
-    return nt, cc, pcs, N_BARS, sp['bpm'], sp['title'], sp['sf'], True
+    return nt, cc, pcs, n_bars, sp['bpm'], sp['title'], sp['sf'], True
 
 
 def keys_bar_coverage(sp, nt):
