@@ -1997,3 +1997,279 @@ Electric piano eighth-note arpeggio E4-G4-B4 / E4-F#4-B4 in 17-48 and 57-88.
 Structure: 1-8 intro (pad and hats, kick from bar 5), 9-48 full, 49-56 break: kick, snare, clap, bass out, 57-88 full with ride and crash, 89-104 outro: snare/clap out at 93, hats at 97, bass at 101, one last kick on the one of 104.
 Lights up, set ends. No lead, no vocals, DJ-friendly intro/outro.
 ```
+
+---
+
+# 2026-10-21 Lo-fi Hip Hop Set (v1) — 곡별 Suno 프롬프트 (슬롯 순)
+
+Cover 업로드 시 `{sid}-v1.wav`(2:52~3:12) 와 함께 쓴다. 구조: 56마디(≤78 BPM) 1–8 intro / 9–24 A / 25–32 break / 33–48 A2 / 49–56 outro, 64마디(≥80 BPM) 1–8 / 9–28 / 29–36 / 37–56 / 57–64. 리드는 A 마지막 8마디 + A2. 모든 블록 Description ≤ 1,000자·Style ≤ 300자 측정 완료.
+
+## lh01-felt-doorway-v1
+**Style**
+`lo-fi hip hop, 76 BPM, D minor with Dorian color, mellow electric piano, nylon picking, finger bass, sparse acoustic boom bap, swung hats, intimate EP lead, instrumental`
+
+**Description**
+```
+Felt Doorway: 76 BPM, D minor, 56 bars. Loop Dm9-Dm9-G13-G13; mellow four-voice electric piano alternates downbeat holds with delayed answers, re-pedalled every bar. Sparse SoCal boom bap: kick on one with changing a-of-two, a-of-three, and-of-two or and-of-three pickups; snare on 2/4, even-bar rims, soft ghosts, swung eighth hats with louder offbeats. Finger bass omits a kick each bar. Nylon picks leave long gaps. Four-bar EP lead: A-G-E / F-E-D / E-G-A / B-A-G; repeat with a delayed final answer in A2. Intro 1-8 opens with keys+hats, kick/snare at 5; A 9-24 adds bass, lead at 17; break 25-32 keys alone then nylon; A2 33-48 restores the pocket with one soft crash; outro 49-56 drops lead/nylon, ends keys only. no vocals, lo-fi warmth, DJ-friendly intro/outro
+```
+
+## lh02-linen-afternoon-v1
+**Style**
+`lo-fi hip hop, 76 BPM, D minor, nylon guitar opening, mellow electric piano holds, finger bass, sparse acoustic boom bap, swung hats, soft EP lead, instrumental`
+
+**Description**
+```
+Linen Afternoon: 76 BPM, D minor, 56 bars. Loop Dm9-Am7-Bbmaj7-Gm9, natural-minor i-v-VI-iv; mellow four-voice electric piano holds every downbeat and adds one late re-hit on the and-of-three in bar two and the and-of-four in bar four, re-pedalled every bar. Sparse SoCal boom bap: kick on one plus the and-of-three, the a-of-two in bar three, both and-of-three and a-of-three in bar four; soft snare on 2/4, one ghost before each bar line, swung eighth hats with louder offbeats, one open hat per four bars. Finger bass holds the root for two beats and adds a low A only in bar four. Four-bar EP lead that rests on beat one: A-F-D / E-G / F-A-Bb / G-F; alternate A2 phrases delay bar two by an eighth and shorten bar four. Intro 1-8 nylon picking alone, hats at 3, kick/snare and keys at 5; A 9-24 adds bass, lead at 17; break 25-32 nylon alone then keys join; A2 33-48 full pocket with one soft crash; outro 49-56 drops lead/nylon, ends keys only. no vocals, lo-fi warmth, DJ-friendly intro/outro
+```
+
+## lh03-chalk-awning-v1
+**Style**
+`lo-fi hip hop, 78 BPM, F major, nylon guitar picking intro, warm electric piano ninths with sustain, finger bass, lazy acoustic boom bap, ghost snares, swung hats, soft grand piano lead, instrumental`
+
+**Description**
+```
+Chalk Awning: 78 BPM, F major, 56 bars. Loop Fmaj9-Am7-Bbmaj9-C13sus, I-iii-IV-V13sus; electric piano holds bar one, answers on the and-of-two and beat four in bar two, hits one plus the e-of-three in bar three, pushes the and-of-one in bar four, re-pedalled every bar. Lazy SoCal boom bap: kick on one plus the and-of-three, then the a-of-two, the a-of-three, and the and-of-two with the and-of-three in bar four; snare on 2/4 with ghosts, swung eighth hats, one open hat per four bars. Finger bass follows the kick but skips its last hit, adding a chromatic approach back into Fmaj9 in bar four. Nylon picks chord tones. Grand piano lead: G-A-C / E-C / D-C-A-F / G-F, climbing to E then walking down; A2 alternates a breath in bar one and an early bar three. Intro nylon alone, hats at 3, EP/kick/snare at 5, bass at 9; break 25-32 drums out, bass, EP and nylon trio; crash at 33; outro drops lead and nylon, last 4 bars drums and keys. no vocals, lo-fi warmth, DJ-friendly intro/outro.
+```
+
+## lh04-paper-saucer-v1
+**Style**
+`lo-fi hip hop, 78 BPM, C major, pedalled jazz grand piano, soft organ, lyrical nylon lead, finger bass, relaxed acoustic boom bap, ghost snares, swung hats, instrumental`
+
+**Description**
+```
+Paper Saucer: 78 BPM, C major, 56 bars. Cmaj7-Em7-Dm9-G13, one bar each; four-voice grand piano alternates offbeat two-hit comping and a single held answer, with fresh pedal each bar. SoCal kick on one plus changing and-of-two/a-of-three pickups, snare on 2/4 with two quiet ghosts, swung eighth hats, rare open hat. Finger bass leaves one kick unanswered. Soft organ holds behind a nylon lead: G-B-A / G-F#-E / F-E-C / D-E-G, a rising third followed by descending replies. Intro 1-8: keys first, hats at 3, kick/snare at 5; A 9-24 adds bass and organ, lead at 17; break 25-32 removes kick and bass, keeping backbeat, hats, piano and organ; A2 33-48 adds a quiet crash and the full lead; outro 49-56 drops lead/organ, final four bars drums+keys. no vocals, lo-fi warmth, DJ-friendly intro/outro
+```
+
+## lh05-tin-kettle-v1
+**Style**
+`lo-fi hip hop, 80 BPM, A minor, pedalled jazz grand piano on the off-beat, high electric piano picking, finger bass, relaxed acoustic boom bap, ghost snares, swung hats, nylon guitar lead, instrumental`
+
+**Description**
+```
+Tin Kettle: 80 BPM, A minor, 64 bars. Loop Am9-Fmaj9-Cmaj9-E7b9, i-VI-III-V; grand piano comps on the and-of-two in odd bars, one plus the and-of-three in bar two, three hits in bar four, re-pedalled every bar. Relaxed SoCal boom bap: kick on one plus the and-of-two, adding the a-of-three in bar two, only the and-of-three in bar three, a-of-two with a-of-three in bar four; snare on 2/4 with two ghosts, swung eighth hats, one open hat per four bars. Finger bass follows the kick minus one or two hits, ending bar four on the low E. A high electric piano picks chord tones above the piano. Four-bar nylon lead: E-G-B / C-A / G-E-D / G#-F; A2 alternates a delayed bar two and a shortened bar four. Intro 1-8 piano first, hats at 3, kick/snare at 5; A 9-28 adds bass and EP picking, lead at 21; break 29-36 drops kick and snare, keeping hats, bass and piano; A2 37-56 full pocket with one soft crash; outro 57-64 drops lead/EP, ends drums+piano. no vocals, lo-fi warmth, DJ-friendly intro/outro
+```
+
+## lh06-iron-teacup-v1
+**Style**
+`lo-fi hip hop, 80 BPM, A minor, descending aeolian loop, pedalled jazz grand piano, nylon guitar picking, finger bass, relaxed acoustic boom bap, ghost snares, swung hats, soft electric piano lead, instrumental`
+
+**Description**
+```
+Iron Teacup: 80 BPM, A minor, 64 bars. Loop Am9-G13-Fmaj9-Em7, descending i-VII-VI-v; grand piano hits one plus a late and-of-four push in odd bars, the and-of-one plus beat three in bar two, beat two plus the and-of-three in bar four, re-pedalled every bar. SoCal boom bap: kick on one with the a-of-two and and-of-three in bar one, the a-of-three in bar two, the and-of-two and a-of-three in bar three, the and-of-three in bar four; snare on 2/4 with ghosts, swung eighth hats, one open hat per four bars. Finger bass skips the last kick hit, dropping to the low fifth in bar one and adding the fifth in bar three. Nylon picks between chords. Electric piano lead: E-D-B / D-B-A / C-A-G / G-B, a falling three-note cell stepped down with the chords, answered upward. Intro piano first, hats at 3, kick/snare at 5, bass and nylon at 9; break 29-36 bass alone, nylon joins at 31, snare and hats at 33; crash at 37; outro 57-64 drums and piano. no vocals, lo-fi warmth, DJ-friendly intro/outro.
+```
+
+## lh07-moss-index-v1
+**Style**
+`lo-fi hip hop, 82 BPM, E minor, dusty electric piano, acoustic guitar picking, understated grand-piano lead, finger bass, lazy boom bap, shuffled eighth hats, instrumental`
+
+**Description**
+```
+Moss Index: 82 BPM, E minor, 64 bars. Em9-Am7-Bm7-Em9, one chord per bar. Four-voice EP alternates clipped two-hit comping with longer delayed holds, pedalled each bar. SoCal kick anchors one with changing and-of-three and a-of-two/a-of-three pickups; snare on 2/4 plus two soft ghosts, strongly swung hats and rare open hats. Finger bass follows selected kicks, leaving space. Guitar picks alternate two- and three-note gaps. Piano lead: B-A-G-F# / E-G-E / F#-A-B / A-G-F#-E, a four-bar falling bookmark with a rising answer. Intro 1-8 keys, hats at 3, backbeat at 5; A 9-28 bass/guitar, lead at 21; break 29-36 removes drums and bass for EP/guitar duet; A2 37-56 restores groove and lead with one soft crash; outro 57-64 loses lead/guitar, last four bars drums+keys. no vocals, lo-fi warmth, DJ-friendly intro/outro
+```
+
+## lh08-cedar-ledger-v1
+**Style**
+`lo-fi hip hop, 82 BPM, G major, warm electric piano ninths, nylon guitar picking, finger bass, laid-back acoustic boom bap, ghost snares, swung hats, grand piano lead, instrumental`
+
+**Description**
+```
+Cedar Ledger: 82 BPM, G major, 64 bars. Loop Gmaj9-Bm7-Em9-Cmaj9, I-iii-vi-IV; warm four-voice electric piano comps on one and the and-of-two, only beat three in bar two, the and-of-one and and-of-three in bar four, re-pedalled every bar. Laid-back SoCal boom bap: kick on one plus a-of-two and and-of-three, a-of-three in bar two, a-of-two in bar three, and-of-three with a-of-three in bar four; snare on 2/4 with two ghosts, swung eighth hats, one open hat per four bars. Finger bass keeps the root and one syncopation on three-kick bars. Nylon guitar picks chord tones in the gaps. Four-bar grand piano lead: D-B-A-F# / F#-A / B-D-E / D-B, falling a fifth then climbing to the ninth; A2 alternates a delayed bar two and a shortened bar four. Intro 1-8 (EP, hats at 3, drums at 5); A 9-28 adds bass and nylon, lead at 21; break 29-36 only kick, bass and EP; A2 37-56 full with a soft crash; outro 57-64 lead/nylon out, ends drums+EP. no vocals, lo-fi warmth, DJ-friendly intro/outro
+```
+
+## lh09-signal-orchard-v1
+**Style**
+`lo-fi hip hop, 84 BPM, D major, soft electric piano comping, tonewheel organ holds, finger bass, head-nod acoustic boom bap, ghost snares, swung hats, nylon guitar lead, instrumental`
+
+**Description**
+```
+Signal Orchard: 84 BPM, D major, 64 bars, building toward the peak. Loop Dmaj9-A13sus-Bm9-Gmaj9, I-V13sus-vi-IV; electric piano comps on one, the and-of-two and the and-of-three in odd bars, one late touch in bar two, one plus beat four in bar four, re-pedalled every bar, over a soft organ hold. SoCal boom bap: kick on one plus the and-of-two and and-of-three, then the a-of-three, the a-of-two with the and-of-three, then the and-of-two; snare on 2/4 with ghosts, swung eighth hats, one quiet sixteenth hat after beat four, one open hat per four bars. Finger bass follows the kick minus its last hit. Nylon guitar lead: F#-A-B-A / F#-E / B-D-C# / A-F#, a pentatonic turn and a sigh, then the turn lifted to B. Intro EP first, hats at 3, kick/snare at 5, bass and organ at 9; break 29-36 snare, hats and organ only; crash at 37; outro 57-64 drums and EP. no vocals, lo-fi warmth, DJ-friendly intro/outro.
+```
+
+## lh10-copper-margin-v1
+**Style**
+`lo-fi hip hop, 84 BPM, B minor, jazzy electric piano, nylon guitar, round pulse bass, assertive acoustic boom bap, deeply swung hats, compact EP melody, instrumental`
+
+**Description**
+```
+Copper Margin: 84 BPM, B minor, 64 bars. Bm9-Dmaj7-Gmaj7-F#9, one bar each, warm four-voice EP comping two or three times per bar with re-pedalling. SoCal kick anchors one and alternates paired and/a-of-two and three pickups; snare on 2/4 with two ghost notes, deeply swung hats and occasional soft open hat. Round pulse bass omits the final kick of each bar; nylon picking fills selected gaps. EP lead F#-A-C#-A / A-F#-E / F#-G-B-A / G#-F#-E-F# climbs in thirds then folds inward; later A2 answers arrive late. Intro 1-8 keys, hats 3, kick/snare 5; A 9-28 adds bass/nylon, lead at 21; break 29-36 drums+bass only; A2 37-56 returns harmony and lead with one soft crash; outro 57-64 removes lead/nylon, final four bars drums+keys. no vocals, lo-fi warmth, DJ-friendly intro/outro
+```
+
+## lh11-velvet-circuit-v1
+**Style**
+`lo-fi hip hop, 86 BPM, B minor, pedalled jazz grand piano, soft tonewheel organ holds, synth bass, full acoustic boom bap, ghost snares, swung hats with sixteenth flicks, electric piano lead, instrumental`
+
+**Description**
+```
+Velvet Circuit: 86 BPM, B minor, 64 bars. Loop Bm9-Em9-Gmaj9-A13, i-iv-VI-VII13; grand piano comps on the a-of-one and three in odd bars, on one, the and-of-two and four in bar two, on one, the and-of-three and and-of-four in bar four, re-pedalled every bar. Full SoCal boom bap: kick on one plus two syncopations per bar (and-of-two/a-of-three, and-of-two/and-of-three, a-of-two/a-of-three, and-of-three/a-of-three); snare on 2/4 with two ghosts, swung eighth hats plus one quiet sixteenth after beat two or four. Synth bass follows the kick minus one hit, landing on F# before each loop. Soft organ holds root and fifth. Four-bar EP lead: D-F#-A-F# / G-F#-E-D / D-F#-G-B / A-G-F#; A2 varies bars two and four. Intro 1-8 (piano, hats at 3, drums at 5); A 9-28 adds bass and organ, lead at 21; break 29-36 drums alone, piano back after four bars; A2 37-56 full with a soft crash; outro 57-64 lead/organ out, ends drums+piano. no vocals, lo-fi warmth, DJ-friendly intro/outro
+```
+
+## lh12-ember-switchyard-v1
+**Style**
+`lo-fi hip hop, 86 BPM, F# minor dorian, warm jazz grand piano stabs, high electric piano picking, deep synth bass, full acoustic boom bap, ghost snares, swung hats, nylon guitar lead, instrumental`
+
+**Description**
+```
+Ember Switchyard: 86 BPM, F# minor dorian, 64 bars, the peak. Loop F#m9-Amaj9-E6/9-B9, i-III-VII-IV9; grand piano hits one, the a-of-one and the and-of-three in odd bars, the and-of-two plus beat four in bar two, the and-of-one, beat three and the and-of-four in bar four, re-pedalled every bar. Full SoCal boom bap: kick on one with two syncopations every bar (a-of-two/a-of-three, and-of-two/and-of-three, and-of-three/a-of-three, a-of-two/and-of-three); snare on 2/4 with two ghosts, swung eighth hats, one sixteenth hat after beat four, one open hat per four bars. Deep synth bass follows the kick minus its last hit. A high electric piano picks chord tones. Nylon lead: A-C#-E / E-C#-B / G#-B-C# / C#-A-F#, a triad climbing from the and-of-one, folding back down. Intro piano first, hats at 3, kick/snare at 5, bass at 9; break 29-36 piano and bass, hats at 31, kick at 33, snare back at 37; crash at 37; outro 57-64 drums and piano. no vocals, lo-fi warmth, DJ-friendly intro/outro.
+```
+
+## lh13-apricot-carbon-v1
+**Style**
+`lo-fi hip hop, 88 BPM, A major, warm grand piano, soft upper electric piano, nylon melody, rounded pulse bass, buoyant acoustic boom bap, swung hats, instrumental`
+
+**Description**
+```
+Apricot Carbon: 88 BPM, A major, 64 bars. Amaj7-C#m7-F#m9-Bm9, one bar each; grand piano plays four-voice jazz comping with varied two/three-hit syncopation and per-bar pedal. SoCal kick on one with changing two/three pickups, snare on 2/4 plus quiet ghosts, swung hats with bright offbeat accents and rare open hats. Round pulse bass leaves one kick empty. Soft upper EP picks separate chord tones. Nylon lead A-C#-B-A / G#-B-G# / A-G#-F#-E / F#-A-C#-B makes a small arch, never a run. Intro 1-8 keys, hats at 3, kick/snare at 5; A 9-28 adds bass/EP, lead at 21; break 29-36 removes kick/bass, retains backbeat+hats+piano, upper EP joins halfway; A2 37-56 full pocket and lead with a soft crash; outro 57-64 drops lead/EP, final four bars drums+keys. no vocals, lo-fi warmth, DJ-friendly intro/outro
+```
+
+## lh14-brass-orchard-v1
+**Style**
+`lo-fi hip hop, 88 BPM, E major, bright-but-mellow electric piano ninths, nylon guitar picking, synth bass, full acoustic boom bap, ghost snares, swung hats with sixteenth flicks, nylon guitar lead, instrumental`
+
+**Description**
+```
+Brass Orchard: 88 BPM, E major, 64 bars. Loop Emaj9-Amaj9-G#m7-C#m9, I-IV-iii-vi; four-voice electric piano comps on one and the a-of-three in odd bars, the e-of-two and four in bar two, three off-beat hits in bar four, re-pedalled every bar. Full SoCal boom bap: kick on one plus two syncopations per bar (a-of-two/and-of-three, and-of-two/a-of-three, and-of-two/and-of-three, a-of-two/a-of-three); snare on 2/4 with two ghosts, swung eighth hats plus one quiet sixteenth after beat two or four. Synth bass follows the kick minus one hit and approaches each loop from B. Nylon guitar picks chord tones between the kicks. Four-bar nylon lead: G#-B-C#-B / A-G#-E / D#-F#-G# / B-G#-F#-E; A2 varies bars two and four. Intro 1-8 (EP, hats at 3, drums at 5); A 9-28 adds bass and nylon, lead at 21; break 29-36 EP alone, bass back after two bars, hats after four; A2 37-56 full with a soft crash; outro 57-64 lead/nylon out, ends drums+EP. no vocals, lo-fi warmth, DJ-friendly intro/outro
+```
+
+## lh15-quartz-overpass-v1
+**Style**
+`lo-fi hip hop, 88 BPM, C# minor, nylon guitar picking intro, electric piano ninths with sustain, deep synth bass, full acoustic boom bap, ghost snares, swung hats, grand piano lead, instrumental`
+
+**Description**
+```
+Quartz Overpass: 88 BPM, C# minor, 64 bars, peak of the set. Loop C#m9-F#9-Amaj9-G#7b13, i-IV9-VI-V; electric piano on one, beat three and the and-of-four in odd bars, the a-of-one plus the and-of-three in bar two, the and-of-two plus the e-of-three in bar four, re-pedalled every bar. Full SoCal boom bap: kick on one with two syncopations every bar (and-of-two/a-of-three, and-of-three/a-of-three, a-of-two/a-of-three, and-of-two/and-of-three); snare on 2/4 with two ghosts, swung eighth hats, one sixteenth hat after beat four, one open hat per four bars. Deep synth bass follows the kick minus its last hit. Nylon guitar picks busy chord tones. Grand piano lead: G#-B-G#-E / A#-G# / B-C#-B-G# / B#-G#, a neighbour-tone turn repeated a step higher, closed by the leading tone. Intro nylon alone, hats at 3, EP/kick/snare at 5, bass at 9; break 29-36 drums, bass and nylon, keys out; crash at 37; outro 57-64 drums and EP. no vocals, lo-fi warmth, DJ-friendly intro/outro.
+```
+
+## lh16-indigo-receipt-v1
+**Style**
+`lo-fi hip hop, 86 BPM, C# minor with Dorian color, electric piano, soft tonewheel organ, warm grand-piano lead, rounded pulse bass, lazy acoustic boom bap, instrumental`
+
+**Description**
+```
+Indigo Receipt: 86 BPM, C# minor, 64 bars. C#m9-Emaj7-Bmaj7-G#7b13, four-voice EP with syncopated two/three-hit comping and per-bar pedal. SoCal kick on one plus alternating and-of-two/a-of-three and a-of-two/and-of-three pickups, snare on 2/4 with two ghosts, deeply swung eighth hats, occasional open hat. Round pulse bass skips each last kick; soft organ holds midrange dyads. Piano lead G#-F#-D# / E-F#-G#-B / F#-D#-F# / G#-A#-B#-A# rises through E major then turns around the leading tone. Intro 1-8 keys, hats at 3, backbeat at 5; A 9-28 bass/organ, lead at 21; break 29-36 drums/bass out: EP two bars, EP+organ four, organ alone two; A2 37-56 returns full groove/lead with one soft crash; outro 57-64 drops lead/organ, final four bars drums+keys. no vocals, lo-fi warmth, DJ-friendly intro/outro
+```
+
+## lh17-slate-harbour-v1
+**Style**
+`lo-fi hip hop, 86 BPM, G-sharp minor, high electric piano opening, pedalled jazz grand piano, finger bass, relaxed acoustic boom bap, ghost snares, swung hats, grand piano lead, instrumental`
+
+**Description**
+```
+Slate Harbour: 86 BPM, G# minor, 64 bars. Loop G#m9-Emaj7-F#13-D#m7, i-VI-VII13-v; grand piano comps three times in bar one (one, and-of-two, a-of-three), holds bar two, hits the a-of-two and four in bar three, one and the and-of-three in bar four, re-pedalled every bar. Relaxed SoCal boom bap: kick on one plus and-of-two and and-of-three in odd bars, a-of-three in bar two, a-of-two in bar four; snare on 2/4 with two ghosts, swung eighth hats. Finger bass keeps the root and one syncopation on three-kick bars. A high electric piano picks single chord tones an octave up. Four-bar grand piano lead: F#-G#-B / D#-B-G# / A#-G#-F# / F#-D#, peaking on D# then sighing down; A2 varies bars two and four. Intro 1-8 high EP alone, hats at 3, drums and piano at 5; A 9-28 adds bass, lead at 21; break 29-36 only EP picking and bass; A2 37-56 full with a soft crash; outro 57-64 lead/EP out, ends drums+piano. no vocals, lo-fi warmth, DJ-friendly intro/outro
+```
+
+## lh18-lantern-deck-v1
+**Style**
+`lo-fi hip hop, 84 BPM, B major, drifting, pedalled jazz grand piano, borrowed minor iv, soft tonewheel organ swells, finger bass, easy acoustic boom bap, ghost snares, swung hats, electric piano lead, instrumental`
+
+**Description**
+```
+Lantern Deck: 84 BPM, B major, 64 bars, the drift begins. Loop Bmaj9-G#m9-Emaj9-Em9, I-vi-IV-iv with a borrowed minor iv; grand piano on one plus the and-of-three in odd bars, beat two in bar two, one plus the e-of-two in bar four, re-pedalled every bar, with a soft organ swell under each chord. Easy SoCal boom bap: kick on one plus the a-of-three, then the and-of-two with the and-of-three, the and-of-three, and the a-of-two with the a-of-three; snare on 2/4 with one or two ghosts, swung eighth hats, one open hat per four bars. Finger bass follows the kick minus its last hit, approaching the loop's return chromatically from below. Electric piano lead: C#-A#-F# / G#-A#-B / D#-B / D-B-G, a fall and a climb, then the D#-B shape darkened to D-B-G over the minor iv. Intro piano first, hats at 3, kick/snare at 5, bass and organ at 9; break 29-36 piano and hats, kick added at 33; crash at 37; outro 57-64 drums and piano. no vocals, lo-fi warmth, DJ-friendly intro/outro.
+```
+
+## lh19-pearl-crossing-v1
+**Style**
+`lo-fi hip hop, 84 BPM, F# major, soft jazz grand piano, acoustic guitar picking, mellow EP lead, finger bass, open acoustic boom bap pocket, swung hats, instrumental`
+
+**Description**
+```
+Pearl Crossing: 84 BPM, F# major, 64 bars. F#maj7-G#m9-A#m7-Bmaj7, a rising-root loop under four-voice grand piano with alternating two-hit comping and delayed holds, re-pedalled each bar. SoCal kick on one with a-of-three or changing two/three pickups; snare on 2/4 plus soft ghosts, swung eighth hats, rare open hat. Finger bass follows fewer kicks. Guitar alternates two- and three-note picking. EP lead A#-G#-E# / F#-G#-A# / C#-B#-A# / A#-F#-D# rises and releases into a descending answer. Intro 1-8 keys, hats 3, backbeat 5; A 9-28 adds bass/guitar, lead 21; break 29-36 kick/bass out, keys/guitar with snare for four bars then hats for four; A2 37-56 full lead and groove, one quiet crash; outro 57-64 removes lead/guitar, last four bars drums+keys. no vocals, lo-fi warmth, DJ-friendly intro/outro
+```
+
+## lh20-dusk-corridor-v1
+**Style**
+`lo-fi hip hop, 82 BPM, E-flat minor, hazy electric piano off-beat comping, nylon guitar picking, finger bass, relaxed acoustic boom bap, ghost snares, swung hats, electric piano lead, instrumental`
+
+**Description**
+```
+Dusk Corridor: 82 BPM, Eb minor, 64 bars. Loop Ebm9-Gbmaj9-Abm9-Bbm7, i-III-iv-v; hazy four-voice electric piano comps on the and-of-one and and-of-three in odd bars, one and four in bar two, a single and-of-two in bar four, re-pedalled every bar. Relaxed SoCal boom bap: kick on one plus and-of-three with a-of-three in bar one, and-of-two in bar two, and-of-three in bar three, a-of-two with and-of-three in bar four; snare on 2/4 with two ghosts, swung eighth hats. Finger bass keeps the root and one syncopation on three-kick bars, approaching each loop from Bb. Nylon guitar picks chord tones off the beat. Four-bar EP lead: Bb-Gb-F / F-Ab-Bb / Cb-Bb-Gb / Ab-F-Eb, dropping then climbing back; A2 varies bars two and four. Intro 1-8 (EP, hats at 3, drums at 5); A 9-28 adds bass and nylon, lead at 21; break 29-36 drops drums and guitar, leaving EP and bass; A2 37-56 full with a soft crash; outro 57-64 lead/nylon out, ends drums+EP. no vocals, lo-fi warmth, DJ-friendly intro/outro
+```
+
+## lh21-ink-carousel-v1
+**Style**
+`lo-fi hip hop, 82 BPM, E-flat minor, falling-fourths loop, held jazz grand piano chords, high electric piano picking, finger bass, laid-back acoustic boom bap, ghost snares, swung hats, nylon guitar lead, instrumental`
+
+**Description**
+```
+Ink Carousel: 82 BPM, Eb minor, 64 bars. Loop Ebm9-Db6/9-Gbmaj9-Cbmaj9, i-VII-III-VI falling in fourths; grand piano holds bars one and three, plays the and-of-one plus beat four in bar two and the and-of-one plus beat three in bar four, re-pedalled every bar. Laid-back SoCal boom bap: kick on one plus the and-of-two and and-of-three, then the a-of-two, the a-of-three, and the and-of-two with the a-of-three; snare on 2/4 with one or two ghosts, swung eighth hats, one open hat per four bars. Finger bass follows the kick minus its last hit. A high electric piano picks sparse chord tones. Nylon guitar lead: Bb-Bb-Db / Bb-Ab-F / F-F-Ab / Bb-Gb, a repeated-note pickup answered by a short fall, then the same pickup a fourth lower. Intro high EP alone, hats at 3, piano/kick/snare at 5, bass at 9; break 29-36 high EP alone, bass joins at 33; crash at 37; outro 57-64 drums and piano. no vocals, lo-fi warmth, DJ-friendly intro/outro.
+```
+
+## lh22-plum-platform-v1
+**Style**
+`lo-fi hip hop, 80 BPM, Bb minor, mellow electric piano, nylon guitar picking, intimate grand-piano motif, finger bass, spacious acoustic boom bap, lazy swung hats, instrumental`
+
+**Description**
+```
+Plum Platform: 80 BPM, Bb minor, 64 bars. Bbm9-Gbmaj7-Ab13-Ebm9 returns through the minor subdominant; four-voice EP uses delayed two-hit comping and a final held answer, pedal renewed each bar. SoCal kick anchors one with changing and-of-two and paired three pickups; snare on 2/4 plus quiet ghosts, lazy swung hats and sparse open hats. Finger bass omits the last kick. Nylon picks thin toward the fourth bar. Piano lead F-Ab-F / Gb-F-Db / C-Db-F / F-Eb-Db answers a small upward sigh with a descent. Intro 1-8 keys, hats at 3, backbeat at 5; A 9-28 bass/guitar, lead at 21; break 29-36 drums+bass for four bars then keys+guitar alone for four; A2 37-56 restores groove and full lead with a soft crash; outro 57-64 drops lead/guitar, final four bars drums+keys. no vocals, lo-fi warmth, DJ-friendly intro/outro
+```
+
+## lh23-honey-transit-v1
+**Style**
+`lo-fi hip hop, 80 BPM, D-flat major, pedalled jazz grand piano, soft tonewheel organ holds, finger bass, relaxed acoustic boom bap, ghost snares, swung hats, nylon guitar lead, instrumental`
+
+**Description**
+```
+Honey Transit: 80 BPM, Db major, 64 bars. Loop Dbmaj9-Ebm9-Gbmaj7-Ab13, I-ii-IV-V13; grand piano comps on one and three in odd bars, one and the and-of-two in bar two, the and-of-one and a-of-three in bar four, re-pedalled every bar. Relaxed SoCal boom bap: kick on one plus a-of-two in bar one, and-of-three with a-of-three in bar two, and-of-two in bar three, and-of-two with and-of-three in bar four; snare on 2/4 with two ghosts, swung eighth hats. Finger bass keeps the root and one syncopation on three-kick bars, landing on Ab before each loop. Soft organ holds root and fifth under the piano. Four-bar nylon lead: F-Ab-C / Bb-Ab-Gb / F-Bb-Db / C-Bb, a climb answered by a step down; A2 varies bars two and four. Intro 1-8 (piano, hats at 3, drums at 5); A 9-28 adds bass and organ, lead at 21; break 29-36 drops piano and bass, leaving drums and organ; A2 37-56 full with a soft crash; outro 57-64 lead/organ out, ends drums+piano. no vocals, lo-fi warmth, DJ-friendly intro/outro
+```
+
+## lh24-felt-almanac-v1
+**Style**
+`lo-fi hip hop, 78 BPM, A-flat major, cooling down, mellow electric piano ninths with sustain, nylon guitar picking, finger bass, sparse acoustic boom bap, one ghost snare, swung hats, grand piano lead, instrumental`
+
+**Description**
+```
+Felt Almanac: 78 BPM, Ab major, 56 bars, the cool-down begins. Loop Abmaj9-Fm9-Cm7-Dbmaj9, I-vi-iii-IV; electric piano on one plus the and-of-two in bar one, a whole-bar hold in bar two, a single late hit on the and-of-three in bar three, one plus beat three in bar four, re-pedalled every bar. Sparse SoCal boom bap: kick on one plus the a-of-two, the and-of-three, the and-of-two with the a-of-three, then the a-of-three; snare on 2/4 with a single ghost, swung eighth hats, one open hat per four bars. Finger bass follows the kick minus its last hit. Nylon guitar picks two notes a bar. Grand piano lead, two notes at most: C-Bb / Ab / G-Bb / C-Ab, a sigh, a long Ab, a lift and a settle. Intro EP first, hats at 3, kick/snare at 5, bass and nylon at 9; break 25-32 kick and snare out, hats, bass, EP and nylon stay; crash at 33; outro drops lead and nylon, last 4 bars EP alone. no vocals, lo-fi warmth, DJ-friendly intro/outro.
+```
+
+## lh25-wool-calendar-v1
+**Style**
+`lo-fi hip hop, 78 BPM, F minor, pedalled grand piano, sparse acoustic guitar, close nylon lead, soft finger bass, unhurried acoustic boom bap, swung hats, instrumental`
+
+**Description**
+```
+Wool Calendar: 78 BPM, F minor, 56 bars. Fm9-Fm9-Dbmaj7-Eb9 gives the tonic two bars; warm four-voice grand piano alternates delayed holds and two-hit replies, repedalling every bar. SoCal kick on one plus a-of-two, and-of-two or a-of-three, with one paired pickup bar; snare on 2/4, quiet ghosts, soft swung hats and rare open hats. Finger bass leaves a kick unanswered. Guitar picking alternates pairs and single notes. Nylon lead Ab-G-F / Eb-C-Eb / F-Ab-F / F-Eb-Db is a close falling figure and a small rebound. Intro 1-8 keys, hats at 3, kick/snare at 5; A 9-24 bass/guitar, lead at 17; break 25-32 removes drums/bass, piano+guitar for four bars then piano alone; A2 33-48 full lead/pocket with one soft crash; outro 49-56 removes lead/guitar, last four bars drums+keys. no vocals, lo-fi warmth, DJ-friendly intro/outro
+```
+
+## lh26-quiet-ferry-v1
+**Style**
+`lo-fi hip hop, 76 BPM, F minor, nylon guitar opening, mellow electric piano holds, low synth pad, finger bass, very sparse acoustic boom bap with rimshots, swung hats, grand piano lead, instrumental`
+
+**Description**
+```
+Quiet Ferry: 76 BPM, F minor, 56 bars. Two-chord loop Fm9 and Bbm9 alternating every bar, i-iv-i-iv, both voiced rootless (C-Eb-G-Ab, then Db-F-Ab-C) with the root left to bass and pad; mellow electric piano holds each downbeat plus one and-of-two hit in bar three, re-pedalled every bar. Very sparse SoCal boom bap: kick on one plus the a-of-three, the and-of-two in bar three; snare on 2 and 4 with rimshots on even bars, one ghost before each bar line, swung eighth hats, one open hat per four bars. Finger bass only holds the root for two beats. Nylon guitar picks single chord tones; a low pad holds F and C from bar 9. Four-bar grand piano lead of sighs: G-Eb / C / F-Ab / Eb; alternate A2 phrases delay bar two by an eighth. Intro 1-8 nylon alone, hats at 3, kick/rim and EP at 5; A 9-24 adds bass and pad, lead at 17; break 25-32 only EP and pad; A2 33-48 restores the pocket with a soft crash; outro 49-56 drops lead/nylon/pad, ends EP only. no vocals, lo-fi warmth, DJ-friendly intro/outro
+```
+
+## lh27-moth-library-v1
+**Style**
+`lo-fi hip hop, 76 BPM, C minor, late-night cool-down, nylon guitar intro, pedalled grand piano, low soft pad, finger bass, sparse acoustic boom bap, rimshot on even bars, swung hats, electric piano lead, instrumental`
+
+**Description**
+```
+Moth Library: 76 BPM, C minor, 56 bars, late-night cool-down. Loop Cm9-Ebmaj9-Abmaj9-Fm9, i-III-VI-iv; grand piano holds bars one and three, plays one plus the and-of-three in bar two and a single beat-two hit in bar four, re-pedalled every bar, with a low root-and-fifth pad from bar 9. Sparse SoCal boom bap: kick on one plus the and-of-three in bars one and two, the a-of-two in bar three, the a-of-three in bar four; snare on 2 and 4 turning to rimshot in even bars, one ghost, swung eighth hats, one open hat per four bars. Finger bass follows the kick minus its last hit. Electric piano lead: D-Bb / G / C-Eb / C-Ab, falling from the ninth, a lone G, then a lift and a settle. Intro nylon alone, hats at 3, piano/kick/snare at 5, bass and pad at 9; break 25-32 pad and bass, nylon joins at 29; crash at 33; outro drops lead, nylon and pad, last 4 bars piano alone. no vocals, lo-fi warmth, DJ-friendly intro/outro.
+```
+
+## lh28-amber-bookend-v1
+**Style**
+`lo-fi hip hop, 74 BPM, Eb major, warm electric piano, soft tonewheel organ, sparse grand-piano melody, finger bass, gentle boom bap, rim answers, swung hats, instrumental`
+
+**Description**
+```
+Amber Bookend: 74 BPM, Eb major, 56 bars. Ebmaj7-Abmaj7-Fm9-Bb13, warm four-voice EP holds with one late two-hit reply, sustain refreshed each bar. Sparse SoCal kick on one plus a changing and-of-three, and-of-two, a-of-three or a-of-two; snare on 2/4, even-bar rims, one ghost per bar, swung eighth hats with stronger offbeats and rare open hats. Finger bass plays only selected roots; soft organ holds. Grand-piano lead G-F-Eb / Eb-C-Eb / F-G-F / D-F-G is a falling answer with a gentle upward tail. Intro 1-8 keys, hats at 3, backbeat at 5; A 9-24 bass/organ, lead at 17; break 25-32 keys+hats for four bars, keys alone for four; A2 33-48 full lead and restrained groove with one soft crash; outro 49-56 drops lead/organ, last four bars keys only. no vocals, lo-fi warmth, DJ-friendly intro/outro
+```
+
+## lh29-cotton-ledge-v1
+**Style**
+`lo-fi hip hop, 74 BPM, B-flat major, pedalled jazz grand piano holds, high electric piano picking, finger bass, very sparse acoustic boom bap with rimshots, swung hats, nylon guitar lead, instrumental`
+
+**Description**
+```
+Cotton Ledge: 74 BPM, Bb major, 56 bars. Loop Bbmaj9 for two bars, then Cm9 and Ebmaj9, I-I-ii-IV; grand piano holds each downbeat with a soft re-hit on the and-of-three in odd bars and on beat four in bar four, re-pedalled every bar. Very sparse SoCal boom bap: kick on one plus the and-of-two in odd bars, the a-of-three in bar two, the and-of-three in bar four; snare on 2 and 4 with rimshots on even bars, one ghost before each bar line, swung eighth hats, one open hat per four bars. Finger bass holds the root for two beats. A high electric piano picks single chord tones above the piano. Four-bar nylon lead: A-C / D / Bb-G / F-G, lifting then resting; A2 delays bar two by an eighth. Intro 1-8 piano first, hats at 3, kick/rim at 5; A 9-24 adds bass and EP picking, lead at 17; break 25-32 hats and EP picking, then piano and EP picking; A2 33-48 restores the pocket with one soft crash; outro 49-56 drops lead/EP, ends piano only. no vocals, lo-fi warmth, DJ-friendly intro/outro
+```
+
+## lh30-last-streetlamp-v1
+**Style**
+`lo-fi hip hop, 72 BPM, G minor, set closer, mellow electric piano with sustain, nylon guitar picking, low soft pad, finger bass, sparse acoustic boom bap, one ghost snare, swung hats, grand piano lead, instrumental`
+
+**Description**
+```
+Last Streetlamp: 72 BPM, G minor, 56 bars, the closer of the set. Loop Gm9-Ebmaj9-Am7b5-D7b9, i-VI-ii-V; electric piano holds bar one, enters late on the and-of-one in bar two, plays one plus beat four in bar three, holds bar four, re-pedalled every bar, with a low root-and-fifth pad, flat fifth under Am7b5. Sparse SoCal boom bap: kick on one plus the a-of-three, the and-of-two, the a-of-three, the and-of-three; snare on 2/4 with a single ghost, swung eighth hats, one open hat per four bars. Finger bass follows the kick minus its last hit. Nylon picks single tones. Grand piano lead: A-Bb-D / G-Bb / C-A / F#-A, rising from the ninth, an echo, and the leading tone turning home. Intro EP first, hats at 3, kick/snare at 5, bass, nylon and pad at 9; break 25-32 EP, bass and pad, no drums; crash at 33; outro 49-56 lets go in order: lead, nylon and pad leave, drums stop after bar 50, bass after bar 52, EP alone, last bar one held Gm9. no vocals, lo-fi warmth, DJ-friendly intro/outro.
+```
