@@ -58,6 +58,7 @@ Feel: golden-hour glow, hopeful and full. About 3.5 minutes.
 ```
 
 ## 사용 메모
+- **길이 제한(MUST)**: Suno 입력 필드는 **공백 포함 1,000자**까지만 받는다. Style 은 300자 이내, Description 은 1,000자 이내로 쓴다. 작성 후 `len()` 으로 재야 한다(2026-10-21 — v3 블록 30개가 1,300~1,700자로 넘쳐 전부 재작성).
 - Suno 는 스타일 필드가 짧을수록 안정적. Description 은 커스텀 모드의 가사란에 `[Instrumental]` 태그와 함께 넣거나, Cover/Extend 시 참고용.
 - 코드 진행·BPM·키는 원곡 SMF 와 동일. Suno 가 키를 무시하는 경우가 많으므로 무드·악기 단어를 우선.
 
@@ -1097,14 +1098,12 @@ Cover 업로드 시 `{sid}-v3.wav` 와 함께 쓴다. Style 은 짧게, Descript
 
 **Description**
 ```
-Instrumental deep house at 117 BPM in A minor over a static Am9 rootless shell, with no chord changes.
-Pulse Bass holds A on the and-of-one for most of every other bar, leaving the intervening bar empty; it enters at bar 9.
-Audible electric-piano chords hold through each A/A2 bar with sustain re-pedaled every bar. A low Classic Pad holds A-E-B from bar 1; an eighth-note electric-piano Tex cycle repeats the chord tones C-G-B only in A/A2, never becoming a lead.
-Tough Kit separates a four-on-the-floor kick from bar 5 (beat one 106-112, beats two through four 100-105), soft on-beat closed hats (50-62), stronger closed hats on &1 and &3 (74-90), and 180-tick open hats on &2 and &4 every non-break bar (65-80). No step-15 closed hats.
-Snare (88-100) and layered clap (80-92) enter on beats 2 and 4 at bar 17. A quarter-note ride (60-75) replaces on-beat closed hats in A2; off-beat hats remain. Two tom hits mark beat four of bars 16, 36 and 56, and one crash marks bar 41.
-A separate SoCal Perc track places three conga hits per two-bar cell only in A/A2, on sixteenth gaps away from kicks and open hats; no shaker. Light swing and humanized timing preserve the accents.
-64 bars: 1-8 intro, 9-36 A, 37-40 break, 41-56 A2, 57-64 outro. Start with pad and hats, then add the kick at bar 5. The break removes all drums, percussion, keys, pad and Tex, leaving only the sparse sub-bass cell. The outro removes keys, pad, Tex, congas and ride, leaving drums and bass.
-Feel: an unlit opening room, grounded and patient rather than bright or euphoric; no lead, no vocals, DJ-friendly intro/outro.
+Deep house at 117 BPM, A minor: static rootless Am9, no changes.
+Pulse Bass from bar 9: long A on &1 every other bar, alternate bar empty.
+Tough Kit: four-floor kick from bar 5; soft on-beat closed hats, stronger &1/&3; open hats &2/&4. Snare+clap on 2/4 from bar 17. Two tom hits end bars 16/36/56.
+Low Classic Pad A-E-B from bar 1. A/A2: held full-bar electric piano, pedal released each bar; eighth-note electric-piano Tex cycles C-G-B in one octave; SoCal congas, 3 hits/2 bars clear of kick/open hats, no shaker.
+64 bars: 1-8 pad+hats intro, kick at 5; 9-36 A; 37-40 break: only sparse bass; drums, keys, pad, Tex and Perc drop; 41-56 A2: quarter-note ride replaces on-beat closed hats, off-beats stay, crash at 41; 57-64 drums+bass only.
+No lead, no vocals, DJ-friendly intro/outro.
 ```
 
 ## dh02-ash-corridor-v3
@@ -1113,13 +1112,13 @@ Feel: an unlit opening room, grounded and patient rather than bright or euphoric
 
 **Description**
 ```
-Ash Corridor is a 64-bar second opener on Am9 for four bars and Bm7b5/A for four bars over an A pedal; three inner voices step up by one note and back. The chords sit between C4 and C6.
-Electric piano holds the chord for the whole bar in every bar; in the last bar of each chord it holds 3.3 beats and adds one short touch on the and-of-4, sustain pedal re-pressed every bar.
-A soft three-note pad (A2, E3, B3) lies under everything from bar 1 to bar 56. In the full sections a tonewheel organ plays a quiet eighth-note arpeggio of the chord tones inside one octave.
-Drums: four-on-the-floor kick with a firmer beat 1, eighth-note closed hats that are soft on the beat and strong on the off-beat, one ghost sixteenth on the e-of-4, an open hat on the and-of-2 and and-of-4 in every bar, snare with a clap under it on 2 and 4 from bar 9, quarter-note ride instead of the on-beat hats from bar 41 to 56, two-hit tom fills on beat 4 of bars 16, 36 and 56, one crash on bar 41 beat 1. No shaker, no congas.
-Sub bass on A1 from bar 9: three beats on the one, then a 1.75-beat note from beat 3 of the next bar; root only.
-Structure: 1-8 intro (pad and hats from bar 1, kick from bar 5), 9-36 full, 37-38 hats and pad only, 39-40 hats, sub and pad, 41-56 full with ride, 57-64 drums and sub only.
-Dim, slow and unhurried. No lead, no vocals, no melody, DJ-friendly intro/outro.
+Ash Corridor: 117 BPM, A minor. Am9 for four bars, Bm7b5/A for four bars over an A pedal; three inner voices step up one note and back.
+Electric piano holds each chord for the whole bar, with one short touch on the and-of-4 in the last bar of each chord.
+Soft pad (A2, E3, B3) under bars 1-56; quiet organ eighth-note chord-tone arpeggio in full sections.
+Drums: four-on-the-floor kick, off-beat-accented eighth-note closed hats, open hat on the and-of-2 and and-of-4, snare with clap on 2 and 4 from bar 9, ride in 41-56, tom fills in bars 16, 36, 56, crash at 41. No shaker or congas.
+Sub bass on A1 only from bar 9: three beats on the one, then a 1.75-beat note from beat 3 of the next bar.
+Form: 1-8 intro (pad, hats; kick from bar 5), 9-36 full, 37-40 break: hats and pad only, sub returns in 39-40, 41-56 full with ride, 57-64 drums and sub only.
+Dim, slow and unhurried. No lead, no vocals, DJ-friendly intro/outro.
 ```
 
 ## dh03-cistern-hum-v3
@@ -1128,13 +1127,13 @@ Dim, slow and unhurried. No lead, no vocals, no melody, DJ-friendly intro/outro.
 
 **Description**
 ```
-Instrumental deep house at 118 BPM in E minor on Em9 and A9sus4/E, two bars each, over an E pedal; only two voices step down, B to A and F# to E.
-Drums: punchy four-on-the-floor kick with the downbeat accented, snare and clap together on 2 and 4 from bar 9, closed-hat eighths quiet on the beat and accented on the and-of-1 and and-of-3, an open hat on the and-of-2 and the and-of-4 of every bar, no sixteenth ghosts. Bars 41-56 swap the on-beat closed hats for ride quarters, with a crash on bar 41. Two-hit tom fills close bars 16, 36 and 56. A sparse conga figure (three hits per two bars) from bar 13 in the full sections.
-Sub bass from bar 9: E2 held 1.75 beats on the one, then a short B1 on the and-of-3 of the next bar.
-Electric piano an octave up from bar 9: a short chord on the one, a held chord from the and-of-2 that rings into the second bar, re-touched on its and-of-3, sustain pedal.
-Pad from bar 1: three soft voices (E3 B3 F#4, then A2 E3 B3), tonic only in the intro.
-Tonewheel organ eighth-note arpeggio G4-B4-D5 / G4-A4-D5 in bars 17-36 and 41-56.
-Structure: 1-8 intro (pad and hats, kick from bar 5), 9-36 full, 37-40 break with the kick on beat 1 only and the bass out (hats, snare, clap, piano and pad stay), 41-56 full, 57-64 drums and bass only.
+Instrumental deep house at 118 BPM in E minor. Loop: Em9 and A9sus4/E, two bars each, over an E pedal; only two voices step down, B to A and F# to E.
+Drums: punchy four-on-the-floor kick, snare and clap on 2 and 4 from bar 9, closed-hat eighths, open hats on the and-of-2 and and-of-4. Tom fills at bars 16, 36, 56. Sparse congas from bar 13.
+Sub bass from bar 9: a long E2 on the one, then a short B1 on the and-of-3 of the next bar.
+Electric piano from bar 9: a short chord on the one and a held chord that rings into the second bar, sustain pedal.
+Soft three-voice pad from bar 1, tonic only in the intro.
+Tonewheel organ eighth-note arpeggio G4-B4-D5 / G4-A4-D5 in 17-36 and 41-56.
+Structure: 1-8 intro (pad and hats, kick from bar 5), 9-36 full, 37-40 break with the kick on beat 1 only and the bass out, 41-56 full with ride and crash, 57-64 drums and bass only.
 Dark, patient, early in the set. No lead, no vocals, DJ-friendly intro/outro.
 ```
 
@@ -1144,14 +1143,12 @@ Dark, patient, early in the set. No lead, no vocals, DJ-friendly intro/outro.
 
 **Description**
 ```
-Instrumental deep house at 118 BPM in E minor, repeating Em9 for six bars and Em6/9 for two bars, a minor tonic with a Dorian shade rather than a major lift.
-Pulse Bass alternates a long E on beat one with a short lower fifth on &3; the DJ edges retain the tonic. Bass enters at bar 9.
-Electric-piano chords sustain for a full bar with bar-by-bar pedal release. A low Classic Pad holds E-B-F# from bar 1. An eighth-note electric-piano Tex cycle outlines the current chord inside one octave, only in A/A2.
-Tough Kit gives the kick four quarter notes from bar 5, with beat one at 106-112 and beats two through four at 100-105. Closed hats contrast soft downbeats (50-62) with &1 and &3 (74-90); open hats take &2 and &4 every non-break bar at 65-80 with 180-tick tails. No step-15 hats.
-Snare (88-100) with clap underneath (80-92) plays beats 2 and 4 from bar 9. In A2, a quarter-note ride replaces all on-beat closed hats while the off-beat hats remain. Two tom hits fall late on beat four in bars 16, 36 and 56; a single crash returns at bar 41.
-SoCal congas add a three-hit, two-bar cell in A/A2 only, in sixteenth gaps clear of the kick and open hats. No shaker; retain subtle swing and timing variation.
-64 bars: 1-8 intro with pad and hats before the bar-5 kick, 9-36 A, 37-40 break, 41-56 A2, 57-64 outro. The break leaves only held electric-piano chords, removing bass, drums, pad, Tex and congas. The outro leaves drums and bass, with harmony, texture, congas and ride removed.
-Feel: damp circuitry, quiet forward movement, restrained harmonic color; no lead, no vocals, DJ-friendly intro/outro.
+Deep house at 118 BPM, E minor: Em9 6 bars, Em6/9 2 bars; Dorian shade.
+Pulse Bass from bar 9: long E on beat 1 alternates with short lower fifth on &3; tonic at DJ edges.
+Tough Kit: four-floor kick from bar 5; soft on-beat closed hats, stronger &1/&3; open hats &2/&4. Snare+clap on 2/4 from bar 9. Two tom hits end bars 16/36/56.
+Low Classic Pad E-B-F# from bar 1. A/A2: held full-bar electric piano, pedal released each bar; eighth-note electric-piano Tex cycles current chord tones in one octave; SoCal congas, 3 hits/2 bars clear of kick/open hats, no shaker.
+64 bars: 1-8 pad+hats intro, kick at 5; 9-36 A; 37-40 break: held keys only; bass, drums, pad, Tex and Perc drop; 41-56 A2: quarter-note ride replaces on-beat closed hats, off-beats stay, crash at 41; 57-64 drums+bass only.
+No lead, no vocals, DJ-friendly intro/outro.
 ```
 
 ## dh05-tin-lantern-v3
@@ -1160,13 +1157,13 @@ Feel: damp circuitry, quiet forward movement, restrained harmonic color; no lead
 
 **Description**
 ```
-Tin Lantern is a 64-bar deep house track alternating Bm9 and Dmaj7(#11)/B every bar over a B pedal; only one voice moves, A down to G#, a dorian shade. The chords sit between C4 and C6.
-Tonewheel organ dub stabs, each about one beat long: on the and-of-1 and the a-of-3 in odd bars, on the and-of-2 and beat 4 in even bars, sustain pedal re-pressed every bar.
-A soft three-note pad (B2, F#3, C#4) lies under everything from bar 1 to bar 56. In the full sections an electric piano plays a quiet eighth-note arpeggio of the chord tones inside one octave.
-Drums: four-on-the-floor kick with a firmer beat 1, eighth-note closed hats soft on the beat and strong on the off-beat, one ghost sixteenth on the e-of-4, an open hat on the and-of-2 and and-of-4 in every bar, snare with a clap under it on 2 and 4 from bar 9, quarter-note ride instead of the on-beat hats from bar 41 to 56, tom fills on beat 4 of bars 16, 36 and 56, one crash on bar 41 beat 1. Two congas play a sparse two-bar cell on free sixteenths in the full sections. No shaker.
-Sub bass from bar 9: a short pickup on the and-of-1 into a 1.4-beat note on beat 2; the second bar's long note drops to the fifth below (E1).
-Structure: 1-8 intro (pad and hats from bar 1, kick from bar 5), 9-36 full, 37-40 kick, closed and open hats, organ and pad with no snare, no sub, no arpeggio, no congas, 41-56 full with ride, 57-64 drums and sub only.
-Warm, low and dubby. No lead, no vocals, no melody, DJ-friendly intro/outro.
+Tin Lantern: 119 BPM, B minor dorian. Bm9 and Dmaj7(#11)/B alternate every bar over a B pedal; only one voice moves, A down to G#.
+Tonewheel organ dub stabs, about one beat each: and-of-1 and a-of-3 in odd bars, and-of-2 and beat 4 in even bars.
+Soft pad (B2, F#3, C#4) under bars 1-56; quiet electric piano eighth-note chord-tone arpeggio in full sections.
+Drums: four-on-the-floor kick, off-beat-accented eighth-note closed hats, open hat on the and-of-2 and and-of-4, snare with clap on 2 and 4 from bar 9, ride in 41-56, tom fills in bars 16, 36, 56, crash at 41. Sparse conga cell in full sections, no shaker.
+Sub bass from bar 9: pickup on the and-of-1 into a 1.4-beat note on beat 2; every second bar the long note drops to the fifth below (E1).
+Form: 1-8 intro (pad, hats; kick from bar 5), 9-36 full, 37-40 break: kick, hats, organ and pad only, 41-56 full with ride, 57-64 drums and sub only.
+Warm, low and dubby. No lead, no vocals, DJ-friendly intro/outro.
 ```
 
 ## dh06-chalk-river-v3
@@ -1175,13 +1172,13 @@ Warm, low and dubby. No lead, no vocals, no melody, DJ-friendly intro/outro.
 
 **Description**
 ```
-Instrumental deep house at 119 BPM in B minor on Bm9 and G9, two bars each; D and A are held while F# falls to F and C# to B.
-Drums: punchy four-on-the-floor kick with the downbeat accented, snare and clap together on 2 and 4 from bar 9, closed-hat eighths quiet on the beat and accented on the and-of-1 and and-of-3 with one ghost sixteenth after beat 4, an open hat on the and-of-2 and the and-of-4 of every bar. Bars 41-56 swap the on-beat closed hats for ride quarters, with a crash on bar 41. Two-hit tom fills close bars 16, 36 and 56. A conga figure (four hits per two bars) from bar 13 in the full sections.
-Sub bass from bar 9: short roots on beats 2 and 4 with the snare; the second bar of Bm9 drops to the fifth (F#1) on beat 4 and returns to the root on its and.
-Tonewheel organ from bar 9: a 2.6-beat chord on the one and a short chord on beat 4 of every bar.
-Pad from bar 1: three voices (B2 F#3 C#4, then G2 D3 A3), tonic only in the intro.
-Electric piano eighth-note arpeggio D4-F#4-A4-C#5 / D4-F4-A4-B4 in bars 17-36 and 41-56.
-Structure: 1-8 intro (pad and hats, kick from bar 5), 9-36 full, 37-40 drums-only break (bass, organ and pad out), 41-56 full, 57-64 drums and bass only.
+Instrumental deep house at 119 BPM in B minor. Loop: Bm9 and G9, two bars each; D and A are held while F# falls to F and C# to B.
+Drums: punchy four-on-the-floor kick, snare and clap on 2 and 4 from bar 9, closed-hat eighths, open hats on the and-of-2 and and-of-4. Tom fills at bars 16, 36, 56. Congas from bar 13.
+Sub bass from bar 9: short roots on beats 2 and 4 with the snare, dipping to the fifth (F#1) once every four bars.
+Tonewheel organ from bar 9: a long chord on the one and a short chord on beat 4, every bar.
+Three-voice pad from bar 1, tonic only in the intro.
+Electric piano eighth-note arpeggio D4-F#4-A4-C#5 / D4-F4-A4-B4 in 17-36 and 41-56.
+Structure: 1-8 intro (pad and hats, kick from bar 5), 9-36 full, 37-40 drums-only break (bass, organ and pad out), 41-56 full with ride and crash, 57-64 drums and bass only.
 Dry, steady, grey. No lead, no vocals, DJ-friendly intro/outro.
 ```
 
@@ -1191,14 +1188,12 @@ Dry, steady, grey. No lead, no vocals, DJ-friendly intro/outro.
 
 **Description**
 ```
-Instrumental deep house at 120 BPM in F# minor, alternating F#m9 and Bm11 for two bars each.
-Low Simple Foundation bass enters at bar 9 and alternates two short tonic notes on &2 and &4 with a longer tonic on &1, leaving clear space between attacks.
-Tonewheel Organ holds the chord loop for full bars, with audible 72-92-range dynamics and bar-by-bar pedal release. A low Classic Pad holds F#-C#-G# from bar 1; electric-piano Tex cycles eighth-note chord tones within each chord's octave only in A/A2.
-Tough Kit has a quarter-note kick from bar 5, beat one 106-112 and the other beats 100-105. Closed hats use soft on-beats (50-62) and strong &1/&3 (74-90); open hats occupy &2/&4 at 65-80 for 180 ticks. No step-15 hats.
-Snare (88-100) and layered clap (80-92) enter at bar 9 on beats 2 and 4. A2 uses quarter-note ride instead of on-beat closed hats, retaining the off-beat hats. Two late-beat-four tom hits mark bars 16, 36 and 56; bar 41 has a single return crash.
-A separate SoCal conga part plays three off-grid-gap hits across each two-bar A/A2 cell, avoiding kick and open-hat positions; no shaker. Keep lightly swung, humanized accents distinct.
-64 bars: 1-8 intro, 9-36 A, 37-40 break, 41-56 A2, 57-64 outro. Pad and hats start the intro and kick enters at bar 5. The break removes kick, organ, pad, Tex and congas, retaining bass, closed/open hats and snare-clap backbeats; open hats continue twice per bar. The outro strips back to drums and bass without harmony, Tex, congas or ride.
-Feel: dark sediment and understated rhythmic pull, never a bright peak; no lead, no vocals, DJ-friendly intro/outro.
+Deep house at 120 BPM, F# minor: F#m9 / Bm11, 2 bars each.
+Simple Foundation bass from bar 9: short tonics on &2/&4 alternate with longer tonic on &1.
+Tough Kit: four-floor kick from bar 5; soft on-beat closed hats, stronger &1/&3; open hats &2/&4. Snare+clap on 2/4 from bar 9. Two tom hits end bars 16/36/56.
+Low Classic Pad F#-C#-G# from bar 1. A/A2: held full-bar Tonewheel Organ, pedal released each bar; eighth-note electric-piano Tex cycles current chord tones in one octave; SoCal congas, 3 hits/2 bars clear of kick/open hats, no shaker.
+64 bars: 1-8 pad+hats intro, kick at 5; 9-36 A; 37-40 break: bass, closed/open hats and snare+clap only; kick, keys, pad, Tex and Perc drop; 41-56 A2: quarter-note ride replaces on-beat closed hats, off-beats stay, crash at 41; 57-64 drums+bass only.
+No lead, no vocals, DJ-friendly intro/outro.
 ```
 
 ## dh08-slate-hallway-v3
@@ -1207,13 +1202,13 @@ Feel: dark sediment and understated rhythmic pull, never a bright peak; no lead,
 
 **Description**
 ```
-Slate Hallway is a 64-bar deep house track on F#m9 and G#m11/F#, two bars each, over an F# pedal; the three upper voices slide up a whole step and back, the D# giving a dorian colour. The chords sit between C4 and C6.
-Electric piano holds 1.75 beats from the one and again from beat 3 in odd bars; in even bars it holds 1.5 beats from the and-of-1 and 1.25 beats from the swung and-of-3, sustain pedal re-pressed every bar.
-A soft three-note pad (F#3, C#4, G#4) lies under everything from bar 1 to bar 56. In the full sections a tonewheel organ plays a quiet swung eighth-note arpeggio of the chord tones inside one octave.
-Drums, swung: four-on-the-floor kick with a firmer beat 1, eighth-note closed hats soft on the beat and strong on the swung off-beat, one ghost sixteenth on the e-of-4, an open hat on the swung and-of-2 and and-of-4 in every bar, snare with a clap under it on 2 and 4 from bar 9, quarter-note ride instead of the on-beat hats from bar 41 to 56, tom fills on beat 4 of bars 16, 36 and 56, one crash on bar 41 beat 1. Two congas play a sparse two-bar cell on free sixteenths in the full sections. No shaker.
-Sub bass from bar 9: short notes on the swung and-of-2 and beat 3, then a one-beat note on beat 4; in the second bar the beat-4 note drops an octave to F#1.
-Structure: 1-8 intro (pad and hats from bar 1, kick from bar 5), 9-36 full, 37-38 electric piano and pad alone, 39-40 sub alone, 41-56 full with ride, 57-64 drums and sub only.
-Smooth and shadowed. No lead, no vocals, no melody, DJ-friendly intro/outro.
+Slate Hallway: 120 BPM, F# minor dorian. F#m9 and G#m11/F#, two bars each, over an F# pedal; the upper voices slide up a whole step and back.
+Electric piano chords on the one and beat 3 in odd bars, on the and-of-1 and swung and-of-3 in even bars.
+Soft pad (F#3, C#4, G#4) under bars 1-56; quiet swung organ eighth-note chord-tone arpeggio in full sections.
+Drums, swung: four-on-the-floor kick, off-beat-accented eighth-note closed hats, open hat on the and-of-2 and and-of-4, snare with clap on 2 and 4 from bar 9, ride in 41-56, tom fills in bars 16, 36, 56, crash at 41. Sparse conga cell in full sections, no shaker.
+Sub bass from bar 9: short notes on the swung and-of-2 and beat 3, a one-beat note on beat 4; every second bar it drops an octave to F#1.
+Form: 1-8 intro (pad, hats; kick from bar 5), 9-36 full, 37-40 break: piano and pad alone in 37-38, sub alone in 39-40, 41-56 full with ride, 57-64 drums and sub only.
+Smooth and shadowed. No lead, no vocals, DJ-friendly intro/outro.
 ```
 
 ## dh09-wet-asphalt-v3
@@ -1222,13 +1217,13 @@ Smooth and shadowed. No lead, no vocals, no melody, DJ-friendly intro/outro.
 
 **Description**
 ```
-Instrumental deep house at 120 BPM in C# minor on C#m11 and G#m7b5, two bars each; the D natural of the second chord darkens the loop.
-Drums: punchy four-on-the-floor kick with the downbeat accented, snare and clap together on 2 and 4 from bar 9, swung closed-hat eighths quiet on the beat and accented on the and-of-1 and and-of-3 with one ghost sixteenth after beat 4, a swung open hat on the and-of-2 and the and-of-4 of every bar. Bars 41-56 swap the on-beat closed hats for ride quarters, with a crash on bar 41. Two-hit tom fills close bars 16, 36 and 56. A swung conga figure (five hits per two bars) from bar 13 in the full sections.
-Finger bass from bar 9: pushes from the last sixteenth of beat 2 for 1.5 beats, with a short G#1 on the last sixteenth of beat 4 under C#m11; the next bar adds a short root on the one.
-Electric piano an octave up from bar 9: a chord on beat 2 held for two to three beats, plus a short chord on the and-of-4 that anticipates the next chord, sustain pedal.
-Pad from bar 1: three voices (C#3 G#3 D#4, then G#2 D3 F#3), tonic only in the intro.
-Tonewheel organ eighth-note arpeggio G#4-B4-D#5 / G#4-B4-D5 in bars 17-36 and 41-56.
-Structure: 1-8 intro (pad and hats, kick from bar 5), 9-36 full, 37-40 break that rebuilds one element per bar — piano and pad, then hats, then bass, then kick — with snare and clap back at bar 41, 41-56 full, 57-64 drums and bass only.
+Instrumental deep house at 120 BPM in C# minor. Loop: C#m11 and G#m7b5, two bars each; its D natural darkens the loop.
+Drums: punchy four-on-the-floor kick, snare and clap on 2 and 4 from bar 9, swung closed-hat eighths, swung open hats on the and-of-2 and and-of-4. Tom fills at bars 16, 36, 56. Swung congas from bar 13.
+Finger bass from bar 9: syncopated pushes ahead of beats 3 and 1, with a short fifth (G#1) under C#m11.
+Electric piano from bar 9: a held chord on beat 2 and a short chord on the and-of-4 anticipating the next chord, sustain pedal.
+Three-voice pad from bar 1, tonic only in the intro.
+Tonewheel organ eighth-note arpeggio G#4-B4-D#5 / G#4-B4-D5 in 17-36 and 41-56.
+Structure: 1-8 intro (pad and hats, kick from bar 5), 9-36 full, 37-40 break that rebuilds one element per bar (piano and pad, hats, bass, kick), 41-56 full with ride and crash, 57-64 drums and bass only.
 Wet, after-midnight. No lead, no vocals, DJ-friendly intro/outro.
 ```
 
@@ -1238,14 +1233,12 @@ Wet, after-midnight. No lead, no vocals, DJ-friendly intro/outro.
 
 **Description**
 ```
-Instrumental deep house at 121 BPM in C# minor, repeating C#m11 for three bars and G#m9 for one bar.
-Pulse Bass enters at bar 9: short tonic notes on &1 and &3 alternate with a longer lower-fifth note on &2; the intro and outro use the tonic instead of the lower fifth.
-Electric piano sustains each chord through its bar with repeated pedal releases. A low Classic Pad holds C#-G#-D# from the opening bar. Eighth-note electric-piano Tex circles the current chord tones inside one octave only in A/A2.
-Tough Kit starts the kick at bar 5: four-on-the-floor, beat one 106-112 and other beats 100-105. Quiet on-beat closed hats (50-62) contrast with &1/&3 (74-90); open hats take &2/&4 at 65-80 for 180 ticks in every non-break bar. No step-15 hats.
-Snare (88-100) and clap beneath it (80-92) play beats 2 and 4 from bar 9. In A2, quarter-note ride replaces on-beat closed hats, not the off-beat hats. Two tom hits decorate the last beat of bars 16, 36 and 56; one crash announces bar 41.
-SoCal congas use a three-hit, two-bar cell confined to A/A2, in sixteenth spaces away from kicks and open hats. No shaker; maintain light swing and humanized timing.
-64 bars: 1-8 intro with pad and hats before the bar-5 kick, 9-36 A, 37-40 break, 41-56 A2, 57-64 outro. The break keeps kick, snare-clap and held keys but removes all hats, bass, pad, Tex and congas. The outro leaves drums and bass after removing harmonic layers, Tex, congas and ride.
-Feel: a low-ceiling underpass lined in soft darkness, steady rather than exuberant; no lead, no vocals, DJ-friendly intro/outro.
+Deep house at 121 BPM, C# minor: C#m11 3 bars, G#m9 1 bar.
+Pulse Bass from bar 9: short tonics on &1/&3 alternate with longer lower fifth on &2; tonic at DJ edges.
+Tough Kit: four-floor kick from bar 5; soft on-beat closed hats, stronger &1/&3; open hats &2/&4. Snare+clap on 2/4 from bar 9. Two tom hits end bars 16/36/56.
+Low Classic Pad C#-G#-D# from bar 1. A/A2: held full-bar electric piano, pedal released each bar; eighth-note electric-piano Tex cycles current chord tones in one octave; SoCal congas, 3 hits/2 bars clear of kick/open hats, no shaker.
+64 bars: 1-8 pad+hats intro, kick at 5; 9-36 A; 37-40 break: kick, snare+clap and keys only; hats, bass, pad, Tex and Perc drop; 41-56 A2: quarter-note ride replaces on-beat closed hats, off-beats stay, crash at 41; 57-64 drums+bass only.
+No lead, no vocals, DJ-friendly intro/outro.
 ```
 
 ## dh11-cinder-arcade-v3
@@ -1254,13 +1247,13 @@ Feel: a low-ceiling underpass lined in soft darkness, steady rather than exubera
 
 **Description**
 ```
-Cinder Arcade is a 64-bar deep house track on G#m9 for three bars and Emaj7(#11)/G# for one bar, with G#1 held under both; two voices step down for the fourth bar and return. The chords sit between C4 and C6.
-Soft grand piano plays 1.5 beats from the and-of-1 and 1.25 beats from the and-of-3 in the first three bars of each cycle, then holds 3.25 beats from the and-of-1 in the fourth bar, sustain pedal re-pressed every bar.
-A soft three-note pad (G#2, D#3, A#3) lies under everything from bar 1 to bar 56. In the full sections an electric piano plays a quiet eighth-note arpeggio of the chord tones inside one octave.
-Drums: four-on-the-floor kick with a firmer beat 1, eighth-note closed hats soft on the beat and strong on the off-beat, one ghost sixteenth on the e-of-4, an open hat on the and-of-2 and and-of-4 in every bar, snare with a clap under it on 2 and 4 from bar 9, quarter-note ride instead of the on-beat hats from bar 41 to 56, tom fills on beat 4 of bars 16, 36 and 56, one crash on bar 41 beat 1. Two congas play a sparse two-bar cell on free sixteenths in the full sections. No shaker.
-Sub bass on G#1 only from bar 9: a short note on the one, a sixteenth pickup on the a-of-1, then a 1.2-beat note from the and-of-3, or a short note on the and-of-4 in the second bar.
-Structure: 1-8 intro (pad and hats from bar 1, kick from bar 5), 9-36 full, 37-40 break with the kick on beats 1 and 3 only and the sub, no hats, no open hats, no snare, no piano, no pad, 41-56 full with ride, 57-64 drums and sub only.
-Tense but quiet. No lead, no vocals, no melody, DJ-friendly intro/outro.
+Cinder Arcade: 121 BPM, G# minor. G#m9 for three bars and Emaj7(#11)/G# for one bar, G#1 held under both; two voices step down in the fourth bar.
+Soft grand piano: short chords on the and-of-1 and and-of-3 for three bars, one long chord from the and-of-1 in the fourth.
+Soft pad (G#2, D#3, A#3) under bars 1-56; quiet electric piano eighth-note chord-tone arpeggio in full sections.
+Drums: four-on-the-floor kick, off-beat-accented eighth-note closed hats, open hat on the and-of-2 and and-of-4, snare with clap on 2 and 4 from bar 9, ride in 41-56, tom fills in bars 16, 36, 56, crash at 41. Sparse conga cell in full sections, no shaker.
+Sub bass on G#1 only from bar 9: short one, sixteenth pickup, 1.2-beat note from the and-of-3; the second bar ends on a short and-of-4.
+Form: 1-8 intro (pad, hats; kick from bar 5), 9-36 full, 37-40 break: kick on beats 1 and 3 plus sub only, 41-56 full with ride, 57-64 drums and sub only.
+Tense but quiet. No lead, no vocals, DJ-friendly intro/outro.
 ```
 
 ## dh12-tarnished-blue-v3
@@ -1269,13 +1262,13 @@ Tense but quiet. No lead, no vocals, no melody, DJ-friendly intro/outro.
 
 **Description**
 ```
-Instrumental deep house at 121 BPM in G# minor on G#m9 and B13, two bars each; D# and F# are shared and an A natural sits on top of the second chord.
-Drums: punchy four-on-the-floor kick with the downbeat accented, snare and clap together on 2 and 4 from bar 9, closed-hat eighths quiet on the beat and accented on the and-of-1 and and-of-3 with one ghost sixteenth after beat 4, an open hat on the and-of-2 and the and-of-4 of every bar. Bars 41-56 swap the on-beat closed hats for ride quarters, with a crash on bar 41. Two-hit tom fills close bars 16, 36 and 56. A conga figure (five hits per two bars) from bar 13 in the full sections.
-Sub bass from bar 9, all off the beat: the ands of 1, 2 and 3 (the last one longer); the next bar the and-of-1, the and-of-3 (the fifth, F#1, under B13) and the and-of-4.
-Electric piano an octave up from bar 9: a chord on beat 3 and a chord on the and-of-4 held across the bar line, every bar, sustain pedal.
-Pad from bar 1: three voices (G#2 D#3 A#3, then B2 F#3 C#4), tonic only in the intro.
-Tonewheel organ eighth-note arpeggio F#4-A#4-B4-D#5 / F#4-A4-B4-D#5 in bars 17-36 and 41-56.
-Structure: 1-8 intro (pad and hats, kick from bar 5), 9-36 full, 37-40 break where the kick turns into a broken two-step (the one and the last sixteenth of beat 3) and everything else stays, 41-56 full, 57-64 drums and bass only.
+Instrumental deep house at 121 BPM in G# minor. Loop: G#m9 and B13, two bars each; D# and F# are shared, an A natural on top of the second.
+Drums: punchy four-on-the-floor kick, snare and clap on 2 and 4 from bar 9, closed-hat eighths, open hats on the and-of-2 and and-of-4. Tom fills at bars 16, 36, 56. Congas from bar 13.
+Sub bass from bar 9, all off the beat: short notes on the ands, the fifth (F#1) under B13.
+Electric piano from bar 9: a chord on beat 3 and a chord on the and-of-4 held across the bar line, every bar, sustain pedal.
+Three-voice pad from bar 1, tonic only in the intro.
+Tonewheel organ eighth-note arpeggio F#4-A#4-B4-D#5 / F#4-A4-B4-D#5 in 17-36 and 41-56.
+Structure: 1-8 intro (pad and hats, kick from bar 5), 9-36 full, 37-40 break where the kick turns into a broken two-step and everything else stays, 41-56 full with ride and crash, 57-64 drums and bass only.
 Smoky, rising toward the peak. No lead, no vocals, DJ-friendly intro/outro.
 ```
 
@@ -1285,14 +1278,12 @@ Smoky, rising toward the peak. No lead, no vocals, DJ-friendly intro/outro.
 
 **Description**
 ```
-Instrumental deep house at 122 BPM in Eb minor, alternating Ebm9 and Abm6 for two bars each.
-Pulse Bass enters at bar 9. Its two-bar cell uses a tonic on beat one and a short lower fifth on &3, then tonic attacks on &1 and beat three; the DJ edges keep the tonic.
-Tonewheel Organ holds each chord for a bar with sustain re-pedaled at every bar line. A low Classic Pad holds Eb-Bb-F from bar 1. Eighth-note electric-piano Tex repeats chord tones inside the current chord's octave only in A/A2.
-Tough Kit separates the four-on-the-floor kick from bar 5 (first beat 106-112, other beats 100-105), soft on-beat closed hats (50-62), strong &1/&3 closed hats (74-90), and open hats on &2/&4 (65-80, 180 ticks). Outside the break, every bar has two open hats. No step-15 hats.
-Snare (88-100) with clap below it (80-92) enters on 2 and 4 at bar 9. A2 replaces on-beat closed hats with quarter-note ride, retaining off-beat hats. Two tom hits at the end of bars 16, 36 and 56 mark boundaries, with one crash at bar 41.
-SoCal congas contribute three hits per two-bar A/A2 cell, placed in sixteenth gaps away from kick and open hats; no shaker. Keep light swing and distinct humanized accents.
-64 bars: 1-8 intro, 9-36 A, 37-40 break, 41-56 A2, 57-64 outro. Pad and hats open, kick enters at bar 5. The break alternates rooms: bars 37/39 retain kick, snare-clap and bass but no hats or keys; bars 38/40 retain hats, snare-clap and held organ but no kick or bass. Pad, Tex and congas disappear throughout the break. The outro leaves drums and bass, with harmony, Tex, congas and ride removed.
-Feel: the deep section gains weight without becoming bright or euphoric; no lead, no vocals, DJ-friendly intro/outro.
+Deep house at 122 BPM, Eb minor: Ebm9 / Abm6, 2 bars each.
+Pulse Bass from bar 9: tonic beat 1, short lower fifth &3; next bar tonic &1/beat 3; tonic at DJ edges.
+Tough Kit: four-floor kick from bar 5; soft on-beat closed hats, stronger &1/&3; open hats &2/&4. Snare+clap on 2/4 from bar 9. Two tom hits end bars 16/36/56.
+Low Classic Pad Eb-Bb-F from bar 1. A/A2: held full-bar Tonewheel Organ, pedal released each bar; eighth-note electric-piano Tex cycles current chord tones in one octave; SoCal congas, 3 hits/2 bars clear of kick/open hats, no shaker.
+64 bars: 1-8 pad+hats intro, kick at 5; 9-36 A; 37-40 break: 37/39 only kick, snare+clap, bass; 38/40 only hats, snare+clap, organ; pad/Tex/Perc drop; 41-56 A2: quarter-note ride replaces on-beat closed hats, off-beats stay, crash at 41; 57-64 drums+bass only.
+No lead, no vocals, DJ-friendly intro/outro.
 ```
 
 ## dh14-iron-tide-v3
@@ -1301,13 +1292,13 @@ Feel: the deep section gains weight without becoming bright or euphoric; no lead
 
 **Description**
 ```
-Iron Tide is a 64-bar peak-section deep house track alternating Ebm9 and Cm7b5/Eb every bar over an Eb pedal; Db drops to C and F to Eb, a dorian half-diminished shade. The chords sit between C4 and C6.
-Tonewheel organ stabs about one beat long: on the and-of-2 and beat 3 in odd bars, on the and-of-2 and the e-of-3 in even bars, sustain pedal re-pressed every bar.
-A soft three-note pad (Eb3, Bb3, F4) lies under everything from bar 1 to bar 56. In the full sections an electric piano plays a quiet eighth-note arpeggio of the chord tones inside one octave.
-Drums: four-on-the-floor kick with a firmer beat 1, eighth-note closed hats soft on the beat and strong on the off-beat, one ghost sixteenth on the e-of-4, an open hat on the and-of-2 and and-of-4 in every bar, snare with a clap under it on 2 and 4 from bar 9, quarter-note ride instead of the on-beat hats from bar 41 to 56, tom fills on beat 4 of bars 16, 36 and 56, one crash on bar 41 beat 1. Two congas play a sparse two-bar cell on free sixteenths in the full sections. No shaker.
-Sub bass from bar 9: a note on the one, a short and-of-2, a note on beat 3, and in odd bars a short fifth-below (Ab1) on the and-of-4; even bars hold beat 3 for 1.4 beats.
-Structure: 1-8 intro (pad and hats from bar 1, kick from bar 5), 9-36 full, 37-38 hats, open hats, snare, organ and pad only (no kick, no sub), 39-40 kick and sub only, 41-56 full with ride, 57-64 drums and sub only.
-Dense in the low-mids, never bright. No lead, no vocals, no melody, DJ-friendly intro/outro.
+Iron Tide: 122 BPM, Eb minor dorian. Ebm9 and Cm7b5/Eb alternate every bar over an Eb pedal; Db drops to C and F to Eb.
+Organ stabs, one beat each: and-of-2 and beat 3 in odd bars, and-of-2 and e-of-3 in even bars.
+Soft pad (Eb3, Bb3, F4) under bars 1-56; quiet electric piano eighth-note chord-tone arpeggio in full sections.
+Drums: four-on-the-floor kick, off-beat-accented eighth-note closed hats, open hat on the and-of-2 and and-of-4, snare with clap on 2 and 4 from bar 9, ride in 41-56, tom fills in bars 16, 36, 56, crash at 41. Sparse conga cell in full sections, no shaker.
+Sub bass from bar 9: the one, a short and-of-2, beat 3; odd bars add a short Ab1 (fifth below) on the and-of-4, even bars hold beat 3 for 1.4 beats.
+Form: 1-8 intro (pad, hats; kick from bar 5), 9-36 full, 37-40 break: hats, snare, organ and pad in 37-38, kick and sub only in 39-40, 41-56 full with ride, 57-64 drums and sub only.
+Dense in the low-mids, never bright. No lead, no vocals, DJ-friendly intro/outro.
 ```
 
 ## dh15-deep-meridian-v3
@@ -1316,14 +1307,14 @@ Dense in the low-mids, never bright. No lead, no vocals, no melody, DJ-friendly 
 
 **Description**
 ```
-Instrumental deep house at 122 BPM in B flat minor on Bbm11 and Ab7sus4, two bars each; only one voice moves, F to G flat.
-Drums: punchy four-on-the-floor kick with the downbeat accented, snare and clap together on 2 and 4 from bar 9, closed-hat eighths quiet on the beat and accented on the and-of-1 and and-of-3 with one ghost sixteenth after beat 4, an open hat on the and-of-2 and the and-of-4 of every bar that has hats. Bars 41-56 swap the on-beat closed hats for ride quarters, with a crash on bar 41. Two-hit tom fills close bars 16, 36 and 56. A conga figure (four hits per two bars) from bar 13 in the full sections.
-Sub bass from bar 9: a short root on the one, a ghost before beat 3 and a held note on 3; the next bar a root on the one, beat 3 and a short note after beat 4.
-Electric piano an octave up from bar 9: a short stab on the second sixteenth of beat 1 then a hold from the and-of-2; the next bar a hold from the second sixteenth of beat 1 and a short stab after beat 4, sustain pedal.
-Pad from bar 1: three voices (Bb2 F3 C4, then Ab2 Eb3 Bb3), tonic only in the intro.
-Tonewheel organ eighth-note arpeggio F4-Ab4-Db5 / Gb4-Ab4-Db5 in bars 17-36 and 41-56.
-Structure: 1-8 intro (pad and hats, kick from bar 5), 9-36 full, 37-40 break that strips in three steps — all hats out at 37, bass out at 39, kick out at 40, leaving snare, clap, piano and pad — 41-56 full, 57-64 drums and bass only.
-Deep, dark, rolling at the centre of the set. No lead, no vocals, DJ-friendly intro/outro.
+Instrumental deep house at 122 BPM in B flat minor. Loop: Bbm11 and Ab7sus4, two bars each; only one voice moves, F to G flat.
+Drums: punchy four-on-the-floor kick, snare and clap on 2 and 4 from bar 9, closed-hat eighths, open hats on the and-of-2 and and-of-4. Tom fills at bars 16, 36, 56. Congas from bar 13.
+Sub bass from bar 9: roots on the one and beat 3 with a ghost before 3, a short note after beat 4.
+Electric piano from bar 9: short off-beat stabs and long holds, pushed just after the beat, sustain pedal.
+Three-voice pad from bar 1, tonic only in the intro.
+Tonewheel organ eighth-note arpeggio F4-Ab4-Db5 / Gb4-Ab4-Db5 in 17-36 and 41-56.
+Structure: 1-8 intro (pad and hats, kick from bar 5), 9-36 full, 37-40 break stripping hats at 37, bass at 39, kick at 40, leaving snare, clap, piano and pad, 41-56 full with ride and crash, 57-64 drums and bass only.
+Deep, dark, rolling, mid-set. No lead, no vocals, DJ-friendly intro/outro.
 ```
 
 ## dh16-blackwater-fold-v3
@@ -1332,14 +1323,12 @@ Deep, dark, rolling at the centre of the set. No lead, no vocals, DJ-friendly in
 
 **Description**
 ```
-Instrumental deep house at 123 BPM in Bb minor, alternating Bbm9 and Bbm11 for four bars each without moving away from the tonic center.
-Pulse Bass enters at bar 9 with three short tonic notes on &1, &3 and &4, answered in the next bar by a longer tonic on &2.
-Tonewheel Organ holds full-bar chords with pedal release at each bar line. A low Classic Pad sustains Bb-F-C from bar 1. Electric-piano Tex cycles eighth-note chord tones inside one octave per chord in A/A2 only.
-Tough Kit starts a four-on-the-floor kick at bar 5, with 106-112 on beat one and 100-105 on beats two through four. Soft on-beat closed hats (50-62) contrast with stronger &1/&3 (74-90), while open hats occupy &2/&4 at 65-80 for 180 ticks. Two open hats per non-break bar, no step-15 hats.
-Snare (88-100) with layered clap (80-92) enters at bar 9 on beats 2 and 4. A2 swaps on-beat closed hats for quarter-note ride and keeps the off-beat hats. Two late-fourth-beat tom hits mark bars 16, 36 and 56; one crash returns at bar 41.
-SoCal congas place three hits in each two-bar A/A2 cell, using sixteenth gaps clear of kicks and open hats. No shaker; retain slight swing and humanized accents.
-64 bars: 1-8 intro, 9-36 A, 37-40 break, 41-56 A2, 57-64 outro. Start with pad and hats, add kick at bar 5. In the break, bars 37-38 retain only kick and held organ; bars 39-40 retain only hats and bass, including twice-per-bar open hats. Snare-clap, pad, Tex and congas stay out throughout the break. The outro leaves drums and bass without organ, pad, Tex, congas or ride.
-Feel: folded black water, sustained low pressure without a euphoric release; no lead, no vocals, DJ-friendly intro/outro.
+Deep house at 123 BPM, Bb minor: Bbm9 / Bbm11, 4 bars each, tonic-centered.
+Pulse Bass from bar 9: short tonics &1/&3/&4, next bar longer tonic &2.
+Tough Kit: four-floor kick from bar 5; soft on-beat closed hats, stronger &1/&3; open hats &2/&4. Snare+clap on 2/4 from bar 9. Two tom hits end bars 16/36/56.
+Low Classic Pad Bb-F-C from bar 1. A/A2: held full-bar Tonewheel Organ, pedal released each bar; eighth-note electric-piano Tex cycles current chord tones in one octave; SoCal congas, 3 hits/2 bars clear of kick/open hats, no shaker.
+64 bars: 1-8 pad+hats intro, kick at 5; 9-36 A; 37-40 break: 37-38 kick+organ only; 39-40 hats+bass only; snare+clap, pad, Tex and Perc drop; 41-56 A2: quarter-note ride replaces on-beat closed hats, off-beats stay, crash at 41; 57-64 drums+bass only.
+No lead, no vocals, DJ-friendly intro/outro.
 ```
 
 ## dh17-coal-harbour-v3
@@ -1348,13 +1337,13 @@ Feel: folded black water, sustained low pressure without a euphoric release; no 
 
 **Description**
 ```
-Coal Harbour is a 64-bar peak deep house track on Fm9 and Ebmaj7/F, two bars each, with F2 under both; all four voices step down into a D-Eb cluster and back, the D natural giving a dorian colour. The chords sit between C4 and C6.
-Electric piano holds 3.25 beats from the and-of-1 in odd bars; in even bars it holds 2.75 beats from the and-of-1 and adds one short touch on the and-of-4, sustain pedal re-pressed every bar.
-A soft three-note pad (F3, C4, G4) lies under everything from bar 1 to bar 56. In the full sections a tonewheel organ plays a quiet eighth-note arpeggio of the chord tones inside one octave.
-Drums: four-on-the-floor kick with a firmer beat 1, eighth-note closed hats soft on the beat and strong on the off-beat, one ghost sixteenth on the e-of-4, an open hat on the and-of-2 and and-of-4 in every bar, snare with a clap under it on 2 and 4 from bar 9, quarter-note ride instead of the on-beat hats from bar 41 to 56, three-hit tom fills on beat 4 of bars 36 and 56 and a two-hit fill in bar 16, one crash on bar 41 beat 1. Two congas play a sparse two-bar cell on free sixteenths in the full sections. No shaker.
-Sub bass entirely on the off-beats from bar 9: four short and-of-beat notes in odd bars; in even bars the and-of-3 note lengthens to 1.4 beats and drops to the fifth below (Bb1).
-Structure: 1-8 intro (pad and hats from bar 1, kick from bar 5), 9-36 full, 37-40 break with hats, open hats, snare and pad over a whole-note sub drone, no kick, no electric piano, no arpeggio, 41-56 full with ride, 57-64 drums and sub only.
-Heavy below, empty above. No lead, no vocals, no melody, DJ-friendly intro/outro.
+Coal Harbour: 123 BPM, F minor dorian. Fm9 and Ebmaj7/F, two bars each, F2 under both; all voices step down into a D-Eb cluster and back.
+Electric piano holds a long chord from the and-of-1 every bar; even bars add a short touch on the and-of-4.
+Soft pad (F3, C4, G4) under bars 1-56; quiet organ eighth-note chord-tone arpeggio in full sections.
+Drums: four-on-the-floor kick, off-beat-accented eighth-note closed hats, open hat on the and-of-2 and and-of-4, snare with clap on 2 and 4 from bar 9, ride in 41-56, tom fills in bars 16, 36, 56, crash at 41. Sparse conga cell in full sections, no shaker.
+Sub bass off-beat only from bar 9: four short notes in odd bars; in even bars the and-of-3 note lengthens to 1.4 beats on the fifth below (Bb1).
+Form: 1-8 intro (pad, hats; kick from bar 5), 9-36 full, 37-40 break: hats, snare and pad over a whole-note sub drone, no kick, 41-56 full with ride, 57-64 drums and sub only.
+Heavy below, empty above. No lead, no vocals, DJ-friendly intro/outro.
 ```
 
 ## dh18-smoke-orchard-v3
@@ -1363,13 +1352,13 @@ Heavy below, empty above. No lead, no vocals, no melody, DJ-friendly intro/outro
 
 **Description**
 ```
-Instrumental deep house at 123 BPM in F minor on Fm9 and Gb9, two bars each; A flat is held while C, E flat and G step down a half or whole step.
-Drums: punchy four-on-the-floor kick with the downbeat accented, snare and clap together on 2 and 4 from bar 9, closed-hat eighths quiet on the beat and accented on the and-of-1 and and-of-3 with one ghost sixteenth after beat 4, an open hat on the and-of-2 and the and-of-4 of every bar that has hats. Bars 41-56 swap the on-beat closed hats for ride quarters, with a crash on bar 41. Two-hit tom fills close bars 16, 36 and 56. A conga figure (five hits per two bars) from bar 13 in the full sections.
-Sub bass from bar 9: a short root on the one, an octave drop on the and-of-2, a short root on the and-of-4; the next bar the and-of-1, the octave drop and the fifth on beat 4.
-Tonewheel organ from bar 9: a two-beat chord from the and-of-2 with a short touch on the and-of-4, then a chord on the one and a hold from the and-of-2 in the second bar, sustain pedal.
-Pad from bar 1: three voices (F3 C4 G4, then Gb3 Db4 Ab4), tonic only in the intro.
-Electric piano eighth-note arpeggio Ab4-C5-Eb5-G5 / Ab4-Bb4-Db5-Fb5 in bars 17-36 and 41-56.
-Structure: 1-8 intro (pad and hats, kick from bar 5), 9-36 full, 37-40 break — bass out at 37, then at 39 every drum, the bass and the pad stop and the organ plays alone for two bars — 41-56 full with the crash, 57-64 drums and bass only.
+Instrumental deep house at 123 BPM in F minor. Loop: Fm9 and Gb9, two bars each; A flat is held while C, E flat and G step down.
+Drums: punchy four-on-the-floor kick, snare and clap on 2 and 4 from bar 9, closed-hat eighths, open hats on the and-of-2 and and-of-4. Tom fills at bars 16, 36, 56. Congas from bar 13.
+Sub bass from bar 9: a short root on the one, an octave drop on the and-of-2, the fifth on beat 4 of the second bar.
+Tonewheel organ from bar 9: held chords from the and-of-2 with short touches on the and-of-4, sustain pedal.
+Three-voice pad from bar 1, tonic only in the intro.
+Electric piano eighth-note arpeggio Ab4-C5-Eb5-G5 / Ab4-Bb4-Db5-Fb5 in 17-36 and 41-56.
+Structure: 1-8 intro (pad and hats, kick from bar 5), 9-36 full, 37-40 break (bass out at 37; from 39 the organ plays alone), 41-56 full with ride and crash, 57-64 drums and bass only.
 Dark peak, heavy but not bright. No lead, no vocals, DJ-friendly intro/outro.
 ```
 
@@ -1379,14 +1368,12 @@ Dark peak, heavy but not bright. No lead, no vocals, DJ-friendly intro/outro.
 
 **Description**
 ```
-Instrumental deep house at 122 BPM in C minor over a C pedal: Cm11 for six bars, then Dbmaj7(#11)/C for two bars, a brief semitone shadow rather than a major-key turn.
-Simple Foundation bass enters at bar 9, using tonic attacks on beat one and &3, then &1 and a lower fifth on beat four; the DJ edges retain the tonic.
-Electric piano holds each chord for the full bar with bar-line pedal releases. A low Classic Pad holds C-G-D from bar 1. Eighth-note electric-piano Tex cycles the current chord tones folded into a single octave, only in A/A2.
-Tough Kit starts a four-on-the-floor kick at bar 5: beat one 106-112, other beats 100-105. Soft downbeat closed hats (50-62) contrast with &1/&3 closed hats (74-90); open hats take &2/&4 every non-break bar at 65-80 with 180-tick tails. No step-15 hats.
-Snare (88-100) and clap underneath (80-92) play beats 2 and 4 from bar 9. A2 quarter-note ride replaces on-beat closed hats while off-beat hats remain. Two tom hits on the final beat of bars 16, 36 and 56 mark the boundaries; one return crash falls at bar 41.
-SoCal congas add a three-hit, two-bar cell only in A/A2, placed in sixteenth gaps away from kick and open hats. No shaker; maintain a lightly swung, humanized groove.
-64 bars: 1-8 intro, 9-36 A, 37-40 break, 41-56 A2, 57-64 outro. Pad and hats begin; kick arrives at bar 5. The break retains kick, bass and held electric piano, removing closed/open hats, snare-clap, pad, Tex and congas. The outro leaves drums and bass with harmony, Tex, congas and ride removed.
-Feel: compressed smoked-glass pressure, dark and grounded at the end of the peak; no lead, no vocals, DJ-friendly intro/outro.
+Deep house at 122 BPM, C minor: Cm11 6 bars, Dbmaj7(#11)/C 2 bars over C pedal; no major-key turn.
+Simple Foundation bass from bar 9: tonic beat 1/&3, next bar tonic &1 and lower fifth beat 4; tonic at DJ edges.
+Tough Kit: four-floor kick from bar 5; soft on-beat closed hats, stronger &1/&3; open hats &2/&4. Snare+clap on 2/4 from bar 9. Two tom hits end bars 16/36/56.
+Low Classic Pad C-G-D from bar 1. A/A2: held full-bar electric piano, pedal released each bar; eighth-note electric-piano Tex cycles current chord tones in one octave; SoCal congas, 3 hits/2 bars clear of kick/open hats, no shaker.
+64 bars: 1-8 pad+hats intro, kick at 5; 9-36 A; 37-40 break: kick, bass and keys only; hats, snare+clap, pad, Tex and Perc drop; 41-56 A2: quarter-note ride replaces on-beat closed hats, off-beats stay, crash at 41; 57-64 drums+bass only.
+No lead, no vocals, DJ-friendly intro/outro.
 ```
 
 ## dh20-wet-granite-v3
@@ -1395,13 +1382,13 @@ Feel: compressed smoked-glass pressure, dark and grounded at the end of the peak
 
 **Description**
 ```
-Wet Granite is a 64-bar track that closes the peak section on Cm9 for five bars and Abmaj7/C for three bars, with C2 under both; Bb falls to Ab and D to C, an aeolian flat-six shade. The chords sit between C4 and C6.
-Soft grand piano holds 3.5 beats from the one in cycle bars 1 to 5; in bars 6 to 8 it plays a short touch on the one and then holds 2.9 beats from beat 2, sustain pedal re-pressed every bar.
-A soft three-note pad (C3, G3, D4) lies under everything from bar 1 to bar 56. In the full sections an electric piano plays a quiet eighth-note arpeggio of the chord tones inside one octave.
-Drums: four-on-the-floor kick with a firmer beat 1, eighth-note closed hats soft on the beat and strong on the off-beat, one ghost sixteenth on the e-of-4, an open hat on the and-of-2 and and-of-4 in every bar, snare with a clap under it on 2 and 4 from bar 9, quarter-note ride instead of the on-beat hats from bar 41 to 56, tom fills on beat 4 of bars 16, 36 and 56, one crash on bar 41 beat 1. Two congas play a sparse two-bar cell on free sixteenths in the full sections. No shaker.
-Sub bass from bar 9: a 1.5-beat note on the one, a short and-of-3 and a note on beat 4; the second bar's beat-4 note drops to the fifth below (F1).
-Structure: 1-8 intro (pad and hats from bar 1, kick from bar 5), 9-36 full, 37-40 snare, clap and pad only (no kick, no hats, no open hats, no sub, no piano), 41-56 full with ride, 57-64 drums and sub only.
-Settling, not lifting. No lead, no vocals, no melody, DJ-friendly intro/outro.
+Wet Granite: 122 BPM, C minor, closing the peak. Cm9 for five bars and Abmaj7/C for three bars, C2 under both; Bb falls to Ab and D to C.
+Soft grand piano holds from the one in cycle bars 1-5; bars 6-8 get a short touch on the one, then a hold from beat 2.
+Soft pad (C3, G3, D4) under bars 1-56; quiet electric piano eighth-note chord-tone arpeggio in full sections.
+Drums: four-on-the-floor kick, off-beat-accented eighth-note closed hats, open hat on the and-of-2 and and-of-4, snare with clap on 2 and 4 from bar 9, ride in 41-56, tom fills in bars 16, 36, 56, crash at 41. Sparse conga cell in full sections, no shaker.
+Sub bass from bar 9: a 1.5-beat note on the one, a short and-of-3 and a note on beat 4; every second bar the beat-4 note drops to the fifth below (F1).
+Form: 1-8 intro (pad, hats; kick from bar 5), 9-36 full, 37-40 break: snare, clap and pad only, 41-56 full with ride, 57-64 drums and sub only.
+Settling, not lifting. No lead, no vocals, DJ-friendly intro/outro.
 ```
 
 ## dh21-slow-orbit-v3
@@ -1410,13 +1397,13 @@ Settling, not lifting. No lead, no vocals, no melody, DJ-friendly intro/outro.
 
 **Description**
 ```
-Instrumental deep house at 121 BPM in G minor on Gm9 and Dbmaj9, two bars each, a tritone apart with F held on top.
-Drums: punchy four-on-the-floor kick with the downbeat accented, snare and clap together on 2 and 4 from bar 9, swung closed-hat eighths quiet on the beat and accented on the and-of-1 and and-of-3 with one ghost sixteenth after beat 4, a swung open hat on the and-of-2 and the and-of-4 of every bar that has hats. Bars 41-56 swap the on-beat closed hats for ride quarters, with a crash on bar 41. Two-hit tom fills close bars 16, 36 and 56. A swung conga figure (three hits per two bars) from bar 13 in the full sections.
-Sub bass from bar 9: a long 5.5-beat root from the one, then a short note on beat 3 (G1 under Gm9, the fifth Ab1 under Dbmaj9) and a root on beat 4 of the next bar.
-Electric piano an octave up from bar 9: the chord held for the whole bar, struck again every bar and softer on the second, sustain pedal.
-Pad from bar 1, a little louder than the other tracks: three voices (G2 D3 A3, then Db3 Ab3 Eb4), tonic only in the intro.
-Tonewheel organ eighth-note arpeggio F4-A4-D5 / F4-Ab4-Eb5 in bars 17-36 and 41-56.
-Structure: 1-8 intro (pad and hats, kick from bar 5), 9-36 full, 37-40 break with only the sub bass and the pad (drums and piano out), 41-56 full, 57-64 drums and bass only.
+Instrumental deep house at 121 BPM in G minor. Loop: Gm9 and Dbmaj9, two bars each, a tritone apart with F held on top.
+Drums: punchy four-on-the-floor kick, snare and clap on 2 and 4 from bar 9, swung closed-hat eighths, swung open hats on the and-of-2 and and-of-4. Tom fills at bars 16, 36, 56. Sparse swung congas from bar 13.
+Sub bass from bar 9: a long root held across most of two bars, then short notes on beats 3 and 4 (Ab1 under Dbmaj9).
+Electric piano from bar 9: whole-bar chords struck every bar, softer on the second, sustain pedal.
+Lush three-voice pad from bar 1, a little forward, tonic only in the intro.
+Tonewheel organ eighth-note arpeggio F4-A4-D5 / F4-Ab4-Eb5 in 17-36 and 41-56.
+Structure: 1-8 intro (pad and hats, kick from bar 5), 9-36 full, 37-40 break with only sub bass and pad (drums and piano out), 41-56 full with ride and crash, 57-64 drums and bass only.
 Floating, after the peak. No lead, no vocals, DJ-friendly intro/outro.
 ```
 
@@ -1426,14 +1413,12 @@ Floating, after the peak. No lead, no vocals, DJ-friendly intro/outro.
 
 **Description**
 ```
-Instrumental deep house at 121 BPM in G minor, repeating Gm9 and F6/9/G for four bars each over a G-centered bass.
-Pulse Bass enters at bar 9 with a four-bar cell: a long tonic on beat two, an empty bar, a long tonic on &1, then a short lower fifth on &4; the DJ edges retain the tonic.
-Electric piano holds full-bar chords with sustain re-pedaled at each bar line. A low Classic Pad holds G-D-A from the first bar. Electric-piano Tex cycles eighth-note chord tones within the current chord's octave only in A/A2.
-Tough Kit gives a four-on-the-floor kick from bar 5, beat one 106-112 and other beats 100-105. On-beat closed hats are soft (50-62), &1/&3 closed hats stronger (74-90), and &2/&4 open hats last 180 ticks at 65-80. Every non-break bar has two open hats; no step-15 hats.
-Snare (88-100) with a clap layer (80-92) plays 2 and 4 from bar 9. In A2, quarter-note ride replaces on-beat closed hats; off-beat hats remain. Two tom hits mark the last beat of bars 16, 36 and 56, followed by the single return crash at bar 41.
-SoCal congas place three hits across a two-bar cell only in A/A2, in sixteenth spaces away from kick and open hats. No shaker; keep subtle swing and humanized timing.
-64 bars: 1-8 intro with pad and hats before the bar-5 kick, 9-36 A, 37-40 break, 41-56 A2, 57-64 outro. The break becomes an island of held electric-piano chords and the tonic pad, removing bass, all drums, Tex and congas. The outro strips away keys, pad, Tex, congas and ride, leaving drums and bass.
-Feel: an archive slowly drifting after the pressure peak, spacious but still rooted in minor; no lead, no vocals, DJ-friendly intro/outro.
+Deep house at 121 BPM, G minor: Gm9 / F6/9/G, 4 bars each, G-centered.
+Pulse Bass from bar 9, 4-bar cell: long tonic beat 2; empty; long tonic &1; short lower fifth &4; tonic at DJ edges.
+Tough Kit: four-floor kick from bar 5; soft on-beat closed hats, stronger &1/&3; open hats &2/&4. Snare+clap on 2/4 from bar 9. Two tom hits end bars 16/36/56.
+Low Classic Pad G-D-A from bar 1. A/A2: held full-bar electric piano, pedal released each bar; eighth-note electric-piano Tex cycles current chord tones in one octave; SoCal congas, 3 hits/2 bars clear of kick/open hats, no shaker.
+64 bars: 1-8 pad+hats intro, kick at 5; 9-36 A; 37-40 break: held keys+pad only; bass, drums, Tex and Perc drop; 41-56 A2: quarter-note ride replaces on-beat closed hats, off-beats stay, crash at 41; 57-64 drums+bass only.
+No lead, no vocals, DJ-friendly intro/outro.
 ```
 
 ## dh23-paper-lantern-v3
@@ -1442,13 +1427,13 @@ Feel: an archive slowly drifting after the pressure peak, spacious but still roo
 
 **Description**
 ```
-Paper Lantern is a 64-bar drifting deep house track on Dm9 and Fmaj9/D, four bars each, with D2 held under both; F steps down to E and A to G while the top E rises to F. The chords sit between C4 and C6.
-Electric piano holds 1.75 beats from the one and 1.9 beats from beat 3 in cycle bars 1, 3, 5 and 7; 3.25 beats from the swung and-of-1 in bars 2, 4 and 6; and in bar 8 a 2.25-beat hold from the and-of-1 plus a short touch on beat 4, sustain pedal re-pressed every bar.
-A soft three-note pad (D3, A3, E4) lies under everything from bar 1 to bar 56. In the full sections a tonewheel organ plays a quiet swung eighth-note arpeggio of the chord tones inside one octave.
-Drums, swung: four-on-the-floor kick with a firmer beat 1, eighth-note closed hats soft on the beat and strong on the swung off-beat, one ghost sixteenth on the e-of-4, an open hat on the swung and-of-2 and and-of-4 in every bar, snare with a clap under it on 2 and 4 from bar 9, quarter-note ride instead of the on-beat hats from bar 41 to 56, tom fills on beat 4 of bars 16, 36 and 56, one crash on bar 41 beat 1. No shaker, no congas.
-Sub bass from bar 9: a 0.75-beat note on beat 2 and a 1.4-beat note from the swung and-of-3; the second bar replaces the long note with a short fifth-below (G1) on the swung and-of-4.
-Structure: 1-8 intro (pad and hats from bar 1, kick from bar 5), 9-36 full, 37-40 closed hats, open hats and pad only, 41-56 full with ride, 57-64 drums and sub only.
-Soft-lit and slow. No lead, no vocals, no melody, DJ-friendly intro/outro.
+Paper Lantern: 120 BPM, D minor. Dm9 and Fmaj9/D, four bars each, D2 held under both; F falls to E, A to G, top E rises to F.
+Electric piano holds from the one and beat 3 in odd bars, a long chord from the swung and-of-1 in even bars, a short touch on beat 4 of bar 8.
+Soft pad (D3, A3, E4) under bars 1-56; quiet swung organ eighth-note chord-tone arpeggio in full sections.
+Drums, swung: four-on-the-floor kick, off-beat-accented eighth-note closed hats, open hat on the and-of-2 and and-of-4, snare with clap on 2 and 4 from bar 9, ride in 41-56, tom fills in bars 16, 36, 56, crash at 41. No shaker or congas.
+Sub bass from bar 9: short beat 2, 1.4-beat note from the swung and-of-3; every second bar swaps the long note for a short G1 (fifth below) on the swung and-of-4.
+Form: 1-8 intro (pad, hats; kick from bar 5), 9-36 full, 37-40 break: closed hats, open hats and pad only, 41-56 full with ride, 57-64 drums and sub only.
+Soft-lit and slow. No lead, no vocals, DJ-friendly intro/outro.
 ```
 
 ## dh24-umber-lane-v3
@@ -1457,13 +1442,13 @@ Soft-lit and slow. No lead, no vocals, no melody, DJ-friendly intro/outro.
 
 **Description**
 ```
-Instrumental deep house at 120 BPM in D minor on Dm11 and Dm11b5, two bars each over D; only A falls to A flat, so the tonic half-darkens.
-Drums: punchy four-on-the-floor kick with the downbeat accented, snare and clap together on 2 and 4 from bar 9, closed-hat eighths quiet on the beat and accented on the and-of-1 and and-of-3 with one ghost sixteenth after beat 4, an open hat on the and-of-2 and the and-of-4 of every bar that has hats. Bars 41-56 swap the on-beat closed hats for ride quarters, with a crash on bar 41. Two-hit tom fills close bars 16, 36 and 56. A conga figure (four hits per two bars) from bar 13 in the full sections.
-Finger bass from bar 9: the second sixteenth of beat 1, a short beat 3 and the second sixteenth of beat 3; the next bar the second sixteenth of beat 1 and the fifth (A1) on beat 4.
-Grand piano an octave up from bar 9: a chord on the one, then a chord on beat 3 held through the whole second bar, sustain pedal.
-Pad from bar 1: three voices (D3 A3 E4, then D3 Ab3 E4), tonic only in the intro.
-Tonewheel organ eighth-note arpeggio F4-A4-C5 / F4-Ab4-C5 in bars 17-36 and 41-56.
-Structure: 1-8 intro (pad and hats, kick from bar 5), 9-36 full, 37-40 break with only kick and sub (hats, snare, clap, piano and pad out), 41-56 full, 57-64 drums and bass only.
+Instrumental deep house at 120 BPM in D minor. Loop: Dm11 and Dm11b5, two bars each over D; only A falls to A flat, so the tonic half-darkens.
+Drums: punchy four-on-the-floor kick, snare and clap on 2 and 4 from bar 9, closed-hat eighths, open hats on the and-of-2 and and-of-4. Tom fills at bars 16, 36, 56. Congas from bar 13.
+Finger bass from bar 9: syncopated notes just after beats 1 and 3, with the fifth (A1) on beat 4 of the second bar.
+Grand piano from bar 9: a chord on the one, then a chord on beat 3 held through the whole second bar, sustain pedal.
+Three-voice pad from bar 1, tonic only in the intro.
+Tonewheel organ eighth-note arpeggio F4-A4-C5 / F4-Ab4-C5 in 17-36 and 41-56.
+Structure: 1-8 intro (pad and hats, kick from bar 5), 9-36 full, 37-40 break with only kick and sub (hats, snare, clap, piano and pad out), 41-56 full with ride and crash, 57-64 drums and bass only.
 Warm brown, unhurried. No lead, no vocals, DJ-friendly intro/outro.
 ```
 
@@ -1473,14 +1458,12 @@ Warm brown, unhurried. No lead, no vocals, DJ-friendly intro/outro.
 
 **Description**
 ```
-Instrumental deep house at 119 BPM in A minor, repeating Am9 for one bar and Dm7/A for three bars over an A bass center.
-Simple Foundation bass enters at bar 9: a tonic on &3, then a shorter tonic on &1, a silent bar, and a longer tonic on &2 form the four-bar cell.
-Electric piano sustains full-bar chords with bar-by-bar pedal release. A low Classic Pad holds A-E-B from bar 1. Eighth-note electric-piano Tex circles the chord tones in one octave per chord only in A/A2.
-Tough Kit starts the four-on-the-floor kick at bar 5, with 106-112 on beat one and 100-105 on the remaining beats. Closed hats contrast soft on-beats (50-62) with stronger &1/&3 (74-90); 180-tick open hats take &2/&4 at 65-80 every non-break bar. No step-15 hats.
-Snare (88-100) with clap beneath (80-92) enters at bar 9 on beats 2 and 4. A2 replaces on-beat closed hats with quarter-note ride and keeps off-beat hats. Two tom hits late on beat four mark bars 16, 36 and 56; a single crash marks bar 41.
-SoCal congas contribute three hits per two-bar A/A2 cell, placed between kick and open-hat positions on sixteenth gaps. No shaker; keep light swing and humanized accents.
-64 bars: 1-8 intro, 9-36 A, 37-40 break, 41-56 A2, 57-64 outro. Pad and hats open, kick arrives at bar 5. The break reduces the arrangement to sparse bass and snare-clap backbeats, removing kick, all hats, keys, pad, Tex and congas. The outro leaves drums and bass after removing keys, pad, Tex, congas and ride.
-Feel: a dim stairwell cooling the set down, restrained and weighted rather than bright; no lead, no vocals, DJ-friendly intro/outro.
+Deep house at 119 BPM, A minor: Am9 1 bar, Dm7/A 3 bars, A-centered.
+Simple Foundation bass from bar 9, 4-bar cell: tonic &3; shorter tonic &1; empty; longer tonic &2.
+Tough Kit: four-floor kick from bar 5; soft on-beat closed hats, stronger &1/&3; open hats &2/&4. Snare+clap on 2/4 from bar 9. Two tom hits end bars 16/36/56.
+Low Classic Pad A-E-B from bar 1. A/A2: held full-bar electric piano, pedal released each bar; eighth-note electric-piano Tex cycles current chord tones in one octave; SoCal congas, 3 hits/2 bars clear of kick/open hats, no shaker.
+64 bars: 1-8 pad+hats intro, kick at 5; 9-36 A; 37-40 break: sparse bass+snare+clap only; kick, hats, keys, pad, Tex and Perc drop; 41-56 A2: quarter-note ride replaces on-beat closed hats, off-beats stay, crash at 41; 57-64 drums+bass only.
+No lead, no vocals, DJ-friendly intro/outro.
 ```
 
 ## dh26-dusk-ledger-v3
@@ -1489,13 +1472,13 @@ Feel: a dim stairwell cooling the set down, restrained and weighted rather than 
 
 **Description**
 ```
-Dusk Ledger is a 64-bar cooling deep house track on Am9 for six bars and C6/9/A for two bars, with A1 held underneath; only B falls to A and C rises to D. The chords sit between C4 and C6.
-Electric piano plays two stabs per bar: a one-beat chord on the and-of-2 and a short one on the and-of-4 in cycle bars 1 to 6, then 1.2 to 1.4-beat chords from the and-of-1 and the and-of-3 in bars 7 and 8, sustain pedal re-pressed every bar.
-A soft three-note pad (A2, E3, B3) lies under everything from bar 1 to bar 56. In the full sections a tonewheel organ plays a quiet eighth-note arpeggio of the chord tones inside one octave.
-Drums: four-on-the-floor kick with a firmer beat 1, eighth-note closed hats soft on the beat and strong on the off-beat, one ghost sixteenth on the e-of-4, an open hat on the and-of-2 and and-of-4 in every bar, snare with a clap under it on 2 and 4 from bar 9, quarter-note ride instead of the on-beat hats from bar 41 to 56, two-hit tom fills on beat 4 of bars 16, 36 and 56, one crash on bar 41 beat 1. No shaker, no congas.
-Sub bass on A1 only from bar 9, a four-bar cell: a one-beat note on the one and a short and-of-4, a 1.4-beat note from the and-of-3, the first bar again, then a whole bar of rest.
-Structure: 1-8 intro (pad and hats from bar 1, kick from bar 5), 9-36 full, 37-40 kick alone (no hats, no open hats, no snare, no sub, no pad), 41-56 full with ride, 57-64 drums and sub only.
-Thinning toward the close. No lead, no vocals, no melody, DJ-friendly intro/outro.
+Dusk Ledger: 119 BPM, A minor. Am9 for six bars and C6/9/A for two bars, A1 held underneath; only B falls to A and C rises to D.
+Electric piano plays two stabs per bar: and-of-2 and a short and-of-4 in cycle bars 1-6, then slightly longer stabs on the and-of-1 and and-of-3 in bars 7-8.
+Soft pad (A2, E3, B3) under bars 1-56; quiet organ eighth-note chord-tone arpeggio in full sections.
+Drums: four-on-the-floor kick, off-beat-accented eighth-note closed hats, open hat on the and-of-2 and and-of-4, snare with clap on 2 and 4 from bar 9, ride in 41-56, tom fills in bars 16, 36, 56, crash at 41. No shaker or congas.
+Sub bass on A1 only from bar 9, a four-bar cell: one-beat note on the one plus a short and-of-4, a 1.4-beat note from the and-of-3, the first bar again, then a bar of rest.
+Form: 1-8 intro (pad, hats; kick from bar 5), 9-36 full, 37-40 break: kick alone, 41-56 full with ride, 57-64 drums and sub only.
+Thinning toward the close. No lead, no vocals, DJ-friendly intro/outro.
 ```
 
 ## dh27-quiet-pier-v3
@@ -1504,13 +1487,13 @@ Thinning toward the close. No lead, no vocals, no melody, DJ-friendly intro/outr
 
 **Description**
 ```
-Instrumental deep house at 118 BPM in D minor on Dm9 and Fsus2, two bars each; only A moves, down to G, and the second chord has no third.
-Drums: punchy four-on-the-floor kick with the downbeat accented, snare and clap together on 2 and 4 from bar 9, closed-hat eighths quiet on the beat and accented on the and-of-1 and and-of-3, no sixteenth ghosts, an open hat on the and-of-2 and the and-of-4 of every bar that has hats. Bars 41-56 swap the on-beat closed hats for ride quarters, with a crash on bar 41. Two-hit tom fills close bars 16, 36 and 56. A very sparse conga (two hits per two bars) from bar 13 in the full sections.
-Sub bass from bar 9 in a four-bar cell: a 2.5-beat D2 on the one, an empty bar, 1.5 beats of F1 from the and-of-2, a short F1 on the and-of-4.
-Electric piano an octave up from bar 9: the first bar of each chord held whole, the second bar struck twice (beats 1 and 3), sustain pedal.
-Pad from bar 1: three voices (D3 A3 E4, then F2 C3 G3), tonic only in the intro.
-Tonewheel organ eighth-note arpeggio F4-A4-C5 / F4-G4-C5 in bars 17-36 and 41-56.
-Structure: 1-8 intro (pad and hats, kick from bar 5), 9-36 full, 37-40 break with only snare, clap and piano (kick, hats, bass and pad out), 41-56 full, 57-64 drums and bass only.
+Instrumental deep house at 118 BPM in D minor. Loop: Dm9 and Fsus2, two bars each; only A moves, down to G; the second chord has no third.
+Drums: punchy four-on-the-floor kick, snare and clap on 2 and 4 from bar 9, closed-hat eighths, open hats on the and-of-2 and and-of-4. Tom fills at bars 16, 36, 56. Very sparse congas from bar 13.
+Sub bass from bar 9 in a four-bar cell: a long D2, an empty bar, then F1 on the and-of-2 and the and-of-4.
+Electric piano from bar 9: the first bar of each chord held whole, the second struck on beats 1 and 3, sustain pedal.
+Three-voice pad from bar 1, tonic only in the intro.
+Tonewheel organ eighth-note arpeggio F4-A4-C5 / F4-G4-C5 in 17-36 and 41-56.
+Structure: 1-8 intro (pad and hats, kick from bar 5), 9-36 full, 37-40 break with only snare, clap and piano (kick, hats, bass and pad out), 41-56 full with ride and crash, 57-64 drums and bass only.
 Cooling down, quiet water. No lead, no vocals, DJ-friendly intro/outro.
 ```
 
@@ -1520,14 +1503,12 @@ Cooling down, quiet water. No lead, no vocals, DJ-friendly intro/outro.
 
 **Description**
 ```
-Instrumental deep house at 118 BPM in D minor, alternating Dm11 and Cm9/D for four bars each over a D-centered bass.
-Pulse Bass enters at bar 9 with a four-bar cell: one long tonic from beat one, two empty bars, then a short lower fifth on &3; the DJ edges use the tonic instead of the lower fifth.
-Studio Grand piano holds the chords through full bars, re-pedaling at each bar line. A low Classic Pad sustains D-A-E from bar 1. Electric-piano Tex circles eighth-note chord tones in a single octave per chord only in A/A2.
-Tough Kit starts a four-on-the-floor kick at bar 5, beat one 106-112 and other beats 100-105. Closed hats alternate quiet on-beats (50-62) with stronger &1/&3 (74-90); open hats take &2/&4 at 65-80 for 180 ticks in every non-break bar. No step-15 hats.
-Snare (88-100) and a clap layer (80-92) enter on 2 and 4 at bar 9. A2 uses quarter-note ride instead of on-beat closed hats and retains off-beat hats. Two late-beat-four tom hits mark bars 16, 36 and 56; a single return crash lands at bar 41.
-SoCal congas play a three-hit, two-bar cell only in A/A2, in sixteenth gaps clear of kick and open hats. No shaker; maintain gentle swing and humanized accents.
-64 bars: 1-8 intro, 9-36 A, 37-40 break, 41-56 A2, 57-64 outro. Pad and hats begin, kick joins at bar 5. Bars 37-38 are completely silent after bar-line releases; bars 39-40 restore only held piano and the sparse bass cell, whose next note falls in bar 40. All drums, pad, Tex and congas remain absent throughout the break. The outro removes piano, pad, Tex, congas and ride, leaving drums and bass.
-Feel: drowned linen and a quiet inhale near the close of the set, dark and unhurried; no lead, no vocals, DJ-friendly intro/outro.
+Deep house at 118 BPM, D minor: Dm11 / Cm9/D, 4 bars each, D-centered.
+Pulse Bass from bar 9, 4-bar cell: long tonic beat 1; two empty bars; short lower fifth &3; tonic at DJ edges.
+Tough Kit: four-floor kick from bar 5; soft on-beat closed hats, stronger &1/&3; open hats &2/&4. Snare+clap on 2/4 from bar 9. Two tom hits end bars 16/36/56.
+Low Classic Pad D-A-E from bar 1. A/A2: held full-bar Studio Grand piano, pedal released each bar; eighth-note electric-piano Tex cycles current chord tones in one octave; SoCal congas, 3 hits/2 bars clear of kick/open hats, no shaker.
+64 bars: 1-8 pad+hats intro, kick at 5; 9-36 A; 37-40 break: 37-38 total silence after releases; 39-40 piano+sparse bass only, next bass note at 40; drums/pad/Tex/Perc drop; 41-56 A2: quarter-note ride replaces on-beat closed hats, off-beats stay, crash at 41; 57-64 drums+bass only.
+No lead, no vocals, DJ-friendly intro/outro.
 ```
 
 ## dh29-last-corridor-v3
@@ -1536,13 +1517,13 @@ Feel: drowned linen and a quiet inhale near the close of the set, dark and unhur
 
 **Description**
 ```
-Last Corridor is a 64-bar pre-closer on an Am11 shell for seven bars and Em11/A for one bar, with A1 held underneath; in the eighth bar C falls to A and E rises to F#, a single dorian touch. The chords sit between C4 and C6.
-Soft grand piano holds 3.3 beats from the and-of-1 in every bar, and the whole bar from the one in the eighth bar, sustain pedal re-pressed every bar.
-A soft three-note pad (A2, E3, B3) lies under everything from bar 1 to bar 56. In the full sections an electric piano plays a quiet eighth-note arpeggio of the chord tones inside one octave.
-Drums: four-on-the-floor kick with a firmer beat 1, eighth-note closed hats soft on the beat and strong on the off-beat, one ghost sixteenth on the e-of-4, an open hat on the and-of-2 and and-of-4 in every bar, snare with a clap under it on 2 and 4 from bar 9, quarter-note ride instead of the on-beat hats from bar 41 to 56, two-hit tom fills on beat 4 of bars 16, 36 and 56, one crash on bar 41 beat 1. No shaker, no congas.
+Last Corridor: 117 BPM, A minor, pre-closer. Am11 shell for seven bars, Em11/A for one, A1 held underneath; in bar 8 C falls to A and E rises to F#, one dorian touch.
+Soft grand piano holds a long chord from the and-of-1 every bar, the whole bar from the one in bar 8.
+Soft pad (A2, E3, B3) under bars 1-56; quiet electric piano eighth-note chord-tone arpeggio in full sections.
+Drums: four-on-the-floor kick, off-beat-accented eighth-note closed hats, open hat on the and-of-2 and and-of-4, snare with clap on 2 and 4 from bar 9, ride in 41-56, tom fills in bars 16, 36, 56, crash at 41. No shaker or congas.
 Sub bass on A1 only from bar 9, a four-bar cell: a whole-bar note, a 1.5-beat note on the one, a bar of rest, then a 1.9-beat note from beat 3.
-Structure: 1-8 intro (pad and hats from bar 1, kick from bar 5), 9-36 full, 37-40 closed hats, open hats, snare, clap and pad only (no kick, no sub, no piano), 41-56 full with ride, 57-64 drums and sub only.
-Leave the closing to the final slot. No lead, no vocals, no melody, DJ-friendly intro/outro.
+Form: 1-8 intro (pad, hats; kick from bar 5), 9-36 full, 37-40 break: hats, snare, clap and pad only, 41-56 full with ride, 57-64 drums and sub only.
+Leave the closing to the final slot. No lead, no vocals, DJ-friendly intro/outro.
 ```
 
 ## dh30-house-lights-v3
@@ -1551,14 +1532,14 @@ Leave the closing to the final slot. No lead, no vocals, no melody, DJ-friendly 
 
 **Description**
 ```
-Instrumental deep house at 116 BPM in A minor on Am9 and Esus2, two bars each; G moves to F# and the second chord has no third. 72 bars.
-Drums: punchy four-on-the-floor kick with the downbeat accented, snare and clap together on 2 and 4 from bar 9, closed-hat eighths quiet on the beat and accented on the and-of-1 and and-of-3, no sixteenth ghosts, an open hat on the and-of-2 and the and-of-4 of every bar that has hats. Bars 41-56 swap the on-beat closed hats for ride quarters, with a crash on bar 41. Two-hit tom fills close bars 16, 36 and 56. A very sparse conga (two hits per two bars) from bar 13 in the full sections.
-Sub bass from bar 9: a one-beat root on the one and a short root on the and-of-3, then an empty bar; A1 in the outro.
-Grand piano an octave up from bar 9: a chord from the and-of-1 held through the bar, then a chord on the one and a short one on the and-of-3 in the second bar, sustain pedal.
-Pad from bar 1: three voices (A2 E3 B3, then E2 B2 F#3), tonic in the intro and a tonic tail through bar 60.
-Electric piano eighth-note arpeggio E4-G4-B4 / E4-F#4-B4 in bars 17-36 and 41-56.
-Structure: 1-8 intro (pad and hats, kick from bar 5), 9-36 full, 37-40 break with hats, piano and pad (kick, snare, clap and bass out), 41-56 full, then a 16-bar outro: 57-60 drums and bass, snare and clap out at 61, all hats out at 65, bass out at 69 leaving the kick alone, and a single kick on the one of bar 72.
-The lights come up; the set ends. No lead, no vocals, DJ-friendly intro/outro.
+Instrumental deep house at 116 BPM in A minor, 72 bars. Loop: Am9 and Esus2, two bars each; G moves to F#; the second chord has no third.
+Drums: punchy four-on-the-floor kick, snare and clap on 2 and 4 from bar 9, closed-hat eighths, open hats on the and-of-2 and and-of-4. Tom fills at bars 16, 36, 56. Sparse congas from bar 13.
+Sub bass from bar 9: a short root on the one and the and-of-3, then an empty bar.
+Grand piano from bar 9: a chord held through the first bar, then a chord on the one and a short one on the and-of-3, sustain pedal.
+Three-voice pad from bar 1, tonic in the intro, tonic tail to bar 60.
+Electric piano eighth-note arpeggio E4-G4-B4 / E4-F#4-B4 in 17-36 and 41-56.
+Structure: 1-8 intro (pad and hats, kick from bar 5), 9-36 full, 37-40 break: kick, snare, clap, bass out, 41-56 full with ride and crash, 57-72 outro: snare/clap out at 61, hats at 65, bass at 69, lone kick to 72.
+Lights up, set ends. No lead, no vocals, DJ-friendly intro/outro.
 ```
 
 ---
@@ -1573,14 +1554,12 @@ The lights come up; the set ends. No lead, no vocals, DJ-friendly intro/outro.
 
 **Description**
 ```
-Instrumental deep house at 117 BPM in A minor over a static Am9 rootless shell, with no chord changes.
-Pulse Bass holds A on the and-of-one for most of every other bar, leaving the intervening bar empty; it enters at bar 9.
-Audible electric-piano chords hold through each A/A2 bar with sustain re-pedaled every bar. A low Classic Pad holds A-E-B from bar 1; an eighth-note electric-piano Tex cycle repeats the chord tones C-G-B only in A/A2, never becoming a lead.
-Tough Kit separates a four-on-the-floor kick from bar 5 (beat one 106-112, beats two through four 100-105), soft on-beat closed hats (50-62), stronger closed hats on &1 and &3 (74-90), and 180-tick open hats on &2 and &4 every non-break bar (65-80). No step-15 closed hats.
-Snare (88-100) and layered clap (80-92) enter on beats 2 and 4 at bar 17. A quarter-note ride (60-75) replaces on-beat closed hats in A2; off-beat hats remain. Two tom hits mark beat four of bars 16, 48 and 88, and one crash marks bar 57.
-A separate SoCal Perc track places three conga hits per two-bar cell only in A/A2, on sixteenth gaps away from kicks and open hats; no shaker. Light swing and humanized timing preserve the accents.
-96 bars: 1-8 intro, 9–48 A, 49–56 break, 57–88 A2, 89–96 outro. Start with pad and hats, then add the kick at bar 5. The break removes all drums, percussion, keys, pad and Tex, leaving only the sparse sub-bass cell. The outro removes keys, pad, Tex, congas and ride, leaving drums and bass.
-Feel: an unlit opening room, grounded and patient rather than bright or euphoric; no lead, no vocals, DJ-friendly intro/outro.
+Deep house at 117 BPM, A minor: static rootless Am9, no changes.
+Pulse Bass from bar 9: long A on &1 every other bar, alternate bar empty.
+Tough Kit: four-floor kick from bar 5; soft on-beat closed hats, stronger &1/&3; open hats &2/&4. Snare+clap on 2/4 from bar 17. Two tom hits end bars 16/36/56.
+Low Classic Pad A-E-B from bar 1. A/A2: held full-bar electric piano, pedal released each bar; eighth-note electric-piano Tex cycles C-G-B in one octave; SoCal congas, 3 hits/2 bars clear of kick/open hats, no shaker.
+96 bars: 1-8 pad+hats intro, kick at 5; 9-48 A; 49-56 break: only sparse bass; drums, keys, pad, Tex and Perc drop; 57-88 A2: quarter-note ride replaces on-beat closed hats, off-beats stay, crash at 57; 89-96 drums+bass only.
+No lead, no vocals, DJ-friendly intro/outro.
 ```
 
 ## dh15-deep-meridian-v3l
@@ -1589,12 +1568,12 @@ Feel: an unlit opening room, grounded and patient rather than bright or euphoric
 
 **Description**
 ```
-Instrumental deep house at 122 BPM in B flat minor on Bbm11 and Ab7sus4, two bars each; only one voice moves, F to G flat.
-Drums: punchy four-on-the-floor kick with the downbeat accented, snare and clap together on 2 and 4 from bar 9, closed-hat eighths quiet on the beat and accented on the and-of-1 and and-of-3 with one ghost sixteenth after beat 4, an open hat on the and-of-2 and the and-of-4 of every bar that has hats. Bars 57–88 swap the on-beat closed hats for ride quarters, with a crash on bar 57. Two-hit tom fills close bars 16, 48 and 88. A conga figure (four hits per two bars) from bar 13 in the full sections.
-Sub bass from bar 9: a short root on the one, a ghost before beat 3 and a held note on 3; the next bar a root on the one, beat 3 and a short note after beat 4.
-Electric piano an octave up from bar 9: a short stab on the second sixteenth of beat 1 then a hold from the and-of-2; the next bar a hold from the second sixteenth of beat 1 and a short stab after beat 4, sustain pedal.
-Pad from bar 1: three voices (Bb2 F3 C4, then Ab2 Eb3 Bb3), tonic only in the intro.
-Tonewheel organ eighth-note arpeggio F4-Ab4-Db5 / Gb4-Ab4-Db5 in bars 17–48 and 57–88.
-Structure: 1-8 intro (pad and hats, kick from bar 5), 9–48 full, 49–56 break that strips in three steps — all hats out at 49, bass out at 53, kick out at 55, leaving snare, clap, piano and pad — 57–88 full, 89–96 drums and bass only.
-Deep, dark, rolling at the centre of the set. No lead, no vocals, DJ-friendly intro/outro.
+Instrumental deep house at 122 BPM in B flat minor. Loop: Bbm11 and Ab7sus4, two bars each; only one voice moves, F to G flat.
+Drums: punchy four-on-the-floor kick, snare and clap on 2 and 4 from bar 9, closed-hat eighths, open hats on the and-of-2 and and-of-4. Tom fills at bars 16, 48, 88. Congas from bar 13.
+Sub bass from bar 9: roots on the one and beat 3 with a ghost before 3, a short note after beat 4.
+Electric piano from bar 9: short off-beat stabs and long holds, pushed just after the beat, sustain pedal.
+Three-voice pad from bar 1, tonic only in the intro.
+Tonewheel organ eighth-note arpeggio F4-Ab4-Db5 / Gb4-Ab4-Db5 in 17-48 and 57-88.
+Structure: 1-8 intro (pad and hats, kick from bar 5), 9-48 full, 49-56 break stripping hats at 49, bass at 53, kick at 55, leaving snare, clap, piano and pad, 57-88 full with ride and crash, 89-96 drums and bass only.
+Deep, dark, rolling, mid-set. No lead, no vocals, DJ-friendly intro/outro.
 ```
