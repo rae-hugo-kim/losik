@@ -358,3 +358,4 @@ neon-rain / highway-zero / midnight-arcade / analog-heart: 개별 피드백 **�
 - 작곡기: fable 도 `--bars` 매개변수화(64 출력 10/10 바이트 동일), opus 는 클로저용 104마디 Form 추가. 64마디 `{sid}-v3.mid` 전부 바이트 동일 유지.
 - Suno 프롬프트: 모델별 `docs/music/suno/dh_<model>_v3l.md` → `SUNO_PROMPTS.md` 끝 `## {sid}-v3l` 30블록(시험판 2블록 교체). 전부 Description ≤ 997자·Style ≤ 281자, 브레이크 단계 마디는 실제 생성값.
 - `SETLIST_deep_house.md` 를 v3l 기준으로 갱신(총 길이·구조·곡별 길이 열).
+- 2026-10-21 추가: 규칙 적용 전에 쓴 v1 뼈대판 블록 7개(dh11·13·16·17·20·23·28-v1)가 5~86자 초과 → 구조 문장만 줄여 964~999자로. `SUNO_PROMPTS.md` + `suno/*.md` 전체 181블록 재측정, 초과 0.

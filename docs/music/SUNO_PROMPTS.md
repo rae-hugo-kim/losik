@@ -840,13 +840,13 @@ Soft concrete, restrained pressure, no lead, no vocals, DJ-friendly intro/outro.
 
 **Description**
 ```
-Basalt Current begins the deep peak with Ebm9 and Abm6, two bars each, over an Eb tonic pedal. Keep the minor centre dark; the added sixth is a shadow rather than a major-key lift.
+Basalt Current begins the deep peak with Ebm9 and Abm6, two bars each, over an Eb tonic pedal. Keep it dark; the sixth is shadow, not lift.
 Place one short low organ chord per bar, cycling through the and-of-2, beat 4, the and-of-3, and the and-of-1.
 The bass cell has a longer Eb2 on beat 1 and a short Ab1 below it on the and-of-3; the next bar answers with a short Eb2 on the and-of-1 and a longer Eb2 on beat 3.
 Use eight closed-hat positions per bar and one extra quiet sixteenth only in every fourth bar. One open hat every two bars replaces a closed hat. Keep clap strictly below the snare at the same onset.
 Structure: 1-16 intro, 17-32 A, 33-40 checkerboard break, 41-56 A2, 57-64 drums and tonic bass only. In the break, odd bars retain kick, snare and bass; even bars retain hats, snare and organ.
-Start with drums, add sub at bar 9 and a small organ touch at bar 12. A single quiet crash marks bar 41 beat 1.
-Peak through density and negative space, not louder attacks or bright voicings. No lead, no vocals, DJ-friendly intro/outro.
+Drums first, sub at bar 9, organ touch at 12. A single quiet crash marks bar 41 beat 1.
+Peak through density and space, not loudness. No lead, no vocals, DJ-friendly intro/outro.
 ```
 
 ## dh16-blackwater-fold-v1
@@ -860,7 +860,7 @@ Use only four short organ stabs per eight-bar cycle: the and-of-1 in bar 1, the 
 Bass stays on Bb1: three short notes on the and-of-1, and-of-3 and and-of-4, then a 1.35-beat note on the and-of-2 of the next bar.
 Closed hats alternate seven and eight positions per bar. An open hat appears every two bars. Layer a quiet clap directly beneath each soft snare, never alone.
 Structure: 1-16 intro, 17-32 A, 33-36 kick and organ only, 37-40 hats and bass only, 41-56 A2 with one quiet crash on bar 41 beat 1, 57-64 drums and bass only.
-Bass enters at bar 9; one organ hint appears at bar 12; the full harmonic rhythm begins at bar 17. Keep every kick soft despite the peak tempo.
+Bass from bar 9, one organ hint at 12, full harmony from 17. Keep every kick soft despite the peak tempo.
 Two dark rooms handing the groove to each other, no lead, no vocals, DJ-friendly intro/outro.
 ```
 
@@ -920,7 +920,7 @@ The low grand piano begins on beat 3 in cycle bars 1 and 5, and on the and-of-1 
 The four-bar bass cell is D2 on beat 1 for 3.5 beats, two whole bars of rest, then G1 a fifth below on the and-of-3 for 1.2 beats.
 Use only two and three closed hats on alternate bars, one open hat every four bars, a quiet rimshot and a very soft four-on-the-floor kick.
 Structure: 1-16 intro, 17-32 A, 33-34 complete silence, 35-40 piano and sub only, 41-56 A2, 57-64 drums and tonic bass only. All held notes and pedals stop before the silent passage.
-Bass enters at bar 9, a small piano hint appears at bar 12, and the full harmony opens at bar 17. One quiet crash lands on bar 41 beat 1.
+Bass from bar 9, piano hint at 12, full harmony from 17. One quiet crash lands on bar 41 beat 1.
 Leave room for the final two slots rather than closing the set here. No lead, no vocals, DJ-friendly intro/outro.
 ```
 
@@ -981,11 +981,11 @@ Instrumental deep house, 121 BPM, G# minor, soft kick, rimshot, six or seven spa
 **Description**
 ```
 Cinder Arcade is a 64-bar deep house track on G#m9 for three bars and Emaj7(#11)/G# for one bar, with G#1 held under both; two voices step down for the fourth bar and return.
-Soft grand piano plays a half-beat stab on the and-of-3 in the first three bars of each cycle, then holds 2.75 beats from the and-of-1 in the fourth bar with the sustain pedal.
+Soft grand piano plays a half-beat stab on the and-of-3 in the first three bars of each cycle, then holds 2.75 beats from the and-of-1 in the fourth bar with sustain.
 Soft kick, quiet rimshot on 2 and 4 from bar 9, six or seven closed hats per bar using the a-of-1 and a-of-3 as ghosts, one open hat every three bars.
-Sub bass on G#1 only: a short note on the one, a sixteenth pickup on the a-of-1, then a 1.2-beat note from the and-of-3, or a short note on the and-of-4 in the second bar.
-Structure: 1-16 intro (kick and hats, sub from bar 9, small piano hints at bars 12 and 14), 17-32 full, 33-40 break with the kick on beats 1 and 3 only and the sub, no hats, no rim, no piano, 41-56 full with one quiet crash on bar 41 beat 1, 57-64 drums and bass only.
-Tense but quiet. No lead, no vocals, no melody, DJ-friendly intro/outro.
+Sub bass on G#1 only: a short note on the one, a sixteenth pickup on the a-of-1, then a 1.2-beat note from the and-of-3,; second bars end with a short and-of-4.
+Structure: 1-16 intro (kick, hats, sub from 9, piano hints at 12/14), 17-32 full, 33-40 break with the kick on beats 1 and 3 only and the sub, no hats, no rim, no piano, 41-56 full with one quiet crash on bar 41 beat 1, 57-64 drums and bass only.
+Tense but quiet. No lead, no vocals, DJ-friendly intro/outro.
 ```
 
 ## dh14-iron-tide-v1
@@ -1013,11 +1013,11 @@ Instrumental dark deep house peak, 123 BPM, F minor with a dorian sixth, soft bu
 **Description**
 ```
 Coal Harbour is a 64-bar peak deep house track on Fm9 and Ebmaj7/F, two bars each, with F2 under both; all four voices step down into a D-Eb cluster and back, the D natural giving a dorian colour.
-The electric piano holds 3.25 beats from the and-of-1 with the sustain pedal, then plays one short touch on the and-of-4 of the next bar.
+The electric piano holds 3.25 beats from the and-of-1 with sustain, then plays one short touch on the and-of-4 of the next bar.
 Soft but driving kick, soft snare on 2 and 4 from bar 9 with no clap, eighth-note hats with ghost sixteenths on the e-of-1 and e-of-3 in odd bars, one open hat every two bars.
 Sub bass entirely on the off-beats: four short and-of-beat notes in odd bars; in even bars the and-of-3 note lengthens to 1.4 beats and drops to the fifth below (Bb1) in the full sections.
-Structure: 1-16 intro (kick and hats, sub from bar 9, small piano hints at bars 12 and 14), 17-32 full, 33-40 break with hats and snare over a whole-note sub drone, no kick, no piano, 41-56 full with one quiet crash on bar 41 beat 1, 57-64 drums and bass only.
-Heavy below, empty above. No lead, no vocals, no melody, DJ-friendly intro/outro.
+Structure: 1-16 intro (kick, hats, sub from 9, piano hints at 12/14), 17-32 full, 33-40 break with hats and snare over a whole-note sub drone, no kick, no piano, 41-56 full with one quiet crash on bar 41 beat 1, 57-64 drums and bass only.
+Heavy below, empty above. No lead, no vocals, DJ-friendly intro/outro.
 ```
 
 ## dh20-wet-granite-v1
@@ -1029,12 +1029,12 @@ Instrumental deep house end of peak, 122 BPM, C minor, soft kick, rimshot, six o
 **Description**
 ```
 Wet Granite is a 64-bar track that closes the peak section on Cm9 for five bars and Abmaj7/C for three bars, with C2 under both; Bb falls to Ab and D to C, an aeolian flat-six shade.
-Soft grand piano holds 3.5 beats from the one in cycle bars 1, 3 and 5, then 2.75 beats from beat 2 in bars 6 and 8, with the sustain pedal re-pressed each attack.
+Soft grand piano holds 3.5 beats from the one in cycle bars 1, 3 and 5, then 2.75 beats from beat 2 in bars 6 and 8, with sustain re-pressed each attack.
 Soft kick, quiet rimshot on 2 and 4 from bar 9, six closed hats in odd bars (with e-of-3 and e-of-4 ghosts) and four in even bars, one open hat every three bars.
 Sub bass: a 1.5-beat note on the one, a short and-of-3 and a note on beat 4; the second bar's beat-4 note drops to the fifth below (G1) in the full sections.
 A very quiet root-and-fifth pad (G2 and C3) enters at bar 33 and stays until bar 56.
-Structure: 1-16 intro (kick and hats, sub from bar 9, small piano hints at bars 12 and 14), 17-32 full, 33-40 rimshot and pad only, 41-56 full with one quiet crash on bar 41 beat 1, 57-64 drums and bass only.
-Settling, not lifting. No lead, no vocals, no melody, DJ-friendly intro/outro.
+Structure: 1-16 intro (kick, hats, sub from 9, piano hints at 12/14), 17-32 full, 33-40 rimshot and pad only, 41-56 full with one quiet crash on bar 41 beat 1, 57-64 drums and bass only.
+Settling, not lifting. No lead, no vocals, DJ-friendly intro/outro.
 ```
 
 ## dh23-paper-lantern-v1
@@ -1046,12 +1046,12 @@ Instrumental drifting deep house, 120 BPM, D minor, soft kick, rimshot, swung fi
 **Description**
 ```
 Paper Lantern is a 64-bar drifting deep house track on Dm9 and Fmaj9/D, four bars each, with D2 held under both; F steps down to E and A to G while the top E rises to F.
-The electric piano holds 1.9 beats from beat 3 in cycle bars 1 and 5, 3.25 beats from the swung and-of-1 in bars 2 and 6, and a short touch on beat 3 of bar 8, sustain pedal re-pressed each attack.
+The electric piano holds 1.9 beats from beat 3 in cycle bars 1 and 5, 3.25 beats from the swung and-of-1 in bars 2 and 6, and a short touch on beat 3 of bar 8, sustain re-pressed each attack.
 Soft kick, quiet rimshot on 2 and 4 from bar 9, swung closed hats in two five-position patterns, one open hat every four bars.
 Sub bass: a 0.75-beat note on beat 2 and a 1.4-beat note from the swung and-of-3; the second bar replaces the long note with a short fifth-below (A1) on the and-of-4 in the full sections.
-A very quiet root-and-fifth pad (A2 and D3) lies underneath from bar 17 to bar 56.
-Structure: 1-16 intro (kick and hats, sub from bar 9, small piano hints at bars 12 and 14), 17-32 full, 33-40 closed hats and pad only, 41-56 full with one quiet crash on bar 41 beat 1, 57-64 drums and bass only.
-Soft-lit and slow. No lead, no vocals, no melody, DJ-friendly intro/outro.
+A very quiet root-and-fifth pad (A2, D3) sits under bars 17-56.
+Structure: 1-16 intro (kick, hats, sub from 9, piano hints at 12/14), 17-32 full, 33-40 closed hats and pad only, 41-56 full with one quiet crash on bar 41 beat 1, 57-64 drums and bass only.
+Soft-lit and slow. No lead, no vocals, DJ-friendly intro/outro.
 ```
 
 ## dh26-dusk-ledger-v1
