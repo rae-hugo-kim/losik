@@ -666,23 +666,84 @@ def peak_dbfs(path):
 
 
 # ---------------------------------------------------------------- end-to-end
-def produce(sid, title, ver, mid_path, log=print):
-    """열린 프로젝트 정리 → SMF 임포트(벽시계 기준 대기; 임포트 중 System Events 는 ~2분씩 블록) → finish()."""
-    t0 = time.time()
-    close_all_projects(save=False)
-    subprocess.run(['open', '-a', APP, mid_path], capture_output=True)
-    while time.time() - t0 < 900:
-        if any(w.startswith('무제') and w.endswith('- 트랙') for w in windows()):
-            break
-        time.sleep(5)
-    else:
-        return dict(ok=False, stage='open', windows=windows())
-    time.sleep(3)
-    clear_alerts()
-    time.sleep(2)
-    r = finish(sid, title, ver, log=log)
-    r['elapsed'] = round(time.time() - t0)
-    return r
+LOCK_PATH = os.path.join(os.path.dirname(BOUNCE_DIR), '.logic-lock')   # Netac 공유 — 세션(워크트리)들이 Logic 한 대를 나눠 쓴다
+
+
+class LogicLock:
+    """Logic 은 한 인스턴스뿐이라 세션 간 바운스를 직렬화한다. 다른 세션이 쥐고 있으면 기다린다(최대 wait 초).
+    해제는 자기 토큰이 적힌 파일만 지운다(다른 세션의 잠금을 지우지 않도록). 폴링 간격은 짧게 두어 기아를 줄인다.
+    세션이 죽어 파일이 남으면 내용(소유자·pid·시각)을 보고 사람이 지운다."""
+    def __init__(self, owner, wait=3600):
+        self.owner, self.wait = owner, wait
+        self.token = f'{owner} {os.getpid()} {time.strftime("%F %T")} {os.urandom(4).hex()}'
+
+    def __enter__(self):
+        deadline = time.time() + self.wait
+        while True:
+            try:
+                fd = os.open(LOCK_PATH, os.O_CREAT | os.O_EXCL | os.O_WRONLY)
+            except FileExistsError:
+                if time.time() > deadline:
+                    try:
+                        held = open(LOCK_PATH).read().strip()
+                    except FileNotFoundError:
+                        continue          # 방금 풀렸다 — 한 번 더 시도
+                    raise TimeoutError(f'Logic lock held: {held} ({LOCK_PATH})')
+                time.sleep(2)
+                continue
+            try:
+                os.write(fd, (self.token + '\n').encode())
+            except BaseException:
+                os.close(fd)
+                os.remove(LOCK_PATH)
+                raise
+            os.close(fd)
+            return self
+
+    def __exit__(self, *exc):
+        try:
+            if open(LOCK_PATH).read().strip() == self.token:
+                os.remove(LOCK_PATH)
+        except FileNotFoundError:
+            pass
+
+
+def restart_logic(log=print, owner=None):
+    """Logic 종료 (다음 produce() 가 다시 띄운다). 세션 간 잠금 안에서 실행 — 다른 세션의 바운스 중 죽이지 않도록."""
+    owner = owner or _worktree_name()
+    with LogicLock(owner):
+        subprocess.run(['osascript', '-e', f'tell application "{APP}" to quit'], capture_output=True)
+        for _ in range(30):
+            if subprocess.run(['pgrep', '-f', APP + '$'], capture_output=True).returncode:
+                break
+            time.sleep(2)
+        log('    logic restarted')
+
+
+def _worktree_name():
+    return os.path.basename(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..')))
+
+
+def produce(sid, title, ver, mid_path, log=print, owner=None):
+    """열린 프로젝트 정리 → SMF 임포트(벽시계 기준 대기; 임포트 중 System Events 는 ~2분씩 블록) → finish().
+    세션 간 Logic 경합을 막기 위해 LogicLock 을 잡고 돈다(owner 기본값 = 현재 워크트리 이름)."""
+    owner = owner or _worktree_name()
+    with LogicLock(owner):
+        t0 = time.time()
+        close_all_projects(save=False)
+        subprocess.run(['open', '-a', APP, mid_path], capture_output=True)
+        while time.time() - t0 < 900:
+            if any(w.startswith('무제') and w.endswith('- 트랙') for w in windows()):
+                break
+            time.sleep(5)
+        else:
+            return dict(ok=False, stage='open', windows=windows())
+        time.sleep(3)
+        clear_alerts()
+        time.sleep(2)
+        r = finish(sid, title, ver, log=log)
+        r['elapsed'] = round(time.time() - t0)
+        return r
 
 
 def finish(sid, title, ver, log=print):

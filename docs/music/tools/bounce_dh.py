@@ -65,13 +65,7 @@ def jobs_for(set_prefix):
 RESTART_EVERY = 5   # Logic 은 임포트를 거듭할수록 바운스가 느려진다(실측 90s → 320s). 5곡마다 재시작.
 
 
-def restart_logic(log):
-    subprocess.run(['osascript', '-e', 'tell application "Logic Pro Creator Studio" to quit'], capture_output=True)
-    for _ in range(30):
-        if subprocess.run(['pgrep', '-f', 'Logic Pro Creator Studio$'], capture_output=True).returncode:
-            break
-        time.sleep(2)
-    log('    logic restarted')
+from pipeline import restart_logic   # 세션 간 잠금 안에서 Logic 을 재시작한다
 
 
 def run(jobs, log, ver='v1'):
