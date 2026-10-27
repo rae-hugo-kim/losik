@@ -52,10 +52,24 @@ The script:
 - Falls back to `git@github.com:rae-hugo-kim/omp.git` if no `source_remote` (unregistered case)
 - Fetches the latest `harness/*` tag from remote
 - Shallow-clones that tag into a temp dir, then **hands execution to that tag's own `scripts/harness-sync.sh`** (#24) so the whitelist applied is the target version's, not the consumer's stale copy — a new whitelist entry lands on the first sync
-- Overwrites whitelist paths (`rules/`, `checklists/`, `templates/`, `AGENTS.md`, `.omp/extensions/harness/`, the four harness agents in `.omp/agents/` (per file — consumer agents next to them are kept), `.githooks/*`, `scripts/harness-*.sh`, harness skill dirs)
+- Overwrites whitelist paths (`.omp/rules/harness-*.md` (file glob — stale `harness-*` files pruned, other `.omp/rules/` files kept), `checklists/`, `templates/`, `AGENTS.md`, `.omp/extensions/harness/`, the four harness agents in `.omp/agents/` (per file — consumer agents next to them are kept), `.githooks/*`, `scripts/harness-*.sh`, harness skill dirs)
+- Retires the legacy `rules/` directory (ADR 002): removes only files whose blob matches the previous synced tree (`refs/harness/<prev>`), keeps consumer-edited/added files with an advisory, and removes nothing when no previous tree is recorded — the advisory tells you to fix project docs that link `rules/<name>.md` (→ `.omp/rules/harness-<name>.md`, see the migrate skill)
 - Rewrites `harness-meta.json` with new version/SHA + preserved `bootstrapped_at`
 - Sets `core.hooksPath=.githooks` when `.githooks/` exists and git is not already pointing at it (idempotent). This is local git config that no file sync can carry, so a repo registered before `bootstrap` gained the step is otherwise disarmed forever (#26) — the `HARNESS HOOKS INACTIVE` session/turn notice from `harness-version-check.mjs` routes here.
 - Clears the `harness-version-check` and `harness-hooks-check` caches
+
+#### Windows native: upgrading from 2026.86 or earlier
+
+The 2026.87 `.gitattributes` pins `*.sh` and `.githooks/*` to LF, but it **does not convert files that are already checked out with CRLF**. A 2026.86-or-earlier Windows checkout therefore may have a CRLF `scripts/harness-sync.sh`, and `bash scripts/harness-sync.sh` stops at once with `$'\r': command not found` / `set: pipefail: invalid option name`. Work around it once by running a CR-stripped copy from a real temp file (not `bash <(…)`: the script re-copies `$0` to a temp file and re-execs it, and a pipe has already been partly consumed by then, so the copy would lose the script's first lines). WSL does not avoid this by itself — a bash in WSL fails on the same CRLF file, so use the same temp-copy command there. Add `--dry-run` to the first run if unsure. After the sync, confirm `*.sh text eol=lf` and `.githooks/* text eol=lf` are in the consumer's `.gitattributes` (it is not a sync target), then re-normalize:
+
+```bash
+lf=$(mktemp) && tr -d '\r' < scripts/harness-sync.sh > "$lf" && bash "$lf"; rc=$?; rm -f "$lf"; [ "$rc" -eq 0 ]   # only when the script itself is CRLF
+git add --renormalize .omp scripts .githooks '*.sh' && git status   # commit what it lists (blobs that were committed with CRLF)
+# --renormalize rewrites the index only; with no uncommitted changes, rewrite the CRLF working-tree files too
+# (uncommitted edits to these files are lost):
+git ls-files -z -- '*.sh' '.githooks/*' | xargs -0 sh -c 'rm -f -- "$@" && git checkout -- "$@"' _
+git ls-files --eol -- '*.sh' '.githooks/*'                   # expect w/lf everywhere
+```
 
 ### 3. Report
 
@@ -65,7 +79,7 @@ The script:
 | Unregistered → synced | "Retrofitted to harness/<version> from default source" |
 | Registered, up to date | "Harness was already at latest (harness/<version>) — files re-synced anyway" |
 | Registered, drift → synced | "Synced local <old> → remote <new>" |
-| `--dry-run` | List of paths that would be overwritten |
+| `--dry-run` | List of paths that would be overwritten (+ `RETIRE rules/` when a legacy copy would be retired) |
 | Network failure | "Could not reach remote. Check `source_remote` URL and network" |
 
 ## Verification

@@ -630,7 +630,7 @@ def peak_dbfs(path):
 
 
 # ---------------------------------------------------------------- end-to-end
-def produce(sid, title, ver, mid_path, log=print):
+def produce(sid, title, ver, mid_path, log=print, bounce_timeout=240):
     """열린 프로젝트 정리 → SMF 임포트(벽시계 기준 대기; 임포트 중 System Events 는 ~2분씩 블록) → finish()."""
     t0 = time.time()
     close_all_projects(save=False)
@@ -644,12 +644,12 @@ def produce(sid, title, ver, mid_path, log=print):
     time.sleep(3)
     clear_alerts()
     time.sleep(2)
-    r = finish(sid, title, ver, log=log)
+    r = finish(sid, title, ver, log=log, bounce_timeout=bounce_timeout)
     r['elapsed'] = round(time.time() - t0)
     return r
 
 
-def finish(sid, title, ver, log=print):
+def finish(sid, title, ver, log=print, bounce_timeout=240):
     """메트로놈 OFF → 스트립 실측 → 저장(projects/) → bounce_and_post()."""
     proj = f'{title} {ver}'
     log(f'{sid}: metronome {metronome_off("무제 - 트랙")}')
@@ -659,13 +659,14 @@ def finish(sid, title, ver, log=print):
     ok, msg = save_project_as(proj)
     if not ok:
         return dict(ok=False, stage='save', msg=msg, strips=strips)
-    r = bounce_and_post(sid, proj, ver)
+    r = bounce_and_post(sid, proj, ver, timeout=bounce_timeout)
     r['strips'] = strips
     return r
 
 
-def bounce_and_post(sid, proj, ver):
-    """저장된 프로젝트(창 '{proj} - 트랙')를 AIFF 바운스 → 리미터 → WAV → .aif 삭제 → 저장·닫기 → 번들 이동."""
+def bounce_and_post(sid, proj, ver, timeout=240):
+    """저장된 프로젝트(창 '{proj} - 트랙')를 AIFF 바운스 → 리미터 → WAV → .aif 삭제 → 저장·닫기 → 번들 이동.
+    timeout: 바운스가 실시간으로 도는 경우가 있어 곡 길이(초)의 2배 이상으로 (3:10 곡이 240초에서 실패, 2026-09-19)."""
     for old in (f'{sid}-{ver}.aif', f'{sid}-{ver}.wav'):
         p = os.path.join(BOUNCE_DIR, old)
         if os.path.exists(p):
@@ -684,7 +685,7 @@ end tell''')
     if not ok2:
         return dict(ok=False, stage='bounce', msg=m2)
     aif = os.path.join(BOUNCE_DIR, f'{sid}-{ver}.aif')
-    if not wait_file_stable(aif):
+    if not wait_file_stable(aif, timeout=timeout):
         return dict(ok=False, stage='file', msg='aif missing')
     hits = limit_aiff(aif)
     wav = os.path.join(BOUNCE_DIR, f'{sid}-{ver}.wav')

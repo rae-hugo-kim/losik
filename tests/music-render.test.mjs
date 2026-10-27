@@ -28,6 +28,9 @@ const CASES = [
   ['dawnset.py', [], ['morning-glass.mid', 'blue-hour.mid', 'paper-kite.mid', 'long-bridge.mid']],
   ['ostinato.py', [], ostinatoOutputs()],
   ['rebetiko.py', [], ['rebetiko-1-piraeus-v2.mid', 'rebetiko-2-hasapiko-v2.mid', 'rebetiko-3-smyrna-v3.mid', 'rebetiko-4-teke-v2.mid', 'rebetiko-5-serviko-v2.mid']],
+  ['canon_lofi.py', [], ['canon-lofi-v1.mid']],
+  ['canon_lofi_v2.py', [], ['canon-lofi-v2.mid']],
+  ['canon_lofi_v3.py', [], ['canon-lofi-v3a.mid', 'canon-lofi-v3b.mid', 'canon-lofi-v3c.mid']],
 ];
 
 for (const [script, args, outputs] of CASES) {

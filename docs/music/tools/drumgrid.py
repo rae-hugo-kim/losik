@@ -67,10 +67,28 @@ _BAR4_B = VARIANTS['B-splash'][0][3]
 VARIANTS['B-clap'] = ([REVISED[0], REVISED[1], {**_BAR3_REV, 'Ghost': '................', 'Clap': '.x.......x......'}, _BAR4_B], True)
 VARIANTS['B-clap-layer'] = ([REVISED[0], REVISED[1], {**_BAR3_REV, 'Clap': '.x.......x......'}, _BAR4_B], True)
 
+# 드럼 셀 v2 (09-20 판정: 3마디 라이드 벨 거슬림, 햇이 너무 규칙적·많음). 공통: 라이드 제거, 킥/스네어 원본, 4마디 B-splash 필인,
+# 3마디 고스트 스네어 유지, 픽업 스네어 4e·4a(확정). 차이 = 햇 개념.
+#   D-eighths : 8분 햇, 3마디 햇 아웃 (숨)
+#   E-offbeat : 뒷박(&)만 햇, 2·4마디 4& 오픈햇
+#   F-enter   : 1·2마디 햇 없음 → 3마디 8분 햇 진입 → 4마디 필인
+GM['OH'] = 46
+VEL['OH'] = 84
+PICKUP = {'Snare': '.............o.x'}          # 'o' = 약타(×0.87)
+_KS = {'Kick': 'x.....x...x.....', 'Snare': '....x.......x...'}
+_BAR3_GHOST = {**_KS, 'Ghost': '.x.......x......'}
+_BAR4_HATLESS = {**_BAR4_B, 'HH': 'x...............'}
+CELLS_V2 = {
+    'D-eighths': [{**_KS, 'HH': 'x.x.x.x.x.x.x.x.'}, {**_KS, 'HH': 'x.x.x.x.x.x.x.x.'}, _BAR3_GHOST, _BAR4_HATLESS],
+    'E-offbeat': [{**_KS, 'HH': '..x...x...x...x.'}, {**_KS, 'HH': '..x...x...x.....', 'OH': '..............x.'},
+                  {**_BAR3_GHOST, 'HH': '..x...x...x...x.'}, {**_BAR4_HATLESS, 'HH': '..x.............'}],
+    'F-enter':   [_KS, _KS, {**_BAR3_GHOST, 'HH': 'x.x.x.x.x.x.x.x.'}, _BAR4_HATLESS],
+}
 
-def render(name, bars, reps=2, downbeat_crash=False, tail=False):
+def render(name, bars, reps=2, downbeat_crash=False, tail=False, pickup=None):
     nt = {0: []}
-    seq = [bars[i % len(bars)] for i in range(len(bars) * reps + (1 if tail else 0))]
+    seq = ([pickup] if pickup else []) + [bars[i % len(bars)] for i in range(len(bars) * reps + (1 if tail else 0))]
+    off = 1 if pickup else 0
     for i, bar in enumerate(seq):
         b = i + 1
         for row, grid in bar.items():
@@ -79,11 +97,13 @@ def render(name, bars, reps=2, downbeat_crash=False, tail=False):
                 if ch == '.':
                     continue
                 vel = HH_ACCENT[pos % 4] if row == 'HH' else VEL[row]
+                if ch == 'o':
+                    vel = int(vel * 0.87)
                 nt[0].append((bt(b) + pos * S, 110, GM[row], vel))
-        if downbeat_crash and i > 0 and i % len(bars) == 0:     # 4마디 셀 끝을 받는 다음 1박
+        if downbeat_crash and i > off and (i - off) % len(bars) == 0:     # 4마디 셀 끝을 받는 다음 1박
             nt[0].append((bt(b), 110, GM['Crash'], VEL['Crash']))
-    smf = build_smf(f'Drum Grid {name}', BPM, 0, False, len(seq), [('Drums', 9)], {0: 0}, nt, {},
-                    markers=[(r * len(bars) + 1, f'rep {r + 1}') for r in range(reps)] + ([(len(seq), 'tail')] if tail else []))
+    markers = ([(1, 'pickup')] if pickup else []) + [(off + r * len(bars) + 1, f'rep {r + 1}') for r in range(reps)] + ([(len(seq), 'tail')] if tail else [])
+    smf = build_smf(f'Drum Grid {name}', BPM, 0, False, len(seq), [('Drums', 9)], {0: 0}, nt, {}, markers=markers)
     return write_smf(os.path.join(SK_DIR, f'drumgrid-{name}.mid'), smf)
 
 
@@ -95,3 +115,6 @@ if __name__ == '__main__':
     for name, (bars, db) in VARIANTS.items():
         if not only or name in only:
             print(render(name, bars, downbeat_crash=db, tail=True))
+    for name, bars in CELLS_V2.items():
+        if not only or name in only:
+            print(render(name, bars, downbeat_crash=True, tail=True, pickup=PICKUP))

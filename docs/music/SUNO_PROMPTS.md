@@ -189,25 +189,205 @@ Feel: taverna dance, joyful, sweaty, plates about to fly — late Tsitsanis / Pa
 
 메모: 부주키·바글라마스·산투리·우드·바이올린·아코디언은 Logic 에 전용 패치가 없어 SMF 는 GM 25(Acoustic Guitar)·24(Classical Acoustic Guitar)·46(Space Harp)·110(Authentic Strings)·21(Cheap Organ)으로 대용 (09-19 스트립 실측). Suno 에는 원 악기명을 그대로 쓴다.
 
-## canon-lofi-citypop (2026-09-19) — 프롬프트만, SMF 없음
-**Style** (98자)
-`lo-fi city pop, 88 BPM, D major, Pachelbel Canon variations, Rhodes, finger bass, tape hiss, instrumental`
+## canon-lofi v3 — 붙여넣기용 (2026-09-20)
 
-**Description** (1000자 이하)
+Suno 업로드 편집 화면의 4개 필드 순서대로. 각 버전은 **별도 원곡**으로 등록되어 있고, Cover 는 ⑤ 로 각 2개 생성.
+
+| Suno 필드 | 이 문서 | 제한 |
+|---|---|---|
+| style summary | ① | 100자 (공백 포함) |
+| audio description | ② | 1000자 |
+| caption | ③ | 곡 페이지 표시용 — 생성 무관으로 추정 |
+| lyrics | ④ | `[Instrumental]` + 섹션 메타태그. **직접 쓴 메타태그가 Cover 를 바꾸는지의 첫 실험**(§7.4-2) — 특히 `[Outro]` 링아웃, B `[Guitar Lead]` |
+| (Cover 생성 시 Style) | ⑤ | 100자, "instrumental" 포함, 악기는 역할 문구 |
+
+### v3A — `bounces/canon-lofi-v3a.wav` (84 BPM, 2:46)
+
+**① style summary** (93자)
 ```
-Instrumental lo-fi city pop built as a set of variations on Pachelbel's Canon in D, 88 BPM, D major,
-the eight-bar ground bass looping the whole time: D–A–Bm–F#m–G–D–G–A.
-Sound: warm Rhodes electric piano with light chorus, round finger bass walking the ground line, soft lo-fi drums
-(dusty kick, brushed or tape-saturated snare on 2 and 4, lightly swung hi-hats), muted clean guitar on off-beats.
-Tape hiss and faint vinyl crackle throughout; highs gently rolled off, nothing sharp.
-Form: the ground bass alone with drums → the Canon theme on Rhodes, slow and simple → variation 1: guitar takes
-the melody while Rhodes comps syncopated chords → variation 2: the famous descending eighth-note line on Rhodes
-over a half-time drum feel → breakdown to bass, hi-hat and a wide pad → final variation: everything together,
-melody doubled an octave up, a short synth counter-line answering each phrase → outro fading on the ground bass alone.
-Feel: a late-summer Tokyo night drive at golden hour, nostalgic and unhurried — Casiopea softness meets a lo-fi
-hip-hop beat, never busy, never loud. About 3 minutes.
+lo-fi city pop, instrumental, 84 BPM, D major, Rhodes lead, muted guitar cutting, finger bass
 ```
-메모: Suno 가 "Canon" 을 클래식 편곡으로 끌고 가면 Style 에서 `Pachelbel Canon variations` 를 `Canon in D chord loop` 로 낮춘다. 반대로 진행이 사라지면 Description 첫 줄의 코드 나열을 두 번 반복해 준다.
+
+**② audio description** (999자)
+```
+Instrumental lo-fi city pop at 84 BPM in D major: Pachelbel's Canon melody on Rhodes electric piano over the original ground bass (D A B F# G D G A) with seventh-chord colour. Keep the melody as uploaded.
+Two bars of bass and hi-hat, then the Rhodes states the theme straight in quarter notes; from the second statement on it plays with city-pop syncopation. The famous descending sixteenth-note runs are played in full on the Rhodes, then the fast passage, then a calm close.
+Muted clean guitar plays sixteenth-note cutting chords on the off-beats. Round finger bass on the roots with octave pops. A soft polysynth adds fifths in the second half; a quiet low pad on D underneath.
+Drums: soft dusty kick on 1 and 3 with a push on the and-of-four, tape-saturated snare on 2 and 4, swung hi-hats, open hat every fourth bar, snare fills every eight bars. Tape hiss, highs rolled off.
+Ending: drums stop, guitar and pad hold a D major ninth chord and ring out.
+Feel: late-summer night drive. About 2:45.
+```
+
+**③ caption**
+```
+Pachelbel's Canon as lo-fi city pop (v3A) — Logic sketch, cover source
+```
+
+**④ lyrics** (메타태그 — Logic 마디 구조와 1:1, `[Outro]` 는 종지 서술)
+```
+[Instrumental]
+
+[Intro]
+[round finger bass and swung closed hi-hat only]
+
+[Theme]
+[warm Rhodes electric piano states the melody straight in quarter notes]
+[soft dusty kick on 1 and 3, tape-saturated snare on 2 and 4 enter]
+
+[Verse]
+[Rhodes plays the melody with syncopation]
+[muted clean guitar sixteenth-note cutting chords on the off-beats]
+
+[Runs]
+[Rhodes plays fast descending sixteenth-note runs]
+[open hi-hat accents every fourth bar]
+
+[Build]
+[soft polysynth fifths enter under the Rhodes]
+[low pad on D sustains]
+
+[Calm]
+[Rhodes melody softens, guitar cutting lighter]
+
+[Outro]
+[drums stop]
+[guitar and pad hold a D major ninth chord and ring out]
+```
+
+**⑤ Cover Style** (100자)
+```
+lo-fi city pop, instrumental, warm Rhodes lead, muted guitar cutting, finger bass, dusty swung drums
+```
+
+### v3B — `bounces/canon-lofi-v3b.wav` (84 BPM, 2:46)
+
+**① style summary** (90자)
+```
+lo-fi city pop, instrumental, 84 BPM, D major, Rhodes and lead guitar trading, finger bass
+```
+
+**② audio description** (996자)
+```
+Instrumental lo-fi city pop at 84 BPM in D major: Pachelbel's Canon melody over a lightly reharmonised ground bass (Dmaj7 A7 Bm7 F#m7 Gmaj7 Bm7 Em7 A7). Keep the melody as uploaded.
+Two bars of bass and hi-hat, a snare pickup, then the Rhodes states the theme straight; the second statement is syncopated. At the descending sixteenth-note runs a clean electric guitar takes the melody and leads for sixteen bars while the Rhodes drops back to soft chords; then the Rhodes returns for the fast passage and the calm close.
+Muted guitar cutting elsewhere. Round finger bass on the roots with octave pops. A soft polysynth adds fifths in the second half; a quiet low pad on D underneath.
+Drums: soft dusty kick on 1 and 3 with a push on the and-of-four, tape-saturated snare on 2 and 4, swung hi-hats, open hat every fourth bar, snare fills every eight bars. Tape hiss, highs rolled off.
+Ending: drums stop, guitar and pad hold a D major ninth chord and ring out.
+Feel: hazy summer night. About 2:45.
+```
+
+**③ caption**
+```
+Pachelbel's Canon as lo-fi city pop, guitar takes the runs (v3B) — Logic sketch, cover source
+```
+
+**④ lyrics** (메타태그 — Logic 마디 구조와 1:1, `[Outro]` 는 종지 서술)
+```
+[Instrumental]
+
+[Intro]
+[round finger bass and swung closed hi-hat only]
+[snare pickup fill into the theme]
+
+[Theme]
+[warm Rhodes electric piano states the melody straight]
+[soft dusty kick on 1 and 3, tape-saturated snare on 2 and 4 enter]
+
+[Verse]
+[Rhodes plays the melody with syncopation]
+[muted clean guitar cutting chords on the off-beats]
+
+[Guitar Lead]
+[clean electric guitar takes the melody and plays the descending sixteenth-note runs]
+[Rhodes drops back to soft chords on beats 1 and 3]
+
+[Return]
+[Rhodes takes the melody back]
+[soft polysynth fifths enter, low pad on D sustains]
+
+[Calm]
+[Rhodes melody softens, guitar cutting lighter]
+
+[Outro]
+[drums stop]
+[guitar and pad hold a D major ninth chord and ring out]
+```
+
+**⑤ Cover Style** (100자)
+```
+lo-fi city pop, instrumental, tape-saturated, dusty swung drums, Rhodes, clean guitar takes the lead
+```
+
+### v3C — `bounces/canon-lofi-v3c.wav` (90 BPM, 2:35)
+
+**① style summary** (100자)
+```
+city pop, instrumental, 90 BPM, D major, Rhodes lead, chorus guitar cutting, finger bass, key change
+```
+
+**② audio description** (999자)
+```
+Instrumental city pop at 90 BPM in D major: Pachelbel's Canon melody on Rhodes electric piano over the original ground bass (D A B F# G D G A). Keep the melody as uploaded.
+Two bars of bass and hi-hat, then the Rhodes states the theme straight; the second statement is syncopated. The descending sixteenth-note runs are played in full, the fast passage is lightened. After the runs the band modulates up a whole step to E major for eight bars, then drops back to D major and settles into the calm close.
+Chorus guitar plays sixteenth-note cutting chords on the off-beats. Round finger bass on the roots with octave pops. A soft polysynth adds fifths in the second half; a quiet low pad underneath.
+Drums: light kick on 1 and 3 with a push on the and-of-four, crisp snare on 2 and 4, swung hi-hats, open hat every second bar, snare fills every eight bars. Bright mix, slightly softened highs.
+Ending: drums stop, guitar and pad hold a D major ninth chord and ring out.
+Feel: bright, airy. About 2:35.
+```
+
+**③ caption**
+```
+Pachelbel's Canon as city pop with a key change (v3C) — Logic sketch, cover source
+```
+
+**④ lyrics** (메타태그 — Logic 마디 구조와 1:1, `[Outro]` 는 종지 서술)
+```
+[Instrumental]
+
+[Intro]
+[round finger bass and swung closed hi-hat only]
+
+[Theme]
+[Rhodes electric piano states the melody straight]
+[light kick on 1 and 3, crisp snare on 2 and 4 enter]
+
+[Verse]
+[Rhodes plays the melody with syncopation]
+[chorus guitar sixteenth-note cutting chords on the off-beats]
+
+[Runs]
+[Rhodes plays fast descending sixteenth-note runs]
+[open hi-hat accents every second bar]
+
+[Key Change]
+[crash cymbal, whole band modulates up to E major]
+[polysynth fifths under the Rhodes, bright]
+
+[Back to D]
+[crash cymbal, band returns to D major]
+[Rhodes melody softens, guitar cutting lighter]
+
+[Outro]
+[drums stop]
+[guitar and pad hold a D major ninth chord and ring out]
+```
+
+**⑤ Cover Style** (96자)
+```
+80s city pop, instrumental, lo-fi mix, Rhodes lead, chorus guitar cutting through, key change up
+```
+
+결과 기록: Suno 재작성 Style + 청취 판정 → `FEEDBACK_LOG.md` canon-lofi v3 절. 넣은 최종 텍스트가 위와 다르면 그것을 정본으로 이 절을 갱신.
+
+---
+
+### 이력 (기록용)
+
+- **v1** `bounces/canon-lofi-v1.wav` (3:13, 72 BPM, 원곡 3성부 그대로) — 업로드 **차단** *"This audio matches an existing recording"*. 매처 = 커버곡 감지형.
+- **v2** `bounces/canon-lofi-v2.wav` (2:46, 84 BPM) — 리하모 Dmaj7 | F#m7 A7 | Bm7 | D/F# | Gmaj7 | Bm7 | Em7 | A7 + 당김 + 단성부 → 통과. Cover 6개(A 기본 / B 로파이 / C 시티팝 Style, "instrumental" 누락)는 FEEDBACK_LOG 참조. 판정: 분위기는 프롬프트대로, 캐논 정체성은 희석.
+- **v3 A/B/C** — 그라운드 8/8(B 는 6/8) 복원 + 3~10 원리듬 + 단일 리드, 셋 다 **통과** → 회피 조건은 "모방 성부 제거 + 부분 당김" 이면 충분, 리하모 불필요.
+- v2 Cover Style (기록): A `lo-fi city pop, warm Rhodes, muted guitar cutting, round finger bass, dusty swung drums, night drive` / B `lo-fi city pop, tape-saturated, dusty swung drums, warm Rhodes, muted guitar, mellow night drive` / C `80s city pop, lo-fi mix, Rhodes, chorus guitar cutting, slap-free finger bass, laid-back groove`
+- v2 업로드 Style `lo-fi city pop, 84 BPM, D major, Rhodes melody, muted guitar cutting, finger bass, dusty drums`; v1 업로드 Style `lo-fi city pop, Pachelbel Canon in D, 72 BPM, Rhodes, nylon guitar, finger bass, dusty drums`. Description 전문은 git 이력(`c98b498` 이후)에.
 
 ## 사용 메모
 - Suno 는 스타일 필드가 짧을수록 안정적. Description 은 커스텀 모드의 가사란에 `[Instrumental]` 태그와 함께 넣거나, Cover/Extend 시 참고용.

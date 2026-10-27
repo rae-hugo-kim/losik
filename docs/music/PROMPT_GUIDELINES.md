@@ -124,8 +124,9 @@
 
 ### 7.1 Suno Cover 의 텍스트 경로 (실측 구조)
 
-- **Style** 은 원곡 업로드 시 1회만 들어간다. 09-05 에는 Description 전문(~560자)이 그대로 들어갔고, **100자 제한은 09-12 부터** 적용. Style 의 단어는 메타태그에 거의 반영되지 않았다 (4곡 중 생존 단어: "root notes", "swing", "Rhodes" 정도 — 전부 오디오에서도 읽히는 것).
-- **메타태그**(`[Intro] [Section A] … [Outro]` + 편성 지시)는 업로드 시 **오디오 분석으로 1회 생성**되어 원곡 항목에 저장되고, Cover 는 이를 상속한다. 같은 업로드의 생성본들은 동일 태그. **Cover 를 바꾸는 유일한 텍스트 레버는 메타태그 편집.**
+- **업로드 Style** (원곡 업로드 시 1회): 09-05 에는 Description 전문(~560자)이 그대로 들어갔고, **100자 제한은 09-12 부터** 적용. 이 Style 의 단어는 메타태그에 거의 반영되지 않았다 (4곡 중 생존 단어: "root notes", "swing", "Rhodes" 정도 — 전부 오디오에서도 읽히는 것).
+- **Cover Style** (Cover 생성 시): **실제 레버다** (09-20 canon-lofi 정정). 우리 단어가 Suno 의 확장 프롬프트에 원문 그대로 생존하고, Suno 는 거기에 보컬 서술·프로덕션 어휘(analog compression, plate reverb, tape saturation)·템포 감을 덧붙여 최종 프롬프트로 쓴다. 분위기·질감은 이 경로로 확실히 통제된다("의도한 프롬프트대로 분위기는 간다").
+- **메타태그**(`[Intro] [Section A] … [Outro]` + 편성 지시)는 업로드 시 **오디오 분석으로 1회 생성**되어 원곡 항목에 저장되고, Cover 는 이를 상속한다. 같은 업로드의 생성본들은 동일 태그. 편성·구조를 바꾸는 텍스트 레버는 메타태그 편집, 분위기·질감을 바꾸는 레버는 Cover Style.
 - 태그는 **음색·리듬·레이어 순서만** 서술한다. BPM·키·무드(horror)·화성(Phrygian)·필(half-time) 단어는 4곡 모두 태그에 없다.
 
 ### 7.2 로직 → Suno 전달 표 (무엇이 살아남는가)
@@ -165,7 +166,9 @@
 2. **재도전은 메타태그 편집으로 한다.** 채택본의 태그를 기본으로 두고 고치고 싶은 섹션 태그만 교체. 1순위 실험은 `[Outro]` (4곡 중 3곡의 미련이 마무리): 페이드 서술을 종지 서술로 — `drums stop, <악기> carries the last phrase, resolve on a held <으뜸화음> chord` / `final hit on the downbeat, cymbal ring out` / `slowing down into a held final chord`.
 3. **태그 구체성 ∝ 생성본 일관성** (가설, 크롬 vs 골든·스타). 고정하고 싶은 구간만 악기·주법을 특정하고(`walking fingered electric bass`, `chorus-modulated guitar`), 변주를 원하는 구간은 범주로 둔다.
 4. 태그의 **악기·구조 지시는 실행되지만 텍스처 FX 는 불확실** (크롬 vinyl crackle 미실행). FX 로 무드를 잡으려 하지 말 것.
-5. **Style 100자**는 장르·무드·핵심 악기 3~4 단어면 충분 — 메타태그를 바꾸지 못하므로 상세 서술은 낭비.
+5. **Cover Style 100자**: 장르·질감·무드 + **"instrumental" 필수** — 빼면 Suno 가 보컬 서술(baritone/tenor/alto)을 스스로 추가한다(6개 중 5개, 09-20). 악기를 부각하려면 명사가 아니라 **역할 문구**("guitar cutting through the arrangement", "guitar takes the bridge") — 명사만("guitar cutting")으로는 부각되지 않았다.
+6. 같은 Style 의 생성본 중 **짧은 쪽이 원곡에 가깝다** (2:46 > 3:13). 초과 길이는 발명이므로 원곡성이 목표면 짧은 생성본을 고른다.
+7. 매처 회피용 리하모는 **정체성도 함께 희석**한다 (canon v2: 근음 2.5/8 치환만으로 "캐논인 듯 아닌 듯"). 원곡성은 선율보다 화성에 있다 — 회피는 리듬·구조 축을 먼저 쓰고 화성은 최소로.
 
 ### 7.5 §1 스펙 템플릿에 대한 함의
 
