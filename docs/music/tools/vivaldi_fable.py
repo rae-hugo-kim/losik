@@ -521,8 +521,8 @@ def compose_lofi(s, fm, events, residual):
                     nt[DR].append((hum_t(t0 + int(b * PPQ), 10), 70, HAT, clamp(hum_v(45, 5), 40, 50)))
         if bar == a2:
             nt[DR].append((t0, 400, CRASH, 62))
-        # bass — finger (or pulse) on this bar's kick slots (recipe: follow the kick, leave one out so it breathes);
-        # even bars with three kicks drop the last slot, every bar's last note ends early. E1..C3, 60–82
+        # bass — finger (or pulse) on this bar's kick slots (recipe: follow the kick, leave notes out so it breathes):
+        # a two-kick bar keeps both, a three-kick even bar drops its last slot, and every bar's last note ends early. E1..C3, 60–82
         if 'bass' in L:
             r = bass_root(s, bar)
             slots = list(s['kick'] if bar % 2 else s['kick_b'])

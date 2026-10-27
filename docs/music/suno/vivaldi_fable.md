@@ -9,9 +9,9 @@
 | spring 1 | vs-spring1-fable | 187 | 989 |
 | spring 2 | vs-spring2-fable | 168 | 990 |
 | spring 3 | vs-spring3-fable | 167 | 957 |
-| summer 1 | vs-summer1-fable | 182 | 997 |
+| summer 1 | vs-summer1-fable | 182 | 989 |
 | summer 2 | vs-summer2-fable | 188 | 973 |
-| summer 3 | vs-summer3-fable | 175 | 994 |
+| summer 3 | vs-summer3-fable | 175 | 995 |
 | autumn 1 | vs-autumn1-fable | 191 | 1000 |
 | autumn 2 | vs-autumn2-fable | 179 | 1000 |
 | autumn 3 | vs-autumn3-fable | 167 | 999 |
@@ -52,7 +52,7 @@ Spring III Fable: instrumental variation on the theme of Vivaldi's Four Seasons,
 
 **Description**
 ```
-Summer I Fable: instrumental variation on the theme of Vivaldi's Four Seasons, Summer I. 88 BPM, G minor, 64 bars. Each pair of languid 3/8 bars becomes one 4/4 bar, three eighths then a held note: a three-plus-one cell, lazy bounce. Four-bar loop Gm9 - D7b9 - Ebmaj9 - Cm9, electric piano comping in three short pushes per bar, re-pedalled, soft organ on the top voices. SoCal boom bap: kick on one, the and-of-two and the a-of-three, on one and the and-of-three in even bars, snare on 2/4, two ghosts on even bars (the late one yields to the open hat), swung eighth hats with a sixteenth flick after two and four, open hat every four bars. Finger bass sits on the kick slots: root, root, then the fifth. Intro 1-8 keys and organ, hats from 3, drums from 5, short nylon motif; A 9-28 nylon guitar carries the theme, then the motif; break 29-36 kick out, the rest stays; A2 37-56 crash, grand piano restates the theme, then the motif; outro 57-64 drums and bass leave at 61, keys alone. No vocals.
+Summer I Fable: instrumental variation on the theme of Vivaldi's Four Seasons, Summer I. 88 BPM, G minor, 64 bars. Each pair of languid 3/8 bars becomes one 4/4 bar, three eighths then a held note: a three-plus-one cell. Loop Gm9 - D7b9 - Ebmaj9 - Cm9, electric piano comping in three short pushes per bar, re-pedalled, soft organ on the top voices. SoCal boom bap: kick on one, the and-of-two and the a-of-three, on one and the and-of-three in even bars, snare on 2/4, two ghosts on even bars (the late one yields to the open hat), swung eighth hats with a sixteenth flick after two and four, open hat every fourth bar. Finger bass sits on the kick slots: root, root, then the fifth (two notes in even bars). Intro 1-8 keys and organ, hats from 3, drums from 5, short nylon motif; A 9-28 nylon guitar carries the theme, then the motif; break 29-36 kick out, the rest stays; A2 37-56 crash, grand piano restates the theme, then the motif; outro 57-64 band out at 61, keys alone. No vocals.
 ```
 
 ## vs-summer2-fable-v1
@@ -70,7 +70,7 @@ Summer II Fable: instrumental variation on the theme of Vivaldi's Four Seasons, 
 
 **Description**
 ```
-Summer III Fable: instrumental variation on the theme of Vivaldi's Four Seasons, Summer III (Presto). 124 BPM, G minor, 96 bars. The storm's sixteenth runs are thinned to one note per beat and the 3/4 bars re-barred into 4/4 with the last note held through beat four. Four-bar loop Gm11 x2 - Ebmaj13 - D9sus: dub stabs on the and-of-one and and-of-three, re-pedalled, an EP arpeggio in eighths through A and A2, a low 1-5-9 pad from bar one. Sub bass: root on one, two short pushes on the and-of-three and and-of-four. Tough kit: four-on-the-floor, open hats on the and-of-two and and-of-four, snare plus clap on 2/4, offbeat-accented closed hats, tom fills at 16, 48, 88. Intro 1-8 pad and hats, kick from 5; A 9-48 electric piano plays the thinned theme twice, then an own motif; break 49-56 kick, hats, keys, pad, arpeggio back at 53; A2 57-88 crash and ride, square synth lead restates the theme an octave up, then the EP motif; outro 89-96 drums, bass and pad, pad leaves at 93. No vocals.
+Summer III Fable: instrumental variation on the theme of Vivaldi's Four Seasons, Summer III. 124 BPM, G minor, 96 bars. The storm's sixteenth runs are thinned to one note per beat and the 3/4 bars re-barred into 4/4, last note held through beat four. Four-bar loop Gm11 x2 - Ebmaj13 - D9sus: dub stabs on the and-of-one and and-of-three, re-pedalled, an EP arpeggio in eighths through A and A2, a low 1-5-9 pad from bar one. Sub bass: root on one, short pushes on the and-of-three and and-of-four. Tough kit: four-on-the-floor, open hats on the and-of-two and and-of-four, snare plus clap on 2/4, offbeat-accented closed hats, tom fills at 16, 48, 88. Intro 1-8 pad and hats, kick from 5; A 9-48 electric piano plays the thinned theme, then its first twelve bars again, then an own motif; break 49-56 kick, hats, keys, pad, arpeggio from 53; A2 57-88 crash and ride, square synth lead restates the theme an octave up, then the EP motif; outro 89-96 drums, bass and pad, pad out at 93. No vocals.
 ```
 
 ## vs-autumn1-fable-v1
