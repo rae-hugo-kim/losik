@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>Drum Grid</title>
+<style>
+  :root { --bg:#111; --fg:#ddd; --dim:#555; --cell:#1e1e1e; --on:#4caf50; --acc:#ff9800; --ghost:#3a5a8a; --open:#c0c0c0; --bar:#333; }
+  body { background:var(--bg); color:var(--fg); font:14px/1.4 -apple-system, "SF Mono", Menlo, monospace; margin:20px; }
+  h1 { font-size:16px; margin:0 0 12px; }
+  .row { display:flex; gap:12px; align-items:center; flex-wrap:wrap; margin-bottom:10px; }
+  label { color:#999; }
+  input[type=text], input[type=number] { background:var(--cell); color:var(--fg); border:1px solid #333; padding:4px 6px; width:70px; font:inherit; }
+  button { background:#222; color:var(--fg); border:1px solid #444; padding:5px 10px; cursor:pointer; font:inherit; }
+  button:hover { background:#2c2c2c; }
+  button.primary { background:var(--on); color:#000; border-color:var(--on); font-weight:600; }
+  .brush button.active { outline:2px solid var(--fg); }
+  #grid { display:block; overflow-x:auto; margin:14px 0; padding-bottom:6px; user-select:none; }
+  .r { display:flex; align-items:center; height:24px; }
+  .r.head { color:#888; font-size:11px; }
+  .name { width:80px; flex:none; }
+  .name input { width:64px; padding:2px 4px; }
+  .legend { display:flex; gap:16px; align-items:center; margin:6px 0 4px; }
+  .legend span { display:inline-flex; align-items:center; gap:6px; }
+  .legend .c { cursor:default; }
+  .head .c.now { background:var(--fg); color:#000; border-radius:50%; }
+  button.play { background:#2a6; color:#000; border-color:#2a6; font-weight:600; min-width:70px; }
+  button.play.on { background:#e55; border-color:#e55; }
+  .rm { width:22px; flex:none; text-align:center; color:var(--dim); cursor:pointer; }
+  .rm:hover { color:#f55; }
+  .c { width:20px; height:20px; flex:none; margin:1px; background:var(--cell); border-radius:3px; display:flex; align-items:center; justify-content:center; font-size:11px; cursor:pointer; color:#000; }
+  .c[data-v="x"] { background:var(--on); }
+  .c[data-v="X"] { background:var(--acc); }
+  .c[data-v="o"] { background:var(--ghost); color:var(--fg); }
+  .c[data-v="O"] { background:var(--open); }
+  .c.beat { margin-left:5px; }
+  .c.bar { margin-left:14px; }
+  .head .c { background:none; color:#666; cursor:default; }
+  .head .c.beat { color:#aaa; }
+  #out { width:100%; min-height:160px; background:var(--cell); color:var(--fg); border:1px solid #333; font:12px/1.4 "SF Mono", Menlo, monospace; padding:8px; box-sizing:border-box; white-space:pre; }
+  .hint { color:#777; font-size:12px; }
+  #tapinfo { color:#999; min-width:60px; }
+</style>
+</head>
+<body>
+<h1>Drum Grid — 4마디 × 16분</h1>
+
+<div class="row">
+  <label>이름</label> <input type="text" id="label" placeholder="Chorus" style="width:110px">
+  <label>BPM</label> <input type="number" id="bpm" value="120" min="30" max="300">
+  <button id="tap">Tap</button> <span id="tapinfo"></span>
+  <label>Swing %</label> <input type="number" id="swing" value="50" min="50" max="75">
+</div>
+
+<div class="row brush">
+  <label>브러시</label>
+  <button data-b="x" class="active" title="친다">x</button>
+  <button data-b="X" title="악센트">X</button>
+  <button data-b="o" title="고스트">o</button>
+  <button data-b="O" title="오픈 하이햇">O</button>
+  <span class="hint">셀 클릭: 브러시로 칠하기 / 이미 같은 값이면 지움 / 드래그로 연속 칠하기</span>
+</div>
+<div class="legend">
+  <span><div class="c" data-v="x">x</div>친다 (기본)</span>
+  <span><div class="c" data-v="X">X</div>악센트 — 세게</span>
+  <span><div class="c" data-v="o">o</div>고스트 — 아주 약하게</span>
+  <span><div class="c" data-v="O">O</div>오픈 하이햇 (HH 줄 전용)</span>
+  <span><div class="c"></div>쉼</span>
+</div>
+
+<div class="row">
+  <label>프리셋 (마디 1~4 채움)</label>
+  <button data-p="backbeat">백비트 8비트</button>
+  <button data-p="backbeat16">백비트 16비트</button>
+  <button data-p="fourfloor">4-on-the-floor</button>
+  <button data-p="halftime">하프타임</button>
+  <button data-p="tresillo">트레실로</button>
+  <button data-p="dembow">뎀보우</button>
+  <button id="clear">전체 지우기</button>
+</div>
+
+<div class="row">
+  <button class="play" id="play">▶ Play</button>
+  <span class="hint">브라우저 내장 신스(Web Audio). 악기 이름으로 소리 결정: kick / snare / hh·hat / clap / rim / tom / ride / crash. 그 외는 클릭음.</span>
+</div>
+
+<div id="grid"></div>
+
+<div class="row">
+  <input type="text" id="newinst" placeholder="악기명 직접 입력" style="width:150px">
+  <button id="add">악기 추가</button>
+  <span class="hint">빠른 추가:</span>
+  <button data-q="Kick">Kick</button>
+  <button data-q="Snare">Snare</button>
+  <button data-q="Rim" title="사이드스틱/림샷">Rim</button>
+  <button data-q="Clap">Clap</button>
+  <button data-q="HH" title="closed, O 브러시로 open">HH</button>
+  <button data-q="Ride">Ride</button>
+  <button data-q="Crash">Crash</button>
+  <button data-q="Tom hi">Tom hi</button>
+  <button data-q="Tom mid">Tom mid</button>
+  <button data-q="Tom lo">Tom lo</button>
+</div>
+
+<div class="row">
+  <button class="primary" id="copy">복사</button>
+  <span id="copied" class="hint"></span>
+</div>
+<textarea id="out" readonly></textarea>
+
+<script>
+// ---- 그리드 설정: 나중에 8분/셋잇단/32분 확장 시 여기만 바꾼다 ----
+const STEPS_PER_BEAT = 4;          // 16분음표
+const BEATS_PER_BAR  = 4;
+const BARS           = 4;
+const STEPS_PER_BAR  = STEPS_PER_BEAT * BEATS_PER_BAR;
+const TOTAL          = STEPS_PER_BAR * BARS;
+const SUBDIV_LABELS  = ['', 'e', '&', 'a']; // 박 안 4칸 라벨. 첫 칸은 박 번호로 대체
+const STORAGE_KEY    = 'drum-grid-v1';
+
+const DEFAULT_INSTS = ['Kick', 'Snare', 'HH'];
+
+let state = load() || fresh();
+let brush = 'x';
+let dragging = false, dragValue = null;
+
+function fresh() {
+  return { label: '', bpm: 120, swing: 50,
+           insts: DEFAULT_INSTS.map(n => ({ name: n, cells: Array(TOTAL).fill('.') })) };
+}
+function load() {
+  try { const s = JSON.parse(localStorage.getItem(STORAGE_KEY)); return s && s.insts ? s : null; } catch { return null; }
+}
+function save() { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
+
+// ---- 렌더 ----
+const grid = document.getElementById('grid');
+function render() {
+  grid.innerHTML = '';
+  const head = document.createElement('div'); head.className = 'r head';
+  head.appendChild(Object.assign(document.createElement('div'), { className: 'name' }));
+  head.appendChild(Object.assign(document.createElement('div'), { className: 'rm' }));
+  for (let i = 0; i < TOTAL; i++) {
+    const c = document.createElement('div'); c.className = 'c' + cls(i);
+    const sub = i % STEPS_PER_BEAT, beat = Math.floor(i / STEPS_PER_BEAT) % BEATS_PER_BAR;
+    c.textContent = sub === 0 ? String(beat + 1) : SUBDIV_LABELS[sub];
+    head.appendChild(c);
+  }
+  grid.appendChild(head);
+
+  state.insts.forEach((inst, r) => {
+    const row = document.createElement('div'); row.className = 'r';
+    const nm = document.createElement('div'); nm.className = 'name';
+    const inp = document.createElement('input'); inp.type = 'text'; inp.value = inst.name;
+    inp.oninput = () => { inst.name = inp.value; save(); refreshOut(); };
+    nm.appendChild(inp); row.appendChild(nm);
+    const rm = document.createElement('div'); rm.className = 'rm'; rm.textContent = '×'; rm.title = '삭제';
+    rm.onclick = () => { state.insts.splice(r, 1); save(); render(); };
+    row.appendChild(rm);
+    inst.cells.forEach((v, i) => {
+      const c = document.createElement('div'); c.className = 'c' + cls(i);
+      c.dataset.v = v; c.textContent = v === '.' ? '' : v;
+      c.onmousedown = e => { e.preventDefault(); dragging = true; dragValue = inst.cells[i] === brush ? '.' : brush; paint(inst, i, c); };
+      c.onmouseenter = () => { if (dragging) paint(inst, i, c); };
+      row.appendChild(c);
+    });
+    grid.appendChild(row);
+  });
+  refreshOut();
+}
+function cls(i) { return i % STEPS_PER_BAR === 0 ? ' bar' : i % STEPS_PER_BEAT === 0 ? ' beat' : ''; }
+function paint(inst, i, el) {
+  inst.cells[i] = dragValue; el.dataset.v = dragValue; el.textContent = dragValue === '.' ? '' : dragValue;
+  save(); refreshOut();
+}
+document.addEventListener('mouseup', () => { dragging = false; });
+
+// ---- 출력 텍스트 ----
+function toText() {
+  const pad = Math.max(5, ...state.insts.map(x => x.name.length)) + 1;
+  const lines = [];
+  if (state.label) lines.push(`Section: ${state.label}`);
+  lines.push(`BPM: ${state.bpm}`);
+  if (Number(state.swing) !== 50) lines.push(`Swing: ${state.swing}%`);
+  lines.push(`Bars: ${BARS}, grid: 1/${STEPS_PER_BEAT * 4}`);
+  const header = ' '.repeat(pad) + Array.from({ length: STEPS_PER_BAR }, (_, i) => {
+    const sub = i % STEPS_PER_BEAT; return sub === 0 ? String(Math.floor(i / STEPS_PER_BEAT) + 1) : SUBDIV_LABELS[sub];
+  }).join(' ');
+  for (let b = 0; b < BARS; b++) {
+    lines.push('', `Bar ${b + 1}`, header);
+    for (const inst of state.insts) {
+      const seg = inst.cells.slice(b * STEPS_PER_BAR, (b + 1) * STEPS_PER_BAR).join(' ');
+      lines.push(inst.name.padEnd(pad) + seg);
+    }
+  }
+  return lines.join('\n') + '\n';
+}
+const out = document.getElementById('out');
+function refreshOut() { out.value = toText(); }
+
+// ---- 컨트롤 ----
+const $ = id => document.getElementById(id);
+$('label').value = state.label; $('bpm').value = state.bpm; $('swing').value = state.swing;
+$('label').oninput = e => { state.label = e.target.value; save(); refreshOut(); };
+$('bpm').oninput   = e => { state.bpm = Number(e.target.value); save(); refreshOut(); };
+$('swing').oninput = e => { state.swing = Number(e.target.value); save(); refreshOut(); };
+
+document.querySelectorAll('.brush button').forEach(b => b.onclick = () => {
+  brush = b.dataset.b;
+  document.querySelectorAll('.brush button').forEach(x => x.classList.toggle('active', x === b));
+});
+
+$('add').onclick = () => {
+  const n = $('newinst').value.trim(); if (!n) return;
+  state.insts.push({ name: n, cells: Array(TOTAL).fill('.') }); $('newinst').value = ''; save(); render();
+};
+$('newinst').onkeydown = e => { if (e.key === 'Enter') $('add').onclick(); };
+document.querySelectorAll('[data-q]').forEach(b => b.onclick = () => {
+  if (state.insts.some(i => i.name === b.dataset.q)) return;
+  state.insts.push({ name: b.dataset.q, cells: Array(TOTAL).fill('.') }); save(); render();
+});
+$('clear').onclick = () => { state.insts.forEach(i => i.cells.fill('.')); save(); render(); };
+
+// 탭 템포: 최근 8회 간격 평균
+let taps = [];
+$('tap').onclick = () => {
+  const t = performance.now();
+  if (taps.length && t - taps[taps.length - 1] > 2000) taps = [];
+  taps.push(t); if (taps.length > 8) taps.shift();
+  if (taps.length >= 2) {
+    const avg = (taps[taps.length - 1] - taps[0]) / (taps.length - 1);
+    state.bpm = Math.round(60000 / avg); $('bpm').value = state.bpm; save(); refreshOut();
+    $('tapinfo').textContent = `${taps.length}회`;
+  } else $('tapinfo').textContent = '계속…';
+};
+
+// 프리셋: 한 마디 16칸 패턴, 4마디 반복
+const PRESETS = {
+  backbeat:   { Kick:'x.......x.......', Snare:'....x.......x...', HH:'x.x.x.x.x.x.x.x.' },
+  backbeat16: { Kick:'x.....x.x.......', Snare:'....x.......x...', HH:'xxxxxxxxxxxxxxxx' },
+  fourfloor:  { Kick:'x...x...x...x...', Snare:'....x.......x...', HH:'..O...O...O...O.' },
+  halftime:   { Kick:'x......x..x.....', Snare:'........x.......', HH:'x.x.x.x.x.x.x.x.' },
+  tresillo:   { Kick:'x.....x.....x...', Snare:'....x.......x...', HH:'x.x.x.x.x.x.x.x.' },
+  dembow:     { Kick:'x...x...x...x...', Snare:'...x..x....x..x.', HH:'x.x.x.x.x.x.x.x.' },
+};
+document.querySelectorAll('[data-p]').forEach(b => b.onclick = () => {
+  const p = PRESETS[b.dataset.p];
+  for (const [name, pat] of Object.entries(p)) {
+    let inst = state.insts.find(i => i.name === name);
+    if (!inst) { inst = { name, cells: Array(TOTAL).fill('.') }; state.insts.push(inst); }
+    for (let i = 0; i < TOTAL; i++) inst.cells[i] = pat[i % STEPS_PER_BAR];
+  }
+  save(); render();
+});
+
+// 복사
+$('copy').onclick = async () => {
+  const text = toText();
+  try { await navigator.clipboard.writeText(text); }
+  catch { out.select(); document.execCommand('copy'); }
+  $('copied').textContent = '복사됨'; setTimeout(() => $('copied').textContent = '', 1500);
+};
+
+// ---- 재생: Web Audio 합성 ----
+let ac = null, playing = false, timer = null, nextStep = 0, nextTime = 0;
+const LOOKAHEAD_MS = 25, SCHEDULE_AHEAD = 0.12;
+const VEL = { x: 0.8, X: 1.0, o: 0.3, O: 0.8 };
+let noiseBuf = null;
+function noise() {
+  if (!noiseBuf) {
+    noiseBuf = ac.createBuffer(1, ac.sampleRate, ac.sampleRate);
+    const d = noiseBuf.getChannelData(0); for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
+  }
+  const s = ac.createBufferSource(); s.buffer = noiseBuf; return s;
+}
+function env(node, t, peak, decay) {
+  const g = ac.createGain(); g.gain.setValueAtTime(peak, t); g.gain.exponentialRampToValueAtTime(0.001, t + decay);
+  node.connect(g); g.connect(ac.destination); return g;
+}
+function tone(t, f0, f1, decay, vel, type = 'sine') {
+  const o = ac.createOscillator(); o.type = type;
+  o.frequency.setValueAtTime(f0, t); o.frequency.exponentialRampToValueAtTime(f1, t + decay * 0.6);
+  env(o, t, vel, decay); o.start(t); o.stop(t + decay);
+}
+// 금속성 심벌: 비정수배 사각파 6개 겹침 (808 방식)
+function metal(t, decay, vel, hp, bp = null) {
+  const ratios = [1, 1.342, 1.2312, 1.6532, 1.9523, 2.1768], base = 300;
+  const sum = ac.createGain(); sum.gain.value = 1 / ratios.length;
+  for (const r of ratios) { const o = ac.createOscillator(); o.type = 'square'; o.frequency.value = base * r; o.connect(sum); o.start(t); o.stop(t + decay); }
+  let node = sum;
+  const f = ac.createBiquadFilter(); f.type = 'highpass'; f.frequency.value = hp; node.connect(f); node = f;
+  if (bp) { const b = ac.createBiquadFilter(); b.type = 'bandpass'; b.frequency.value = bp; b.Q.value = 0.7; node.connect(b); node = b; }
+  env(node, t, vel, decay);
+}
+function hiss(t, hp, decay, vel, bp = null) {
+  const n = noise(); let node = n;
+  const f = ac.createBiquadFilter(); f.type = 'highpass'; f.frequency.value = hp; node.connect(f); node = f;
+  if (bp) { const b = ac.createBiquadFilter(); b.type = 'bandpass'; b.frequency.value = bp; b.Q.value = 1; node.connect(b); node = b; }
+  env(node, t, vel, decay); n.start(t); n.stop(t + decay);
+}
+function hit(name, v, t) {
+  const vel = VEL[v]; if (!vel) return;
+  const n = name.toLowerCase();
+  if (n.includes('kick'))        tone(t, 150, 45, 0.35, vel);
+  else if (n.includes('snare'))  { tone(t, 220, 180, 0.12, vel * 0.5, 'triangle'); hiss(t, 1500, 0.18, vel); }
+  else if (n.includes('hh') || n.includes('hat')) metal(t, v === 'O' ? 0.4 : 0.06, vel * 0.5, 7000);
+  else if (n.includes('clap'))   { for (let k = 0; k < 3; k++) hiss(t + k * 0.01, 1200, 0.1 + k * 0.03, vel * 0.7, 1800); }
+  else if (n.includes('rim'))    { tone(t, 1700, 900, 0.03, vel * 0.6, 'square'); hiss(t, 3000, 0.03, vel * 0.4); }
+  else if (n.includes('tom'))    tone(t, n.includes('lo') ? 110 : n.includes('mid') ? 160 : 220, 60, 0.3, vel);
+  else if (n.includes('crash'))  { metal(t, 1.5, vel * 0.45, 3500); hiss(t, 5000, 1.0, vel * 0.3); }
+  else if (n.includes('ride'))   metal(t, 0.7, vel * 0.35, 5000, 9000);
+  else                           tone(t, 1000, 1000, 0.03, vel * 0.5, 'square');
+}
+function stepDur() { return 60 / state.bpm / STEPS_PER_BEAT; }
+function swingDelay(step) { return step % 2 === 1 ? (state.swing / 100 * 2 - 1) * stepDur() : 0; }
+const stepTimes = [];
+function schedule() {
+  while (nextTime < ac.currentTime + SCHEDULE_AHEAD) {
+    const t = nextTime + swingDelay(nextStep);
+    for (const inst of state.insts) hit(inst.name, inst.cells[nextStep], t);
+    stepTimes.push({ step: nextStep, t });
+    nextStep = (nextStep + 1) % TOTAL; nextTime += stepDur();
+  }
+}
+function cursor() {
+  if (!playing) return;
+  while (stepTimes.length > 1 && stepTimes[1].t <= ac.currentTime) stepTimes.shift();
+  const cur = stepTimes[0];
+  if (cur) grid.querySelectorAll('.head .c').forEach((c, i) => c.classList.toggle('now', i === cur.step));
+  requestAnimationFrame(cursor);
+}
+function start() {
+  if (!ac) ac = new (window.AudioContext || window.webkitAudioContext)();
+  ac.resume();
+  playing = true; nextStep = 0; nextTime = ac.currentTime + 0.05; stepTimes.length = 0;
+  timer = setInterval(schedule, LOOKAHEAD_MS); requestAnimationFrame(cursor);
+  $('play').textContent = '■ Stop'; $('play').classList.add('on');
+}
+function stop() {
+  playing = false; clearInterval(timer);
+  grid.querySelectorAll('.head .c.now').forEach(c => c.classList.remove('now'));
+  $('play').textContent = '▶ Play'; $('play').classList.remove('on');
+}
+$('play').onclick = () => playing ? stop() : start();
+document.addEventListener('keydown', e => { if (e.code === 'Space' && e.target.tagName !== 'INPUT') { e.preventDefault(); $('play').click(); } });
+
+render();
+</script>
+</body>
+</html>
