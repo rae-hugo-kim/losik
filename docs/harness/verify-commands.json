@@ -12,6 +12,9 @@
     "python3 docs/music/tools/dh_opus_v3.py",
     "python3 docs/music/tools/lh_astra.py",
     "python3 docs/music/tools/lh_fable.py",
-    "python3 docs/music/tools/lh_opus.py"
+    "python3 docs/music/tools/lh_opus.py",
+    "python3 docs/music/tools/lh_astra_v2.py",
+    "python3 docs/music/tools/lh_fable_v2.py",
+    "python3 docs/music/tools/lh_opus_v2.py"
   ]
 }

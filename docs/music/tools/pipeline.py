@@ -522,19 +522,26 @@ end tell''', timeout=120)
 
 # 바운스 대화상자의 저장 위치는 Logic 이 마지막으로 쓴 곳(재시작 후에는 .mid 폴더)이라 통제하지 않는다.
 # 파일명으로 후보 폴더를 뒤져 bounces/ 로 옮긴다 (2026-10-18 dh20, 2026-10-19 v2 실측).
+import glob as _glob
 BOUNCE_SEARCH = [BOUNCE_DIR, SK_DIR, PROJ_DIR, os.path.expanduser('~/Music'), os.path.expanduser('~/Desktop'),
                  os.path.expanduser('~/Documents'), os.path.expanduser('~/Downloads')]
+# 다른 워크트리(세션)의 sketches/ 도 본다 — Logic 바운스 대화상자는 마지막으로 쓴 폴더를 기억하므로
+# 다른 세션이 자기 sketches/ 로 바운스했으면 다음 바운스가 거기로 떨어진다 (2026-10-30 실측: band-fable/docs/music/sketches).
+_WT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..', '..'))
+BOUNCE_SEARCH += sorted(d for d in _glob.glob(os.path.join(_WT_ROOT, '*', 'docs', 'music', 'sketches')) if d not in BOUNCE_SEARCH)
+BOUNCE_SEARCH += [d for d in ('/Volumes/Netac 2TB/workspace/losik/docs/music/sketches',) if os.path.isdir(d) and d not in BOUNCE_SEARCH]
 
 
-def wait_bounce_file(name, timeout=600):
-    """후보 폴더 중 하나에 name 이 안정적으로 생기면 BOUNCE_DIR 로 옮긴 경로를, 아니면 None."""
+def wait_bounce_file(name, timeout=600, since=None):
+    """후보 폴더 중 하나에 name 이 안정적으로 생기면 BOUNCE_DIR 로 옮긴 경로를, 아니면 None.
+    since 가 주어지면 그 시각 이전의 파일(옛 잔재)은 무시한다."""
     import shutil
     t0 = time.time()
     while time.time() - t0 < timeout:
         for d in BOUNCE_SEARCH:
             p = os.path.join(d, name)
             try:
-                if os.path.exists(p) and os.path.getsize(p) > 500000:
+                if os.path.exists(p) and os.path.getsize(p) > 500000 and (since is None or os.path.getmtime(p) >= since):
                     s = os.path.getsize(p)
                     time.sleep(3)
                     if os.path.getsize(p) == s:
@@ -765,6 +772,7 @@ def finish(sid, title, ver, log=print):
 def bounce_and_post(sid, proj, ver):
     """저장된 프로젝트(창 '{proj} - 트랙')를 AIFF 바운스 → 리미터 → WAV → .aif 삭제 → 저장·닫기 → 번들 이동."""
     # 탐색 폴더 전부에서 동명 잔재를 지운다 — 다른 폴더의 옛 .aif 를 새 바운스로 오인하지 않도록.
+    # 형제 워크트리의 sketches/ 도 포함: LogicLock 이 바운스를 직렬화하므로 거기 있는 동명 .aif 는 진행 중이 아니라 잔재다.
     for d in BOUNCE_SEARCH:
         for old in (f'{sid}-{ver}.aif', f'{sid}-{ver}.wav' if d == BOUNCE_DIR else None):
             if old and os.path.exists(os.path.join(d, old)):
@@ -779,10 +787,11 @@ end try
 end tell
 end tell''')
     time.sleep(2)
+    t_start = time.time() - 5
     ok2, m2 = start_bounce_aiff(proj, f'{sid}-{ver}')
     if not ok2:
         return dict(ok=False, stage='bounce', msg=m2)
-    aif = wait_bounce_file(f'{sid}-{ver}.aif')
+    aif = wait_bounce_file(f'{sid}-{ver}.aif', since=t_start)
     if not aif:
         return dict(ok=False, stage='file', msg='aif missing')
     hits = limit_aiff(aif)
