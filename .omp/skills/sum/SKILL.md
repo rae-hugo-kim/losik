@@ -69,7 +69,7 @@ mkdir -p docs/sum
 
 대상 문서가 프로젝트에 없으면 처분을 `승격 대기`로 표기한다 — 나중에 같은 주제가 반복 소환되면 그게 소유 문서를 만들 신호다.
 
-**타인 소유 레포 가드**: 스터디 클론처럼 push 권한이 없거나 운영 주체가 내가 아닌 레포에서는 **레포 내 문서(AGENTS.md·docs 등)로 승격하지 않는다** — 승격 대상은 내 지식 기지(omp 하네스 rules/, 위키, 전역 메모리)이거나 `승격 대기`다. 미결 이슈화(5.5)도 같은 이유로 생략한다(남의 이슈 트래커에 내 백로그를 만들지 않는다).
+**타인 소유 레포 가드**: 스터디 클론처럼 push 권한이 없거나 운영 주체가 내가 아닌 레포에서는 **레포 내 문서(AGENTS.md·docs 등)로 승격하지 않는다** — 승격 대상은 내 지식 기지(omp 하네스 .omp/rules/harness-*.md, 위키, 전역 메모리)이거나 `승격 대기`다. 미결 이슈화(5.5)도 같은 이유로 생략한다(남의 이슈 트래커에 내 백로그를 만들지 않는다).
 
 ### 4. 요약문서 작성
 
@@ -146,6 +146,11 @@ API·스키마·env 키·스케줄·인터페이스 등 "다른 코드/사람이
 원격이 GitHub이고 `gh` 사용 가능하면, 미결 항목 중 **독립 작업 단위**인 것(다음 세션의 즉시 후속이 아니라, 언제 누가 해도 되는 일)을 골라 이슈 생성을 제안한다 (승격과 함께 일괄 확인):
 
 - 제목 = 미결 항목 한 줄. 본문 = 맥락 1-2줄 + sum 문서 링크
+- **상태 라벨 분류**(한 이슈에 하나만 — omp 하네스 gh-loop 스킬 "상태 라벨"): 본문에 사용자가 결정할 것이 있으면 `needs-decision`, 확인만 필요하면 `needs-review`, 에이전트가 처리할 백로그면 상태 라벨 없음. 제안 목록에 분류를 함께 보이고, 붙이기 전에 라벨을 보장한다(없으면 생성, 멱등):
+  ```bash
+  gh label create needs-decision --description "awaiting human decision" --color D93F0B 2>/dev/null || true
+  gh label create needs-review --description "내가 봐야 함 — 리뷰·머지 대기 PR이나 확인할 보고 (질문 없음)" --color FBCA04 2>/dev/null || true
+  ```
 - `gh issue list --state open`으로 같은 내용의 열린 이슈가 이미 있으면 생성 대신 참조
 - 생성 후 sum 문서의 해당 항목을 `→ 이슈 #N`으로 갱신
 - gh가 없거나 원격이 GitHub가 아니면 조용히 생략 (미결은 sum 문서와 INDEX에 남는다)
@@ -164,11 +169,14 @@ API·스키마·env 키·스케줄·인터페이스 등 "다른 코드/사람이
 
 ### 7. Vault backup + 워크트리 사본 (fail-open)
 
-등재 직후 sum 문서와 `INDEX.md`를 중앙 아카이브(sum-vault)로 백업한다 — 프로젝트 레포는 `docs/sum/`을 추적하지 않으므로(untracked 정책, omp `rules/doc_standards.md`) vault가 유일한 백업이다. 링크드 워크트리에서 실행된 세션은 추가로 메인 체크아웃 `docs/sum/`에 사본을 남긴다(①.5).
+등재 직후 sum 문서와 `INDEX.md`를 중앙 아카이브(sum-vault)로 백업한다 — 프로젝트 레포는 `docs/sum/`을 추적하지 않으므로(untracked 정책, omp `.omp/rules/harness-doc_standards.md`) vault가 유일한 백업이다. 링크드 워크트리에서 실행된 세션은 추가로 메인 체크아웃 `docs/sum/`에 사본을 남긴다(①.5).
 
 커밋 게이트는 이제 **대상 레포의 `.githooks/pre-commit`** 에서 집행된다(2026-07-30 재설계).
 sum-vault는 하네스를 보유하지 않으므로 **관할 밖**이고, `git -C <vault> commit`은 게이트를
-거치지 않는다 — 예전의 "리터럴 경로·단독 호출" 요구는 사라졌다. 아래 단계 분리는 규칙이
+거치지 않는다 — 예전의 "리터럴 경로·단독 호출" 요구는 사라졌다. 명령 층의 cross-repo guard(#15)도
+규율 파일(AGENTS.md/CLAUDE.md/.cursorrules)·하네스가 없는 vault는 관할 밖으로 보고 통과시킨다(파일 복사는
+경고만). 단 `<vault>`는 **리터럴 경로**여야 한다 — `cd "$VAULT" && git commit`처럼 변수로 이동한 커밋은
+대상을 정적으로 해석할 수 없어 fail-closed로 차단된다(`git -C "<vault>" …`는 해석된다). 아래 단계 분리는 규칙이
 아니라 위생(실패 지점 분리)으로 유지한다. vault 미보유 머신은 ①에서 안내만 남기고 끝(fail-open).
 
 ```bash

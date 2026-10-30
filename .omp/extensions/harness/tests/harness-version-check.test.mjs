@@ -14,6 +14,9 @@
 //   - a failed probe writes a `failed` marker and subsequent runs back off
 //     silently WITHOUT re-probing
 //   - no `source_remote` in harness-meta.json (this IS the source repo) => no-op
+//   - linked worktree (#68; fixture = isolated temp repo + `git worktree add`): BEHIND MAIN when main's
+//     COMMITTED meta is current, STALE (linked worktree) otherwise, never /skill:harness-check; main and
+//     single checkouts keep the original STALE; the worktree uses its own cache file
 //
 // Fixture tags are ANNOTATED (`git tag -a`) on purpose: only annotated tags make
 // the tag-object sha differ from the commit sha, which is what the peeled-sha
@@ -22,10 +25,11 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { spawnSync } from 'node:child_process';
-import { mkdtempSync, rmSync, writeFileSync, mkdirSync, readFileSync, existsSync, symlinkSync } from 'node:fs';
+import { mkdtempSync, rmSync, writeFileSync, mkdirSync, readFileSync, existsSync, symlinkSync, realpathSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { skipUnless } from './helpers/capabilities.mjs';
 
 const GATE = join(dirname(fileURLToPath(import.meta.url)), '..', 'gates', 'harness-version-check.mjs');
 
@@ -85,13 +89,13 @@ function withFixture(opts, fn) {
   try { return fn(fx); } finally { rmSync(fx.root, { recursive: true, force: true }); }
 }
 
-function runGate(cwd, payload = {}) {
+function runGate(cwd, payload = {}, envExtra = {}) {
   const started = Date.now();
   const r = spawnSync('node', [GATE], {
     input: JSON.stringify({ session_state: { cwd }, ...payload }),
     cwd,
     encoding: 'utf-8',
-    env: cleanEnv(),
+    env: { ...cleanEnv(), ...envExtra },
   });
   r.durationMs = Date.now() - started;
   return r;
@@ -165,6 +169,31 @@ test('cache window: a fresh cache pins the remote version; max_age_ms 0 forces a
 
     const fresh = runGate(fx.consumer, { max_age_ms: 0 });
     assert.match(fresh.stdout, /2026\.62/, 'max_age_ms 0 must bypass the cache and see the new tag');
+  });
+});
+
+// Clock step backwards (measured on WSL2, 2026-09-23: Date.now() jumped -1.8s between two reads,
+// which made the test above flake): a cache whose checkedAt is in the FUTURE made `now - checkedAt`
+// negative, which satisfied every window including max_age_ms 0 — the caller asked for a refetch
+// and silently got the stale cache. A future checkedAt must be treated as stale.
+test('cache window: a checkedAt in the future (clock stepped backwards) never satisfies the window', () => {
+  withFixture({ localVersion: '2026.50' }, (fx) => {
+    const seed = runGate(fx.consumer);
+    assert.match(seed.stdout, /2026\.61/);
+    fx.addTag('2026.62');
+    const cached = JSON.parse(readFileSync(fx.cachePath, 'utf-8'));
+    const futureCheckedAt = Date.now() + 60_000;
+    writeFileSync(fx.cachePath, JSON.stringify({ ...cached, checkedAt: futureCheckedAt }));
+    const fresh = runGate(fx.consumer, { max_age_ms: 0 });
+    assert.match(fresh.stdout, /2026\.62/, 'a future checkedAt must not be treated as a cache hit');
+    const after = JSON.parse(readFileSync(fx.cachePath, 'utf-8'));
+    // No wall-clock comparison here (that is the very flake under test): the injected value being
+    // gone, plus the new tag above, proves the re-probe rewrote the cache.
+    assert.notEqual(after.checkedAt, futureCheckedAt, 'the re-probe must rewrite the injected checkedAt');
+    assert.equal(after.remoteLatestVersion, '2026.62', 'the rewritten cache carries the re-probed version');
+    // And the normal window still works after the rewrite.
+    const hit = runGate(fx.consumer, { max_age_ms: 3600000 });
+    assert.match(hit.stdout, /2026\.62/);
   });
 });
 
@@ -324,7 +353,7 @@ test('hooks probe runs before the source-repo skip (no source_remote still gets 
   });
 });
 
-test('hooks active through a symlinked session cwd is silent (real-path comparison)', () => {
+test('hooks active through a symlinked session cwd is silent (real-path comparison)', { skip: skipUnless('symlink') }, () => {
   withFixture({ localVersion: '2026.61' }, (fx) => {
     gitInit(fx.consumer);
     mkdirSync(join(fx.consumer, '.githooks'));
@@ -334,5 +363,300 @@ test('hooks active through a symlinked session cwd is silent (real-path comparis
     const r = runGate(link);
     assert.equal(r.status, 0);
     assert.equal(r.stdout.trim(), '', 'symlinked cwd must not produce a false HOOKS INACTIVE');
+  });
+});
+
+// --- Policy shadow probe (#35) ---
+// Measured on omp 18.2.5 (`omp -p --no-extensions` marker probes, 2026-09-23): a `.omp/AGENTS.md`
+// with ANY bytes (content, a lone newline, whitespace) replaces the same-depth root AGENTS.md; a
+// 0-byte file is ignored. Project and user RULES.md are both loaded, so `.omp/RULES.md` is not a
+// shadow and is never probed. Contract: root AGENTS.md + non-empty .omp/AGENTS.md => one
+// HARNESS POLICY SHADOWED notice per 24h routing to `.omp/rules/`; otherwise silent, no marker.
+
+test('policy shadowed: .omp/AGENTS.md beside a root AGENTS.md emits POLICY SHADOWED once per window', () => {
+  withFixture({ localVersion: '2026.61' }, (fx) => {
+    writeFileSync(join(fx.consumer, 'AGENTS.md'), '# policy\n');
+    writeFileSync(join(fx.consumer, '.omp', 'AGENTS.md'), '# project\n');
+    const first = runGate(fx.consumer);
+    assert.equal(first.status, 0, 'advisory — exit must stay 0');
+    const out = first.stdout.trim();
+    assert.ok(out.startsWith('HARNESS POLICY SHADOWED'), `must lead with HARNESS POLICY SHADOWED, got: ${JSON.stringify(out)}`);
+    assert.ok(out.includes('.omp/AGENTS.md') && out.includes('.omp/rules/'), 'notice must name the offending file and the replacement location');
+    assert.ok(existsSync(join(fx.consumer, '.omp', 'state', 'harness-policy-check.json')), 'marker must be written');
+
+    const second = runGate(fx.consumer);
+    assert.equal(second.stdout.trim(), '', 'within the 24h window the notice must not repeat');
+  });
+});
+
+test('policy shadowed: a whitespace-only or single-newline .omp/AGENTS.md still shadows (size > 0, not trimmed content)', () => {
+  for (const body of ['\n', ' \n\n', '\t']) {
+    withFixture({ localVersion: '2026.61' }, (fx) => {
+      writeFileSync(join(fx.consumer, 'AGENTS.md'), '# policy\n');
+      writeFileSync(join(fx.consumer, '.omp', 'AGENTS.md'), body);
+      const r = runGate(fx.consumer);
+      assert.ok(r.stdout.trim().startsWith('HARNESS POLICY SHADOWED'), `${JSON.stringify(body)} must be reported`);
+    });
+  }
+});
+
+test('policy not shadowed: no root AGENTS.md, a 0-byte .omp/AGENTS.md, or a project .omp/RULES.md are all silent', () => {
+  withFixture({ localVersion: '2026.61' }, (fx) => {
+    writeFileSync(join(fx.consumer, '.omp', 'AGENTS.md'), '# project\n');  // no root AGENTS.md to shadow
+    writeFileSync(join(fx.consumer, '.omp', 'RULES.md'), 'hard\n');         // both RULES.md load: not a shadow
+    assert.equal(runGate(fx.consumer).stdout.trim(), '', 'nothing is shadowed => no notice');
+    writeFileSync(join(fx.consumer, 'AGENTS.md'), '# policy\n');
+    writeFileSync(join(fx.consumer, '.omp', 'AGENTS.md'), '');              // 0 bytes: ignored by the provider
+    assert.equal(runGate(fx.consumer).stdout.trim(), '', 'a 0-byte .omp/AGENTS.md shadows nothing');
+    assert.ok(!existsSync(join(fx.consumer, '.omp', 'state', 'harness-policy-check.json')), 'no marker when nothing was emitted');
+  });
+});
+
+// Review 2026-09-23 round 2 (C-3): a marker dated in the FUTURE (clock stepped back, or a
+// hand-written suppressor) must not silence the notice — the drift cache applies the same rule.
+test('policy shadowed: a future-dated notice marker does not suppress the notice', () => {
+  withFixture({ localVersion: '2026.61' }, (fx) => {
+    writeFileSync(join(fx.consumer, 'AGENTS.md'), '# policy\n');
+    writeFileSync(join(fx.consumer, '.omp', 'AGENTS.md'), '# project\n');
+    mkdirSync(join(fx.consumer, '.omp', 'state'), { recursive: true });
+    writeFileSync(join(fx.consumer, '.omp', 'state', 'harness-policy-check.json'), JSON.stringify({ notifiedAt: Date.now() + 60 * 60 * 1000 }));
+    const r = runGate(fx.consumer);
+    assert.ok(r.stdout.trim().startsWith('HARNESS POLICY SHADOWED'), 'a future marker is stale, not a valid window');
+  });
+});
+
+// ── Linked worktrees (#68) ────────────────────────────────────────────────────────────────────
+// Fixture: the consumer dir becomes a real git repo (branch `trunk`) with harness-meta.json
+// COMMITTED, plus a `git worktree add` checkout `wt`. `mainCommitted` is the version committed on
+// trunk AFTER the worktree was cut (the worktree keeps `wtVersion`), which is exactly the state a
+// session in the worktree sees when main has already synced.
+function makeLinkedFixture({ wtVersion = '2026.50', mainCommitted = wtVersion, mainBranch = 'trunk', wtExtra = {}, mainExtra = {}, mainSha = null } = {}) {
+  const fx = makeFixture({ localVersion: wtVersion });
+  const ident = ['-c', 'user.name=t', '-c', 'user.email=t@example.com'];
+  const meta = (v, extra) => ({ version: v, source_remote: fx.sourceRemote, ...extra });
+  fx.writeMeta(meta(wtVersion, wtExtra));
+  git(fx.consumer, ['init', '-q', '-b', mainBranch]);
+  git(fx.consumer, ['add', '.omp']);
+  git(fx.consumer, [...ident, 'commit', '-q', '-m', `harness ${wtVersion}`]);
+  fx.wt = join(fx.root, 'wt');
+  git(fx.consumer, ['worktree', 'add', '-q', '-b', 'feature', fx.wt]);
+  // `mainSha: 'peeled:<v>'` => main commits the REMOTE's peeled commit sha for that tag.
+  const extra = mainSha && mainSha.startsWith('peeled:') ? { ...mainExtra, commit_sha: fx.commitShaOf(mainSha.slice(7)) } : mainExtra;
+  if (mainCommitted !== wtVersion || Object.keys(extra).length) {
+    fx.writeMeta(meta(mainCommitted, extra));
+    git(fx.consumer, ['add', '.omp']);
+    git(fx.consumer, [...ident, 'commit', '-q', '-m', `harness ${mainCommitted}`]);
+  }
+  fx.mainPath = realpathSync(fx.consumer);
+  fx.wtCachePath = join(fx.wt, '.omp', 'state', 'harness-version-check.linked.json');
+  fx.wtMainModeCachePath = join(fx.wt, '.omp', 'state', 'harness-version-check.json');
+  return fx;
+}
+
+function withLinkedFixture(opts, fn) {
+  const fx = makeLinkedFixture(opts);
+  try { return fn(fx); } finally { rmSync(fx.root, { recursive: true, force: true }); }
+}
+
+test('linked worktree: main already at the latest tag => BEHIND MAIN, merge here, never harness-check', () => {
+  withLinkedFixture({ wtVersion: '2026.50', mainCommitted: '2026.61' }, (fx) => {
+    const r = runGate(fx.wt);
+    assert.equal(r.status, 0, 'drift is advisory — exit must stay 0');
+    const out = r.stdout.trim();
+    assert.ok(out.startsWith('HARNESS BEHIND MAIN'), `got: ${JSON.stringify(out)}`);
+    assert.ok(out.includes('git merge refs/heads/trunk'), 'must name the main checkout\'s branch as an unambiguous full ref (a same-named tag would win the short form)');
+    assert.ok(out.includes('2026.61') && out.includes('2026.50'), 'must name main\'s and this worktree\'s versions');
+    assert.ok(!out.includes('/skill:harness-check'), 'a linked worktree must never be routed to /skill:harness-check');
+    assert.match(out, /do not run harness-check in a linked worktree/);
+    assert.match(out, /short-lived/);
+  });
+});
+
+test('linked worktree: main is behind too => STALE (linked worktree) naming the main checkout, never harness-check', () => {
+  withLinkedFixture({ wtVersion: '2026.50', mainCommitted: '2026.55' }, (fx) => {
+    const out = runGate(fx.wt).stdout.trim();
+    assert.ok(out.startsWith('HARNESS STALE (linked worktree)'), `got: ${JSON.stringify(out)}`);
+    assert.ok(out.includes(fx.mainPath), 'must name the main checkout path so the sync happens there');
+    assert.ok(out.includes('2026.61'), 'must name the latest remote version');
+    assert.ok(!out.includes('/skill:harness-check'), 'a linked worktree must never be routed to /skill:harness-check');
+    assert.match(out, /do not run harness-check in a linked worktree/);
+  });
+});
+
+test('linked worktree: main\'s COMMITTED meta decides, not its uncommitted working copy', () => {
+  withLinkedFixture({ wtVersion: '2026.50', mainCommitted: '2026.55' }, (fx) => {
+    // main synced on disk but has not committed: a merge would bring nothing yet.
+    fx.writeMeta({ version: '2026.61', source_remote: fx.sourceRemote });
+    const out = runGate(fx.wt).stdout.trim();
+    assert.ok(out.startsWith('HARNESS STALE (linked worktree)'), `uncommitted sync on main is not "BEHIND MAIN": ${JSON.stringify(out)}`);
+  });
+});
+
+test('linked worktree: up to date is silent', () => {
+  withLinkedFixture({ wtVersion: '2026.61' }, (fx) => {
+    assert.equal(runGate(fx.wt).stdout.trim(), '', 'no drift => no output, linked or not');
+  });
+});
+
+test('main checkout of a repo that has linked worktrees keeps the original STALE directive', () => {
+  withLinkedFixture({ wtVersion: '2026.50' }, (fx) => {
+    const out = runGate(fx.consumer).stdout.trim();
+    assert.ok(out.startsWith('HARNESS STALE: local harness 2026.50'), `got: ${JSON.stringify(out)}`);
+    assert.ok(out.includes('/skill:harness-check'), 'the main checkout still routes to harness-check');
+    assert.ok(!out.includes('linked worktree'), 'no linked-worktree wording on the main checkout');
+  });
+});
+
+test('single git checkout (no worktrees) keeps the original STALE directive', () => {
+  withFixture({ localVersion: '2026.50' }, (fx) => {
+    git(fx.consumer, ['init', '-q', '-b', 'trunk']);
+    const out = runGate(fx.consumer).stdout.trim();
+    assert.ok(out.startsWith('HARNESS STALE: local harness 2026.50'), `got: ${JSON.stringify(out)}`);
+    assert.ok(out.includes('/skill:harness-check'));
+  });
+});
+
+test('linked worktree: separate cache file; the main-mode cache is never served to a worktree', () => {
+  withLinkedFixture({ wtVersion: '2026.50', mainCommitted: '2026.61' }, (fx) => {
+    // A fresh main-mode cache pinning a fake remote version must be ignored by the worktree probe.
+    mkdirSync(dirname(fx.wtMainModeCachePath), { recursive: true });
+    writeFileSync(fx.wtMainModeCachePath, JSON.stringify({ checkedAt: Date.now(), remoteLatestVersion: '2026.99', source: fx.sourceRemote }));
+    const out = runGate(fx.wt).stdout.trim();
+    assert.ok(out.includes('2026.61') && !out.includes('2026.99'), `worktree must probe for itself, got: ${JSON.stringify(out)}`);
+    assert.equal(JSON.parse(readFileSync(fx.wtCachePath, 'utf-8')).remoteLatestVersion, '2026.61', 'worktree writes its own cache file');
+    assert.equal(JSON.parse(readFileSync(fx.wtMainModeCachePath, 'utf-8')).remoteLatestVersion, '2026.99', 'the main-mode cache file stays untouched');
+    // ...and the worktree's own cache is honored on the next run. A cache HIT leaves the file byte-for-byte
+    // alone; a failed re-probe (remote gone) would rewrite it with `failed: true`, and would print the
+    // same line from last-known-good — so the output alone cannot tell the two apart.
+    const before = readFileSync(fx.wtCachePath, 'utf-8');
+    rmSync(fx.sourceRemote.replace('file://', ''), { recursive: true, force: true });
+    const again = runGate(fx.wt).stdout.trim();
+    assert.ok(again.startsWith('HARNESS BEHIND MAIN') && again.includes('2026.61'), `cache hit must still report: ${JSON.stringify(again)}`);
+    assert.equal(readFileSync(fx.wtCachePath, 'utf-8'), before, 'a cache hit must not touch the file (no re-probe, no failure marker)');
+  });
+});
+
+// Review round 1 (2026-10-13) regressions.
+test('linked worktree: main synced PAST the cached remote tag is BEHIND MAIN (SHA is compared only at equal versions)', () => {
+  withLinkedFixture({ wtVersion: '2026.50', mainCommitted: '2026.70', mainExtra: { commit_sha: 'a'.repeat(40) } }, (fx) => {
+    const out = runGate(fx.wt).stdout.trim();
+    assert.ok(out.startsWith('HARNESS BEHIND MAIN'), `main at 2026.70 is ahead of remote 2026.61 and has what a merge needs: ${JSON.stringify(out)}`);
+    assert.ok(out.includes('2026.70'));
+  });
+});
+
+test('linked worktree: same-version SHA drift stays one of the two labels, STALE (linked worktree), never harness-check', () => {
+  const wrong = 'f'.repeat(40);
+  withLinkedFixture({ wtVersion: '2026.61', wtExtra: { commit_sha: wrong } }, (fx) => {
+    const out = runGate(fx.wt).stdout.trim();
+    assert.ok(out.startsWith('HARNESS STALE (linked worktree): version matches (2026.61) but commit SHA differs'), `got: ${JSON.stringify(out)}`);
+    assert.ok(!out.includes('/skill:harness-check'));
+  });
+  // ...and BEHIND MAIN when main has already committed the right SHA at that version.
+  withLinkedFixture({ wtVersion: '2026.61', wtExtra: { commit_sha: wrong }, mainSha: 'peeled:2026.61' }, (fx) => {
+    const out = runGate(fx.wt).stdout.trim();
+    assert.ok(out.startsWith('HARNESS BEHIND MAIN'), `got: ${JSON.stringify(out)}`);
+    assert.ok(!out.includes('/skill:harness-check'));
+  });
+});
+
+test('linked worktree: an exotic main branch name is never interpolated into the git merge line', () => {
+  withLinkedFixture({ wtVersion: '2026.50', mainCommitted: '2026.61', mainBranch: 'x;touch-pwned$(id)' }, (fx) => {
+    const out = runGate(fx.wt).stdout.trim();
+    assert.ok(out.startsWith('HARNESS BEHIND MAIN'), `got: ${JSON.stringify(out)}`);
+    assert.ok(!out.includes('x;touch') && !out.includes('$(id)') && !out.includes('git merge'), `unsafe ref leaked into the directive: ${JSON.stringify(out)}`);
+    assert.match(out, /merge or rebase of the main checkout's current branch/);
+  });
+});
+
+test('linked worktree: a tag named like the main branch does not shadow the branch when reading main\'s meta', () => {
+  withLinkedFixture({ wtVersion: '2026.50', mainCommitted: '2026.61' }, (fx) => {
+    git(fx.consumer, ['tag', 'trunk', 'HEAD~1']);   // same name as the branch, on the OLD commit (2026.50)
+    const out = runGate(fx.wt).stdout.trim();
+    assert.ok(out.startsWith('HARNESS BEHIND MAIN') && out.includes('2026.61'), `branch must win over the tag: ${JSON.stringify(out)}`);
+  });
+});
+
+test('linked worktree: a detached main HEAD still compares committed meta but never pins its SHA in a merge command', () => {
+  withLinkedFixture({ wtVersion: '2026.50', mainCommitted: '2026.61' }, (fx) => {
+    git(fx.consumer, ['checkout', '-q', '--detach']);
+    const out = runGate(fx.wt).stdout.trim();
+    assert.ok(out.startsWith('HARNESS BEHIND MAIN') && out.includes('2026.61'), `got: ${JSON.stringify(out)}`);
+    assert.ok(!out.includes('git merge'), `a detached SHA would be stale after main syncs: ${JSON.stringify(out)}`);
+  });
+});
+
+test('linked worktree: main without a usable committed harness meta ({} / no file) falls back to STALE (linked worktree)', () => {
+  for (const mainMeta of [{}, null]) {
+    withLinkedFixture({ wtVersion: '2026.50' }, (fx) => {
+      const ident = ['-c', 'user.name=t', '-c', 'user.email=t@example.com'];
+      if (mainMeta) { fx.writeMeta(mainMeta); git(fx.consumer, ['add', '.omp']); }
+      else git(fx.consumer, ['rm', '-q', '.omp/extensions/harness/harness-meta.json']);   // `git rm` stages the deletion itself
+      git(fx.consumer, [...ident, 'commit', '-q', '-m', 'main meta unusable']);
+      const out = runGate(fx.wt).stdout.trim();
+      assert.ok(out.startsWith('HARNESS STALE (linked worktree)'), `${JSON.stringify(mainMeta)}: ${JSON.stringify(out)}`);
+      assert.ok(!out.includes('undefined'), 'a version-less meta must not print "main already at undefined"');
+    });
+  }
+});
+
+test('linked worktree: ambient GIT_DIR / GIT_WORK_TREE cannot turn detection off and bring harness-check back', () => {
+  withLinkedFixture({ wtVersion: '2026.50', mainCommitted: '2026.61' }, (fx) => {
+    const out = runGate(fx.wt, {}, { GIT_DIR: join(fx.mainPath, '.git'), GIT_WORK_TREE: fx.mainPath }).stdout.trim();
+    assert.ok(out.startsWith('HARNESS BEHIND MAIN'), `got: ${JSON.stringify(out)}`);
+    assert.ok(!out.includes('/skill:harness-check'));
+  });
+});
+
+test('linked worktree of a BARE main repo: STALE (linked worktree) without inventing a main checkout path', () => {
+  withLinkedFixture({ wtVersion: '2026.50' }, (fx) => {
+    const bare = join(fx.root, 'main-bare.git');
+    git(fx.root, ['clone', '-q', '--bare', fx.consumer, bare]);
+    const bwt = join(fx.root, 'bwt');
+    git(bare, ['worktree', 'add', '-q', bwt, 'trunk']);
+    const r = runGate(bwt);
+    assert.equal(r.status, 0);
+    const out = r.stdout.trim();
+    assert.ok(out.startsWith('HARNESS STALE (linked worktree)'), `got: ${JSON.stringify(out)}`);
+    assert.match(out, /main worktree is bare/);
+    assert.ok(!out.includes('/skill:harness-check'));
+  });
+});
+
+// Review round 2 (2026-10-13) regressions.
+test('linked worktree: a worktree AHEAD of the cached remote (just merged main\'s newer sync) is silent, not "SHA differs"', () => {
+  withLinkedFixture({ wtVersion: '2026.62', wtExtra: { commit_sha: 'a'.repeat(40) } }, (fx) => {
+    assert.equal(runGate(fx.wt).stdout.trim(), '', 'version 2026.62 > remote 2026.61: current, whatever the older tag\'s SHA is');
+  });
+});
+
+test('linked worktree: main BEHIND the worktree is never offered as the cure (no downgrade)', () => {
+  // wt 2026.60 is itself stale (remote 2026.61) but newer than main 2026.55: merging main would go backwards.
+  withLinkedFixture({ wtVersion: '2026.60', mainCommitted: '2026.55' }, (fx) => {
+    const out = runGate(fx.wt).stdout.trim();
+    assert.ok(out.startsWith('HARNESS STALE (linked worktree)'), `got: ${JSON.stringify(out)}`);
+  });
+});
+
+test('linked worktree: at an equal version main must carry the remote\'s SHA to count as the cure for SHA drift', () => {
+  withLinkedFixture({ wtVersion: '2026.61', wtExtra: { commit_sha: 'f'.repeat(40) } }, (fx) => {
+    // main drops commit_sha: merging it would only erase the sha and silence the drift.
+    const ident = ['-c', 'user.name=t', '-c', 'user.email=t@example.com'];
+    fx.writeMeta({ version: '2026.61', source_remote: fx.sourceRemote });
+    git(fx.consumer, ['add', '.omp']);
+    git(fx.consumer, [...ident, 'commit', '-q', '-m', 'main without sha']);
+    const out = runGate(fx.wt).stdout.trim();
+    assert.ok(out.startsWith('HARNESS STALE (linked worktree)'), `got: ${JSON.stringify(out)}`);
+  });
+});
+
+test('linked worktree: HOOKS INACTIVE no longer suggests harness-check (core.hooksPath is shared by every worktree)', () => {
+  withLinkedFixture({ wtVersion: '2026.61' }, (fx) => {
+    mkdirSync(join(fx.wt, '.githooks'));
+    writeFileSync(join(fx.wt, '.githooks', 'pre-commit'), '#!/bin/sh\n');
+    const out = runGate(fx.wt).stdout.trim();
+    assert.ok(out.startsWith('HARNESS HOOKS INACTIVE'), `got: ${JSON.stringify(out)}`);
+    assert.ok(out.includes('git config core.hooksPath .githooks'));
+    assert.ok(!out.includes('harness-check'), `linked worktree must not be routed to harness-check: ${JSON.stringify(out)}`);
   });
 });

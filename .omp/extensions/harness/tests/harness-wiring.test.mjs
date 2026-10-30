@@ -10,11 +10,24 @@ import assert from 'node:assert/strict';
 import { readFileSync, readdirSync, mkdtempSync, mkdirSync, writeFileSync, cpSync, existsSync, chmodSync } from 'node:fs';
 import { spawnSync } from 'node:child_process';
 import { tmpdir } from 'node:os';
-import { join, dirname, relative } from 'node:path';
+import { join, dirname, basename, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const repoRoot = join(here, '..', '..', '..', '..');
+
+// Agents under <root>/.omp/agents that the sync whitelist does not list — enforced only in the
+// SOURCE repo. Consumers are exempt: they may keep their own agents next to the harness ones
+// (AGENTS.md "Custom agents") and a retired harness agent the sync does not delete
+// (adversary-sol, #112) — both would otherwise fail this synced test in every consumer suite.
+// Same source/consumer marker as harness-version-check.mjs: a consumer's harness-meta.json
+// carries `source_remote`; a missing meta file is treated as the source repo (strict side).
+function unlistedHarnessAgents(root, paths) {
+  const metaPath = join(root, '.omp', 'extensions', 'harness', 'harness-meta.json');
+  const meta = existsSync(metaPath) ? JSON.parse(readFileSync(metaPath, 'utf8')) : {};
+  if (meta.source_remote) return [];
+  return readdirSync(join(root, '.omp', 'agents')).filter((n) => n.endsWith('.md') && !paths.includes(`.omp/agents/${n}`));
+}
 
 // W1: every enforcement hook is on the sync whitelist.
 test('W1: harness-sync ships the enforcement hooks', () => {
@@ -41,41 +54,113 @@ function syncPaths() {
   return [...block[1].matchAll(/^\s*"([^"]+)"/gm)].map((m) => m[1]);
 }
 
+// A glob entry (ADR 002 §1) is a per-FILE listing of a shared directory: the sync expands it
+// with the shell (no "/" crossing) and prunes stale matches before copying. Mirror that here.
+const isGlob = (p) => /[*?[]/.test(p);
+const globToRe = (g) => new RegExp(`^${g.replace(/[.+^${}()|[\]\\]/g, '\\$&').replace(/\*/g, '[^/]*').replace(/\?/g, '[^/]')}$`);
+function expandGlob(p) {
+  const dir = dirname(p);
+  const abs = join(repoRoot, dir);
+  if (!existsSync(abs)) return [];
+  const re = globToRe(p);
+  return readdirSync(abs).map((n) => join(dir, n)).filter((f) => re.test(f) && spawnSync('test', ['-f', join(repoRoot, f)]).status === 0);
+}
+
 // W3: the sync whitelist must never sweep a consumer extension point. A directory entry is
 // `rm -rf` + copy, so only harness-OWNED directories may be listed as directories; anything
 // in a shared directory (.omp/agents, .omp/skills, docs) is listed file by file. Consumers
-// keep their own rules/agents/skills in .omp/rules, .omp/RULES.md, .omp/AGENTS.md,
-// .omp/agents/<custom>.md, .omp/skills/<custom> — all of which must survive a sync.
+// keep their own rules/agents/skills in .omp/rules, .omp/RULES.md, .omp/agents/<custom>.md,
+// .omp/skills/<custom> — all of which must survive a sync (never .omp/AGENTS.md: it shadows the policy).
 test('W3: whitelist directory entries are harness-owned; shared dirs are listed per file', () => {
   const paths = syncPaths();
-  const HARNESS_OWNED_DIRS = new Set(['rules', 'checklists', 'templates', '.omp/extensions/harness']);
+  const HARNESS_OWNED_DIRS = new Set(['checklists', 'templates', '.omp/extensions/harness']);
   const CONSUMER_SPACE = ['.omp/agents', '.omp/skills', '.omp/rules', '.omp', 'docs', 'docs/rules', 'scripts', '.githooks'];
   for (const p of paths) {
     assert.ok(!CONSUMER_SPACE.includes(p), `"${p}" is a shared/consumer directory — list its harness files individually, never the directory`);
+    if (isGlob(p)) {
+      // A glob counts as a per-file listing ONLY when its directory part is literal and its
+      // basename carries a literal `harness-` prefix — `.omp/rules/*.md` would sweep consumer rules.
+      // The sync expands the entry unquoted, so whitespace or bracket classes would word-split
+      // or widen it: only `*` is allowed as a wildcard, and only in the basename.
+      assert.match(p, /^[\w./*-]+$/, `glob entry "${p}" may only contain [A-Za-z0-9_./*-] (no whitespace, ?, or [])`);
+      assert.ok(!isGlob(dirname(p)), `glob entry "${p}" must not have a wildcard in its directory part`);
+      assert.match(basename(p), /^harness-[^/]*\*[^/]*\.md$/, `glob entry "${p}" must be a harness-*.md file pattern`);
+      continue;
+    }
     const isDir = existsSync(join(repoRoot, p)) && spawnSync('test', ['-d', join(repoRoot, p)]).status === 0;
     if (!isDir) continue;
     const ok = HARNESS_OWNED_DIRS.has(p) || /^\.omp\/skills\/[^/]+$/.test(p);
     assert.ok(ok, `directory entry "${p}" is not a harness-owned directory (rm -rf on sync would sweep consumer files)`);
   }
-  // Every harness agent that exists in the source repo must be listed, or it silently stops syncing.
-  for (const f of readdirSync(join(repoRoot, '.omp', 'agents')).filter((n) => n.endsWith('.md'))) {
-    assert.ok(paths.includes(`.omp/agents/${f}`), `.omp/agents/${f} exists in the source repo but is not on the whitelist`);
+  // Every harness agent that exists in the SOURCE repo must be listed, or it silently stops syncing.
+  for (const f of unlistedHarnessAgents(repoRoot, paths)) {
+    assert.fail(`.omp/agents/${f} exists in the source repo but is not on the whitelist`);
+  }
+  // Same for harness rulebook files in consumer-space .omp/rules: a harness-* file must be
+  // covered by a glob entry, and a consumer-shaped name must be covered by nothing.
+  const globs = paths.filter(isGlob).map(globToRe);
+  const rulesDir = join(repoRoot, '.omp', 'rules');
+  if (existsSync(rulesDir)) {
+    for (const n of readdirSync(rulesDir).filter((n) => n.startsWith('harness-') && n.endsWith('.md'))) {
+      assert.ok(globs.some((re) => re.test(`.omp/rules/${n}`)), `.omp/rules/${n} exists in the source repo but no whitelist glob covers it`);
+    }
+  }
+  for (const consumer of ['.omp/rules/consumer-x.md', '.omp/rules/harness/x.md', '.omp/rules/xharness-core.md']) {
+    assert.ok(!globs.some((re) => re.test(consumer)), `whitelist glob would sweep consumer file ${consumer}`);
   }
 });
 
-// W4 (#27): a synced document must not link to a path that does not sync. rules/ arrives in
+// W3c (#112 cycle ②): the agent-coverage rule above is source-repo only. Fixed both ways so a
+// dropped guard (consumer suites fail on custom/retired agents) or an always-skip (an unlisted
+// harness agent silently stops syncing) both turn this red.
+test('W3c: unlisted agents fail the source repo but not a consumer (custom + retired agents)', () => {
+  const listed = ['.omp/agents/reviewer.md'];
+  const tree = (meta) => {
+    const root = mkdtempSync(join(tmpdir(), 'w3c-'));
+    mkdirSync(join(root, '.omp', 'agents'), { recursive: true });
+    for (const n of ['reviewer.md', 'adversary-sol.md', 'consumer-custom.md', 'notes.txt']) writeFileSync(join(root, '.omp', 'agents', n), 'x');
+    if (meta) {
+      mkdirSync(join(root, '.omp', 'extensions', 'harness'), { recursive: true });
+      writeFileSync(join(root, '.omp', 'extensions', 'harness', 'harness-meta.json'), JSON.stringify(meta));
+    }
+    return root;
+  };
+  assert.deepEqual(unlistedHarnessAgents(tree({ version: '2026.90' }), listed).sort(), ['adversary-sol.md', 'consumer-custom.md'], 'source repo (no source_remote): every unlisted .md agent is reported');
+  assert.deepEqual(unlistedHarnessAgents(tree(null), listed).sort(), ['adversary-sol.md', 'consumer-custom.md'], 'missing meta is treated as the source repo (strict)');
+  assert.deepEqual(unlistedHarnessAgents(tree({ version: '2026.90', source_remote: 'git@github.com:rae-hugo-kim/omp.git' }), listed), [], 'consumer (source_remote set): custom and retired agents are not failures');
+});
+
+// W3b (#35-7): the kickoff/init skills read these consumer-space files directly; if any drops off
+// the whitelist, a template change upstream silently never reaches consumers again.
+test('W3b: kickoff/init contract templates and checklist are whitelisted as individual files', () => {
+  const paths = syncPaths();
+  for (const f of [
+    'docs/templates/seed.template.yaml',
+    'docs/templates/rubric-report.template.md',
+    'docs/templates/kickoff-summary.template.md',
+    'docs/templates/glossary.template.yaml',
+    'docs/checklists/kickoff_rubric_checklist.md',
+  ]) {
+    assert.ok(existsSync(join(repoRoot, f)), `${f} must exist in the source repo`);
+    assert.ok(paths.includes(f), `${f} must be on the harness-sync whitelist (individual file, never the directory)`);
+  }
+});
+
+// W4 (#27): a synced document must not link to a path that does not sync. .omp/rules/harness-*.md arrives in
 // every consumer; a relative link from it to an unlisted docs/ file is dead there from day
 // one, and docs-drift (source-only) never sees the consumer tree.
 test('W4: whitelisted markdown never links outside the whitelist', () => {
   const paths = syncPaths();
-  const covered = (rel) => paths.some((p) => rel === p || rel.startsWith(`${p}/`));
+  const covered = (rel) => paths.some((p) => (isGlob(p) ? globToRe(p).test(rel) : rel === p || rel.startsWith(`${p}/`)));
   const offenders = [];
-  for (const root of paths.filter((p) => ['rules', 'checklists', 'templates'].includes(p) || p.endsWith('.md'))) {
+  for (const root of paths.filter((p) => ['checklists', 'templates'].includes(p) || p.endsWith('.md'))) {
     const abs = join(repoRoot, root);
-    if (!existsSync(abs)) continue;
-    const files = spawnSync('test', ['-d', abs]).status === 0
-      ? readdirSync(abs).filter((n) => n.endsWith('.md')).map((n) => join(root, n))
-      : [root];
+    if (!isGlob(root) && !existsSync(abs)) continue;
+    const files = isGlob(root)
+      ? expandGlob(root)
+      : spawnSync('test', ['-d', abs]).status === 0
+        ? readdirSync(abs).filter((n) => n.endsWith('.md')).map((n) => join(root, n))
+        : [root];
     for (const file of files) {
       const text = readFileSync(join(repoRoot, file), 'utf8');
       for (const m of text.matchAll(/\]\(([^)#\s]+)(?:#[^)]*)?\)/g)) {

@@ -49,11 +49,13 @@
 // wins); when the diff hash cannot be computed the gate fails closed on high/critical.
 // Exit 0 = allow, Exit 2 = block
 
-import { readFileSync, readSync, existsSync, appendFileSync, mkdirSync, opendirSync, unlinkSync, openSync, fstatSync, closeSync, writeFileSync, constants as fsConstants } from 'fs';
+import { readFileSync, readSync, existsSync, appendFileSync, mkdirSync, opendirSync, unlinkSync, openSync, fstatSync, lstatSync, closeSync, writeFileSync, constants as fsConstants } from 'fs';
 import { join } from 'path';
 import { execSync } from 'child_process';
+import { createHash } from 'crypto';
 import { assessRisk } from './risk-assess.mjs';
 import { isGitCommit, parseCommitForm } from './git-commit-detect.mjs';
+import { ESTIMATE_FILE, parseEstimate, countFailsSince, buildEstimateEvent, SESSION_LOG_TAIL_BYTES } from './estimate.mjs';
 
 function getStateDir(cwd) {
   const dir = join(cwd, '.omp', 'harness-state');
@@ -254,7 +256,7 @@ function parseOverride(text, currentHash, form) {
     if (dh !== currentHash) problems.push(`diff_hash mismatch: the flag has ${dh} but the effective committed diff is ${currentHash} (the staged/committed content changed since the flag was written)`);
   } else if (dh !== 'UNVERIFIABLE') {
     problems.push(form.verifiable
-      ? 'the effective diff hash could not be computed (git/shasum error) — write "UNVERIFIABLE" as element 3 to acknowledge overriding an unhashable commit'
+      ? 'the effective diff hash could not be computed (git diff failed) — write "UNVERIFIABLE" as element 3 to acknowledge overriding an unhashable commit'
       : 'this commit form is unverifiable (pathspec/--amend/compound line/...) so no hash exists — write "UNVERIFIABLE" as element 3 to acknowledge, or use a standalone plain `git commit`');
   }
   if (problems.length > 0) return { fields: null, problems };
@@ -393,42 +395,6 @@ if (isHookMode && Array.isArray(risk.synced) && risk.synced.length > 0) {
   } catch { /* observability only */ }
 }
 
-if (risk.level === 'low' || risk.level === 'none') {
-  log('Low/no risk, review not required');
-  process.exit(0);
-}
-
-const reviewDir = join(cwd, 'docs', 'reviews');
-const skipFile = join(cwd, 'docs', 'harness', 'review-skip');
-
-// LOCAL date (not toISOString's UTC): reviewer docs are named by the author's local
-// date, so a UTC "today" mismatched real reviews between local midnight and the UTC
-// offset (e.g. 00:00–08:59 KST → still "yesterday" in UTC), falsely failing coverage.
-const now = new Date();
-const today = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
-
-// Hash the EFFECTIVE committed diff. Computed BEFORE the override check because the override must
-// bind to this hash, and every BLOCK message prints it so evidence can be written from the message
-// alone. parseCommitForm tells us which diff the commit will capture:
-//   all=true (-a/--all) -> all tracked changes  (git diff HEAD)
-//   else (plain)        -> the staged index     (git diff --cached)
-// This closes the gap where `git commit -a` pulled in tracked changes the staged-diff
-// hash never saw, letting a stale PASS review match the wrong content. Every other
-// form (pathspec, --amend, --include/-i, -p, --pathspec-from-file, a commit behind
-// bash -c, >1 commit in one line, or a repo-redirecting global like -C) is UNVERIFIABLE:
-// currentHash stays null and the gate fails closed on high/critical (see the
-// matchedCurrent !== true branch below). execSync runs through a shell, so the pipe
-// needs no `shell` option; both diff commands are constant (no user input on the line).
-let currentHash = null;
-const diffCmd = form.all ? 'git diff HEAD' : 'git diff --cached';
-if (form.verifiable) {
-  try {
-    currentHash = execSync(`${diffCmd} | shasum -a 256`, { cwd, encoding: 'utf-8' }).trim().split(/\s+/)[0];
-  } catch {
-    currentHash = null;
-  }
-}
-
 // I/O bounds. The dispatcher (commit-gates.mjs) kills a gate that exceeds its time/output budget
 // and then FAILS CLOSED — a gate that cannot render a verdict blocks the commit. That closes the
 // old drive-the-gate-over-budget review bypass, but it also turns an over-budget gate into a block
@@ -475,10 +441,130 @@ function readBounded(path) {
   }
 }
 
+// The estimate reads below share this discipline (see the block that follows): the record via
+// readBounded, the breadcrumb log via readTailBounded — same open flags, same isFile() check, no
+// blocking open, no symlink following. A FIFO planted at either path would otherwise block the
+// open past the dispatcher's kill and turn an observation-only step into a fail-closed BLOCK.
+// Returns { text, partial }: `partial` is true when the window starts inside the file, so the first
+// line may be cut and the counter must drop it.
+function readTailBounded(path, tailBytes) {
+  let fd = null;
+  try {
+    fd = openSync(path, fsConstants.O_RDONLY | fsConstants.O_NOFOLLOW | fsConstants.O_NONBLOCK);
+    const st = fstatSync(fd);
+    if (!st.isFile()) return { text: '', partial: false };
+    const start = Math.max(0, st.size - tailBytes);
+    const buf = Buffer.alloc(Math.min(st.size, tailBytes));
+    let bytesRead = 0;
+    while (bytesRead < buf.length) {
+      const n = readSync(fd, buf, bytesRead, buf.length - bytesRead, start + bytesRead);
+      if (n === 0) break;
+      bytesRead += n;
+    }
+    return { text: buf.toString('utf-8', 0, bytesRead), partial: start > 0 };
+  } catch {
+    return { text: '', partial: false };
+  } finally {
+    if (fd !== null) try { closeSync(fd); } catch { /* nothing to report */ }
+  }
+}
+
+// Estimate-vs-actual (seed 20260918-023000-e5a1, .omp/rules/harness-cycle_definition.md "예상 레코드"): pair the
+// intake's prediction with the measured risk. Observation ONLY — placed before the low-risk exit so
+// every landed commit is compared, wrapped so no failure here can reach the verdict, and deferred
+// through pending-consume so the record is recorded and consumed iff the commit lands. A malformed
+// record costs exactly one warning and stays on disk (a blocked observation must never block work).
+if (isHookMode) {
+  try {
+    const estimatePath = join(stateDir, ESTIMATE_FILE);
+    // lstat, not existsSync: existsSync follows links, so a dangling or self-looping symlink at the
+    // record path read as "absent" and was skipped silently. Any entry — file, FIFO, symlink — is
+    // handed to readBounded, which decides and names the reason.
+    let present = false;
+    try { lstatSync(estimatePath); present = true; } catch { /* ENOENT: no record this cycle */ }
+    if (present) {
+      const rec = readBounded(estimatePath);
+      const { fields, problems } = rec.ok ? parseEstimate(rec.text) : { fields: null, problems: [rec.why] };
+      if (fields) {
+        const tail = readTailBounded(join(stateDir, 'session-log.jsonl'), SESSION_LOG_TAIL_BYTES);
+        const event = buildEstimateEvent(fields, risk, countFailsSince(tail.text, fields.ts, tail.partial), process.env.USER || 'unknown');
+        const pendDir = join(stateDir, 'pending-consume');
+        mkdirSync(pendDir, { recursive: true });
+        // 'wx' (O_CREAT|O_EXCL): the dispatcher cleared this directory at the start of the attempt,
+        // so a pre-existing entry here is foreign (a planted FIFO/symlink the clear could not remove)
+        // and O_EXCL fails it with EEXIST at once instead of blocking the open past the 3s budget.
+        writeFileSync(join(pendDir, 'append-audit-estimate.json'), JSON.stringify(event) + '\n', { flag: 'wx' });
+        writeFileSync(join(pendDir, `unlink-${ESTIMATE_FILE}`), `.omp/harness-state/${ESTIMATE_FILE}\n`, { flag: 'wx' });
+        log(`estimate_vs_actual queued: predicted ${fields.risk}/${fields.files} files, actual ${risk.level}/${risk.files.length} files`);
+      } else {
+        // One line, always: a parse error echoes record text, so newlines are collapsed (a record
+        // could otherwise print a second line shaped like a gate verdict).
+        const why = problems.join('; ').replace(/[\r\n]+/g, ' ');
+        console.error(`HARNESS WARNING: .omp/harness-state/${ESTIMATE_FILE} is not a valid estimate record (${why}); ignoring it — fix or delete the file (it is not consumed).`);
+      }
+    }
+  } catch (e) {
+    // Only the pending-consume writes can throw here (the reads never do). Say so on stderr:
+    // silence would hide a record that is never going to be compared or consumed.
+    console.error(`HARNESS WARNING: estimate comparison skipped (${e?.message || e}); the record was not consumed.`);
+    log(`estimate comparison skipped: ${e?.message || e}`);
+  }
+}
+
+if (risk.level === 'low' || risk.level === 'none') {
+  log('Low/no risk, review not required');
+  process.exit(0);
+}
+
+const reviewDir = join(cwd, 'docs', 'reviews');
+const skipFile = join(cwd, 'docs', 'harness', 'review-skip');
+
+// LOCAL date (not toISOString's UTC): reviewer docs are named by the author's local
+// date, so a UTC "today" mismatched real reviews between local midnight and the UTC
+// offset (e.g. 00:00–08:59 KST → still "yesterday" in UTC), falsely failing coverage.
+// The scan window is today AND yesterday (#48-2): a sidecar written at 23:5x for a commit
+// that lands after midnight is still the SAME diff — the hash binding (diff_hash ===
+// currentHash) is what makes evidence relevant, the date only bounds the scan. Two days is
+// the smallest window that removes the midnight edge; older sidecars stay out so a stale
+// covering FAIL/PASS for an identical re-staged diff does not resurface weeks later.
+const localDate = (d) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+const now = new Date();
+const today = localDate(now);
+const yesterday = localDate(new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1));
+const inWindow = (f) => (f.startsWith(`review-${today}`) || f.startsWith(`review-${yesterday}`)) && f.endsWith('.json');
+
+// Hash the EFFECTIVE committed diff. Computed BEFORE the override check because the override must
+// bind to this hash, and every BLOCK message prints it so evidence can be written from the message
+// alone. parseCommitForm tells us which diff the commit will capture:
+//   all=true (-a/--all) -> all tracked changes  (git diff HEAD)
+//   else (plain)        -> the staged index     (git diff --cached)
+// This closes the gap where `git commit -a` pulled in tracked changes the staged-diff
+// hash never saw, letting a stale PASS review match the wrong content. Every other
+// form (pathspec, --amend, --include/-i, -p, --pathspec-from-file, a commit behind
+// bash -c, >1 commit in one line, or a repo-redirecting global like -C) is UNVERIFIABLE:
+// currentHash stays null and the gate fails closed on high/critical (see the
+// matchedCurrent !== true branch below). The hash is sha256 over the raw stdout BYTES of the
+// diff command (no encoding — a Buffer), which is exactly what `git diff … | shasum -a 256`
+// produces, so sidecars written that way keep matching; hashing in-process removes the
+// `shasum` dependency that made every high/critical commit fail closed on Windows (#93).
+// maxBuffer is lifted because the whole diff is now captured (the pipe used to leave only
+// the digest line in stdout — the cost is O(diff) memory for the gate's lifetime); both diff
+// commands are constant (no user input on the line). A failing git now throws here (→ null →
+// fail-closed); the old `sh` pipe had no pipefail, so a git error hashed EMPTY stdout instead.
+let currentHash = null;
+const diffCmd = form.all ? 'git diff HEAD' : 'git diff --cached';
+if (form.verifiable) {
+  try {
+    currentHash = createHash('sha256').update(execSync(diffCmd, { cwd, maxBuffer: Infinity })).digest('hex');
+  } catch {
+    currentHash = null;
+  }
+}
+
 // Audited override (path 3). The flag file is the single write surface; the gate itself appends
 // the audit event so the record cannot be forgotten. A valid override is consumed (unlink) and
 // bypasses the remaining checks — including a covering FAIL — because it is the APPROVAL axis:
-// the named approver accepts the risk on the record (cf. rules/adversarial_review.md override).
+// the named approver accepts the risk on the record (cf. .omp/rules/harness-adversarial_review.md override).
 // An INVALID flag fails closed on high/critical (it is kept in place so it can be fixed, not
 // retyped); on medium it is ignored with a warning since medium never required review anyway.
 //
@@ -565,15 +651,15 @@ if (existsSync(skipFile)) {
   }
 }
 
-// Machine evidence: today's .json sidecars ONLY. Same-basename .md files are human reports the
-// gate never reads. Invalid sidecars are warned about and IGNORED (they grant nothing and they
-// veto nothing) — fail-closed both ways.
+// Machine evidence: the .json sidecars of today and yesterday (local date) ONLY. Same-basename
+// .md files are human reports the gate never reads. Invalid sidecars are warned about and
+// IGNORED (they grant nothing and they veto nothing) — fail-closed both ways.
 //
 // The scan is INCREMENTAL (opendirSync) with two fail-closed bounds, so the enumeration work
 // itself stays bounded — a readdirSync of the whole directory would materialize and sort every
 // entry BEFORE any cap could run, so a big enough flood could push the gate past the dispatcher
 // budget without the cap ever firing (3rd-round review):
-//   - the moment the (MAX_SIDECARS+1)th same-day sidecar is seen the gate BLOCKS: selecting any
+//   - the moment the (MAX_SIDECARS+1)th in-window sidecar is seen the gate BLOCKS: selecting any
 //     bounded subset would let an attacker push a covering FAIL out of the window while a
 //     covering PASS stays in (2nd-round review, CRITICAL 3), and no plausible legitimate day
 //     produces this many sidecars;
@@ -595,11 +681,11 @@ if (existsSync(reviewDir)) {
         process.exit(2);
       }
       const f = ent.name;
-      if (!f.startsWith(`review-${today}`) || !f.endsWith('.json')) continue;
+      if (!inWindow(f)) continue;
       todaySidecars.push(f);
       if (todaySidecars.length > MAX_SIDECARS) {
-        log(`BLOCKED: ${todaySidecars.length} same-day sidecars exceed the scan cap (${MAX_SIDECARS})`);
-        console.error(`HARNESS BLOCK: ${todaySidecars.length} sidecars named review-${today}*.json exceed the scan cap (${MAX_SIDECARS}) — an implausible volume that could hide covering evidence, so the gate fails closed. Clean docs/reviews/ down to today's real review sidecars and retry.`);
+        log(`BLOCKED: ${todaySidecars.length} sidecars in the two-day window exceed the scan cap (${MAX_SIDECARS})`);
+        console.error(`HARNESS BLOCK: ${todaySidecars.length} sidecars named review-${yesterday}*.json / review-${today}*.json exceed the scan cap (${MAX_SIDECARS}) — an implausible volume that could hide covering evidence, so the gate fails closed. Clean docs/reviews/ down to the real review sidecars of the last two days and retry.`);
         process.exit(2);
       }
     }
@@ -670,7 +756,7 @@ if (matchedCurrent !== true) {
   const detail = currentHash
     ? 'no valid review evidence matches the current changes'
     : (form.verifiable
-        ? 'could not compute the diff hash (git/shasum error)'
+        ? 'could not compute the diff hash (git diff failed)'
         : 'the commit form is unverifiable (an output redirection like `2>&1`, a compound `&&`/`;` line, a pathspec, --amend, or -a with unstaged changes) — run a STANDALONE `git commit` (no trailing `2>&1`/`; …`, no `cd … &&` prefix) so the staged diff can be hashed');
   if (risk.level === 'critical' || risk.level === 'high') {
     log(`BLOCKED: ${detail}`);

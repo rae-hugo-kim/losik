@@ -52,7 +52,7 @@ If remote differs from provided URL → ask user for action.
 
 ### 2.5 Closeout check (스테이징 직전)
 
-추적 중인 작업이 완료됐으면 마감한다 — `docs/rules/closeout_contract.md` 절차를 따른다(compr와 동일): seed `status: approved` + `docs/harness/current-scope.md`의 AC 전부 `[x]`이면 → seed `status: done` + `completed: <date>`, `current-scope.md` 삭제, `docs/harness/audit.jsonl`에 `task_closed` append(아래 커밋에 포함). AC 미충족/비추적이면 advisory 후 skip(no-op). `.omp/skills/` 수정 시 전역 미러 동기화. *(compush는 중간 푸시일 수 있으니 git 액션이 아니라 완료 상태에만 키잉됨에 유의.)*
+추적 중인 작업이 완료됐으면 마감한다 — `docs/rules/closeout_contract.md` 절차를 따른다(compr와 동일): seed `status: approved` + `docs/harness/current-scope.md`의 AC 전부 `[x]`이면 → **먼저** `git status --porcelain -- docs/harness/current-scope.md`가 비어 있지 않은지(미커밋 체크 변경·untracked scope) 보고, 있으면 그 파일만 `docs(harness): AC 체크` 커밋으로 HEAD에 올린다(acceptance-gate는 은퇴되는 scope의 **HEAD 본**으로 완료를 판정한다 — 체크가 워크트리에만 있으면 삭제와 함께 사라져 거짓 마감으로 BLOCK, #56) → seed `status: done` + `completed: <date>`, `current-scope.md` 삭제, `docs/harness/audit.jsonl`에 `task_closed` append(아래 커밋에 포함). AC 미충족/비추적이면 advisory 후 skip(no-op). `.omp/skills/` 수정 시 전역 미러 동기화. *(compush는 중간 푸시일 수 있으니 git 액션이 아니라 완료 상태에만 키잉됨에 유의.)*
 
 **Sum nudge (마감 시에만)**: 위에서 작업을 실제로 마감(`status: done`)했고, 세션에 결정·교훈·미결이 쌓였는데 `docs/sum/`에 이 세션의 기록이 없으면 — push 완료 후 `sum` 실행을 제안한다. 제안만, 자동 실행 금지 (승격은 사용자 확인이 필요한 흐름). 중간 푸시(마감 없음)에는 발화하지 않는다.
 
@@ -110,7 +110,7 @@ git commit -m "<message>"
 푸시는 아카이브 유출 검사와 함께 **별도 호출**로:
 
 ```bash
-# 로컬 아카이브 유출 검사 — 서사는 레포가 아니라 sum-vault에 백업된다 (rules/doc_standards.md)
+# 로컬 아카이브 유출 검사 — 서사는 레포가 아니라 sum-vault에 백업된다 (.omp/rules/harness-doc_standards.md)
 if [ -n "$(git ls-files docs/sum docs/reviews docs/brainstorming)" ]; then
   echo "push 중단: 로컬 아카이브가 git에 추적 중 — git rm -r --cached docs/sum docs/reviews docs/brainstorming 후 .gitignore 등재"
   exit 1
@@ -119,6 +119,8 @@ git push --follow-tags
 ```
 
 `--follow-tags` ensures annotated tags (e.g., a deliberate harness version bump via `scripts/harness-version-bump.sh`) are pushed with the branch in one operation.
+
+`--follow-tags` push가 non-ff로 거부됐다면 **태그는 이미 올라갔을 수 있다**(브랜치와 태그 push는 원자적이지 않다). rebase 전에 `git ls-remote --tags origin 'refs/tags/harness/*'`로 원격 태그의 커밋을 확인한다. rebase로 그 커밋이 고아가 되면 태그를 강제 이동하지 말고(이미 sync한 소비 리포에 DRIFT 유발) **다음 버전을 새로 발행**한다. (2026-09-05 harness/2026.74 실측)
 
 ### 7. Output
 
@@ -143,7 +145,7 @@ Confirm working tree clean and commit exists.
 |-----------|--------|
 | No changes | Report and exit |
 | Sensitive file | List files, abort |
-| Push rejected (non-ff) | Suggest `git pull --rebase` |
+| Push rejected (non-ff) | 원격 태그 상태 확인(`git ls-remote --tags`) 후 `git pull --rebase`; 고아가 된 태그는 이동 대신 새 버전 발행 |
 | Push rejected (auth) | Suggest SSH key check |
 | Behind remote | Require pull first |
 | Detached HEAD | Warn, suggest creating branch |

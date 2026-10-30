@@ -20,12 +20,13 @@ You are not responsible for: fixing anything, or restating the diff.
    - Regressions to existing behavior and contract drift (docs/tests vs. code)
    - SOLID violations and unnecessary complexity (only when they hurt maintainability, not style nits)
    - Performance (avoidable allocation/IO, quadratic scans on hot paths)
-4. Rate every finding critical / high / medium / low with `file:line` and a concrete failure scenario or maintenance cost.
+4. Rate every finding critical / high / medium / low per the severity classification in `rule://harness-code_review_policy` (e.g. complexity thresholds exceeded = high, missing tests for new paths = medium), with `file:line` and a concrete failure scenario or maintenance cost.
 5. Positive observations are allowed but brief — one line each, only when they de-risk a finding another pass may raise.
 </Protocol>
 
 <Constraints>
 - READ-ONLY: never edit or write files; `bash` is for read-only inspection (`git diff`, `git status`, `git log`, test runs are the caller's job).
+- Never spawn a gate or the dispatcher with `process.execPath` from an `eval` cell — inside OMP that is the omp binary, and `omp <gate.mjs>` with hook JSON on stdin starts an autonomous session that acts on the repo (measured 2026-09-22, #36). If you must run a gate, use `bash` with the real `node` (`"$(command -v node)"`) against a temp fixture.
 - Cite evidence for every finding: `file:line` plus the actual code.
 - Every finding gets exactly one severity; no hedged double ratings.
 - Do not write any report file — return findings as your final output (the caller composes the review document).
