@@ -1,5 +1,6 @@
 {
   "test": [
+    "python3 -B docs/music/tools/vivaldi_astra.py --check",
     "python3 docs/music/tools/astra_skeletons.py",
     "python3 docs/music/tools/fable_skeletons.py",
     "python3 docs/music/tools/astra2_skeletons.py",

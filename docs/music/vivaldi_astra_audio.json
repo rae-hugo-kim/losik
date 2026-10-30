@@ -1,0 +1,372 @@
+[
+  {
+    "sid": "vs-spring1-astra",
+    "seconds": 182.857,
+    "expected_seconds": 182.857,
+    "sample_rate": 48000,
+    "channels": 2,
+    "bits": 24,
+    "peak_dbfs": [
+      -0.31,
+      -0.352
+    ],
+    "section_rms_dbfs": {
+      "intro": -21.92,
+      "theme": -18.5,
+      "answer": -18.52,
+      "break": -23.62,
+      "reprise": -18.93,
+      "outro": -20.38
+    },
+    "boundary_delta_db": {
+      "theme": 7.59,
+      "answer": 5.96,
+      "break": 1.22,
+      "reprise": 5.66,
+      "outro": 7.81
+    },
+    "zero_runs": [],
+    "unexpected_zero_runs": [],
+    "sha256": "a6deebf88dceadf145fd2d349ae7b7dc89404658843321b9bdf3d0c0a0b89325"
+  },
+  {
+    "sid": "vs-spring2-astra",
+    "seconds": 181.622,
+    "expected_seconds": 181.622,
+    "sample_rate": 48000,
+    "channels": 2,
+    "bits": 24,
+    "peak_dbfs": [
+      -0.324,
+      -0.31
+    ],
+    "section_rms_dbfs": {
+      "intro": -21.96,
+      "theme": -17.27,
+      "break": -24.33,
+      "reprise": -17.16,
+      "answer2": -17.47,
+      "outro": -19.66
+    },
+    "boundary_delta_db": {
+      "theme": 12.33,
+      "break": 3.37,
+      "reprise": 10.97,
+      "answer2": 12.22,
+      "outro": 10.72
+    },
+    "zero_runs": [],
+    "unexpected_zero_runs": [],
+    "sha256": "fe988404763956ad78f70f479e6d866ddfb31955d79cd1e5e74f15ed6a81adf4"
+  },
+  {
+    "sid": "vs-spring3-astra",
+    "seconds": 188.852,
+    "expected_seconds": 188.852,
+    "sample_rate": 48000,
+    "channels": 2,
+    "bits": 24,
+    "peak_dbfs": [
+      -0.31,
+      -0.37
+    ],
+    "section_rms_dbfs": {
+      "intro": -20.72,
+      "theme": -16.74,
+      "answer": -16.82,
+      "break": -19.58,
+      "reprise": -17.14,
+      "answer2": -17.01,
+      "outro": -20.13
+    },
+    "boundary_delta_db": {
+      "theme": 9.09,
+      "answer": 8.45,
+      "break": 6.1,
+      "reprise": 7.96,
+      "answer2": 6.87,
+      "outro": 6.21
+    },
+    "zero_runs": [],
+    "unexpected_zero_runs": [],
+    "sha256": "41db5e7fc403e09634377b577458c89418de252c23ea28eed0c3cbe978283bdd"
+  },
+  {
+    "sid": "vs-summer1-astra",
+    "seconds": 174.545,
+    "expected_seconds": 174.545,
+    "sample_rate": 48000,
+    "channels": 2,
+    "bits": 24,
+    "peak_dbfs": [
+      -0.31,
+      -0.381
+    ],
+    "section_rms_dbfs": {
+      "intro": -20.09,
+      "theme": -16.64,
+      "answer": -16.79,
+      "break": -47.4,
+      "reprise": -16.8,
+      "outro": -18.84
+    },
+    "boundary_delta_db": {
+      "theme": 5.65,
+      "answer": 3.42,
+      "break": -26.31,
+      "reprise": 21.16,
+      "outro": 1.13
+    },
+    "zero_runs": [],
+    "unexpected_zero_runs": [],
+    "sha256": "c6b78ea056730ff4d14dfed04a5f60adeef1e739efa749e3519f69b69d66da40"
+  },
+  {
+    "sid": "vs-summer2-astra",
+    "seconds": 176.842,
+    "expected_seconds": 176.842,
+    "sample_rate": 48000,
+    "channels": 2,
+    "bits": 24,
+    "peak_dbfs": [
+      -0.31,
+      -0.415
+    ],
+    "section_rms_dbfs": {
+      "intro": -20.7,
+      "theme": -17.68,
+      "break": -21.98,
+      "reprise": -17.79,
+      "answer2": -17.58,
+      "outro": -19.41
+    },
+    "boundary_delta_db": {
+      "theme": 6.49,
+      "break": 2.6,
+      "reprise": 7.22,
+      "answer2": 4.13,
+      "outro": 5.44
+    },
+    "zero_runs": [],
+    "unexpected_zero_runs": [],
+    "sha256": "8335df2d6d693a32a4dafc46bebba03ea095ec40a85b1c9e9add70e2cc368171"
+  },
+  {
+    "sid": "vs-summer3-astra",
+    "seconds": 185.806,
+    "expected_seconds": 185.806,
+    "sample_rate": 48000,
+    "channels": 2,
+    "bits": 24,
+    "peak_dbfs": [
+      -1.062,
+      -0.31
+    ],
+    "section_rms_dbfs": {
+      "intro": -21.78,
+      "theme": -17.68,
+      "answer": -17.94,
+      "break": -29.75,
+      "reprise": -17.91,
+      "answer2": -17.69,
+      "outro": -20.47
+    },
+    "boundary_delta_db": {
+      "theme": 7.83,
+      "answer": 6.39,
+      "break": -11.71,
+      "reprise": 7.85,
+      "answer2": 7.38,
+      "outro": 7.09
+    },
+    "zero_runs": [],
+    "unexpected_zero_runs": [],
+    "sha256": "27b54348f0c63815acbdd8761208960d37b1f85fb081824fc6dc63c0d475353d"
+  },
+  {
+    "sid": "vs-autumn1-astra",
+    "seconds": 178.605,
+    "expected_seconds": 178.605,
+    "sample_rate": 48000,
+    "channels": 2,
+    "bits": 24,
+    "peak_dbfs": [
+      -0.333,
+      -0.31
+    ],
+    "section_rms_dbfs": {
+      "intro": -20.42,
+      "theme": -16.75,
+      "answer": -17.45,
+      "break": -22.1,
+      "reprise": -16.74,
+      "outro": -19.14
+    },
+    "boundary_delta_db": {
+      "theme": 4.46,
+      "answer": 5.68,
+      "break": 2.18,
+      "reprise": 16.39,
+      "outro": 4.61
+    },
+    "zero_runs": [],
+    "unexpected_zero_runs": [],
+    "sha256": "0c6c40c89ac857dc01b7e834094b176f9cc3465189188b2a408ef0a3355e3cff"
+  },
+  {
+    "sid": "vs-autumn2-astra",
+    "seconds": 186.667,
+    "expected_seconds": 186.667,
+    "sample_rate": 48000,
+    "channels": 2,
+    "bits": 24,
+    "peak_dbfs": [
+      -0.31,
+      -0.536
+    ],
+    "section_rms_dbfs": {
+      "intro": -20.76,
+      "theme": -16.99,
+      "break": -24.5,
+      "reprise": -17.15,
+      "answer2": -17.19,
+      "outro": -18.98
+    },
+    "boundary_delta_db": {
+      "theme": 5.15,
+      "break": -8.72,
+      "reprise": 11.22,
+      "answer2": 5.65,
+      "outro": 0.28
+    },
+    "zero_runs": [],
+    "unexpected_zero_runs": [],
+    "sha256": "b93dd32716e944a4bec6437ec0f37121d2d36cb74b2eefc3d02fe7646a43260d"
+  },
+  {
+    "sid": "vs-autumn3-astra",
+    "seconds": 198.621,
+    "expected_seconds": 198.621,
+    "sample_rate": 48000,
+    "channels": 2,
+    "bits": 24,
+    "peak_dbfs": [
+      -0.366,
+      -0.31
+    ],
+    "section_rms_dbfs": {
+      "intro": -21.56,
+      "theme": -17.43,
+      "answer": -17.77,
+      "break": -22.52,
+      "reprise": -17.57,
+      "answer2": -17.69,
+      "outro": -20.74
+    },
+    "boundary_delta_db": {
+      "theme": 8.97,
+      "answer": 6.19,
+      "break": -1.9,
+      "reprise": 9.41,
+      "answer2": 8.13,
+      "outro": 7.02
+    },
+    "zero_runs": [],
+    "unexpected_zero_runs": [],
+    "sha256": "e2f5a3a44dd75242b5af9b93dd9cf2c71f43f9fa78e293c65f97525d8d750bb7"
+  },
+  {
+    "sid": "vs-winter1-astra",
+    "seconds": 195.254,
+    "expected_seconds": 195.254,
+    "sample_rate": 48000,
+    "channels": 2,
+    "bits": 24,
+    "peak_dbfs": [
+      -0.384,
+      -0.31
+    ],
+    "section_rms_dbfs": {
+      "intro": -21.28,
+      "theme": -17.19,
+      "answer": -17.31,
+      "break": -24.52,
+      "reprise": -17.24,
+      "answer2": -17.13,
+      "outro": -19.84
+    },
+    "boundary_delta_db": {
+      "theme": 8.58,
+      "answer": 7.37,
+      "break": -3.63,
+      "reprise": 5.09,
+      "answer2": 8.92,
+      "outro": 6.08
+    },
+    "zero_runs": [],
+    "unexpected_zero_runs": [],
+    "sha256": "3f877a24287985b4b7e9d8cf0f4f9691510b13e72cbd4175f05753b145b53b9d"
+  },
+  {
+    "sid": "vs-winter2-astra",
+    "seconds": 172.308,
+    "expected_seconds": 172.308,
+    "sample_rate": 48000,
+    "channels": 2,
+    "bits": 24,
+    "peak_dbfs": [
+      -0.31,
+      -0.396
+    ],
+    "section_rms_dbfs": {
+      "intro": -20.35,
+      "theme": -17.28,
+      "break": -42.16,
+      "reprise": -17.36,
+      "answer2": -17.39,
+      "outro": -18.9
+    },
+    "boundary_delta_db": {
+      "theme": 7.74,
+      "break": -24.05,
+      "reprise": 10.86,
+      "answer2": 7.19,
+      "outro": 8.25
+    },
+    "zero_runs": [],
+    "unexpected_zero_runs": [],
+    "sha256": "6a64c9e79670b879785a696f48592b40c5304a475d6ef8faf98d86990254c20d"
+  },
+  {
+    "sid": "vs-winter3-astra",
+    "seconds": 192.0,
+    "expected_seconds": 192.0,
+    "sample_rate": 48000,
+    "channels": 2,
+    "bits": 24,
+    "peak_dbfs": [
+      -0.434,
+      -0.31
+    ],
+    "section_rms_dbfs": {
+      "intro": -20.8,
+      "theme": -16.46,
+      "answer": -16.59,
+      "break": -19.2,
+      "reprise": -16.45,
+      "answer2": -16.68,
+      "outro": -19.34
+    },
+    "boundary_delta_db": {
+      "theme": 7.98,
+      "answer": 6.08,
+      "break": 5.3,
+      "reprise": 8.68,
+      "answer2": 7.27,
+      "outro": 5.59
+    },
+    "zero_runs": [],
+    "unexpected_zero_runs": [],
+    "sha256": "f2f0445bb173c4120a15fa2d939f0437cf72b5291d7b438adbedea615b306236"
+  }
+]
