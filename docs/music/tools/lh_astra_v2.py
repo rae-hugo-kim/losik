@@ -65,16 +65,26 @@ def compose(sid):
                 remove_drum_cell(14, (42, 46))
                 remove_drum_cell(2, (42, 46))
                 drum(.5, 46, 74, 68, 84)
+                if a2:
+                    drum(3.5, 42, 74, 68, 84)
             if bar % 8 == 0:
                 for beat in (1.25, 3.25):
                     drum(beat, 42, 45, 40, 50)
-            if a2:
-                remove_drum_cell(8, (42, 46))
-                drum(2, 51, 61, 55, 70)
         if bar in FILL_BARS:
             for beat, pitch in ((3.5, 45), (3.75, 41)):
+                # A2 keeps its third ride stroke; backbeat + final tom form the fill.
+                if a2 and beat == 3.5:
+                    continue
                 remove_drum_cell(round(beat * 4), (42, 46))
                 drum(beat, pitch, 65 if beat == 3.5 else 73, 55, 82)
+        if a2:
+            for index, note in enumerate(nt[0]):
+                when, duration, pitch, velocity = note
+                cell = v1.event_cell(note)
+                if when // BAR + 1 == bar and pitch == 42 and cell % 2 == 0:
+                    ride_velocity = (64 + round((velocity - 68) * 6 / 16)
+                                     if cell % 4 == 2 else 55 + round((velocity - 48) * 5 / 12))
+                    nt[0][index] = (when, duration, 51, ride_velocity)
 
         if 'Bass' in layers:
             root_bass = mk_chord2(PC[root], quality)['bass']
@@ -242,6 +252,12 @@ def check(s, result, smf):
             assert sum(n[2] == 38 and 38 <= n[3] <= 52 for n in drums) == 2
         if bar % 8 == 0 and 'Hats' in v1.layers_at(s, bar):
             assert {5, 13} <= {v1.event_cell(n) for n in drums if n[2] == 42}
+        if 33 <= bar <= 48:
+            assert not any(n[2] == 42 and v1.event_cell(n) % 2 == 0 for n in drums)
+            rides = [n for n in drums if n[2] == 51]
+            assert len(rides) >= 3
+            assert all(64 <= n[3] <= 70 if v1.event_cell(n) % 4 == 2
+                       else 55 <= n[3] <= 60 for n in rides)
         if 25 <= bar <= 32:
             assert not any(n[2] == 36 for n in drums) and not by_bar[1][bar]
     assert {n[0] // BAR + 1 for n in nt[0] if n[2] == 49} == {1, 9, 25, 33, 49}
