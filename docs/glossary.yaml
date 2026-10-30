@@ -3,4 +3,61 @@
 
 version: 1
 
-terms: []
+terms:
+  # --- 리듬 ---
+  - term: 트레실로
+    aliases: [tresillo, 3-3-2]
+    meaning: 8분음표 8개를 3+3+2로 나누는 리듬 골격으로, 레게톤·뎀보우·현대 팝의 킥/베이스 패턴에 흔하다.
+    context: 로직 초안 드럼/베이스 패턴 지시
+
+  - term: 오스티나토
+    aliases: [ostinato, 반복 리프, 루프 리프]
+    meaning: 짧은 음형(리프·베이스·코드)을 곡 전체 또는 섹션 내내 그대로 반복하는 기법.
+    context: 로직 초안 리프/베이스 설계, 레퍼런스 분석 (예: 델리스파이스 차우차우)
+
+  - term: 하프타임
+    aliases: [half-time, 하프 타임]
+    meaning: 템포는 유지한 채 스네어를 2·4박 대신 3박에만 두어 체감 속도를 절반으로 느리게 만드는 드럼 패턴.
+    context: 로직 초안 드럼 패턴, 브릿지/브레이크다운 지시
+
+  - term: 셔플
+    aliases: [shuffle, 스윙, swing]
+    meaning: 8분음표 쌍을 균등하지 않게(길게-짧게) 연주해 튕기는 느낌을 주는 리듬 처리.
+    context: 로직 초안 그루브 지시, 퀀타이즈 설정
+
+  - term: 싱코페이션
+    aliases: [syncopation, 당김음, 엇박]
+    meaning: 강박을 피하고 약박이나 박 사이에 악센트를 두어 리듬 긴장을 만드는 것.
+    context: 로직 초안 멜로디/베이스 리듬 지시
+
+  - term: 4-on-the-floor
+    aliases: [포온더플로어, 정박 킥, 4분 킥]
+    meaning: 킥 드럼이 매 4분음표마다 균일하게 들어가는 패턴으로, 하우스·디스코·댄스 팝의 기본.
+    context: 로직 초안 드럼 패턴 지시
+
+  - term: 백비트
+    aliases: [backbeat, 2·4박 스네어]
+    meaning: 4/4에서 2박·4박에 스네어 악센트를 두는 록·팝·R&B의 표준 드럼 강세.
+    context: 로직 초안 드럼 패턴 지시
+
+  # --- 구조 ---
+  - term: 훅
+    aliases: [hook, 킬링파트]
+    meaning: 곡에서 가장 기억에 남도록 설계된 짧은 멜로디·가사·리프 단위.
+    context: 곡 구조 설계, Suno 커버 시 보존 대상 표시
+
+  - term: 빌드업
+    aliases: [build-up, 빌드, 고조부]
+    meaning: 다음 섹션(주로 코러스·드롭)으로 가기 전에 밀도·음역·긴장을 점진적으로 올리는 구간.
+    context: 곡 구조 설계, 프리코러스 지시
+
+  - term: 브레이크다운
+    aliases: [breakdown, 브레이크, 비움 구간]
+    meaning: 악기 대부분을 빼고 밀도를 급격히 낮춰 대비를 만드는 구간.
+    context: 곡 구조 설계, 브릿지/후반부 지시
+
+  # --- 장르/스타일 ---
+  - term: 레베티코
+    aliases: [rebetiko, rembetiko, 렘베티코, 그리스 블루스]
+    meaning: 1920~50년대 그리스 도시 하층 문화에서 나온 대중음악 장르로, 부주키·바글라마 중심의 반주와 9/8·2/4 등 특유의 박자, 우울한 마캄 계열 선법이 특징이다.
+    context: 레퍼런스 분석, Suno 프롬프트 장르 태그

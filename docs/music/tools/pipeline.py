@@ -178,7 +178,9 @@ def wait_window(substr, present=True, timeout=40):
 
 
 def project_windows():
-    return [w for w in windows() if w.endswith('- 트랙')]
+    # '… - 트랙' 메인 창 외에 메인 창 없이 남은 '… - 믹서: 트랙' 창도 프로젝트로 본다
+    # (2026-10-18 실측: 바운스 뒤 믹서 창만 남으면 임포트가 그 뒤에서 막힘).
+    return [w for w in windows() if w.endswith('- 트랙') or w.endswith('- 믹서: 트랙')]
 
 
 def close_stray():
@@ -203,17 +205,29 @@ end tell''')
         time.sleep(1.5)
 
 
+# Logic 의 '저장하겠습니까?' 대화상자는 무제 문서면 '저장 안 함', 제목 있는 문서면 '저장하지 않음' 으로
+# 버튼 라벨이 다르다 (2026-10-18 실측). 둘 다 시도한다.
+DONT_SAVE = ('저장 안 함', '저장하지 않음')
+
+
+def _click_any(labels):
+    tries = '\n'.join(f'try\nclick button "{b}" of w\nexit repeat\nend try' for b in labels)
+    return f'repeat with w in windows\n{tries}\nend repeat'
+
+
 def close_all_projects(save=None):
     """save=None: 무제는 저장 안 함, 제목 있으면 저장. save=False: 전부 저장 안 함."""
+    osa(f'''tell application "System Events"
+tell process "{APP}"
+{_click_any(DONT_SAVE)}
+end tell
+end tell''')   # 이전 실행이 남긴 '저장하겠습니까?' 대화상자부터 치운다
     for _ in range(4):
         pws = project_windows()
         if not pws:
             return True
         title = pws[0]
-        if save is False or title.startswith('무제'):
-            btn = '저장 안 함'
-        else:
-            btn = '저장'
+        btns = DONT_SAVE if (save is False or title.startswith('무제')) else ('저장',)
         osa(f'''tell application "System Events"
 tell process "{APP}"
 set frontmost to true
@@ -221,12 +235,7 @@ perform action "AXRaise" of window "{title}"
 delay 0.5
 keystroke "w" using command down
 delay 2
-repeat with w in windows
-try
-click button "{btn}" of w
-exit repeat
-end try
-end repeat
+{_click_any(btns)}
 end tell
 end tell''')
         time.sleep(3)
@@ -305,8 +314,6 @@ end tell''', timeout=60)
 
 
 def save_project_as(name):
-    if os.path.exists(os.path.join(PROJ_DIR, f'{name}.logicx')):
-        return False, f'Project already exists: {name}'
     rc, out, err = osa(f'''tell application "System Events"
 tell process "{APP}"
 set frontmost to true
@@ -316,27 +323,32 @@ delay 0.6
 click menu item "저장" of menu 1 of menu bar item "파일" of menu bar 1
 delay 2.5
 set w to window "저장"
-key code 5 using {{command down, shift down}}
-delay 1
-set value of text field 1 of sheet 1 of w to "{PROJ_DIR}"
-set focused of text field 1 of sheet 1 of w to true
-key code 36
-delay 1
 set sg to splitter group 1 of w
 set nameField to missing value
+set btns to {{}}
 repeat with c in (every UI element of sg)
 try
 if role of c is "AXTextField" and description of c is "텍스트 필드" then set nameField to c
+if role of c is "AXButton" and description of c is "버튼" then set end of btns to c
 end try
 end repeat
 set value of nameField to "{name}"
-delay 1
-if not enabled of button "저장" of sg then error "Project save button is disabled"
-click button "저장" of sg
+delay 0.5
+click (item (count of btns) of btns)
 return "saved"
 end tell
 end tell''', timeout=90)
-    ok = wait_window(name, timeout=60)
+    ok = wait_window(f'{name} - 트랙', timeout=60)
+    if not ok and any(w == '저장' for w in windows()):
+        # 동일 이름 번들이 sketches/ 에 남아 있으면 "대치하겠습니까?" 시트 → 대치
+        osa(f'''tell application "System Events"
+tell process "{APP}"
+try
+click button "대치" of sheet 1 of window "저장"
+end try
+end tell
+end tell''')
+        ok = wait_window(f'{name} - 트랙', timeout=60)
     close_stray()
     return rc == 0 and ok, out or err
 
@@ -462,19 +474,6 @@ repeat with w2 in windows
 if (name of w2) contains "바운스" then set w to w2
 end repeat
 if w is missing value then return "no bounce window"
-set offlineReady to false
-repeat with modeButton in pop up buttons of w
-if value of modeButton is "자동" or value of modeButton is "실시간" or value of modeButton is "오프라인" then
-if value of modeButton is not "오프라인" then
-click modeButton
-click menu item "오프라인" of menu 1 of modeButton
-delay 0.5
-end if
-set offlineReady to (value of modeButton is "오프라인")
-exit repeat
-end if
-end repeat
-if not offlineReady then error "Offline bounce mode was not selected"
 try
 set tbl to table 1 of scroll area 1 of w
 repeat with theRow in (every row of tbl)
@@ -494,37 +493,62 @@ delay 0.5
 perform action "AXRaise" of w
 key code 36
 delay 3
-key code 5 using {{command down, shift down}}
-delay 1
-keystroke "{BOUNCE_DIR}"
-key code 36
-delay 1.5
+-- 저장 위치는 건드리지 않는다. ⌘⇧G '폴더로 이동' 팝오버는 합성 입력(키·클릭·AX)을 전혀 받지 않아
+-- 모달로 남아 세션을 막는다(2026-10-19 실측). 대신 bounce_and_post() 가 후보 폴더에서 파일을 찾아 옮긴다.
 set sg to splitter group 1 of w
 set nameField to missing value
+set btns to {{}}
 repeat with c in (every UI element of sg)
 try
 if role of c is "AXTextField" and description of c is "텍스트 필드" then set nameField to c
+if role of c is "AXButton" and description of c is "버튼" then set end of btns to c
 end try
 end repeat
+if nameField is missing value then return "no name field"
 set value of nameField to "{file_name}"
-delay 1
-repeat 20 times
-if enabled of button "바운스" of splitter group 1 of w then exit repeat
 delay 0.5
+click (item (count of btns) of btns)
+delay 2
+repeat with w3 in windows
+try
+click button "대치" of w3
+end try
 end repeat
-if not enabled of button "바운스" of splitter group 1 of w then error "Bounce button is disabled"
-click button "바운스" of splitter group 1 of w
 return "bounce started"
 end tell
 end tell''', timeout=120)
-    if 'bounce started' not in out:
-        return False, out or err
-    if not wait_window('바운스', present=False, timeout=20):
-        return False, 'Bounce save dialog did not close'
-    return True, out
+    return 'bounce started' in out, out or err
 
 
-def wait_file_stable(path, min_size=500000, timeout=240):
+# 바운스 대화상자의 저장 위치는 Logic 이 마지막으로 쓴 곳(재시작 후에는 .mid 폴더)이라 통제하지 않는다.
+# 파일명으로 후보 폴더를 뒤져 bounces/ 로 옮긴다 (2026-10-18 dh20, 2026-10-19 v2 실측).
+BOUNCE_SEARCH = [BOUNCE_DIR, SK_DIR, PROJ_DIR, os.path.expanduser('~/Music'), os.path.expanduser('~/Desktop'),
+                 os.path.expanduser('~/Documents'), os.path.expanduser('~/Downloads')]
+
+
+def wait_bounce_file(name, timeout=600):
+    """후보 폴더 중 하나에 name 이 안정적으로 생기면 BOUNCE_DIR 로 옮긴 경로를, 아니면 None."""
+    import shutil
+    t0 = time.time()
+    while time.time() - t0 < timeout:
+        for d in BOUNCE_SEARCH:
+            p = os.path.join(d, name)
+            try:
+                if os.path.exists(p) and os.path.getsize(p) > 500000:
+                    s = os.path.getsize(p)
+                    time.sleep(3)
+                    if os.path.getsize(p) == s:
+                        dst = os.path.join(BOUNCE_DIR, name)
+                        if p != dst:
+                            shutil.move(p, dst)
+                        return dst
+            except OSError:
+                continue   # Logic 이 아직 쓰는 중이거나 사라짐 — 다음 폴링에서 다시 본다
+        time.sleep(3)
+    return None
+
+
+def wait_file_stable(path, min_size=500000, timeout=600):
     t0 = time.time()
     while time.time() - t0 < timeout:
         if os.path.exists(path) and os.path.getsize(path) > min_size:
@@ -642,23 +666,85 @@ def peak_dbfs(path):
 
 
 # ---------------------------------------------------------------- end-to-end
-def produce(sid, title, ver, mid_path, log=print):
-    """열린 프로젝트 정리 → SMF 임포트(벽시계 기준 대기; 임포트 중 System Events 는 ~2분씩 블록) → finish()."""
-    t0 = time.time()
-    close_all_projects(save=False)
-    subprocess.run(['open', '-a', APP, mid_path], capture_output=True)
-    while time.time() - t0 < 900:
-        if any(w.startswith('무제') and w.endswith('- 트랙') for w in windows()):
-            break
-        time.sleep(5)
-    else:
-        return dict(ok=False, stage='open', windows=windows())
-    time.sleep(3)
-    clear_alerts()
-    time.sleep(2)
-    r = finish(sid, title, ver, log=log)
-    r['elapsed'] = round(time.time() - t0)
-    return r
+LOCK_PATH = os.path.join(os.path.dirname(BOUNCE_DIR), '.logic-lock')   # Netac 공유 — 세션(워크트리)들이 Logic 한 대를 나눠 쓴다
+
+
+class LogicLock:
+    """Logic 은 한 인스턴스뿐이라 세션 간 바운스를 직렬화한다. 다른 세션이 쥐고 있으면 기다린다(최대 wait 초).
+    해제는 자기 토큰이 적힌 파일만 지운다(다른 세션의 잠금을 지우지 않도록). 폴링 간격은 짧게 두어 기아를 줄인다.
+    세션이 죽어 파일이 남으면 내용(소유자·pid·시각)을 보고 사람이 지운다."""
+    def __init__(self, owner, wait=3600):
+        self.owner, self.wait = owner, wait
+        self.token = f'{owner} {os.getpid()} {time.strftime("%F %T")} {os.urandom(4).hex()}'
+
+    def __enter__(self):
+        deadline = time.time() + self.wait
+        while True:
+            try:
+                fd = os.open(LOCK_PATH, os.O_CREAT | os.O_EXCL | os.O_WRONLY)
+            except FileExistsError:
+                if time.time() > deadline:
+                    try:
+                        held = open(LOCK_PATH).read().strip()
+                    except FileNotFoundError:
+                        continue          # 방금 풀렸다 — 한 번 더 시도
+                    raise TimeoutError(f'Logic lock held: {held} ({LOCK_PATH})')
+                time.sleep(2)
+                continue
+            try:
+                os.write(fd, (self.token + '\n').encode())
+            except BaseException:
+                os.close(fd)
+                os.remove(LOCK_PATH)
+                raise
+            os.close(fd)
+            return self
+
+    def __exit__(self, *exc):
+        try:
+            if open(LOCK_PATH).read().strip() == self.token:
+                os.remove(LOCK_PATH)
+        except FileNotFoundError:
+            pass
+        time.sleep(3)   # 폴링(2s) 중인 다른 세션이 끼어들 틈을 준다 — 한 세션이 12곡을 독점하지 않도록
+
+
+def restart_logic(log=print, owner=None):
+    """Logic 종료 (다음 produce() 가 다시 띄운다). 세션 간 잠금 안에서 실행 — 다른 세션의 바운스 중 죽이지 않도록."""
+    owner = owner or _worktree_name()
+    with LogicLock(owner):
+        subprocess.run(['osascript', '-e', f'tell application "{APP}" to quit'], capture_output=True)
+        for _ in range(30):
+            if subprocess.run(['pgrep', '-f', APP + '$'], capture_output=True).returncode:
+                break
+            time.sleep(2)
+        log('    logic restarted')
+
+
+def _worktree_name():
+    return os.path.basename(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..')))
+
+
+def produce(sid, title, ver, mid_path, log=print, owner=None):
+    """열린 프로젝트 정리 → SMF 임포트(벽시계 기준 대기; 임포트 중 System Events 는 ~2분씩 블록) → finish().
+    세션 간 Logic 경합을 막기 위해 LogicLock 을 잡고 돈다(owner 기본값 = 현재 워크트리 이름)."""
+    owner = owner or _worktree_name()
+    with LogicLock(owner):
+        t0 = time.time()
+        close_all_projects(save=False)
+        subprocess.run(['open', '-a', APP, mid_path], capture_output=True)
+        while time.time() - t0 < 900:
+            if any(w.startswith('무제') and w.endswith('- 트랙') for w in windows()):
+                break
+            time.sleep(5)
+        else:
+            return dict(ok=False, stage='open', windows=windows())
+        time.sleep(3)
+        clear_alerts()
+        time.sleep(2)
+        r = finish(sid, title, ver, log=log)
+        r['elapsed'] = round(time.time() - t0)
+        return r
 
 
 def finish(sid, title, ver, log=print):
@@ -678,10 +764,11 @@ def finish(sid, title, ver, log=print):
 
 def bounce_and_post(sid, proj, ver):
     """저장된 프로젝트(창 '{proj} - 트랙')를 AIFF 바운스 → 리미터 → WAV → .aif 삭제 → 저장·닫기 → 번들 이동."""
-    for old in (f'{sid}-{ver}.aif', f'{sid}-{ver}.wav'):
-        p = os.path.join(BOUNCE_DIR, old)
-        if os.path.exists(p):
-            os.remove(p)
+    # 탐색 폴더 전부에서 동명 잔재를 지운다 — 다른 폴더의 옛 .aif 를 새 바운스로 오인하지 않도록.
+    for d in BOUNCE_SEARCH:
+        for old in (f'{sid}-{ver}.aif', f'{sid}-{ver}.wav' if d == BOUNCE_DIR else None):
+            if old and os.path.exists(os.path.join(d, old)):
+                os.remove(os.path.join(d, old))
     close_stray()
     osa(f'''tell application "System Events"
 tell process "{APP}"
@@ -695,8 +782,8 @@ end tell''')
     ok2, m2 = start_bounce_aiff(proj, f'{sid}-{ver}')
     if not ok2:
         return dict(ok=False, stage='bounce', msg=m2)
-    aif = os.path.join(BOUNCE_DIR, f'{sid}-{ver}.aif')
-    if not wait_file_stable(aif):
+    aif = wait_bounce_file(f'{sid}-{ver}.aif')
+    if not aif:
         return dict(ok=False, stage='file', msg='aif missing')
     hits = limit_aiff(aif)
     wav = os.path.join(BOUNCE_DIR, f'{sid}-{ver}.wav')
