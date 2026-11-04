@@ -10,10 +10,10 @@ SKETCHES = [s for s in v1.SKETCHES if s['slot'] == 1]
 TRACKS = [('Drums', 9), ('Bass', 0), ('Keys', 1), ('Keys2', 2),
           ('Tex', 3), ('Lead', 4), ('Pad', 5)]
 FILL_BARS = tuple(sorted((set(range(4, 57, 4)) - {28, 56}) | {31}))
-COMP = ((0, .75, 1.5, 2.25, 3.25), (.5, 1.25, 2, 2.75, 3.5),
-        (0, .75, 1.5, 2.25, 3.25), (0, .75, 1.5, 2.25, 3.25))
-BASS_BEATS = ((0, .75, 1.75, 2.5, 3.5), (0, .75, 1.75, 2.75, 3.5),
-              (0, .75, 1.5, 2.5, 3.5), (0, .75, 1.5, 2.5, 3.5))
+COMP = ((0, 1, 2, 2.5, 3.5), (0, 1, 2, 2.75, 3.5),
+        (0, 1, 2, 3, 3.5), (0, 1, 2, 2.5, 3.5))
+BASS_BEATS = ((0, 1, 1.75, 2.5, 3.5), (0, 1, 2, 2.75, 3.5),
+              (0, 1, 1.5, 2.5, 3.5), (0, 1, 1.5, 2.5, 3.5))
 
 
 def compose(sid):
@@ -22,6 +22,7 @@ def compose(sid):
     seed(261030 + s['slot'])
     nt = {i: [] for i in range(7)}
     cc = {i: [] for i in range(7)}
+    cc[1].append((0, 7, 85))
     pcs = {0: 0, 1: 33, 2: s['keys_pc'], 3: 0, 4: 24, 5: s['lead_pc'], 6: 89}
     # Keep the original kick/backbeat onsets, pitches and accents exactly.
     nt[0] = [n for n in original[0][0] if n[2] != 49
@@ -116,7 +117,7 @@ def compose(sid):
             for pitch in voicing:
                 add(2, bar, when, duration, pitch, velocity)
             cc[2].extend(((when - 1, 64, 0), (when + 1, 64, 100),
-                          (when + duration, 64, 0)))
+                          (min(when + duration, bt(bar + 1) - 1), 64, 0)))
         cc[2].extend(((bt(bar), 64, 0), (bt(bar + 1) - 2, 64, 0)))
 
         # Eight continuous nylon notes, with a four-bar velocity arch.
@@ -193,6 +194,40 @@ def check(s, result, smf):
     assert pcs == {0: 0, 1: 33, 2: 4, 3: 0, 4: 24, 5: 4, 6: 89}
     by_bar = {track: Counter(n[0] // BAR + 1 for n in events) for track, events in nt.items()}
     attacks = Counter(bar for bar, _ in {(n[0] // BAR + 1, n[0]) for n in nt[2]})
+    # Quantize nominal cells after humanization; count chord attacks only once.
+    sixteenth_ratios = {}
+    for track, limit in ((2, .25), (1, .30)):
+        onsets = sorted({n[0] for n in nt[track]})
+        cells_by_bar = {}
+        cells = []
+        for when in onsets:
+            cell = v1.event_cell((when,))
+            cells.append(cell)
+            cells_by_bar.setdefault(when // BAR + 1, []).append(cell)
+        for bar_cells in cells_by_bar.values():
+            assert sum(cell % 2 == 1 for cell in bar_cells) <= 1
+            assert (0 in bar_cells if track == 1 else bool({0, 8} & set(bar_cells)))
+        if track == 1:
+            assert not any(a % 4 == b % 4 == 3 for a, b in zip(cells, cells[1:]))
+        ratio = sum(cell % 2 == 1 for cell in cells) / len(cells)
+        assert ratio <= limit
+        sixteenth_ratios[track] = ratio
+    assert [(t, v) for t, c, v in cc[1] if c == 7] == [(0, 85)]
+    assert all(0 <= t <= bt(bars + 1) for events in cc.values() for t, _, _ in events)
+    key_onsets = sorted({n[0] for n in nt[2]})
+    expected_pedal = []
+    for bar in range(1, bars + 1):
+        onsets = [t for t in key_onsets if bt(bar) <= t < bt(bar + 1)]
+        expected_pedal.extend(((bt(bar), 64, 0), (bt(bar + 1) - 2, 64, 0)))
+        for index, when in enumerate(onsets):
+            duration = 190 if index % 2 else 235
+            release = min(when + duration, bt(bar + 1) - 1)
+            expected_pedal.extend(((when - 1, 64, 0), (when + 1, 64, 100),
+                                   (release, 64, 0)))
+            next_press = next((t + 1 for t in key_onsets if t > when), bt(bars + 1))
+            assert when + 1 < release < next_press
+    # Exact events also reject a stale release interrupting the next bar's press.
+    assert Counter(event for event in cc[2] if event[1] == 64) == Counter(expected_pedal)
     sections = [(1, 8, 'intro'), (9, 24, 'A'), (25, 32, 'break'),
                 (33, 48, 'A2'), (49, 56, 'outro')]
     densities, bass_densities, key_densities = [], [], []
@@ -282,6 +317,7 @@ def check(s, result, smf):
     assert bt(56) < last_end < bt(57)
     print(f"check {s['sid']}-v2 PASS bars={bars} notes/bar={'/'.join(densities)} "
           f"bass/bar={'/'.join(bass_densities)} keys_attacks/bar={'/'.join(key_densities)} "
+          f"Keys_16th_onsets={sixteenth_ratios[2]:.1%} Bass_16th_onsets={sixteenth_ratios[1]:.1%} "
           f"Keys2={bar_ranges(by_bar[3])} Tex={bar_ranges(by_bar[4])} Pad={bar_ranges(by_bar[6])} "
           f"fill_bars={','.join(map(str, fills))} CC1={cc1} CC11={cc11} "
           f"same_pitch_overlaps={overlaps} drum_cell_collisions=0 "

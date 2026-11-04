@@ -137,6 +137,7 @@ def compose(sid):
     nt, cc = {i: [] for i in range(7)}, {i: [] for i in range(7)}
     pcs = {DRUMS: 0, BASS: 38 if s['energy'] == 3 else 33, KEYS: s['keys_pc'],
            KEYS2: 0 if s['keys_pc'] != 0 else 4, TEX: s['tex_pc'], LEAD: s['lead_pc'], PAD: 89}
+    cc[BASS].append((0, 7, 48 if pcs[BASS] == 38 else 85))   # 베이스 레벨 (브리프 2026-11-04)
     _, (a, _), (brk, _), (a2, _), (outro, _) = v1.markers(s['bars'])
     scale = scale_of(s)
     swing = s['swing']

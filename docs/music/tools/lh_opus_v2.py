@@ -102,6 +102,7 @@ def compose(sid):
     nt, cc = {i: [] for i in range(len(TRACKS))}, {i: [] for i in range(len(TRACKS))}
     pcs = {DRUMS: 0, BASS: 38, KEYS: s['keys_pc'], KEYS2: s['keys2_pc'], TEX: s['tex_pc'],
            LEAD: s['lead_pc'], PAD: s['pad_pc']}
+    cc[BASS].append((0, 7, 48 if pcs[BASS] == 38 else 85))   # 베이스 레벨 (브리프 2026-11-04)
     swing = s['swing']
 
     def tick(bar, beat, swung=True):

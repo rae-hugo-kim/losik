@@ -15,6 +15,7 @@
     "python3 docs/music/tools/lh_opus.py",
     "python3 docs/music/tools/lh_astra_v2.py",
     "python3 docs/music/tools/lh_fable_v2.py",
-    "python3 docs/music/tools/lh_opus_v2.py"
+    "python3 docs/music/tools/lh_opus_v2.py",
+    "python3 docs/music/tools/lh_sonnet_v2.py"
   ]
 }
