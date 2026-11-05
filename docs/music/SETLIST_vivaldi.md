@@ -18,7 +18,7 @@
 - **본문**: `intro`·`break`·`outro` 를 뺀 마커 구간입니다. fable·opus 는 `A`·`A2`, astra 는 `theme`·`answer`·`reprise`·`answer2` 입니다.
 - **음/마디**: 모든 트랙(드럼 포함)의 노트온 수 ÷ 마디 수이고, "전체 / 본문" 순으로 적었습니다. lo-fi v2 의 `A·A2 ≥ 45음/마디` 와 같은 정의입니다.
 - **베이스 음/마디**: `Bass` 트랙만 센 값이고, "전체 / 본문" 순입니다.
-- **트랙 PC**: 트랙 이름 뒤 숫자가 GM 프로그램 번호입니다(Drums 는 킷 번호).
+- **트랙 PC**: 트랙 이름 뒤 숫자가 GM 프로그램 번호입니다(Drums 는 킷 번호). 트랙은 있지만 노트가 하나도 없으면 `(음표 0)` 으로 표시했습니다(astra lo-fi 5곡의 Pad).
 - **길이**: WAV `data` 청크 길이(리미터 후처리 포함)를 초 단위로 반올림했습니다. fable·opus 의 FEEDBACK_LOG 표는 내림이라 1초씩 다른 곡이 있습니다. 총 길이와 모델별 12곡 길이는 반올림 전 초를 더한 값이라 표의 곡별 길이를 더한 값과 몇 초 다를 수 있습니다.
 - **본문 Keys 음/마디**(모델별 요약): `Keys` 트랙만 본문 마디에서 센 노트온 수 ÷ 본문 마디 수입니다.
 - 36곡 모두 CC 는 CC64(서스테인)뿐이고 CC1·CC7·CC11 은 없습니다.
@@ -27,7 +27,7 @@
 
 | 악장 | 모델 | sid | 장르 | 키 | BPM | 마디 | 길이 | 트랙 PC | 음/마디 (전체 / 본문) | 베이스 음/마디 (전체 / 본문) | Suno 블록 | 업로드 | 청취 판정 |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| Spring I | astra | `vs-spring1-astra` | lo-fi | E | 84 | 64 | 3:03 | Drums 0, Bass 33, Keys 4, Pad 89, Theme 4, Reprise 24 | 22.6 / 28.1 | 1.0 / 1.5 | `suno/vivaldi_astra.md:26` | 미업로드 | 미청취 |
+| Spring I | astra | `vs-spring1-astra` | lo-fi | E | 84 | 64 | 3:03 | Drums 0, Bass 33, Keys 4, Pad 89 (음표 0), Theme 4, Reprise 24 | 22.6 / 28.1 | 1.0 / 1.5 | `suno/vivaldi_astra.md:26` | 미업로드 | 미청취 |
 |  | fable | `vs-spring1-fable` | deep house | E | 122 | 96 | 3:09 | Drums 16, Bass 38, Keys 4, Pad 89, Tex 4, Theme 4, Theme2 80 | 34.6 / 40.9 | 1.8 / 2.0 | `suno/vivaldi_fable.md:22` | 미업로드 | 세트 판정만 (아래 §청취) |
 |  | opus | `vs-spring1-opus` | deep house | C♯m | 122 | 96 | 3:09 | Drums 16, Bass 38, Keys 4, Pad 89, Tex 16, ThemeA 0, ThemeB 80 | 29.2 / 33.5 | 3.3 / 4.0 | `suno/vivaldi_opus.md:5` | 미업로드 | 세트 판정만 (아래 §청취) |
 | Spring II | astra | `vs-spring2-astra` | lo-fi | C♯m | 74 | 56 | 3:02 | Drums 0, Bass 33, Keys 4, Pad 89, Theme 24, Reprise 4 | 16.1 / 21.6 | 1.0 / 1.4 | `suno/vivaldi_astra.md:35` | 미업로드 | 미청취 |
@@ -36,16 +36,16 @@
 | Spring III | astra | `vs-spring3-astra` | deep house | E | 122 | 96 | 3:09 | Drums 16, Bass 38, Keys 4, Pad 89, Theme 0, Reprise 4 | 25.6 / 29.9 | 0.9 / 1.0 | `suno/vivaldi_astra.md:44` | 미업로드 | 미청취 |
 |  | fable | `vs-spring3-fable` | deep house | E | 124 | 96 | 3:06 | Drums 16, Bass 38, Keys 4, Pad 90, Tex 16, Theme 81, Theme2 4 | 29.4 / 34.6 | 2.6 / 3.0 | `suno/vivaldi_fable.md:40` | 미업로드 | 세트 판정만 (아래 §청취) |
 |  | opus | `vs-spring3-opus` | deep house | E | 120 | 96 | 3:12 | Drums 16, Bass 38, Keys 16, Pad 90, Tex 4, ThemeA 24, ThemeB 0 | 33.6 / 38.7 | 2.5 / 3.0 | `suno/vivaldi_opus.md:23` | 미업로드 | 세트 판정만 (아래 §청취) |
-| Summer I | astra | `vs-summer1-astra` | lo-fi | Gm | 88 | 64 | 2:55 | Drums 0, Bass 33, Keys 4, Pad 89, Theme 4, Reprise 0 | 21.7 / 26.7 | 1.0 / 1.5 | `suno/vivaldi_astra.md:53` | 미업로드 | 미청취 |
+| Summer I | astra | `vs-summer1-astra` | lo-fi | Gm | 88 | 64 | 2:55 | Drums 0, Bass 33, Keys 4, Pad 89 (음표 0), Theme 4, Reprise 0 | 21.7 / 26.7 | 1.0 / 1.5 | `suno/vivaldi_astra.md:53` | 미업로드 | 미청취 |
 |  | fable | `vs-summer1-fable` | lo-fi | Gm | 88 | 64 | 2:55 | Drums 0, Bass 33, Keys 4, Tex 16, Theme 24, Theme2 0 | 31.1 / 35.3 | 2.0 / 2.5 | `suno/vivaldi_fable.md:49` | 미업로드 | 세트 판정만 (아래 §청취) |
 |  | opus | `vs-summer1-opus` | lo-fi | Gm | 80 | 64 | 3:12 | Drums 0, Bass 33, Keys 4, Tex 27, ThemeA 0, ThemeB 81 | 19.3 / 23.5 | 1.2 / 1.5 | `suno/vivaldi_opus.md:32` | 미업로드 | 세트 판정만 (아래 §청취) |
-| Summer II | astra | `vs-summer2-astra` | lo-fi | Gm | 76 | 56 | 2:57 | Drums 0, Bass 33, Keys 4, Pad 89, Theme 0, Reprise 24 | 20.3 / 25.4 | 1.0 / 1.5 | `suno/vivaldi_astra.md:62` | 미업로드 | 미청취 |
+| Summer II | astra | `vs-summer2-astra` | lo-fi | Gm | 76 | 56 | 2:57 | Drums 0, Bass 33, Keys 4, Pad 89 (음표 0), Theme 0, Reprise 24 | 20.3 / 25.4 | 1.0 / 1.5 | `suno/vivaldi_astra.md:62` | 미업로드 | 미청취 |
 |  | fable | `vs-summer2-fable` | lo-fi | Gm | 70 | 56 | 3:12 | Drums 0, Bass 33, Keys 4, Tex 24, Theme 0, Theme2 4 | 27.5 / 34.1 | 1.6 / 1.9 | `suno/vivaldi_fable.md:58` | 미업로드 | 세트 판정만 (아래 §청취) |
 |  | opus | `vs-summer2-opus` | lo-fi | Am | 72 | 56 | 3:07 | Drums 0, Bass 33, Keys 0, Tex 16, ThemeA 4, ThemeB 24, Pad 89 | 18.6 / 23.2 | 0.8 / 1.2 | `suno/vivaldi_opus.md:41` | 미업로드 | 세트 판정만 (아래 §청취) |
 | Summer III | astra | `vs-summer3-astra` | deep house | Gm | 124 | 96 | 3:06 | Drums 16, Bass 38, Keys 4, Pad 89, Theme 80, Reprise 4 | 25.9 / 30.5 | 0.8 / 1.0 | `suno/vivaldi_astra.md:71` | 미업로드 | 미청취 |
 |  | fable | `vs-summer3-fable` | deep house | Gm | 124 | 96 | 3:06 | Drums 16, Bass 38, Keys 4, Pad 89, Tex 4, Theme 4, Theme2 80 | 35.9 / 41.2 | 2.5 / 3.0 | `suno/vivaldi_fable.md:67` | 미업로드 | 세트 판정만 (아래 §청취) |
 |  | opus | `vs-summer3-opus` | deep house | Gm | 124 | 96 | 3:06 | Drums 16, Bass 38, Keys 4, Pad 89, Tex 16, ThemeA 81, ThemeB 0 | 35.7 / 41.2 | 2.8 / 3.0 | `suno/vivaldi_opus.md:50` | 미업로드 | 세트 판정만 (아래 §청취) |
-| Autumn I | astra | `vs-autumn1-astra` | lo-fi | F | 86 | 64 | 2:59 | Drums 0, Bass 33, Keys 4, Pad 89, Theme 24, Reprise 0 | 25.2 / 31.8 | 1.2 / 1.5 | `suno/vivaldi_astra.md:80` | 미업로드 | 미청취 |
+| Autumn I | astra | `vs-autumn1-astra` | lo-fi | F | 86 | 64 | 2:59 | Drums 0, Bass 33, Keys 4, Pad 89 (음표 0), Theme 24, Reprise 0 | 25.2 / 31.8 | 1.2 / 1.5 | `suno/vivaldi_astra.md:80` | 미업로드 | 미청취 |
 |  | fable | `vs-autumn1-fable` | lo-fi | F | 84 | 64 | 3:03 | Drums 0, Bass 38, Keys 0, Tex 24, Theme 4, Theme2 24 | 39.4 / 47.3 | 1.7 / 2.5 | `suno/vivaldi_fable.md:76` | 미업로드 | 세트 판정만 (아래 §청취) |
 |  | opus | `vs-autumn1-opus` | deep house | Dm | 118 | 96 | 3:15 | Drums 16, Bass 38, Keys 0, Pad 89, Tex 4, ThemeA 24, ThemeB 80 | 30.1 / 34.7 | 1.7 / 2.0 | `suno/vivaldi_opus.md:59` | 미업로드 | 세트 판정만 (아래 §청취) |
 | Autumn II | astra | `vs-autumn2-astra` | lo-fi | Dm | 72 | 56 | 3:07 | Drums 0, Bass 33, Keys 4, Pad 89, Theme 4, Reprise 0 | 18.7 / 24.2 | 1.0 / 1.5 | `suno/vivaldi_astra.md:89` | 미업로드 | 미청취 |
@@ -57,7 +57,7 @@
 | Winter I | astra | `vs-winter1-astra` | deep house | Fm | 118 | 96 | 3:15 | Drums 16, Bass 38, Keys 4, Pad 89, Theme 4, Reprise 80 | 26.9 / 30.9 | 0.8 / 1.0 | `suno/vivaldi_astra.md:107` | 미업로드 | 미청취 |
 |  | fable | `vs-winter1-fable` | deep house | Fm | 118 | 96 | 3:15 | Drums 16, Bass 38, Keys 4, Pad 89, Tex 16, Theme 4, Theme2 81 | 36.0 / 43.3 | 1.8 / 2.0 | `suno/vivaldi_fable.md:103` | 미업로드 | 세트 판정만 (아래 §청취) |
 |  | opus | `vs-winter1-opus` | deep house | Fm | 122 | 96 | 3:09 | Drums 16, Bass 38, Keys 16, Pad 89, Tex 4, ThemeA 0, ThemeB 81 | 29.3 / 33.4 | 1.8 / 2.0 | `suno/vivaldi_opus.md:86` | 미업로드 | 세트 판정만 (아래 §청취) |
-| Winter II | astra | `vs-winter2-astra` | lo-fi | E♭ | 78 | 56 | 2:52 | Drums 0, Bass 33, Keys 4, Pad 89, Theme 24, Reprise 4 | 21.9 / 28.0 | 1.0 / 1.5 | `suno/vivaldi_astra.md:116` | 미업로드 | 미청취 |
+| Winter II | astra | `vs-winter2-astra` | lo-fi | E♭ | 78 | 56 | 2:52 | Drums 0, Bass 33, Keys 4, Pad 89 (음표 0), Theme 24, Reprise 4 | 21.9 / 28.0 | 1.0 / 1.5 | `suno/vivaldi_astra.md:116` | 미업로드 | 미청취 |
 |  | fable | `vs-winter2-fable` | lo-fi | E♭ | 68 | 56 | 3:18 | Drums 0, Bass 33, Keys 0, Tex 24, Theme 4, Theme2 0 | 32.8 / 41.4 | 1.6 / 2.0 | `suno/vivaldi_fable.md:112` | 미업로드 | 세트 판정만 (아래 §청취) |
 |  | opus | `vs-winter2-opus` | lo-fi | E♭ | 76 | 56 | 2:57 | Drums 0, Bass 33, Keys 4, Tex 24, ThemeA 0, ThemeB 80 | 19.6 / 24.5 | 0.8 / 1.2 | `suno/vivaldi_opus.md:95` | 미업로드 | 세트 판정만 (아래 §청취) |
 | Winter III | astra | `vs-winter3-astra` | deep house | Fm | 120 | 96 | 3:12 | Drums 16, Bass 38, Keys 4, Pad 89, Theme 0, Reprise 24 | 26.2 / 30.8 | 0.9 / 1.0 | `suno/vivaldi_astra.md:125` | 미업로드 | 미청취 |
