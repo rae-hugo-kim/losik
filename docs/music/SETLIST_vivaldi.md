@@ -1,7 +1,7 @@
 # Vivaldi 사계 변주 — 2026-11-05 집계
 
 12악장 × 3모델 = **36곡**이고, 총 길이는 **111:48**(WAV 실측), 곡당 2:52~3:19 입니다. 세 브랜치(`rae-hugo-kim/band-{astra,fable,opus}`)의 결과를 `rae-hugo-kim/vivaldi` 에 모은 표입니다.
-브리프는 `VIVALDI_BRIEF.md` 입니다. 소스 데이터 `tools/vivaldi_data.py` 는 Mutopia Project 출처로 CC BY-SA 3.0 을 전제하며(작품은 퍼블릭 도메인), 파생 MIDI 에도 같은 표기를 씁니다. 바운스는 `/Volumes/Netac 2TB/music/bounces/{sid}-v1.wav` 이고(Logic 바운스), 36개 모두 있는 것을 확인했습니다.
+브리프는 `VIVALDI_BRIEF.md` 입니다. 소스 데이터 `tools/vivaldi_data.py` 는 Mutopia Project 출처로 CC BY-SA 3.0 을 전제합니다(작품은 퍼블릭 도메인). MIDI 안의 출처 표기는 astra·opus 24개에만 있고 **fable 12개에는 없습니다**(`vivaldi_fable.py` 가 `build_smf` 에 섹션 마커만 넘깁니다). 공개 전에 fable MIDI 에 표기를 넣어야 합니다. 바운스는 `/Volumes/Netac 2TB/music/bounces/{sid}-v1.wav` 이고(Logic 바운스), 36개 모두 있는 것을 확인했습니다.
 
 | 모델 | 모델 ID | 작곡기 | Suno 블록 | 기록 |
 |---|---|---|---|---|
@@ -19,7 +19,8 @@
 - **음/마디**: 모든 트랙(드럼 포함)의 노트온 수 ÷ 마디 수이고, "전체 / 본문" 순으로 적었습니다. lo-fi v2 의 `A·A2 ≥ 45음/마디` 와 같은 정의입니다.
 - **베이스 음/마디**: `Bass` 트랙만 센 값이고, "전체 / 본문" 순입니다.
 - **트랙 PC**: 트랙 이름 뒤 숫자가 GM 프로그램 번호입니다(Drums 는 킷 번호).
-- **길이**: WAV `data` 청크 길이(리미터 후처리 포함)를 초 단위로 반올림했습니다. 모델별 FEEDBACK_LOG 표는 내림이라 1초씩 다른 곡이 있습니다.
+- **길이**: WAV `data` 청크 길이(리미터 후처리 포함)를 초 단위로 반올림했습니다. fable·opus 의 FEEDBACK_LOG 표는 내림이라 1초씩 다른 곡이 있습니다. 총 길이와 모델별 12곡 길이는 반올림 전 초를 더한 값이라 표의 곡별 길이를 더한 값과 몇 초 다를 수 있습니다.
+- **본문 Keys 음/마디**(모델별 요약): `Keys` 트랙만 본문 마디에서 센 노트온 수 ÷ 본문 마디 수입니다.
 - 36곡 모두 CC 는 CC64(서스테인)뿐이고 CC1·CC7·CC11 은 없습니다.
 
 ## 셋리스트
@@ -75,7 +76,7 @@
 
 ## 청취
 
-- **세트 판정 (fable·opus 24곡, Logic 바운스 기준)**: "디테일 부족, 빈 공간 많음". 곡별 판정은 아직 없습니다. lo-fi v1 에서 같은 판정을 받은 뒤 만든 v2 레시피(밀도·다운비트 앵커·베이스 CC7)는 `LOFI_HIPHOP_SET_BRIEF.md` `## v2 보정` 에 있습니다.
+- **세트 판정 (fable·opus 24곡, Logic 바운스 기준)**: "디테일 부족, 빈 공간 많음". 출처는 `docs/sum/session_2026-11-05_lofi-v2-vivaldi-handoff.md` §사계 인계(추적되지 않는 파일)이고, FEEDBACK_LOG 에는 아직 기록되지 않았습니다. 곡별 판정은 아직 없습니다. lo-fi v1 에서 같은 판정을 받은 뒤 만든 v2 레시피(밀도·다운비트 앵커·베이스 CC7)는 `LOFI_HIPHOP_SET_BRIEF.md` `## v2 보정` 에 있습니다.
 - **astra 12곡**: 미청취입니다.
-- 곡별 판정을 받으면 위 표의 `청취 판정` 칸과 `FEEDBACK_LOG.md` `## 청취 판정 — Vivaldi 사계 변주` 절에 함께 기록합니다.
+- 곡별 판정을 받으면 위 표의 `청취 판정` 칸에 적고, `FEEDBACK_LOG.md` 에 `## 청취 판정 — Vivaldi 사계 변주` 절을 새로 만들어 세트 판정과 함께 기록합니다.
 - **업로드**: 36곡 모두 Suno Cover 미업로드입니다(세 절의 `업로드 결과` 칸 기준). 통과·차단 결과는 `VIVALDI_BRIEF.md` §2-6 대로 기록합니다.
