@@ -8,7 +8,7 @@
 |---|---|---|---|
 | lh14-v2·lh02-v2 반려 | 2026-11-05 14:42 KST — Suno 블록 커밋 `3296930` 직후 업로드 시작 | 2026-11-06 ~15:10 KST — 반려 보고, v2u 바운스 시작(15:21 mtime) 전 | lh01-v2·lh15-v2 통과 업로드 |
 | lh14-v2u 반려 (lh02-v2u 통과) | 2026-11-06 15:25 KST — v2u WAV mtime | 2026-11-07 ~00:05 KST — 보고, v2t 바운스(00:10 mtime) 전 | lh02-v2u 통과 업로드 |
-| lh14-v2t | 2026-11-07 00:10 KST 생성 | 미시도 (보내기 전 시도하면 시각 기입) | — |
+| lh14-v2t 반려 | 2026-11-07 00:10 KST 생성 | 00:25 KST 경 (사용자 "방금 했지", 00:27 기준) | — |
 
 라이브러리에서 lh01-v2·lh15-v2·lh02-v2u 의 업로드 시각을 확인하면 그 시각으로 범위를 좁혀 적을 수 있다.
 
@@ -26,14 +26,14 @@ Facts:
 - Account: [account email], plan: [plan]
 - File: lh14-brass-orchard-v2.wav (WAV 24-bit, 2:54, 50.3 MB), rejected between 2026-11-05 15:00 and 2026-11-06 15:00 KST (UTC+9) — in the same session in which lh01-felt-doorway-v2.wav and lh15-quartz-overpass-v2.wav were accepted (both visible in my library). lh02-linen-afternoon-v2.wav was rejected with the same message in that session.
 - The track is a MIDI composition rendered in Logic Pro with its stock instruments (SoCal drum kit, Pulse Bass, Deluxe Classic electric piano, Classical Acoustic Guitar, Studio Grand, Classic Pad). No samples, loops, or recordings of other works were used.
-- A re-render of the same MIDI was also rejected: lh14-brass-orchard-v2u.wav (tempo 90 BPM instead of 88), between 2026-11-06 15:30 and 2026-11-07 00:00 KST, in the same session in which lh02-linen-afternoon-v2u.wav was accepted (visible in my library). [If tried: lh14-brass-orchard-v2t.wav (transposed up one semitone to F major), rejected on [date/time KST].]
+- A re-render of the same MIDI was also rejected: lh14-brass-orchard-v2u.wav (tempo 90 BPM instead of 88), between 2026-11-06 15:30 and 2026-11-07 00:00 KST, in the same session in which lh02-linen-afternoon-v2u.wav was accepted (visible in my library). A third render, lh14-brass-orchard-v2t.wav (transposed up one semitone to F major, 90 BPM), was rejected on 2026-11-07 at about 00:25 KST.
 - Three other tracks from the same project, made with the same tools and the same workflow, uploaded without issue: lh01-felt-doorway-v2.wav, lh15-quartz-overpass-v2.wav, lh02-linen-afternoon-v2u.wav.
 - Browser/app: [browser + version]
 
 Could you tell me which recording the system matched, and allow the upload? I can send the Logic Pro project if that helps.
 
-Attached: lh14-brass-orchard-v2t.mid (31 KB) — the MIDI source of the rejected audio.
-Audio (WAV, 49 MB): [download link]
+Attached: lh14-brass-orchard-v2.mid (31 KB) — the MIDI source of the rejected audio.
+All three rejected renders (WAV, ~50 MB each) in one folder: [download link]
 
 Thank you,
 [Name]
@@ -52,14 +52,14 @@ Thank you,
 - 계정: [계정 이메일], 플랜: [플랜]
 - 파일: lh14-brass-orchard-v2.wav (WAV 24비트, 2:54, 50.3 MB), 2026-11-05 15:00 ~ 11-06 15:00 KST 사이 반려 — lh01-v2·lh15-v2 가 통과한(라이브러리에 보임) 같은 자리. lh02-v2 도 같은 메시지로 반려
 - MIDI 로 작곡해 Logic Pro 기본 악기(SoCal 드럼, Pulse Bass, Deluxe Classic EP, Classical Acoustic Guitar, Studio Grand, Classic Pad)로 렌더한 곡입니다. 샘플·루프·타인의 녹음은 전혀 쓰지 않았습니다.
-- 같은 MIDI 를 다시 렌더한 v2u(템포 88→90 BPM)도 2026-11-06 15:30 ~ 11-07 00:00 KST 사이 반려 — lh02-v2u 가 통과한 같은 자리. [시도했다면: v2t(+1 반음 전조 F장조), [시각] 반려.]
+- 같은 MIDI 를 다시 렌더한 v2u(템포 88→90 BPM)도 2026-11-06 15:30 ~ 11-07 00:00 KST 사이 반려 — lh02-v2u 가 통과한 같은 자리. 세 번째 렌더 v2t(+1 반음 전조 F장조, 90 BPM)는 2026-11-07 00:25 KST 경 반려.
 - 같은 프로젝트·같은 도구·같은 절차로 만든 다른 세 곡(lh01-…-v2, lh02-…-v2u, lh15-…-v2)은 같은 세션에서 문제없이 업로드됐습니다.
 - 브라우저/앱: [브라우저 + 버전]
 
 어떤 녹음과 일치로 판정됐는지 알려 주시고 업로드를 허용해 주실 수 있을까요? 필요하면 Logic Pro 프로젝트도 보내 드리겠습니다.
 
-첨부: lh14-brass-orchard-v2t.mid (31 KB) — 반려된 오디오의 MIDI 소스.
-오디오(WAV, 49 MB): [다운로드 링크]
+첨부: lh14-brass-orchard-v2.mid (31 KB) — 반려된 오디오의 MIDI 소스.
+반려된 렌더 세 개(WAV, 각 ~50 MB)는 폴더 하나로: [다운로드 링크]
 
 감사합니다,
 [이름]
