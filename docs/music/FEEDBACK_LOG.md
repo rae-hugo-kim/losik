@@ -675,6 +675,12 @@ WAV 12개와 Logic 프로젝트 12개를 만들었습니다. 전곡 48kHz·24bit
   - 미설치 그룹: Orchestral 31개 중 26개, Studio Piano 11개 중 10개, Studio Strings·Studio Horns·World 는 전부, Essential 36개 중 16개입니다.
   - 이 콘텐츠는 모두 Logic 에 포함된 무료 콘텐츠입니다. PC 48 이 "GM 기기 4"로 폴백하던 현상도 미설치와 관련 있을 가능성이 있습니다(추정, 설치 뒤 실측 예정).
   - 카탈로그 패키지 이름에 서양 솔로 바이올린 전용 패키지는 없습니다(바이올린 계열은 얼후 패키지 `0447`·`0603` 두 개뿐입니다). 설치 뒤 Studio Strings·Strings Full 안에 솔로 패치가 있는지 확인해야 합니다.
+  - **정정 (Logic 12 팩 관리자 실측)**: 위 34/915 는 앱 안의 레거시 카탈로그(`MAContent10_*.pkg`, `/Library` 설치)를 기준으로 센 값입니다. Logic 12.4 가 실제로 쓰는 체계는 `Logic Pro > 사운드 라이브러리… > 팩 관리` 입니다.
+    - 이 체계는 `ml_*.aar` 팩을 `~/Music/Logic Pro Library.bundle` 에 설치합니다(`Package Definitions/*.plist` 의 `DownloadName`).
+    - 팩 관리자 기준으로 전체 45.45 GB 중 3.34 GB 가 설치돼 있고, 설치된 팩은 Essentials 3개를 포함한 몇 개뿐입니다.
+    - 분류는 사운드 팩, 아티스트·프로듀서 팩, 악기 팩, Session Player, Essentials·호환성 팩입니다.
+    - 2026-09-05 파이프라인(레거시 pkg 를 받아 `/Library` 를 심링크로 바꾸는 방식)은 이 체계와 맞지 않을 수 있어서 실행하지 않았습니다.
+    - Logic 12 안에 사운드 라이브러리 위치를 다른 볼륨으로 옮기는 기능("사운드 라이브러리 위치 변경…", `ContentRelocation.strings`)이 있지만, 메뉴에서 들어가는 위치는 아직 찾지 못했습니다.
 - **제약 (2026-11-07 실측)**:
   - Netac(RTL9210B)은 여전히 `USB2 Hub` 아래에 잡히고, 링크 속도는 `UsbLinkSpeed = 480000000`(USB 2.0 High-Speed)입니다. 같은 Mac 의 `USB3 Gen2 Hub` 는 10 Gbps 입니다.
   - 처리량은 시점에 따라 크게 달랐습니다. 00:20~00:45 무렵에는 쓰기 1.1 MB/s(256 MB + fsync), 읽기 1.8 MB/s 였고, 같은 시간대에 커밋 게이트도 시간 초과가 났습니다. 01:00~01:15 무렵 다시 재니 쓰기 39.6 MB/s(8 MB + fsync × 8), 읽기 41.8 MB/s 로 USB2 상한에 가까웠고, 덩어리마다 값이 고르게 나왔습니다. 느렸던 구간의 원인(다른 프로세스와의 경합, 발열, USB2 전원 할당 500 mA 등)은 확인하지 못했습니다. 최근 3시간 커널 로그에 디스크 I/O 오류는 없었습니다.
