@@ -114,4 +114,4 @@ v2 는 **코드 루프·키·BPM·마디 수·드럼 골격(킥 셀·백비트)�
 
 금지는 그대로(클랩 단독, 16분 러닝 베이스, 넓은 도약 리드, 4온더플로어). 트랙: `[('Drums',9),('Bass',0),('Keys',1),('Keys2',2),('Tex',3),('Lead',4),('Pad',5)]`.
 
-산출물: `lh_<model>_v2.py` — v1 모듈을 import 해 `SKETCHES` 를 공유, `compose(sid)` 가 v2 층을 만든다. `__main__` 은 `{sid}-v2.mid` 를 쓰고 곡마다 점검 줄: 구간별 음/마디, 베이스 음/마디, Keys 어택/마디, Keys2·Tex·Pad 마디 범위, 필 마디, CC1/CC11 이벤트 수, 동일 음 겹침 0, 마지막 노트 위치. **보정 슬롯**: astra 1, fable 14, opus 15, sonnet 2 (`lh_sonnet_v2.py`, v1 은 `lh_fable.SKETCHES` 의 slot 2 를 import) → 청취 통과 후 30곡.
+산출물: `lh_<model>_v2.py` — v1 모듈을 import 해 `SKETCHES` 를 공유, `compose(sid)` 가 v2 층을 만든다. **v1 `check()` 의 단언을 전부 상속하고 v2 단언을 더한다(MUST)** — 보정 4곡 리뷰 6회 중 FAIL 4회의 공통 원인이 "새 파일로 쓰면서 빠진 단언"이었다(드럼 셀 충돌·벨로시티 표·리드 ≤6음·베이스 음역·CC 틱 범위). `__main__` 은 `{sid}-v2.mid` 를 쓰고 곡마다 점검 줄: 구간별 음/마디, 베이스 음/마디, Keys 어택/마디, Keys2·Tex·Pad 마디 범위, 필 마디, CC1/CC11 이벤트 수, 동일 음 겹침 0, 마지막 노트 위치. **보정 슬롯**: astra 1, fable 14, opus 15, sonnet 2 (`lh_sonnet_v2.py`, v1 은 `lh_fable.SKETCHES` 의 slot 2 를 import) → 청취 통과 후 30곡.
