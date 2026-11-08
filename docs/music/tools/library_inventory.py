@@ -9,8 +9,9 @@ Walks the relocated library bundle and the legacy /Library trees, and records:
   gm_reachable     patch names that a GM program change loads (gm_patch_map.json; Korean display names mapped)
   orchestral       curated view: acoustic/orchestral folders only, with family, articulations, solo/section/unknown
 
-Read-only, no Logic interaction. Stdout is a sequence of markdown sections (`## <name>`) that
-LOGIC_LIBRARY_INVENTORY.md embeds verbatim, so the document can always be rebuilt from this output.
+Read-only, no Logic interaction. Stdout is a sequence of markdown sections (`## <name>`); the table
+sections (packs, patch_counts, plugin_settings, samples, orchestral_summary, orchestral_tables) are
+embedded verbatim in LOGIC_LIBRARY_INVENTORY.md, so those parts can always be rebuilt from this output.
 
     python3 docs/music/tools/library_inventory.py            # write JSON, print sections
     python3 docs/music/tools/library_inventory.py --no-write # sections only
@@ -35,7 +36,8 @@ OUT = os.path.join(MUSIC, 'logic_library_inventory.json')
 # gm_patch_map.json records what the mixer strip DISPLAYS; a few patches display a Korean name or the
 # channel-strip name instead of the patch file name. Map display name → patch file name.
 GM_DISPLAY_ALIAS = {'톤휠 오르간': 'Tonewheel Organ', '어쿠스틱 기타': 'Acoustic Guitar', '하드 록': 'Hard Rock',
-                    '루트 업라이트': 'Roots Upright', '(New) Horns': 'Studio Alto Sax 1'}
+                    '루트 업라이트': 'Roots Upright', '(New) Horns': 'Studio Alto Sax 1',
+                    '선원': 'Zen Garden'}   # 선원(禪院) = Zen garden; the only alias not read off a strip, inferred from the patch list
 GM_FALLBACK = re.compile(r'^GM 기기 \d+$')
 
 # Curated "acoustic / orchestral" view: only these library folders are scanned (synths, drum kits,
@@ -77,12 +79,12 @@ NAME_FAMILY = [
 FAMILY_KO = collections.OrderedDict([
     ('strings', '현악'), ('woodwinds', '목관'), ('brass', '금관'), ('keyboard_classical', '건반 (피아노·하프시코드·첼레스타·파이프오르간)'),
     ('harp_plucked', '하프·발현 (기타 포함)'), ('percussion_orch', '타악 (선율타악 포함)'), ('choir', '합창'), ('organ', '오르간 (전자·톤휠)'),
-    ('mellotron', '멜로트론'), ('world', '월드'), ('bass_electric', '일렉·업라이트 베이스'), ('other', '기타'),
+    ('mellotron', '멜로트론'), ('world', '월드'), ('bass_electric', '일렉·업라이트 베이스'), ('other', '그 밖'),
 ])
 # Articulation tokens, longest first so "Tremolo Crescendo" wins over "Tremolo"; " leg" is a legacy legato typo.
-ARTICULATIONS = [('Tremolo Crescendo', 'Tremolo Crescendo'), ('SingleStrokes', 'SingleStrokes'), ('Pizzicato', 'Pizzicato'), ('Staccato', 'Staccato'),
-                 ('Crescendo', 'Crescendo'), ('Tremolo', 'Tremolo'), ('Legato', 'Legato'), ('Trill 1', 'Trill 1'), ('Trill 2', 'Trill 2'),
-                 ('Swells', 'Swells'), ('Sustain', 'Sustain'), ('Arco', 'Arco'), (' leg', 'Legato')]
+ARTICULATIONS = [(r'tremolo crescendo', 'Tremolo Crescendo'), (r'singlestrokes', 'SingleStrokes'), (r'pizzicato', 'Pizzicato'), (r'staccato', 'Staccato'),
+                 (r'crescendo', 'Crescendo'), (r'tremolo', 'Tremolo'), (r'legato', 'Legato'), (r'trill 1', 'Trill 1'), (r'trill 2', 'Trill 2'),
+                 (r'swells', 'Swells'), (r'sustain', 'Sustain'), (r'arco', 'Arco'), (r'\bleg$', 'Legato')]
 ART_STRIP = r'\s*(Tremolo Crescendo|SingleStrokes|Pizzicato|Staccato|Crescendo|Tremolo|Legato|Trill [12]|Swells|Sustain|\(Arco\)|\(Pizzicato\)|\+|leg| iOS KB| iOS small)$'
 SECTION_HINT = r'\b(violins|violas|cellos|basses|strings|flutes|clarinets|trumpets|trombones|horns|section|ensemble|choir|chamber|kit|brass|chords|dual)\b|\d-piece'
 SOLO_HINT = r'\bsolo\b|\((arco|pizzicato)\)|^(violin|viola|cello|double bass|oboe|bassoon|piccolo|english horn|harp|celesta|harpsichord|timpani|tuba|trumpet|trombone|flute|clarinet)\b|single instruments'
@@ -140,16 +142,19 @@ def classify(rel, name):
     if fam is None:
         fam = next((k for prefix, k in FOLDER_FAMILY if rel.startswith(prefix)), 'other')
     arts = []
-    rest = name
-    for token, label in ARTICULATIONS:
-        if token.lower() in rest.lower():
+    rest = low
+    for rx, label in ARTICULATIONS:
+        if re.search(rx, rest):
             arts.append(label)
-            rest = re.sub(re.escape(token), '', rest, flags=re.I)
+            rest = re.sub(rx, '', rest)
     if name.endswith('+'):
         arts.append('keyswitch (+)')
     if not arts:
         arts = ['default']
-    if re.search(SECTION_HINT, low):
+    # plural instrument names mean a section for orchestral families only; a pipe-organ 'Flutes' stop or a
+    # piano layered with strings is not an ensemble. Folder names ('Section Instruments', '3-Piece Section') count too.
+    plural_ok = fam in ('strings', 'woodwinds', 'brass', 'choir', 'world', 'percussion_orch')
+    if re.search(r'\b(section|ensemble|choir|chamber)\b|\d-piece', path_low) or (plural_ok and re.search(SECTION_HINT, low)):
         solo = 'section'
     elif re.search(SOLO_HINT, low + ' ' + path_low):
         solo = 'solo'
@@ -268,7 +273,8 @@ def main(argv):
     print('\n## patch_counts')
     print('| 분류 | 패치 수 | 하위 분류 (수) |\n|---|---|---|')
     for c, subs in inv['patch_counts'].items():
-        top = ', '.join(f'{k or "(루트)"} {v}' for k, v in sorted(subs.items(), key=lambda kv: -kv[1])[:6])
+        ordered = sorted(subs.items(), key=lambda kv: -kv[1])
+        top = ', '.join(f'{k or "(루트)"} {v}' for k, v in ordered[:6]) + (' …' if len(ordered) > 6 else '')
         print(f'| {c} | {sum(subs.values())} | {top} |')
     print(f"\nAudio 패치 {len(inv['patches']['Audio'])}개 · Sampler 프리셋 번들 {len(inv['sampler_presets']['bundle'])} / `/Library` {len(inv['sampler_presets']['legacy_logic'])} / GarageBand {len(inv['sampler_presets']['garageband'])}")
     print('\n## plugin_settings')

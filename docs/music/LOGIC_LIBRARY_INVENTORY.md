@@ -129,7 +129,7 @@ Netac 이 분리되면 Logic 은 악기를 전혀 불러오지 못합니다. los
 | Keyboard | 139 | Acoustic Piano 48, Electric Piano 26, Organ 25, Mellotron 21, Clavinet 19 |
 | Mallet | 16 | (루트) 9, Processed 7 |
 | Strings | 10 | Studio Strings 10 |
-| Synthesizer | 1314 | Bass 238, Pad 192, Keyboard 182, Soundscape 135, Arpeggiated 129, Lead 122 |
+| Synthesizer | 1314 | Bass 238, Pad 192, Keyboard 182, Soundscape 135, Arpeggiated 129, Lead 122 … |
 | z_Legacy | 94 | Orchestral 48, World 46 |
 
 Audio 패치 529개 · Sampler 프리셋 번들 2303 / `/Library` 60 / GarageBand 6
@@ -179,7 +179,7 @@ Apple Loops 폴더 45개 · 루프 29754개 · IR 1066개
 
 | 경로 | 무엇 | 지금 파이프라인에서 | 비고 |
 |---|---|---|---|
-| A. GM 프로그램 번호 | SMF 의 Program Change 로 Logic 이 자동 배정하는 패치 94종(저품질 폴백 PC 54, 85, 91, 114 제외, §4 표) | **바로 사용 가능** | 현악 섹션 PC 40–45·48–50·110 · Studio Horns 단일·섹션 PC 56–61·64–67·69·70 · 피아노·EP·오르간·기타·베이스·신스 대부분 |
+| A. GM 프로그램 번호 | SMF 의 Program Change 로 Logic 이 자동 배정하는 패치 94종(저품질 폴백 PC 54, 85, 91, 114 제외, §4 표) | **바로 사용 가능** | 현악 섹션 PC 40–45·48·49(50·110 은 신스 현악 Authentic Strings) · Studio Horns 단일·섹션 PC 56–61·64–67·69·70 · 피아노·EP·오르간·기타·베이스·신스 대부분 |
 | B. 라이브러리 패치 (`.patch`) | 라이브러리 창에서 고르는 채널 스트립 전체(악기+이펙트) | **불가** — 트랙에 패치를 이름으로 불러오는 자동화가 필요합니다 | `z_Legacy/Orchestral` 48개(하프시코드·오보에·바순·하프·팀파니·합창 …), Studio Strings 섹션 Abbey Wood·King's Cross, Studio Horns 단일 악기 중 GM 으로 닿지 않는 것 |
 | C. Sampler 프리셋 (`.exs`) | Sampler 플러그인 안에서 고르는 악기 | **불가** — Sampler 삽입 후 프리셋 로드 자동화가 필요합니다 | 주법별 오케스트라 163개(Legato·Staccato·Pizzicato·Tremolo·Trill, 키스위치 `+`), 솔로 Violin·Cello·Double Bass(Arco·Pizzicato), iOS 솔로 목관 |
 
@@ -187,7 +187,7 @@ B·C 자동화는 아직 없습니다(§7 핸드오프 1번). 레거시 오케�
 
 ## 5. 어쿠스틱·오케스트라 팔레트 (큐레이션)
 
-`logic_library_inventory.json` 의 `orchestral` 664항목을 악기 이름으로 묶은 표입니다. 스캔 범위는 폴더로 정했습니다(`Strings`, `Brass & Woodwind`, `z_Legacy/Orchestral`, `z_Legacy/World`, 어쿠스틱 피아노·오르간·멜로트론·말렛·기타·베이스 폴더와 Sampler 의 대응 폴더). 계열은 폴더가 한 계열이면 폴더로, 여러 계열이 섞인 폴더(Studio Horns 등)에서는 이름으로 정했습니다. 주법은 이름의 표기를 모두 읽었고, 솔로/섹션은 이름의 복수형(Violins, Flutes 등)·`Solo`·`Single Instruments` 폴더로 판단했으며 단서가 없으면 **미상**으로 두었습니다(피아노·오르간·베이스 대부분이 여기에 해당합니다).
+`logic_library_inventory.json` 의 `orchestral` 664항목을 악기 이름으로 묶은 표입니다. 스캔 범위는 폴더로 정했습니다(`Strings`, `Brass & Woodwind`, `z_Legacy/Orchestral`, `z_Legacy/World`, 어쿠스틱 피아노·오르간·멜로트론·말렛·기타·베이스 폴더와 Sampler 의 대응 폴더). 계열은 폴더가 한 계열이면 폴더로, 여러 계열이 섞인 폴더(Studio Horns 등)에서는 이름으로 정했습니다. 주법은 이름의 표기를 모두 읽었고, 솔로/섹션은 폴더 이름(`Section Instruments`, `3-Piece Section` 등)과 이름의 `Solo`·`Single Instruments`, 그리고 현악·목관·금관·합창·월드·타악에 한해 복수형(Violins, Flutes 등)으로 판단했으며 단서가 없으면 **미상**으로 두었습니다(피아노·오르간·베이스 대부분이 여기에 해당합니다).
 
 - **GM PC** 열이 비어 있으면 경로 B·C 로만 불러올 수 있습니다.
 - **주법**의 `keyswitch (+)` 는 한 프리셋에 여러 주법을 키스위치로 담은 레거시 EXS 입니다. `기본` 은 이름에 주법 표기가 없는 경우입니다.
@@ -196,23 +196,24 @@ B·C 자동화는 아직 없습니다(§7 핸드오프 1번). 레거시 오케�
 
 | 계열 | 솔로 | 섹션/합주 | 미상 | 합계 |
 |---|---|---|---|---|
-| 현악 | 8 | 83 | 8 | 99 |
+| 현악 | 8 | 89 | 2 | 99 |
 | 목관 | 52 | 10 | 9 | 71 |
-| 금관 | 33 | 44 | 11 | 88 |
-| 건반 (피아노·하프시코드·첼레스타·파이프오르간) | 4 | 5 | 99 | 108 |
+| 금관 | 33 | 52 | 3 | 88 |
+| 건반 (피아노·하프시코드·첼레스타·파이프오르간) | 4 | 0 | 104 | 108 |
 | 하프·발현 (기타 포함) | 2 | 0 | 6 | 8 |
 | 타악 (선율타악 포함) | 6 | 2 | 44 | 52 |
-| 합창 | 0 | 37 | 5 | 42 |
+| 합창 | 0 | 42 | 0 | 42 |
 | 오르간 (전자·톤휠) | 0 | 0 | 25 | 25 |
-| 멜로트론 | 0 | 12 | 9 | 21 |
+| 멜로트론 | 0 | 6 | 15 | 21 |
 | 월드 | 0 | 11 | 108 | 119 |
 | 일렉·업라이트 베이스 | 0 | 0 | 30 | 30 |
-| 기타 | 0 | 0 | 1 | 1 |
+| 그 밖 | 0 | 0 | 1 | 1 |
 
 큐레이션 항목 합계 664
 
 <details>
 <summary>계열별 악기 표 — 도구 출력 <code>## orchestral_tables</code></summary>
+
 **현악** (37개 악기, 99항목)
 
 | 악기 | 솔로/섹션 | 형태 | 주법 | GM PC | 위치 |
@@ -220,19 +221,25 @@ B·C 자동화는 아직 없습니다(§7 핸드오프 1번). 레거시 오케�
 | Cello | 솔로 | EXS | 기본, Arco, Pizzicato | — | `z_Legacy/Strings` |
 | Double Bass | 솔로 | EXS | 기본, Arco, Pizzicato | — | `z_Legacy/Strings` |
 | Violin | 솔로 | EXS | Arco, Pizzicato | — | `z_Legacy/Strings` |
+| Abbey Wood | 섹션/합주 | 패치 | 기본 | — | `Strings/Studio Strings/Section Instruments` |
 | Arco Strings | 섹션/합주 | EXS | Arco | — | `z_Legacy/Strings` |
 | Basses | 섹션/합주 | EXS·패치 | 기본, Legato, Pizzicato, Staccato, Tremolo, Trill 1, Trill 2, keyswitch (+) | — | `z_Legacy/Orchestral/09 Strings; z_Legacy/Orchestral/Strings` |
+| Bloomsbury | 섹션/합주 | 패치 | 기본 | 49 | `Strings/Studio Strings/Section Instruments` |
 | Cellos | 섹션/합주 | EXS·패치 | 기본, Legato, Pizzicato, Staccato, Tremolo, Trill 1, Trill 2, keyswitch (+) | — | `z_Legacy/Orchestral/09 Strings; z_Legacy/Orchestral/Strings` |
 | Cinema Strings | 섹션/합주 | 패치 | 기본 | — | `z_Legacy/Orchestral/Strings` |
 | Disco Strings | 섹션/합주 | EXS | 기본 | — | `z_Internal/Studio Strings/Section Instruments` |
 | EXS Strings 1 | 섹션/합주 | EXS | 기본 | — | `z_Legacy/Strings` |
 | EXS Strings 2 | 섹션/합주 | EXS | 기본 | — | `z_Legacy/Strings` |
+| Eden Park | 섹션/합주 | 패치 | 기본 | 44, 45 | `Strings/Studio Strings/Section Instruments` |
 | Full Strings | 섹션/합주 | EXS·패치 | 기본, Legato, Pizzicato, Staccato, Tremolo, Trill 1, Trill 2, keyswitch (+) | — | `z_Legacy/Orchestral/09 Strings; z_Legacy/Orchestral/Strings` |
 | Hollywood Strings | 섹션/합주 | EXS | 기본 | — | `z_Legacy/Strings` |
+| Kensington | 섹션/합주 | 패치 | 기본 | 48 | `Strings/Studio Strings/Section Instruments` |
+| King's Cross | 섹션/합주 | 패치 | 기본 | — | `Strings/Studio Strings/Section Instruments` |
 | Modern Strings | 섹션/합주 | 패치 | 기본 | — | `z_Legacy/Orchestral/Strings` |
 | Pop Strings | 섹션/합주 | 패치 | 기본 | — | `z_Legacy/Orchestral/Strings` |
 | Romance Strings | 섹션/합주 | 패치 | 기본 | — | `z_Legacy/Orchestral/Strings` |
 | Session Strings | 섹션/합주 | 패치 | 기본 | — | `z_Legacy/Orchestral/Strings` |
+| Singer Songwriter | 섹션/합주 | EXS | 기본 | — | `z_Internal/Studio Strings/Section Instruments` |
 | Small Section | 섹션/합주 | EXS | 기본 | — | `z_Internal/Studio Strings/Section Instruments` |
 | Smart Strings | 섹션/합주 | 패치 | 기본 | — | `z_Legacy/Orchestral/Strings` |
 | String Ensemble | 섹션/합주 | EXS | 기본 | — | `09 Orchestral/09 Strings; z_Internal/Studio Strings/Section Instruments` |
@@ -246,13 +253,7 @@ B·C 자동화는 아직 없습니다(§7 핸드오프 1번). 레거시 오케�
 | Violas | 섹션/합주 | EXS·패치 | 기본, Legato, Pizzicato, Staccato, Tremolo, Trill 1, Trill 2, keyswitch (+) | — | `z_Legacy/Orchestral/09 Strings; z_Legacy/Orchestral/Strings` |
 | Violins 1 | 섹션/합주 | EXS·패치 | 기본, Legato, Pizzicato, Staccato, Tremolo, Trill 1, Trill 2, keyswitch (+) | — | `z_Legacy/Orchestral/09 Strings; z_Legacy/Orchestral/Strings` |
 | Violins 2 | 섹션/합주 | EXS·패치 | 기본, Legato, Pizzicato, Staccato, Tremolo, Trill 1, Trill 2, keyswitch (+) | — | `z_Legacy/Orchestral/09 Strings; z_Legacy/Orchestral/Strings` |
-| Abbey Wood | 미상 | 패치 | 기본 | — | `Strings/Studio Strings/Section Instruments` |
-| Bloomsbury | 미상 | 패치 | 기본 | 49 | `Strings/Studio Strings/Section Instruments` |
 | Deep Bass | 미상 | EXS | 기본 | — | `z_Legacy/Orchestral/09 Strings` |
-| Eden Park | 미상 | 패치 | 기본 | 44, 45 | `Strings/Studio Strings/Section Instruments` |
-| Kensington | 미상 | 패치 | 기본 | 48 | `Strings/Studio Strings/Section Instruments` |
-| King's Cross | 미상 | 패치 | 기본 | — | `Strings/Studio Strings/Section Instruments` |
-| Singer Songwriter | 미상 | EXS | 기본 | — | `z_Internal/Studio Strings/Section Instruments` |
 | Upright | 미상 | EXS | 기본 | — | `z_Legacy/Strings` |
 
 **목관** (28개 악기, 71항목)
@@ -304,28 +305,28 @@ B·C 자동화는 아직 없습니다(§7 핸드오프 1번). 레거시 오케�
 | Tuba | 솔로 | 패치 | 기본 | — | `z_Legacy/Orchestral/Brass` |
 | Tuba Solo | 솔로 | EXS | 기본, Legato, Staccato, keyswitch (+) | — | `09 Orchestral/02 Brass; z_Legacy/Orchestral/02 Brass` |
 | Brass Ensemble | 섹션/합주 | EXS | 기본 | — | `Sampler/Sampler Instruments/iOS Instruments; z_Legacy/Brass & Woodwinds` |
+| Chicago Street | 섹션/합주 | 패치 | 기본 | — | `Brass & Woodwind/Studio Horns/3-Piece Section` |
 | Elements Section | 섹션/합주 | 패치 | 기본 | — | `Brass & Woodwind/Studio Horns/3-Piece Section` |
 | French Horns | 섹션/합주 | EXS·패치 | 기본, Crescendo, Legato, Staccato, keyswitch (+) | — | `09 Orchestral/02 Brass; z_Legacy/Orchestral/02 Brass; z_Legacy/Orchestral/Brass` |
 | Full Brass | 섹션/합주 | EXS·패치 | 기본, Legato, Staccato, keyswitch (+) | — | `09 Orchestral/02 Brass; z_Legacy/Orchestral/02 Brass; z_Legacy/Orchestral/Brass` |
 | Funk Horn Section | 섹션/합주 | EXS | 기본 | — | `z_Legacy/Brass & Woodwinds` |
+| Funkhouse | 섹션/합주 | 패치 | 기본 | — | `Brass & Woodwind/Studio Horns/6-Piece Section` |
+| Hell's Kitchen | 섹션/합주 | 패치 | 기본 | — | `Brass & Woodwind/Studio Horns/3-Piece Section` |
 | Horn Section | 섹션/합주 | EXS | 기본 | — | `z_Legacy/Brass & Woodwinds` |
+| Little Brazil | 섹션/합주 | 패치 | 기본 | — | `Brass & Woodwind/Studio Horns/6-Piece Section` |
+| Memphis Blast | 섹션/합주 | 패치 | 기본 | — | `Brass & Woodwind/Studio Horns/6-Piece Section` |
+| Mississippi Joint | 섹션/합주 | 패치 | 기본 | — | `Brass & Woodwind/Studio Horns/7-Piece Section` |
 | Pop Horn Section | 섹션/합주 | EXS | 기본 | — | `z_Legacy/Brass & Woodwinds` |
+| Strivers' Row | 섹션/합주 | 패치 | 기본 | — | `Brass & Woodwind/Studio Horns/3-Piece Section` |
 | Studio Horns - 3 piece - RnB Section | 섹션/합주 | EXS | 기본 | — | `z_Internal/Studio Horns/Section Instruments` |
 | Studio Horns - 6 piece - Soul Section | 섹션/합주 | EXS | 기본 | — | `z_Internal/Studio Horns/Section Instruments` |
 | Studio Horns - 7 piece - Jazz Section | 섹션/합주 | EXS | 기본 | — | `z_Internal/Studio Horns/Section Instruments` |
+| Sugar Hill | 섹션/합주 | 패치 | 기본 | 59, 61 | `Brass & Woodwind/Studio Horns/7-Piece Section` |
 | Trombones | 섹션/합주 | EXS·패치 | 기본, Legato, Staccato, keyswitch (+) | — | `09 Orchestral/02 Brass; z_Legacy/Orchestral/02 Brass; z_Legacy/Orchestral/Brass` |
 | Trumpet Section | 섹션/합주 | EXS | 기본 | — | `z_Legacy/Brass & Woodwinds` |
 | Trumpets | 섹션/합주 | EXS·패치 | 기본, Legato, Staccato, keyswitch (+) | — | `09 Orchestral/02 Brass; z_Legacy/Orchestral/02 Brass; z_Legacy/Orchestral/Brass` |
-| Chicago Street | 미상 | 패치 | 기본 | — | `Brass & Woodwind/Studio Horns/3-Piece Section` |
 | French Horn | 미상 | EXS | 기본 | — | `Sampler/Sampler Instruments/iOS Instruments; z_Legacy/Brass & Woodwinds` |
-| Funkhouse | 미상 | 패치 | 기본 | — | `Brass & Woodwind/Studio Horns/6-Piece Section` |
-| Hell's Kitchen | 미상 | 패치 | 기본 | — | `Brass & Woodwind/Studio Horns/3-Piece Section` |
-| Little Brazil | 미상 | 패치 | 기본 | — | `Brass & Woodwind/Studio Horns/6-Piece Section` |
-| Memphis Blast | 미상 | 패치 | 기본 | — | `Brass & Woodwind/Studio Horns/6-Piece Section` |
 | Midtown Summer Trumpet | 미상 | EXS | 기본 | — | `z_Legacy/Brass & Woodwinds` |
-| Mississippi Joint | 미상 | 패치 | 기본 | — | `Brass & Woodwind/Studio Horns/7-Piece Section` |
-| Strivers' Row | 미상 | 패치 | 기본 | — | `Brass & Woodwind/Studio Horns/3-Piece Section` |
-| Sugar Hill | 미상 | 패치 | 기본 | 59, 61 | `Brass & Woodwind/Studio Horns/7-Piece Section` |
 
 **건반 (피아노·하프시코드·첼레스타·파이프오르간)** (88개 악기, 108항목)
 
@@ -333,11 +334,6 @@ B·C 자동화는 아직 없습니다(§7 핸드오프 1번). 레거시 오케�
 |---|---|---|---|---|---|
 | Celesta | 솔로 | EXS·패치 | 기본 | — | `z_Legacy/Orchestral/05 Keyboards; z_Legacy/Orchestral/Keyboard` |
 | Harpsichord | 솔로 | EXS·패치 | 기본 | — | `z_Legacy/Orchestral/05 Keyboards; z_Legacy/Orchestral/Keyboard` |
-| Flutes | 섹션/합주 | EXS | 기본 | — | `z_Legacy/Orchestral/07 Pipe Organ` |
-| Flutes + 2 Octaves | 섹션/합주 | EXS | 기본 | — | `z_Legacy/Orchestral/07 Pipe Organ` |
-| Flutes + Fifth | 섹션/합주 | EXS | 기본 | — | `z_Legacy/Orchestral/07 Pipe Organ` |
-| Flutes + Octave | 섹션/합주 | EXS | 기본 | — | `z_Legacy/Orchestral/07 Pipe Organ` |
-| Grand Piano+Strings 1 | 섹션/합주 | EXS | 기본 | — | `z_Legacy/Keyboard/Acoustic Piano` |
 | 70s Glam | 미상 | 패치 | 기본 | — | `Keyboard/Acoustic Piano/Processed` |
 | Amplified Piano | 미상 | EXS·패치 | 기본 | — | `Keyboard/Acoustic Piano/Processed` |
 | Ballad | 미상 | 패치 | 기본 | — | `Keyboard/Acoustic Piano` |
@@ -364,6 +360,10 @@ B·C 자동화는 아직 없습니다(§7 핸드오프 1번). 레거시 오케�
 | Econ_Piano_1027 | 미상 | EXS | 기본 | — | `z_Legacy/Keyboard/Acoustic Piano` |
 | Economy_Piano_1028 | 미상 | EXS | 기본 | — | `z_Legacy/Keyboard/Acoustic Piano` |
 | Flickering | 미상 | 패치 | 기본 | — | `Keyboard/Acoustic Piano/Processed` |
+| Flutes | 미상 | EXS | 기본 | — | `z_Legacy/Orchestral/07 Pipe Organ` |
+| Flutes + 2 Octaves | 미상 | EXS | 기본 | — | `z_Legacy/Orchestral/07 Pipe Organ` |
+| Flutes + Fifth | 미상 | EXS | 기본 | — | `z_Legacy/Orchestral/07 Pipe Organ` |
+| Flutes + Octave | 미상 | EXS | 기본 | — | `z_Legacy/Orchestral/07 Pipe Organ` |
 | Full Organ | 미상 | EXS | 기본 | — | `z_Legacy/Orchestral/07 Pipe Organ` |
 | Grain Clouds | 미상 | 패치 | 기본 | — | `Keyboard/Acoustic Piano/Processed` |
 | Grand Piano | 미상 | EXS | 기본 | — | `Keyboard/Acoustic Piano` |
@@ -373,6 +373,7 @@ B·C 자동화는 아직 없습니다(§7 핸드오프 1번). 레거시 오케�
 | Grand Piano Punchy | 미상 | EXS | 기본 | — | `z_Legacy/Keyboard/Acoustic Piano` |
 | Grand Piano+Bass | 미상 | EXS | 기본 | — | `z_Legacy/Keyboard/Acoustic Piano` |
 | Grand Piano+Pad | 미상 | EXS | 기본 | — | `z_Legacy/Keyboard/Acoustic Piano` |
+| Grand Piano+Strings 1 | 미상 | EXS | 기본 | — | `z_Legacy/Keyboard/Acoustic Piano` |
 | Grand_Piano_1027 | 미상 | EXS | 기본 | — | `z_Legacy/Keyboard/Acoustic Piano` |
 | Grand_Piano_1028 | 미상 | EXS | 기본 | — | `z_Legacy/Keyboard/Acoustic Piano` |
 | Grandma's Piano | 미상 | 패치 | 기본 | — | `Keyboard/Acoustic Piano` |
@@ -479,18 +480,18 @@ B·C 자동화는 아직 없습니다(§7 핸드오프 1번). 레거시 오케�
 | Chamber Male Ensemble | 섹션/합주 | EXS | 기본, keyswitch (+) | — | `z_Legacy/Orchestral/10 Choir` |
 | Church Choir | 섹션/합주 | EXS·패치 | 기본 | — | `z_Legacy/Orchestral/10 Choir; z_Legacy/Orchestral/Choir` |
 | Classical Ensemble | 섹션/합주 | EXS·패치 | 기본, Swells, keyswitch (+) | — | `z_Legacy/Orchestral/10 Choir; z_Legacy/Orchestral/Choir` |
+| Classical Female | 섹션/합주 | EXS | Swells | — | `z_Legacy/Orchestral/10 Choir` |
 | Classical Female Ensemble | 섹션/합주 | EXS·패치 | 기본, keyswitch (+) | — | `z_Legacy/Orchestral/10 Choir; z_Legacy/Orchestral/Choir` |
+| Classical Male | 섹션/합주 | EXS | Swells | — | `z_Legacy/Orchestral/10 Choir` |
 | Classical Male Ensemble | 섹션/합주 | EXS·패치 | 기본, keyswitch (+) | — | `z_Legacy/Orchestral/10 Choir; z_Legacy/Orchestral/Choir` |
 | Female Chamber Choir | 섹션/합주 | 패치 | 기본 | — | `z_Legacy/Orchestral/Choir` |
 | Gospel Choir Effects Soft | 섹션/합주 | EXS | 기본 | — | `z_Legacy/Orchestral/10 Choir` |
 | Gospel Ensemble | 섹션/합주 | EXS·패치 | 기본, Swells, keyswitch (+) | — | `z_Legacy/Orchestral/10 Choir; z_Legacy/Orchestral/Choir` |
+| Gospel Vocal Effects | 섹션/합주 | 패치 | 기본 | — | `z_Legacy/Orchestral/Choir` |
+| Gospel Voice Effects | 섹션/합주 | EXS | 기본, keyswitch (+) | — | `z_Legacy/Orchestral/10 Choir` |
 | Gregorian Ensemble | 섹션/합주 | EXS | 기본, Swells | — | `z_Legacy/Orchestral/10 Choir` |
 | Male Chamber Choir | 섹션/합주 | 패치 | 기본 | — | `z_Legacy/Orchestral/Choir` |
 | Mixed Choir | 섹션/합주 | EXS·패치 | 기본 | — | `z_Legacy/Orchestral/10 Choir; z_Legacy/Orchestral/Choir` |
-| Classical Female | 미상 | EXS | Swells | — | `z_Legacy/Orchestral/10 Choir` |
-| Classical Male | 미상 | EXS | Swells | — | `z_Legacy/Orchestral/10 Choir` |
-| Gospel Vocal Effects | 미상 | 패치 | 기본 | — | `z_Legacy/Orchestral/Choir` |
-| Gospel Voice Effects | 미상 | EXS | 기본, keyswitch (+) | — | `z_Legacy/Orchestral/10 Choir` |
 
 **오르간 (전자·톤휠)** (25개 악기, 25항목)
 
@@ -528,25 +529,25 @@ B·C 자동화는 아직 없습니다(§7 핸드오프 1번). 레거시 오케�
 |---|---|---|---|---|---|
 | Mellotron Airy Choir | 섹션/합주 | 패치 | 기본 | — | `Keyboard/Mellotron` |
 | Mellotron Boys Choir | 섹션/합주 | 패치 | 기본 | — | `Keyboard/Mellotron` |
-| Mellotron Brass | 섹션/합주 | 패치 | 기본 | — | `Keyboard/Mellotron` |
 | Mellotron Brass Choir | 섹션/합주 | 패치 | 기본 | — | `Keyboard/Mellotron` |
 | Mellotron Choir | 섹션/합주 | 패치 | 기본 | 52, 53 | `Keyboard/Mellotron` |
 | Mellotron Choir & Flute | 섹션/합주 | 패치 | 기본 | — | `Keyboard/Mellotron` |
 | Mellotron Cloud Choir | 섹션/합주 | 패치 | 기본 | — | `Keyboard/Mellotron` |
-| Mellotron Flutes | 섹션/합주 | 패치 | 기본 | — | `Keyboard/Mellotron` |
-| Mellotron GC Brass | 섹션/합주 | 패치 | 기본 | — | `Keyboard/Mellotron` |
-| Mellotron Shimmering Chords | 섹션/합주 | 패치 | 기본 | — | `Keyboard/Mellotron` |
-| Mellotron Strings & Flute | 섹션/합주 | 패치 | 기본 | — | `Keyboard/Mellotron` |
-| Mellotron Violins | 섹션/합주 | 패치 | 기본 | — | `Keyboard/Mellotron` |
+| Mellotron Brass | 미상 | 패치 | 기본 | — | `Keyboard/Mellotron` |
 | Mellotron Brassy Sequence | 미상 | 패치 | 기본 | — | `Keyboard/Mellotron` |
 | Mellotron Cello | 미상 | 패치 | 기본 | — | `Keyboard/Mellotron` |
 | Mellotron Flute | 미상 | 패치 | 기본 | 68, 71, 72, 73, 74, 76, 78, 79 | `Keyboard/Mellotron` |
+| Mellotron Flutes | 미상 | 패치 | 기본 | — | `Keyboard/Mellotron` |
+| Mellotron GC Brass | 미상 | 패치 | 기본 | — | `Keyboard/Mellotron` |
 | Mellotron Lo-Fi Lead | 미상 | 패치 | 기본 | — | `Keyboard/Mellotron` |
 | Mellotron Lush Sci-Fi Pad | 미상 | 패치 | 기본 | — | `Keyboard/Mellotron` |
 | Mellotron Orchestra Swirl | 미상 | 패치 | 기본 | — | `Keyboard/Mellotron` |
 | Mellotron Replicant Pad | 미상 | 패치 | 기본 | — | `Keyboard/Mellotron` |
+| Mellotron Shimmering Chords | 미상 | 패치 | 기본 | — | `Keyboard/Mellotron` |
 | Mellotron Skating Pad | 미상 | 패치 | 기본 | — | `Keyboard/Mellotron` |
+| Mellotron Strings & Flute | 미상 | 패치 | 기본 | — | `Keyboard/Mellotron` |
 | Mellotron Vintage Pattern | 미상 | 패치 | 기본 | — | `Keyboard/Mellotron` |
+| Mellotron Violins | 미상 | 패치 | 기본 | — | `Keyboard/Mellotron` |
 
 **월드** (50개 악기, 119항목)
 
@@ -626,7 +627,7 @@ B·C 자동화는 아직 없습니다(§7 핸드오프 1번). 레거시 오케�
 | Retro Crunch | 미상 | 패치 | 기본 | — | `Bass` |
 | Retro Radio | 미상 | 패치 | 기본 | — | `Bass` |
 | Rock Growl | 미상 | 패치 | 기본 | — | `Bass` |
-| Rock Legend | 미상 | 패치 | Legato | — | `Bass` |
+| Rock Legend | 미상 | 패치 | 기본 | — | `Bass` |
 | Roots Upright | 미상 | 패치 | 기본 | 32 | `Bass` |
 | Simple Foundation | 미상 | 패치 | 기본 | 33 | `Bass` |
 | Slap & Pop | 미상 | 패치 | 기본 | 36, 37 | `Bass` |
@@ -637,7 +638,7 @@ B·C 자동화는 아직 없습니다(§7 핸드오프 1번). 레거시 오케�
 | Warm & Clear | 미상 | 패치 | 기본 | — | `Bass` |
 | Wide Rock | 미상 | 패치 | 기본 | — | `Bass` |
 
-**기타** (1개 악기, 1항목)
+**그 밖** (1개 악기, 1항목)
 
 | 악기 | 솔로/섹션 | 형태 | 주법 | GM PC | 위치 |
 |---|---|---|---|---|---|
