@@ -713,6 +713,13 @@ WAV 12개와 Logic 프로젝트 12개를 만들었습니다. 전곡 48kHz·24bit
       - 목관: Flute Solo, Clarinet Solo
       - 그 밖에: Mellotron(Violins, Cello, Flutes, Choir), 피아노(Concert Grand, Steinway), Grand Organ, Erhu·Guzheng·Koto·Pipa
     - 없는 악기: 서양 솔로 바이올린, 하프시코드(패치는 없고 Alchemy 샘플 한 벌뿐입니다), 오보에, 바순, 하프, 팀파니.
+    - **정정과 호환성 팩 (11-08 16:52)**: 위의 "오래된 정의" 판단은 틀렸습니다. "사용 가능한 모든 팩"에는 호환성 묶음이 빠져 있었고, 사용자가 호환성 팩을 따로 받았습니다.
+      - 팩 정의 81개 중 76개를 설치했고, 번들은 68 GB 입니다. USB2 상태로 끊김이 없었습니다.
+      - 새로 설치된 팩: Orchestral Instruments(4.25 GB), World(5.65), Jam Pack 1·Remix Tools·Rhythm Section·Voices, Logic Studio 2, GarageBand 11, Alchemy 7종입니다.
+      - 새로 생긴 오케스트라 패치(`z_Legacy/Orchestral`): Harpsichord, Oboe, Bassoon Solo, English Horn, Piccolo, Harp, Timpani, Celesta, Glockenspiel, Xylophone, Tubular Bells, Crotales, 합창 11종, 현악 섹션(Violins 1·2, Violas, Cellos, Basses, Full Strings 등)입니다.
+      - 월드 현악(Medieval Lute, Celtic Harp, Hammered Dulcimer, Oud, Sitar 등)과 `Synthesizer/Strings/Authentic Strings` 도 생겼습니다.
+      - 아직 설치되지 않은 것: **Logic 10 Instruments(13.88 GB)**, Ellie Dixon, Vintage Breaks, Bass Amp Boutique. Skyline Heat 는 559/575 로 그대로입니다.
+      - 여전히 없는 악기: 서양 솔로 바이올린(현악은 모두 섹션 패치입니다).
   - 파이프라인은 SMF 임포트 때 GM PC 로만 악기를 고르므로, 라이브러리를 깔아도 PC 매핑에 걸린 패치까지만 쓸 수 있습니다.
 - **교훈**:
   - 의뢰에 없는 장르·악기 전제를 브리프에 넣을 때는 먼저 사용자에게 확인합니다.
