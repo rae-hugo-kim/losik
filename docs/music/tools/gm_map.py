@@ -114,7 +114,7 @@ perform action "AXRaise" of window "{left[0]}"
 delay 0.5
 keystroke "w" using command down
 delay 2
-{P._click_any(P.DONT_SAVE)}
+{P._click_any(('저장 안 함',))}
 end tell
 end tell''')
         time.sleep(3)
