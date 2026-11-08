@@ -187,7 +187,7 @@ B·C 자동화는 아직 없습니다(§7 핸드오프 1번). 레거시 오케�
 
 ## 5. 어쿠스틱·오케스트라 팔레트 (큐레이션)
 
-`logic_library_inventory.json` 의 `orchestral` 664항목을 악기 이름으로 묶은 표입니다. 스캔 범위는 폴더로 정했습니다(`Strings`, `Brass & Woodwind`, `z_Legacy/Orchestral`, `z_Legacy/World`, 어쿠스틱 피아노·오르간·멜로트론·말렛·기타·베이스 폴더와 Sampler 의 대응 폴더). 계열은 폴더가 한 계열이면 폴더로, 여러 계열이 섞인 폴더(Studio Horns 등)에서는 이름으로 정했습니다. 주법은 이름의 표기를 모두 읽었고, 솔로/섹션은 폴더 이름(`Section Instruments`, `3-Piece Section` 등)과 이름의 `Solo`·`Single Instruments`, 그리고 현악·목관·금관·합창·월드·타악에 한해 복수형(Violins, Flutes 등)으로 판단했으며 단서가 없으면 **미상**으로 두었습니다(피아노·오르간·베이스 대부분이 여기에 해당합니다).
+`logic_library_inventory.json` 의 `orchestral` 664항목을 악기 이름으로 묶은 표입니다. 스캔 범위는 폴더로 정했습니다(`Strings`, `Brass & Woodwind`, `z_Legacy/Orchestral`, `z_Legacy/World`, 어쿠스틱 피아노·오르간·멜로트론·말렛·기타·베이스 폴더와 Sampler 의 대응 폴더). 계열은 폴더가 한 계열이면 폴더로, 여러 계열이 섞인 폴더(Studio Horns 등)에서는 이름으로 정했습니다. 주법은 이름의 표기를 모두 읽었고, 솔로/섹션은 폴더 이름(`Section Instruments`, `3-Piece Section`, `10 Choir` 는 섹션, `Single Instruments` 는 솔로)과 이름의 `Solo`, 그리고 현악·목관·금관·합창·월드·타악·멜로트론에 한해 이름의 복수형(Violins, Flutes 등)으로 판단했으며 단서가 없으면 **미상**으로 두었습니다(피아노·오르간·베이스 대부분이 여기에 해당합니다). 합창 폴더의 효과음 프리셋(Gospel Voice Effects 등)도 폴더 규칙 때문에 섹션으로 표시됩니다.
 
 - **GM PC** 열이 비어 있으면 경로 B·C 로만 불러올 수 있습니다.
 - **주법**의 `keyswitch (+)` 는 한 프리셋에 여러 주법을 키스위치로 담은 레거시 EXS 입니다. `기본` 은 이름에 주법 표기가 없는 경우입니다.
@@ -204,7 +204,7 @@ B·C 자동화는 아직 없습니다(§7 핸드오프 1번). 레거시 오케�
 | 타악 (선율타악 포함) | 6 | 2 | 44 | 52 |
 | 합창 | 0 | 42 | 0 | 42 |
 | 오르간 (전자·톤휠) | 0 | 0 | 25 | 25 |
-| 멜로트론 | 0 | 6 | 15 | 21 |
+| 멜로트론 | 0 | 12 | 9 | 21 |
 | 월드 | 0 | 11 | 108 | 119 |
 | 일렉·업라이트 베이스 | 0 | 0 | 30 | 30 |
 | 그 밖 | 0 | 0 | 1 | 1 |
@@ -529,25 +529,25 @@ B·C 자동화는 아직 없습니다(§7 핸드오프 1번). 레거시 오케�
 |---|---|---|---|---|---|
 | Mellotron Airy Choir | 섹션/합주 | 패치 | 기본 | — | `Keyboard/Mellotron` |
 | Mellotron Boys Choir | 섹션/합주 | 패치 | 기본 | — | `Keyboard/Mellotron` |
+| Mellotron Brass | 섹션/합주 | 패치 | 기본 | — | `Keyboard/Mellotron` |
 | Mellotron Brass Choir | 섹션/합주 | 패치 | 기본 | — | `Keyboard/Mellotron` |
 | Mellotron Choir | 섹션/합주 | 패치 | 기본 | 52, 53 | `Keyboard/Mellotron` |
 | Mellotron Choir & Flute | 섹션/합주 | 패치 | 기본 | — | `Keyboard/Mellotron` |
 | Mellotron Cloud Choir | 섹션/합주 | 패치 | 기본 | — | `Keyboard/Mellotron` |
-| Mellotron Brass | 미상 | 패치 | 기본 | — | `Keyboard/Mellotron` |
+| Mellotron Flutes | 섹션/합주 | 패치 | 기본 | — | `Keyboard/Mellotron` |
+| Mellotron GC Brass | 섹션/합주 | 패치 | 기본 | — | `Keyboard/Mellotron` |
+| Mellotron Shimmering Chords | 섹션/합주 | 패치 | 기본 | — | `Keyboard/Mellotron` |
+| Mellotron Strings & Flute | 섹션/합주 | 패치 | 기본 | — | `Keyboard/Mellotron` |
+| Mellotron Violins | 섹션/합주 | 패치 | 기본 | — | `Keyboard/Mellotron` |
 | Mellotron Brassy Sequence | 미상 | 패치 | 기본 | — | `Keyboard/Mellotron` |
 | Mellotron Cello | 미상 | 패치 | 기본 | — | `Keyboard/Mellotron` |
 | Mellotron Flute | 미상 | 패치 | 기본 | 68, 71, 72, 73, 74, 76, 78, 79 | `Keyboard/Mellotron` |
-| Mellotron Flutes | 미상 | 패치 | 기본 | — | `Keyboard/Mellotron` |
-| Mellotron GC Brass | 미상 | 패치 | 기본 | — | `Keyboard/Mellotron` |
 | Mellotron Lo-Fi Lead | 미상 | 패치 | 기본 | — | `Keyboard/Mellotron` |
 | Mellotron Lush Sci-Fi Pad | 미상 | 패치 | 기본 | — | `Keyboard/Mellotron` |
 | Mellotron Orchestra Swirl | 미상 | 패치 | 기본 | — | `Keyboard/Mellotron` |
 | Mellotron Replicant Pad | 미상 | 패치 | 기본 | — | `Keyboard/Mellotron` |
-| Mellotron Shimmering Chords | 미상 | 패치 | 기본 | — | `Keyboard/Mellotron` |
 | Mellotron Skating Pad | 미상 | 패치 | 기본 | — | `Keyboard/Mellotron` |
-| Mellotron Strings & Flute | 미상 | 패치 | 기본 | — | `Keyboard/Mellotron` |
 | Mellotron Vintage Pattern | 미상 | 패치 | 기본 | — | `Keyboard/Mellotron` |
-| Mellotron Violins | 미상 | 패치 | 기본 | — | `Keyboard/Mellotron` |
 
 **월드** (50개 악기, 119항목)
 

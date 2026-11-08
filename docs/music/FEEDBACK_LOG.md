@@ -726,7 +726,7 @@ WAV 12개와 Logic 프로젝트 12개를 만들었습니다. 전곡 48kHz·24bit
       - 현악은 GM 번호로 닿습니다: PC 40–43 → Studio Violins 1·Violas·Cellos·Double Basses, 44·45 → Eden Park, 48 → Kensington(이전 "GM 기기 4" 폴백이 해소됐습니다), 49 → Bloomsbury, 50 → Authentic Strings.
       - 새로 설치한 legacy 오케스트라 패치는 GM 번호로 닿지 않습니다: PC 6 → Muted Clav, 46 → Space Harp, 47 → Taiko Drums, 60 → Studio Baritone Sax, 68 → Mellotron Flute, 70 → Studio Bass Trombone. 하프시코드·오보에·바순·하프·팀파니를 쓰려면 트랙에 패치를 이름으로 불러오는 자동화가 필요합니다.
       - **정정 — 솔로 바이올린 (11-08)**: "서양 솔로 바이올린 없음"은 라이브러리 패치만 본 판단이었습니다. Sampler 프리셋으로는 솔로 바이올린이 있습니다: `Plug-In Settings/Sampler/z_Legacy/Strings/Violin (Arco).exs`(지속음 3종 × 12 샘플, 77 MB)와 `Violin (Pizzicato).exs`(22 샘플)입니다. 레가토·빠른 패시지 주법은 없어서, 사계의 솔로 런을 얼마나 자연스럽게 낼지는 청취로 판단해야 합니다. GM PC 40 은 섹션(Studio Violins 1)을 불러오므로, 이 프리셋도 이름으로 불러오는 자동화가 필요합니다.
-      - **전체 인벤토리 (11-08 20:29)**: `tools/library_inventory.py` 로 번들 전체(팩 81, 악기 패치 5,502, 오디오 패치 529, Sampler 프리셋 2,369, 플러그인 프리셋·샘플 크기·루프·IR, 큐레이션 664항목)를 스캔해 `logic_library_inventory.json` 에 적고, 메인 세션 핸드오프 문서 `LOGIC_LIBRARY_INVENTORY.md` 를 만들었습니다. 핵심은 악기를 부르는 경로가 세 가지(GM 번호 / 라이브러리 패치 / Sampler 프리셋)이고, 오케스트라 악기 대부분이 뒤의 두 경로에만 있어 이름 로드 자동화가 필요하다는 점입니다.
+      - **전체 인벤토리 (11-08 20:40)**: `tools/library_inventory.py` 로 번들 전체(팩 81, 악기 패치 5,502, 오디오 패치 529, Sampler 프리셋 2,369, 플러그인 프리셋·샘플 크기·루프·IR, 큐레이션 664항목)를 스캔해 `logic_library_inventory.json` 에 적고, 메인 세션 핸드오프 문서 `LOGIC_LIBRARY_INVENTORY.md` 를 만들었습니다. 핵심은 악기를 부르는 경로가 세 가지(GM 번호 / 라이브러리 패치 / Sampler 프리셋)이고, 오케스트라 악기 대부분이 뒤의 두 경로에만 있어 이름 로드 자동화가 필요하다는 점입니다.
 - **교훈**:
   - 의뢰에 없는 장르·악기 전제를 브리프에 넣을 때는 먼저 사용자에게 확인합니다.
   - 브리프에 선호 장르와 그 장르의 레시피를 함께 두면, "자유"라고 써도 결과는 그쪽으로 정렬됩니다.

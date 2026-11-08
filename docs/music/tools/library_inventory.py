@@ -37,7 +37,7 @@ OUT = os.path.join(MUSIC, 'logic_library_inventory.json')
 # channel-strip name instead of the patch file name. Map display name → patch file name.
 GM_DISPLAY_ALIAS = {'톤휠 오르간': 'Tonewheel Organ', '어쿠스틱 기타': 'Acoustic Guitar', '하드 록': 'Hard Rock',
                     '루트 업라이트': 'Roots Upright', '(New) Horns': 'Studio Alto Sax 1',
-                    '선원': 'Zen Garden'}   # 선원(禪院) = Zen garden; the only alias not read off a strip, inferred from the patch list
+                    '선원': 'Zen Garden'}   # Logic ko.lproj/Item.strings: InsP/Zen Garden = 선원
 GM_FALLBACK = re.compile(r'^GM 기기 \d+$')
 
 # Curated "acoustic / orchestral" view: only these library folders are scanned (synths, drum kits,
@@ -81,7 +81,7 @@ FAMILY_KO = collections.OrderedDict([
     ('harp_plucked', '하프·발현 (기타 포함)'), ('percussion_orch', '타악 (선율타악 포함)'), ('choir', '합창'), ('organ', '오르간 (전자·톤휠)'),
     ('mellotron', '멜로트론'), ('world', '월드'), ('bass_electric', '일렉·업라이트 베이스'), ('other', '그 밖'),
 ])
-# Articulation tokens, longest first so "Tremolo Crescendo" wins over "Tremolo"; " leg" is a legacy legato typo.
+# Articulation regexes (lower-case names), longest first so "Tremolo Crescendo" wins over "Tremolo"; a trailing "leg" is a legacy legato typo.
 ARTICULATIONS = [(r'tremolo crescendo', 'Tremolo Crescendo'), (r'singlestrokes', 'SingleStrokes'), (r'pizzicato', 'Pizzicato'), (r'staccato', 'Staccato'),
                  (r'crescendo', 'Crescendo'), (r'tremolo', 'Tremolo'), (r'legato', 'Legato'), (r'trill 1', 'Trill 1'), (r'trill 2', 'Trill 2'),
                  (r'swells', 'Swells'), (r'sustain', 'Sustain'), (r'arco', 'Arco'), (r'\bleg$', 'Legato')]
@@ -151,10 +151,12 @@ def classify(rel, name):
         arts.append('keyswitch (+)')
     if not arts:
         arts = ['default']
-    # plural instrument names mean a section for orchestral families only; a pipe-organ 'Flutes' stop or a
-    # piano layered with strings is not an ensemble. Folder names ('Section Instruments', '3-Piece Section') count too.
-    plural_ok = fam in ('strings', 'woodwinds', 'brass', 'choir', 'world', 'percussion_orch')
-    if re.search(r'\b(section|ensemble|choir|chamber)\b|\d-piece', path_low) or (plural_ok and re.search(SECTION_HINT, low)):
+    # Folder names ('Section Instruments', '3-Piece Section', '10 Choir') mark sections; plural instrument names do
+    # too, but only for families where a plural means an ensemble (a pipe-organ 'Flutes' stop or a piano layered with
+    # strings is not one). Mellotron tapes named after ensembles ('3 Violins', 'GC 3 Brass') keep the hint.
+    folder_low = path_low.rsplit('/', 1)[0] if '/' in path_low else ''
+    plural_ok = fam in ('strings', 'woodwinds', 'brass', 'choir', 'world', 'percussion_orch', 'mellotron')
+    if re.search(r'\b(section|ensemble|choir|chamber)\b|\d-piece', folder_low) or (plural_ok and re.search(SECTION_HINT, low)):
         solo = 'section'
     elif re.search(SOLO_HINT, low + ' ' + path_low):
         solo = 'solo'
