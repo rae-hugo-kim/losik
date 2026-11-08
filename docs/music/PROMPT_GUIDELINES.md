@@ -61,7 +61,7 @@
 | 7 | Clavi | 70s Funk Clav |  |
 | 8 | Celesta | Toy Celesta |  |
 | 9 | Glockenspiel | Toy Glockenspiel |  |
-| 10 | Music Box | Mystic Vibes |  |
+| 10 | Music Box | Mystic Vibes | 뮤직 박스 아님 (비브라폰 계열 이름) |
 | 11 | Vibraphone | Vibraphone |  |
 | 12 | Marimba | Marimba |  |
 | 13 | Xylophone | Vibraphone | 실로폰 아님 (비브라폰) |
@@ -78,7 +78,7 @@
 | 24 | Nylon Guitar | Classical Acoustic Guitar |  |
 | 25 | Steel Guitar | 어쿠스틱 기타 |  |
 | 26 | Jazz Guitar | 하드 록 | 재즈 기타 아님 (디스토션) |
-| 27 | Clean Guitar | Classical Acoustic Guitar |  |
+| 27 | Clean Guitar | Classical Acoustic Guitar | 일렉 기타 아님 (클래식 기타) |
 | 28 | Muted Guitar | Phasing Guitar Plucks |  |
 | 29 | Overdriven Guitar | Eastern Synth Guitar | 오버드라이브 아님 |
 | 30 | Distortion Guitar | 하드 록 |  |
@@ -95,8 +95,8 @@
 | 41 | Viola | Studio Violas |  |
 | 42 | Cello | Studio Cellos |  |
 | 43 | Contrabass | Studio Double Basses |  |
-| 44 | Tremolo Strings | Eden Park |  |
-| 45 | Pizzicato Strings | Eden Park |  |
+| 44 | Tremolo Strings | Eden Park | 트레몰로 아님 (섹션 기본 주법) |
+| 45 | Pizzicato Strings | Eden Park | 피치카토 아님 (섹션 기본 주법) |
 | 46 | Orchestral Harp | Space Harp | 오케스트라 하프 아님 (신스) |
 | 47 | Timpani | Taiko Drums | 팀파니 아님 (타이코) |
 | 48 | String Ensemble 1 | Kensington |  |
@@ -110,27 +110,27 @@
 | 56 | Trumpet | Studio Trumpet 1 |  |
 | 57 | Trombone | Studio Trombone 1 |  |
 | 58 | Tuba | Studio Bass Trombone | 튜바 아님 (베이스 트롬본) |
-| 59 | Muted Trumpet | Sugar Hill |  |
-| 60 | French Horn | Studio Baritone Sax | 호른 아님 (바리톤 색소폰) |
+| 59 | Muted Trumpet | Sugar Hill | 뮤트 트럼펫 아님 (브라스·색소폰 섹션) |
+| 60 | French Horn | Studio Baritone Sax | 프렌치 호른 아님 (바리톤 색소폰) |
 | 61 | Brass Section | Sugar Hill |  |
 | 62 | Synth Brass 1 | Bright Synth Brass |  |
 | 63 | Synth Brass 2 | 80s Pop Synth Brass |  |
-| 64 | Soprano Sax | (New) Horns | 소프라노 색소폰 아님 |
+| 64 | Soprano Sax | (New) Horns | 소프라노 색소폰 아님 (알토 색소폰 — `Studio Alto Sax 1` 패치) |
 | 65 | Alto Sax | Studio Alto Sax 2 |  |
 | 66 | Tenor Sax | Studio Alto Sax 2 | 테너 아님 (알토) |
-| 67 | Baritone Sax | (New) Horns |  |
+| 67 | Baritone Sax | (New) Horns | 바리톤 색소폰 아님 (알토 색소폰 — `Studio Alto Sax 1` 패치) |
 | 68 | Oboe | Mellotron Flute | 오보에 아님 (멜로트론 플루트) |
 | 69 | English Horn | Studio Baritone Sax | 잉글리시 호른 아님 (바리톤 색소폰) |
 | 70 | Bassoon | Studio Bass Trombone | 바순 아님 (베이스 트롬본) |
 | 71 | Clarinet | Mellotron Flute | 클라리넷 아님 (멜로트론 플루트) |
 | 72 | Piccolo | Mellotron Flute | 피콜로 아님 (멜로트론 플루트) |
-| 73 | Flute | Mellotron Flute |  |
-| 74 | Recorder | Mellotron Flute |  |
+| 73 | Flute | Mellotron Flute | 오케스트라 플루트 아님 (멜로트론 플루트) |
+| 74 | Recorder | Mellotron Flute | 리코더 아님 (멜로트론 플루트) |
 | 75 | Pan Flute | Sweet Dream Flute |  |
-| 76 | Blown Bottle | Mellotron Flute |  |
+| 76 | Blown Bottle | Mellotron Flute | 블로운 보틀 아님 (멜로트론 플루트) |
 | 77 | Shakuhachi | Liquid Breath Flute |  |
-| 78 | Whistle | Mellotron Flute |  |
-| 79 | Ocarina | Mellotron Flute |  |
+| 78 | Whistle | Mellotron Flute | 휘슬 아님 (멜로트론 플루트) |
+| 79 | Ocarina | Mellotron Flute | 오카리나 아님 (멜로트론 플루트) |
 | 80 | Lead 1 square | Reverse Engineering |  |
 | 81 | Lead 2 saw | The Final Lead |  |
 | 82 | Lead 3 calliope | Sync Lead |  |
@@ -168,11 +168,11 @@
 | 114 | Steel Drums | GM 기기 11 | 저품질 GM 폴백 — 쓰지 않음 |
 | 115 | Woodblock | Xylo Keyboard | 우드블록 아님 |
 | 116 | Taiko Drum | Taiko Drums |  |
-| 117 | Melodic Tom | Tom Mid High - Synthia |  |
+| 117 | Melodic Tom | Tom Mid High - Synthia | 패치 이름으로 보아 드럼 킷의 탐 한 조각 |
 | 118 | Synth Drum | Kick 1 - Drum Synth Kit | 드럼 킷 전체가 로드됨 |
 | 119 | Reverse Cymbal | Kick 1 - Tough Kit | 드럼 킷 전체가 로드됨 |
 | 120 | Guitar Fret Noise | Mech Impact | 효과음 아님 |
-| 121 | Breath Noise | Breathy Vox |  |
+| 121 | Breath Noise | Breathy Vox | 효과음 아님 (보컬 계열 이름) |
 | 122 | Seashore | Deeper Emotion | 효과음 아님 |
 | 123 | Bird Tweet | 선원 | 효과음 아님 |
 | 124 | Telephone Ring | Azure Crystal Synth Bells | 효과음 아님 |
@@ -199,14 +199,14 @@
 | 127 | SoCal |
 
 **GM 번호로는 닿지 않는 패치** (설치돼 있지만 SMF 임포트로는 불러올 수 없으며, 쓰려면 트랙에 패치를 이름으로 불러오는 자동화가 필요합니다):
-- `z_Legacy/Orchestral`: Harpsichord, Celesta, Oboe, Bassoon Solo, English Horn, Piccolo, Flute Solo, Clarinet Solo, Harp, Timpani, Glockenspiel, Xylophone, Tubular Bells, Crotales, French Horn Solo·French Horns·Trumpets·Trombones·Tuba·Full Brass, 합창 11종, 현악 섹션(Violins 1·2, Violas, Cellos, Basses, Full Strings 등)
-- `Strings/Studio Strings`: Section Instruments 중 Abbey Wood·King's Cross (Eden Park·Kensington·Bloomsbury 는 PC 44·45·48·49 로 닿습니다)
-- `z_Legacy/World`: Medieval Lute, Celtic Harp, Hammered Dulcimer, Oud, Sitar, Erhu 등
-- Alchemy·Studio Horns 단일 악기 대부분
-- 서양 솔로 바이올린 패치는 라이브러리에 없습니다(현악은 모두 섹션 패치).
+- `z_Legacy/Orchestral`: Harpsichord, Celesta, Oboe, Bassoon Solo, English Horn, Piccolo, Flute Solo, Clarinet Solo, Harp, Timpani, Glockenspiel, Xylophone, Tubular Bells, Crotales, French Horn Solo·French Horns·Trumpets·Trombones·Tuba·Full Brass, 합창 11종, 현악 섹션(Violins 1·2, Violas, Cellos, Basses, Full Strings 등)이 있습니다.
+- `Strings/Studio Strings`: Section Instruments 중 Abbey Wood·King's Cross 가 해당합니다(Eden Park·Kensington·Bloomsbury 는 PC 44·45·48·49 로 닿습니다).
+- `z_Legacy/World`: Medieval Lute, Celtic Harp, Hammered Dulcimer, Oud, Sitar, Erhu 등이 있습니다.
+- Alchemy 프리셋과 Studio Horns 단일 악기 대부분도 해당합니다.
+- 서양 솔로 바이올린 패치는 라이브러리에 없습니다(현악은 모두 섹션 패치입니다).
 
 **함정 (사용 금지/주의)**:
-- 비고가 적힌 번호는 GM 이름대로의 소리가 나지 않습니다. 사계 편성에서는 특히 PC 6(하프시코드), 46(하프), 47(팀파니), 60(호른), 68·70(오보에·바순)이 해당합니다.
+- 비고가 적힌 번호는 GM 이름대로의 소리가 나지 않습니다. 사계 편성에서는 특히 PC 6(하프시코드), 46(하프), 47(팀파니), 60(프렌치 호른), 68·70(오보에·바순)이 해당합니다.
 - `GM 기기 N` 으로 로드되는 PC 54·85·91·114 는 저품질 GM 폴백이므로 쓰지 않습니다.
 - PC 48 은 이전에 "GM 기기 4" 로 폴백했지만, 라이브러리 설치 뒤 Studio Strings 섹션(Kensington)으로 로드됩니다(2026-11-08).
 - PC 119(GM 리버스 심벌)는 Tough Kit 전체가 로드됩니다. 리버스 심벌 효과는 **크래시 롤 크레셴도**(벨로시티 34→112 램프)로 만듭니다.
@@ -223,7 +223,7 @@
 | 신스 풀코드 스택 | "신디사이저 소리밖에 안 들림" | §2-6 |
 | 808 매마디 홀드 | "베이스가 너무 부각" | §2-7 |
 | 피아노 아르페지오 스타카토 | "끊어지는 느낌" | §2-8 |
-| PC 48/119 오매핑 | 스트링 저품질 / 라이저 단타 | §4 함정 |
+| PC 48/119 오매핑 | 스트링 저품질 / 라이저 단타 | §4 함정 (PC 48 은 2026-11-08 라이브러리 설치로 해소) |
 
 ## 6. 워크플로 (고정)
 

@@ -2,17 +2,23 @@
 
 Builds small SMFs (15 melodic programs per file on channels 0–15 except 9, plus one drum-kit
 track last on channel 9), imports each into Logic under the cross-session LogicLock, reads the
-mixer strip patch names, and closes the project without saving. Strip order follows track order;
-a multi-output drum kit expands into several strips, so the drum track is always last.
+mixer strip patch names, and closes the imported (untitled) project without saving. Strip order
+follows track order; each track, drum kits included, shows as one strip (2026-11-08 measurement).
+
+Refuses to start a batch while any project window is open, so it never discards someone's work and
+never reads a leftover project's strips. The map file is only written when every batch succeeded
+with the expected strip count; any failure exits 1 and leaves the previous map untouched.
 
     python3 docs/music/tools/gm_map.py            # measure everything, write docs/music/gm_patch_map.json
     python3 docs/music/tools/gm_map.py --dry-run  # only write the SMFs to /private/tmp/gm_map/
 """
+import argparse
 import json
 import os
 import subprocess
 import sys
 import time
+import unicodedata
 
 import pipeline as P
 
@@ -73,46 +79,115 @@ def strips_list(raw):
     return [n for n in names if n not in ('Stereo Out', 'Master') and not n.replace(' ', '').isdigit()]
 
 
-def measure(path, timeout=900):
-    with P.LogicLock('vivaldi-gm-map'):
-        P.close_all_projects(save=False)
-        subprocess.run(['open', '-a', P.APP, path], capture_output=True)
-        t0 = time.time()
-        while time.time() - t0 < timeout:
-            if any(w.startswith('무제') and w.endswith('- 트랙') for w in P.windows()):
-                break
-            time.sleep(5)
-        else:
-            return None, 'import timeout'
+def _windows_strict():
+    """Logic window names (NFC). Unlike pipeline.windows(), a failed query raises instead of
+    returning [], so "no project open" is never inferred from an error."""
+    rc, out, err = P.osa(f'''tell application "System Events"
+tell process "{P.APP}"
+set out to ""
+repeat with w in windows
+set out to out & "|" & (name of w)
+end repeat
+return out
+end tell
+end tell''')
+    if rc != 0:
+        raise RuntimeError(f'window list failed: {err[:80]}')
+    return [unicodedata.normalize('NFC', w) for w in out.split('|')[1:]]
+
+
+def _imports(names):
+    """Untitled project windows (main or mixer-only) — the SMF import, never a saved project."""
+    return [w for w in names if w.startswith('무제') and (w.endswith('- 트랙') or w.endswith('- 믹서: 트랙'))]
+
+
+def close_import():
+    """Close only the untitled import without saving; titled projects are never touched."""
+    for _ in range(4):
+        left = _imports(_windows_strict())
+        if not left:
+            return True
+        P.osa(f'''tell application "System Events"
+tell process "{P.APP}"
+set frontmost to true
+perform action "AXRaise" of window "{left[0]}"
+delay 0.5
+keystroke "w" using command down
+delay 2
+{P._click_any(P.DONT_SAVE)}
+end tell
+end tell''')
         time.sleep(3)
-        clear_import_alerts()
-        time.sleep(2)
-        P.open_mixer()
-        raw = P.mixer_strips()
-        P.close_all_projects(save=False)
-        return raw, None
+    return not _imports(_windows_strict())
+
+
+def measure(path, timeout=900):
+    """Returns (raw strip string, None) or (None, error). Refuses to start while any project is
+    open or while the window list cannot be read; afterwards closes only its own untitled import."""
+    with P.LogicLock('vivaldi-gm-map'):
+        try:
+            open_projects = [w for w in _windows_strict() if w.endswith('- 트랙') or w.endswith('- 믹서: 트랙')]
+        except (RuntimeError, subprocess.TimeoutExpired) as exc:
+            return None, f'cannot read Logic windows, refusing to start: {exc}'
+        if open_projects:
+            return None, f'project already open, refusing to touch it: {open_projects}'
+        subprocess.run(['open', '-a', P.APP, path], capture_output=True)
+        raw, err = None, None
+        try:
+            t0 = time.time()
+            while time.time() - t0 < timeout:
+                if any(w.startswith('무제') and w.endswith('- 트랙') for w in P.windows()):
+                    break
+                time.sleep(5)
+            else:
+                err = 'import timeout'
+            if err is None:
+                time.sleep(3)
+                clear_import_alerts()
+                time.sleep(2)
+                P.open_mixer()
+                raw = P.mixer_strips()
+                if not raw.startswith('['):
+                    err = f'mixer strips unreadable: {raw[:80]!r}'
+        except subprocess.TimeoutExpired as exc:
+            err = f'osascript timeout: {exc.cmd[-1][:60] if exc.cmd else exc}'
+        try:
+            closed = close_import()
+        except (RuntimeError, subprocess.TimeoutExpired) as exc:
+            closed, err = False, (err + '; ' if err else '') + f'close check failed: {exc}'
+        if not closed:
+            err = (err + '; ' if err else '') + 'could not close the import'
+        return (raw if err is None else None), err
 
 
 def main(argv):
+    ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    ap.add_argument('--dry-run', action='store_true', help='only write the SMFs, do not touch Logic')
+    args = ap.parse_args(argv[1:])
     os.makedirs(OUT_DIR, exist_ok=True)
     plan = [(i, mel, kit, build(i, mel, kit)) for i, (mel, kit) in enumerate(batches())]
-    if '--dry-run' in argv:
+    if args.dry_run:
         for i, mel, kit, path in plan:
             print(path, mel[:1], mel[-1:], kit)
         return 0
     result = {'measured': time.strftime('%Y-%m-%dT%H:%M:%S%z'), 'melodic': {}, 'drum_kits': {}, 'raw': {}}
     for i, mel, kit, path in plan:
         raw, err = measure(path)
-        result['raw'][os.path.basename(path)] = raw or err
-        if raw is None:
-            print(f'{path}: {err}', flush=True)
-            continue
-        names = strips_list(raw)
+        name = os.path.basename(path)
+        if err is None:
+            names = strips_list(raw)
+            expected = len(mel) + (kit is not None)
+            if len(names) != expected:
+                err = f'{len(names)} strips, expected {expected}: {raw}'
+        if err is not None:
+            print(f'{name}: FAILED {err} — map not written', flush=True)
+            return 1
+        result['raw'][name] = raw
         for k, pc in enumerate(mel):
-            result['melodic'][str(pc)] = names[k] if k < len(names) else None
+            result['melodic'][str(pc)] = names[k]
         if kit is not None:
-            result['drum_kits'][str(kit)] = names[len(mel):] or None
-        print(f'{os.path.basename(path)}: {raw}', flush=True)
+            result['drum_kits'][str(kit)] = names[len(mel):]
+        print(f'{name}: {raw}', flush=True)
     with open(MAP_PATH, 'w', encoding='utf-8') as f:
         json.dump(result, f, ensure_ascii=False, indent=1)
     print(f'wrote {MAP_PATH}')

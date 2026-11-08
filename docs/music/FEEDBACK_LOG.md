@@ -721,7 +721,7 @@ WAV 12개와 Logic 프로젝트 12개를 만들었습니다. 전곡 48kHz·24bit
       - 아직 설치되지 않은 것: **Logic 10 Instruments(13.88 GB)**, Ellie Dixon, Vintage Breaks, Bass Amp Boutique. Skyline Heat 는 559/575 로 그대로입니다.
       - 여전히 없는 악기: 서양 솔로 바이올린(현악은 모두 섹션 패치입니다).
   - 파이프라인은 SMF 임포트 때 GM PC 로만 악기를 고르므로, 라이브러리를 깔아도 PC 매핑에 걸린 패치까지만 쓸 수 있습니다.
-    - **Logic 10 과 GM 전수 실측 (11-08 17:26~17:45)**: 사용자가 레거시 팩(약 10 GB)으로 Logic 10 Instruments 를 받았습니다. 다운로드는 내장 디스크 임시 폴더에 받은 뒤 Netac 에 약 38 MB/s 로 풀렸습니다. 이제 팩 정의 81개 중 79개가 설치돼 있고(남은 것은 Ellie Dixon 데모와 불완전한 Skyline Heat), 번들은 78 GB 입니다.
+    - **Logic 10 과 GM 전수 실측 (11-08 17:26~17:45)**: 사용자가 Logic 10 Instruments(다운로드 9.28 GB, 설치 13.88 GB — 팩 관리자에는 레거시 팩 약 10 GB 로 보였습니다)를 받았습니다. 다운로드는 내장 디스크 임시 폴더에 받은 뒤 Netac 에 약 38 MB/s 로 풀렸습니다. 이제 팩 정의 81개 중 79개가 설치돼 있고(남은 것은 Ellie Dixon 데모와 불완전한 Skyline Heat), 번들은 78 GB 입니다.
       - `tools/gm_map.py` 로 GM 128개와 드럼 킷 13개를 실측했습니다(파일 13개, 각 약 40초). 결과는 `gm_patch_map.json` 과 `PROMPT_GUIDELINES.md` §4 표입니다.
       - 현악은 GM 번호로 닿습니다: PC 40–43 → Studio Violins 1·Violas·Cellos·Double Basses, 44·45 → Eden Park, 48 → Kensington(이전 "GM 기기 4" 폴백이 해소됐습니다), 49 → Bloomsbury, 50 → Authentic Strings.
       - 새로 설치한 legacy 오케스트라 패치는 GM 번호로 닿지 않습니다: PC 6 → Muted Clav, 46 → Space Harp, 47 → Taiko Drums, 60 → Studio Baritone Sax, 68 → Mellotron Flute, 70 → Studio Bass Trombone. 하프시코드·오보에·바순·하프·팀파니를 쓰려면 트랙에 패치를 이름으로 불러오는 자동화가 필요합니다.
