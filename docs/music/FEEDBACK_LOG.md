@@ -704,6 +704,15 @@ WAV 12개와 Logic 프로젝트 12개를 만들었습니다. 전곡 48kHz·24bit
     - 새로 생긴 패치: Studio Strings(Violins 1·2, Violas, Cellos, Double Basses, 섹션 5종), Studio Horns(섹션과 단일 악기)입니다.
     - 설치되지 않은 팩은 13개(다운로드 27.4 GB)입니다: Logic 10 Instruments 13.88 GB, Logic Studio 2, Alchemy 7종, Bass Amp Boutique, Vintage Breaks, Ellie Dixon, Spatial Audio Demo Grid. "모든 팩 다운로드"가 이 호환성 팩을 포함하지 않았거나, 끊긴 뒤 다시 시도되지 않은 것으로 보입니다(추정). 하프시코드와 목관 솔로 패치는 아직 보이지 않습니다.
   - 내장 디스크 여유는 63 GB 입니다.
+  - **최종 (11-08 13:20)**: 사용자 확인으로는 Logic 팩 관리자가 "사용 가능한 모든 팩"을 받았다고 표시합니다.
+    - 팩 정의 74개 중 61개를 설치했고, 번들은 39 GB 입니다. 02:18 이후 USB2 상태로 끊김이 없습니다.
+    - 남은 12개(Logic 10 Instruments, Logic Studio 2, Alchemy 7종, Ellie Dixon, Vintage Breaks, Bass Amp Boutique)는 모두 `PackageVersion = -2` 이고, Build·Revision 이 없으며, 6월에 만들어진 정의입니다. 설치된 팩은 버전이 1 이상이고 Build 가 있습니다. 그래서 지금 카탈로그에서는 제공되지 않는 오래된 정의로 판단합니다(추정).
+    - 사계 편성에 쓸 수 있는 악기:
+      - 현악: Studio Strings 섹션(Violins 1·2, Violas, Cellos, Double Basses)
+      - 금관: Studio Horns, legacy 오케스트라 금관(French Horn Solo·섹션, Trumpets, Trombones, Tuba, Full Brass)
+      - 목관: Flute Solo, Clarinet Solo
+      - 그 밖에: Mellotron(Violins, Cello, Flutes, Choir), 피아노(Concert Grand, Steinway), Grand Organ, Erhu·Guzheng·Koto·Pipa
+    - 없는 악기: 서양 솔로 바이올린, 하프시코드(패치는 없고 Alchemy 샘플 한 벌뿐입니다), 오보에, 바순, 하프, 팀파니.
   - 파이프라인은 SMF 임포트 때 GM PC 로만 악기를 고르므로, 라이브러리를 깔아도 PC 매핑에 걸린 패치까지만 쓸 수 있습니다.
 - **교훈**:
   - 의뢰에 없는 장르·악기 전제를 브리프에 넣을 때는 먼저 사용자에게 확인합니다.
