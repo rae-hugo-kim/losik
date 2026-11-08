@@ -203,7 +203,7 @@
 - `Strings/Studio Strings`: Section Instruments 중 Abbey Wood·King's Cross 가 해당합니다(Eden Park·Kensington·Bloomsbury 는 PC 44·45·48·49 로 닿습니다).
 - `z_Legacy/World`: Medieval Lute, Celtic Harp, Hammered Dulcimer, Oud, Sitar, Erhu 등이 있습니다.
 - Alchemy 프리셋과 Studio Horns 단일 악기 대부분도 해당합니다.
-- 서양 솔로 바이올린 패치는 라이브러리에 없습니다(현악은 모두 섹션 패치입니다).
+- 솔로 바이올린은 라이브러리 패치로는 없고(라이브러리의 바이올린 패치는 모두 섹션입니다), Sampler 프리셋으로만 있습니다: `Plug-In Settings/Sampler/z_Legacy/Strings/Violin (Arco).exs` 와 `Violin (Pizzicato).exs` 입니다. Arco 는 지속음 3종(sus, 마르카토 sus, 여린 시작 sus)을 각각 12개 샘플로 담았고(44.1 kHz/16 bit, 77 MB), Pizzicato 는 22개 샘플입니다. 레가토나 빠른 패시지 전용 주법은 없습니다. 쓰려면 Sampler 플러그인에 프리셋을 이름으로 불러와야 합니다.
 
 **함정 (사용 금지/주의)**:
 - 비고가 적힌 번호는 GM 이름대로의 소리가 나지 않습니다. 사계 편성에서는 특히 PC 6(하프시코드), 46(하프), 47(팀파니), 60(프렌치 호른), 68·70(오보에·바순)이 해당합니다.
