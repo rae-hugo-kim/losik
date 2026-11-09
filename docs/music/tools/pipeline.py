@@ -733,7 +733,9 @@ end tell''', timeout=90)
 
 def library_pick(patch, proj='무제'):
     """라이브러리 검색 필드에 patch 를 치고 결과 표에서 이름이 정확히 같은 행을 선택한다(선택 = 로드).
-    반환: (성공 여부, 결과 행 이름 목록)."""
+    정확히 같은 행이 없고 결과가 **한 행뿐**이면 그 행을 고른다 — 최신 팩 패치는 한국어 UI 에서 표시명이 번역돼
+    있어(실측: `Tonewheel Organ` → 표시 "톤휠 오르간") 파일 이름으로 검색은 되지만 글자가 다르기 때문이다.
+    반환: (성공 여부, 결과 행 이름 목록, 실제로 고른 행 이름 또는 '')."""
     patch_lit = _as_str(patch)
     rc, out, err = osa(_FIND_BY_DESC + f'''tell application "System Events"
 tell process "{APP}"
@@ -759,13 +761,18 @@ if lastValue is not "{patch_lit}" then exit repeat
 set t to my findRole(lib, 0, "AXTable")
 if t is not missing value then
 set names to ""
+set nRows to 0
+set lone to missing value
 repeat with r in rows of t
 set n to value of UI element 1 of UI element 1 of r
 set names to names & n & "|"
+set nRows to nRows + 1
+set lone to r
 considering case
 if n is "{patch_lit}" and hit is missing value then set hit to r
 end considering
 end repeat
+if hit is missing value and nRows is 1 then set hit to lone
 if hit is not missing value then exit repeat
 end if
 delay 0.5
@@ -774,26 +781,31 @@ if hit is not missing value then exit repeat
 delay 1.0
 end repeat
 if hit is missing value then return "MISS " & names & "|(field=" & lastValue & ")"
+set gotName to value of UI element 1 of UI element 1 of hit
 set selected of hit to true
 delay 2.5
-return "OK " & names
+return "OK " & gotName & "|" & names
 end tell
 end tell''', timeout=90)
     if rc != 0:
-        return False, [err[:120]]
-    status, _, names = out.partition(' ')
-    return status == 'OK', [_nfc(n) for n in names.split('|') if n]
+        return False, [err[:120]], ''
+    status, _, rest = out.partition(' ')
+    got, _, names = rest.partition('|')
+    return status == 'OK', [_nfc(n) for n in names.split('|') if n], _nfc(got) if status == 'OK' else ''
 
 
 def load_patches(patches, proj='무제', log=print):
     """patches: {track_index(1-based, SMF 트랙 순서): spec}. spec 은
-      'Harpsichord'                 라이브러리 패치(.patch) 이름 — 정확히 일치해야 한다
+      'Harpsichord'                 라이브러리 패치(.patch) 이름 — 파일 이름(확장자 제외). 라이브러리 표시명이 번역돼
+                                     있어도 검색 결과가 한 행뿐이면 그 행을 올린다(library_pick).
       ('Violins 1', 'Violin (Arco)') (Sampler 를 쓰는 패치, Sampler 프리셋/EXS 악기 이름) — 패치를 먼저 올려 Sampler 를
                                      확보하고, 인스펙터의 Sampler 라이브러리 표시기로 층을 바꿔 EXS 악기를 올린다.
-    번호로 트랙을 고르므로 이름이 겹쳐도 안전하다. 확인: 패치는 인스펙터 스트립의 패치 층 '라이브러리 표시기' 이름이
-    패치명과 같아야 하고, EXS 는 트랙 이름이 EXS 이름으로 바뀌어야 한다(임포트로 자동 명명된 트랙만 — 사람이 이름을
-    바꾼 트랙은 이름이 안 바뀐다, 2026-11-09 실측).
-    선행 조건: 임포트된 '<proj> - 트랙' 창. 반환: {index: (spec, ok, (patch_indicator, header_name))}; 하나라도 실패면 RuntimeError."""
+    번호로 트랙을 고르므로 이름이 겹쳐도 안전하다. 확인: 패치는 (선택된 트랙의) 인스펙터 패치 층 '라이브러리 표시기'
+    이름이 고른 행 이름과 같고 i 번째 트랙 헤더가 임포트 때 이름에서 바뀌었거나(채널 스트립 이름은 패치 파일 이름과
+    다를 수 있다 — 실측 `Studio Alto Sax 1` → "(New) Horns") 고른 이름과 같아야 한다. EXS 는 헤더가 고른 EXS 이름으로
+    바뀌어야 한다(임포트로 자동 명명된 트랙 기준 — 사람이 이름을 바꾼 트랙은 이름이 안 바뀐다, 2026-11-09 실측).
+    선행 조건: 임포트된 '<proj> - 트랙' 창. 반환: {index: (spec, ok, (올라간 패치 표시명, EXS 표시명 또는 None, 헤더 이름))};
+    하나라도 실패면 RuntimeError."""
     for i, spec in patches.items():
         parts = spec if isinstance(spec, tuple) else (spec,)
         if (type(i) is not int or (isinstance(spec, tuple) and len(parts) != 2)
@@ -817,18 +829,19 @@ def load_patches(patches, proj='무제', log=print):
         if not ok_sel or picked != f'{i}\t{names[i - 1]}':
             raise RuntimeError(f'track {i}: select failed (picked={picked!r}, expected {names[i - 1]!r})')
         ok_focus, _, _ = focus_library_slot(None, proj)      # 앞 트랙에서 Sampler 층을 봤더라도 패치 층으로 되돌린다
-        ok_pick, rows = library_pick(base, proj) if ok_focus else (False, [])
+        ok_pick, rows, got = library_pick(base, proj) if ok_focus else (False, [], '')
         ok_ind, _, loaded = focus_library_slot(None, proj)   # 올라간 패치명 읽기 (표시기 이름)
         name = _nth(track_names(proj), i)
         # 표시기는 '선택된' 트랙의 것이고 헤더는 i 번째 트랙의 것 — 둘 다 맞아야 엉뚱한 트랙에 올라간 경우를 거른다
-        ok = ok_pick and ok_ind and loaded == base and name == base
+        ok = ok_pick and ok_ind and loaded == got and (name != names[i - 1] or name == got)
+        got_exs = None
         if ok and exs:
             ok_focus, desc, _ = focus_library_slot('Sampler', proj)
-            ok_pick, rows = library_pick(exs, proj) if ok_focus else (False, [desc])
+            ok_pick, rows, got_exs = library_pick(exs, proj) if ok_focus else (False, [desc], '')
             name = _nth(track_names(proj), i)
-            ok = ok_pick and name == exs
-        results[i] = (spec, ok, (loaded, name))
-        log(f'track {i}: {names[i - 1]} -> {spec}: {"OK" if ok else "FAIL"} (patch={loaded}, header={name}, results={rows[:5]})')
+            ok = ok_pick and name == got_exs
+        results[i] = (spec, ok, (loaded, got_exs, name))
+        log(f'track {i}: {names[i - 1]} -> {spec}: {"OK" if ok else "FAIL"} (patch={loaded}, exs={got_exs}, header={name}, results={rows[:5]})')
     failed = {i: r for i, r in results.items() if not r[1]}
     if failed:
         raise RuntimeError(f'patch load failed: {failed}')
