@@ -10,7 +10,7 @@
 | 필드 | 내용 | 나쁜 예 | 좋은 예 |
 |---|---|---|---|
 | **정체성 한 줄** | 이 곡만의 색을 한 문장으로 | "신스웨이브 곡" | "심야 고속도로, 몽환+질주감" |
-| **레퍼런스** | 방향 지표 1~2곡 (모방 아님) + **형식 판정**: 주제선율이 노래(정점 있는 멜로디)인가 오스티나토(반복 리프)인가, 구조가 벌스/코러스인가 점층(볼레로형)인가 | (없음) / "차우차우처럼" | "Kavinsky Nightcall의 무게감" / "차우차우 — 오스티나토 위 점층, 후퇴 2회, 붕괴 없음" |
+| **레퍼런스** | 방향 지표 1~2곡 (모방 아님) | (없음) | "Kavinsky Nightcall의 무게감" |
 | **키/BPM/길이** | 명시적 수치 | "적당히" | "C장조 94BPM, 80마디(3:24)" |
 | **진행 (기능 표기)** | 벌스/코러스 별도, 로마자 기능으로 | "마이너 4코드" | "벌스 I–vi–ii–V, 코러스 IV–V–iii–vi" |
 | **훅 정체성** | 멜로디의 리듬+음정 아이디어를 언어로 | "좋은 멜로디" | "E 페달톤 모터 리듬" / "옥타브 점프 디스코 리프" |
@@ -21,21 +21,15 @@
 
 ## 2. 작곡 규칙 (MUST)
 
-> 실측 맥락 표기: 규칙마다 어느 편성에서 확인됐는지 적는다. 다른 편성으로 옮길 때는 그 규칙을 재검증 대상으로 본다 — 08-25 규칙은 대부분 신스웨이브(Drum Synth Kit)에서, 09-14~19 규칙은 밴드(SoCal)에서 나왔다.
-
 1. **진행**: 곡마다 기능적으로 다른 진행. 조옮김만 다른 클론 금지 — 토닉 대비 (interval, quality) 시그니처로 유니크 검증.
 2. **멜로디**: 훅은 손으로 쓴다. 랜덤워크 생성기 출력 금지. 훅 정체성이 한 문장으로 서술 가능해야 함.
 3. **아르페지오/반주 텍스처**: 그리드(4분/8분/16분/점8분), 패턴 궤적, 밀도, 활동구간 4가지를 곡별로 분화.
-4. **드럼 휴머나이즈**: 벨로시티 지터 ±8~12, 타이밍 ±6~10틱, 스윙(장르별 0~22틱). 미적용 시 메트로놈처럼 들림(신스웨이브 실측). 밴드 킷에서는 16분 햇 강약(예 88/60/74/60)만으로도 격자 비교가 가능했음(09-14) — 지터는 곡 단계에서.
-5. **클랩(GM39)** — 킷별:
-   - 일렉트로닉 킷(Drum Synth Kit): 단독 노출 금지, 스네어 밑 레이어로만 (08-25 실측 "메트로놈 넣었나?").
-   - 어쿠스틱 킷(SoCal): 클랩 샘플이 vel 96 에서도 고스트 스네어 vel 40 대비 **-5 dB** (09-19 계측) → 단독으로는 리듬 장식 효과가 없다. 그 자리는 고스트 스네어(vel 35~45)로. 레이어는 차이를 만들지 않음.
-6. **신스 코드는 1도+5도**만. 풀 코드 스택은 다른 트랙을 마스킹함(신스웨이브 실측). 화음 충전은 피아노/스트링 담당. 밴드 편성에서 패드는 같은 원칙 + "필요한 구간에만 스윽 들어와 조용히 나감"(first-light v3, 후퇴 구간 벨로시티 램프).
-7. **베이스 절제**: 서브 영역은 2마디 1히트 수준부터 시작. 벨로시티는 드럼보다 낮게. 볼레로형·점층 구조에서는 근음 페달만(선율·어프로치 없음) — "든든하게 꾸준히"(first-light v3).
+4. **드럼 휴머나이즈**: 벨로시티 지터 ±8~12, 타이밍 ±6~10틱, 스윙(장르별 0~22틱). 미적용 시 메트로놈처럼 들림(실측 사례).
+5. **클랩(GM39)은 단독 노출 금지** — 스네어 밑 레이어로만, 밴드 사운드에서는 제거.
+6. **신스 코드는 1도+5도**만. 풀 코드 스택은 다른 트랙을 마스킹함(실측 사례). 화음 충전은 피아노/스트링 담당.
+7. **베이스 절제**: 서브 영역은 2마디 1히트 수준부터 시작. 벨로시티는 드럼보다 낮게.
 8. **피아노 아르페지오/컴핑에는 CC64 서스테인** 마디 단위 리페달.
 9. **섹션 경계**: 라이저(크래시 롤 크레셴도) + 임팩트(크래시) + 필인(스네어 램프+탐 하강)을 기본 세트로.
-10. **다곡 배치는 편곡 엔진을 공유하지 않는다** — 진행·훅 시그니처가 §2-1/2-2 를 통과해도 드럼 패턴·텍스처 문법이 같으면 클론으로 들린다(Dawn Set 09-10 실측 "기본값 클론, 동요/트로트"). 레퍼런스 형식을 빌릴 때는 주제선율의 성격(노래인가 오스티나토인가)을 먼저 확인.
-11. **심벌은 어쿠스틱 킷에서 판단한다** — 스케치 툴(신스 크래시 = 고역만·0.5초)에서 킥/스네어/탐 배치는 옮겨도 크래시·라이드·오픈햇은 SoCal 에서 재판정. 어쿠스틱 크래시(전대역·2~3초)는 다운비트 표지로 들리므로 **당김 자리(4&)에는 스플래시(GM55), 다음 1박에 크래시**(09-18 실측, drumgrid B-splash). 필인 중 16분 햇은 두 손으로 불가 → 풋햇 4분(GM44)만.
 
 ## 3. 품질 게이트 (바운스 전/후 자동 검증)
 
@@ -50,38 +44,173 @@
 
 ## 4. 검증된 GM PC → 패치 매핑표 (실측)
 
-| PC | 채널 | 로드되는 패치 | 용도 |
+2026-11-08 에 Logic 12.4 에서 128개 전부와 드럼 킷 13개를 실측했습니다. 사운드 라이브러리는 Netac 에 둔 상태이고, 팩 정의 81개 중 79개가 설치돼 있었습니다. 측정 도구는 `tools/gm_map.py`, 원자료(믹서 스트립 문자열 포함)는 `gm_patch_map.json` 입니다. 라이브러리를 바꾸면 다시 측정합니다.
+
+- 패치 이름 일부는 Logic 이 한국어로 표시합니다(예: `톤휠 오르간` = Tonewheel Organ, `하드 록` = Hard Rock, `어쿠스틱 기타` = Acoustic Guitar).
+- 비고가 비어 있으면 GM 악기와 같은 계열의 패치가 로드됩니다. 비고가 있으면 다른 악기가 로드되므로, 그 GM 악기 소리를 기대하고 쓰면 안 됩니다.
+
+| PC | GM 악기 | 로드되는 패치 | 비고 |
 |---|---|---|---|
-| 0 | 드럼(10) | **SoCal** | 어쿠스틱 밴드 드럼 |
-| 25 | 드럼(10) | **Drum Synth Kit** | 일렉트로닉 드럼 |
-| 0 | 멜로디 | **Studio Grand** | 피아노 |
-| 4 | 멜로디 | Deluxe Classic | E.피아노 |
-| 33 | 멜로디 | **Simple Foundation** | 핑거 일렉 베이스 |
-| 38 | 멜로디 | Pulse Bass (ES2) | 신스 베이스 |
-| 6 | 멜로디 | **Muted Clav** | 펑크 커팅/긴장 건반 (하프시코드 대용) |
-| 26 | 멜로디 | **Hard Rock** | 일렉기타 (유일 확보) |
-| 27 | 멜로디 | Classical Acoustic Guitar | 어쿠스틱 기타 |
-| 88 | 멜로디 | Glistening Pad | 스위프/글리터 패드 |
-| 50 | 멜로디 | **Authentic Strings** | 스트링 앙상블 |
-| 80 | 멜로디 | Reverse Engineering (RetroSyn) | 신스 리드(스퀘어) |
-| 81 | 멜로디 | The Final Lead (ES2) | 신스 리드(소우) |
-| 89 | 멜로디 | Classic Pad | 신스 패드 |
-| 90 | 멜로디 | **Epic Cloud Formation** | 폴리신스 |
-| 100 | 멜로디 | Cosmonaut Space Capsule | FX/앰비언트 |
-| 16 | 멜로디 | Tonewheel Organ | 오르간 롱코드 (17 Bebop / 18 Classic Rock / 19 Side Man 도 로드 확인, 2026-09-05) |
-| 24 | 멜로디 | Classical Acoustic Guitar | 나일론 (27 과 동일 패치) |
-| 25 | 멜로디 | Acoustic Guitar | 스틸 어쿠스틱 스트럼 |
-| 46 | 멜로디 | Space Harp | 하프/산투리 트레몰로 대용 (2026-09-19) |
-| 110 | 멜로디 | Authentic Strings | 바이올린 대용 — 솔로 바이올린 패치 없음 (2026-09-19) |
-| 21 | 멜로디 | Cheap Organ | 아코디언 대용 — 22·23 도 동일, 전용 패치 없음 (2026-09-19) |
-| 105 | 멜로디 | Acoustic Guitar | 25 와 동일 패치 (2026-09-19) |
+| 0 | Acoustic Grand | Studio Grand |  |
+| 1 | Bright Acoustic | Vintage Upright |  |
+| 2 | Electric Grand | Concert Grand |  |
+| 3 | Honky-tonk | Dark Lo-Fi Piano |  |
+| 4 | E.Piano 1 | Deluxe Classic |  |
+| 5 | E.Piano 2 | 80s Wave Bells |  |
+| 6 | Harpsichord | Muted Clav | 하프시코드 아님 (클라비넷) |
+| 7 | Clavi | 70s Funk Clav |  |
+| 8 | Celesta | Toy Celesta |  |
+| 9 | Glockenspiel | Toy Glockenspiel |  |
+| 10 | Music Box | Mystic Vibes | 뮤직 박스 아님 (비브라폰 계열 이름) |
+| 11 | Vibraphone | Vibraphone |  |
+| 12 | Marimba | Marimba |  |
+| 13 | Xylophone | Vibraphone | 실로폰 아님 (비브라폰) |
+| 14 | Tubular Bells | Delicate Bells |  |
+| 15 | Dulcimer | Digging Deeper Clav | 덜시머 아님 (클라비넷) |
+| 16 | Drawbar Organ | 톤휠 오르간 |  |
+| 17 | Percussive Organ | Bebop Organ |  |
+| 18 | Rock Organ | Classic Rock Organ |  |
+| 19 | Church Organ | Side Man Organ | 교회 오르간 아님 (재즈 오르간) |
+| 20 | Reed Organ | Grand Organ |  |
+| 21 | Accordion | Cheap Organ | 아코디언 아님 (오르간) |
+| 22 | Harmonica | Cheap Organ | 하모니카 아님 (오르간) |
+| 23 | Tango Accordion | Cheap Organ | 아코디언 아님 (오르간) |
+| 24 | Nylon Guitar | Classical Acoustic Guitar |  |
+| 25 | Steel Guitar | 어쿠스틱 기타 |  |
+| 26 | Jazz Guitar | 하드 록 | 재즈 기타 아님 (디스토션) |
+| 27 | Clean Guitar | Classical Acoustic Guitar | 일렉 기타 아님 (클래식 기타) |
+| 28 | Muted Guitar | Phasing Guitar Plucks |  |
+| 29 | Overdriven Guitar | Eastern Synth Guitar | 오버드라이브 아님 |
+| 30 | Distortion Guitar | 하드 록 |  |
+| 31 | Guitar Harmonics | 어쿠스틱 기타 |  |
+| 32 | Acoustic Bass | 루트 업라이트 |  |
+| 33 | Finger Bass | Simple Foundation |  |
+| 34 | Pick Bass | Punchy Bottom |  |
+| 35 | Fretless Bass | Punchy Bottom |  |
+| 36 | Slap Bass 1 | Slap & Pop |  |
+| 37 | Slap Bass 2 | Slap & Pop |  |
+| 38 | Synth Bass 1 | Pulse Bass |  |
+| 39 | Synth Bass 2 | Taureg Moon Bass |  |
+| 40 | Violin | Studio Violins 1 |  |
+| 41 | Viola | Studio Violas |  |
+| 42 | Cello | Studio Cellos |  |
+| 43 | Contrabass | Studio Double Basses |  |
+| 44 | Tremolo Strings | Eden Park | 트레몰로 아님 (섹션 기본 주법) |
+| 45 | Pizzicato Strings | Eden Park | 피치카토 아님 (섹션 기본 주법) |
+| 46 | Orchestral Harp | Space Harp | 오케스트라 하프 아님 (신스) |
+| 47 | Timpani | Taiko Drums | 팀파니 아님 (타이코) |
+| 48 | String Ensemble 1 | Kensington |  |
+| 49 | String Ensemble 2 | Bloomsbury |  |
+| 50 | Synth Strings 1 | Authentic Strings |  |
+| 51 | Synth Strings 2 | Space Strings |  |
+| 52 | Choir Aahs | Mellotron Choir |  |
+| 53 | Voice Oohs | Mellotron Choir |  |
+| 54 | Synth Voice | GM 기기 11 | 저품질 GM 폴백 — 쓰지 않음 |
+| 55 | Orchestra Hit | The Final Lead | 오케스트라 히트 아님 (신스 리드) |
+| 56 | Trumpet | Studio Trumpet 1 |  |
+| 57 | Trombone | Studio Trombone 1 |  |
+| 58 | Tuba | Studio Bass Trombone | 튜바 아님 (베이스 트롬본) |
+| 59 | Muted Trumpet | Sugar Hill | 뮤트 트럼펫 아님 (브라스·색소폰 섹션) |
+| 60 | French Horn | Studio Baritone Sax | 프렌치 호른 아님 (바리톤 색소폰) |
+| 61 | Brass Section | Sugar Hill |  |
+| 62 | Synth Brass 1 | Bright Synth Brass |  |
+| 63 | Synth Brass 2 | 80s Pop Synth Brass |  |
+| 64 | Soprano Sax | (New) Horns | 소프라노 색소폰 아님 (알토 색소폰 — `Studio Alto Sax 1` 패치) |
+| 65 | Alto Sax | Studio Alto Sax 2 |  |
+| 66 | Tenor Sax | Studio Alto Sax 2 | 테너 아님 (알토) |
+| 67 | Baritone Sax | (New) Horns | 바리톤 색소폰 아님 (알토 색소폰 — `Studio Alto Sax 1` 패치) |
+| 68 | Oboe | Mellotron Flute | 오보에 아님 (멜로트론 플루트) |
+| 69 | English Horn | Studio Baritone Sax | 잉글리시 호른 아님 (바리톤 색소폰) |
+| 70 | Bassoon | Studio Bass Trombone | 바순 아님 (베이스 트롬본) |
+| 71 | Clarinet | Mellotron Flute | 클라리넷 아님 (멜로트론 플루트) |
+| 72 | Piccolo | Mellotron Flute | 피콜로 아님 (멜로트론 플루트) |
+| 73 | Flute | Mellotron Flute | 오케스트라 플루트 아님 (멜로트론 플루트) |
+| 74 | Recorder | Mellotron Flute | 리코더 아님 (멜로트론 플루트) |
+| 75 | Pan Flute | Sweet Dream Flute |  |
+| 76 | Blown Bottle | Mellotron Flute | 블로운 보틀 아님 (멜로트론 플루트) |
+| 77 | Shakuhachi | Liquid Breath Flute |  |
+| 78 | Whistle | Mellotron Flute | 휘슬 아님 (멜로트론 플루트) |
+| 79 | Ocarina | Mellotron Flute | 오카리나 아님 (멜로트론 플루트) |
+| 80 | Lead 1 square | Reverse Engineering |  |
+| 81 | Lead 2 saw | The Final Lead |  |
+| 82 | Lead 3 calliope | Sync Lead |  |
+| 83 | Lead 4 chiff | Analog Horns |  |
+| 84 | Lead 5 charang | 80s Starlight |  |
+| 85 | Lead 6 voice | GM 기기 12 | 저품질 GM 폴백 — 쓰지 않음 |
+| 86 | Lead 7 fifths | Fifth Formant Keys |  |
+| 87 | Lead 8 bass+lead | Ambient Lead |  |
+| 88 | Pad 1 new age | Glistening Pad |  |
+| 89 | Pad 2 warm | Classic Pad |  |
+| 90 | Pad 3 polysynth | Epic Cloud Formation |  |
+| 91 | Pad 4 choir | GM 기기 2 | 저품질 GM 폴백 — 쓰지 않음 |
+| 92 | Pad 5 bowed | Space Strings |  |
+| 93 | Pad 6 metallic | Ghost Voices |  |
+| 94 | Pad 7 halo | Tidal Space |  |
+| 95 | Pad 8 sweep | Aurora Waves |  |
+| 96 | FX 1 rain | Crystal Rain |  |
+| 97 | FX 2 soundtrack | Distant Air |  |
+| 98 | FX 3 crystal | Glacial Forms |  |
+| 99 | FX 4 atmosphere | Pipe Ambience |  |
+| 100 | FX 5 brightness | Cosmonaut Space Capsule |  |
+| 101 | FX 6 goblins | Forever Riser |  |
+| 102 | FX 7 echoes | Backwards Masking |  |
+| 103 | FX 8 sci-fi | Dark Abyss |  |
+| 104 | Sitar | 80s Starlight | 시타르 아님 |
+| 105 | Banjo | 어쿠스틱 기타 | 밴조 아님 |
+| 106 | Shamisen | Asian Plucked Strings |  |
+| 107 | Koto | Koto |  |
+| 108 | Kalimba | Sweet Overdrive Kalimba |  |
+| 109 | Bagpipe | Toy Melodica | 백파이프 아님 |
+| 110 | Fiddle | Authentic Strings | 피들 아님 (현악 합주) |
+| 111 | Shanai | Toy Melodica | 샤나이 아님 |
+| 112 | Tinkle Bell | Delicate Bells |  |
+| 113 | Agogo | Agogo High |  |
+| 114 | Steel Drums | GM 기기 11 | 저품질 GM 폴백 — 쓰지 않음 |
+| 115 | Woodblock | Xylo Keyboard | 우드블록 아님 |
+| 116 | Taiko Drum | Taiko Drums |  |
+| 117 | Melodic Tom | Tom Mid High - Synthia | 패치 이름으로 보아 드럼 킷의 탐 한 조각 |
+| 118 | Synth Drum | Kick 1 - Drum Synth Kit | 드럼 킷 전체가 로드됨 |
+| 119 | Reverse Cymbal | Kick 1 - Tough Kit | 드럼 킷 전체가 로드됨 |
+| 120 | Guitar Fret Noise | Mech Impact | 효과음 아님 |
+| 121 | Breath Noise | Breathy Vox | 효과음 아님 (보컬 계열 이름) |
+| 122 | Seashore | Deeper Emotion | 효과음 아님 |
+| 123 | Bird Tweet | 선원 | 효과음 아님 |
+| 124 | Telephone Ring | Azure Crystal Synth Bells | 효과음 아님 |
+| 125 | Helicopter | Ocean Waves Modular | 효과음 아님 |
+| 126 | Applause | Rain Strum | 효과음 아님 |
+| 127 | Gunshot | Underwater Laser | 효과음 아님 |
+
+**드럼 킷 (채널 10)**
+
+| PC | 로드되는 킷 |
+|---|---|
+| 0 | SoCal |
+| 8 | 복고풍 록 |
+| 16 | Kick 1 - Tough Kit |
+| 24 | Kick 1 - Drum Synth Kit |
+| 25 | Kick 1 - Drum Synth Kit |
+| 26 | Roots |
+| 27 | SoCal |
+| 28 | SoCal |
+| 32 | Roots |
+| 40 | Latin |
+| 48 | Latin |
+| 56 | Latin |
+| 127 | SoCal |
+
+**GM 번호로는 닿지 않는 패치** (설치돼 있지만 SMF 임포트로는 불러올 수 없고, `pipeline.produce(..., patches={트랙 번호: '패치 이름'})` 로 이름을 지정해 올립니다 — 사용법은 `LOGIC_LIBRARY_INVENTORY.md` §4.1):
+- `z_Legacy/Orchestral`: Harpsichord, Celesta, Oboe, Bassoon Solo, English Horn, Piccolo, Flute Solo, Clarinet Solo, Harp, Timpani, Glockenspiel, Xylophone, Tubular Bells, Crotales, French Horn Solo·French Horns·Trumpets·Trombones·Tuba·Full Brass, 합창 11종, 현악 섹션(Violins 1·2, Violas, Cellos, Basses, Full Strings 등)이 있습니다.
+- `Strings/Studio Strings`: Section Instruments 중 Abbey Wood·King's Cross 가 해당합니다(Eden Park·Kensington·Bloomsbury 는 PC 44·45·48·49 로 닿습니다).
+- `z_Legacy/World`: Medieval Lute, Celtic Harp, Hammered Dulcimer, Oud, Sitar, Erhu 등이 있습니다.
+- Alchemy 프리셋과 Studio Horns 단일 악기 대부분도 해당합니다.
+- 솔로 바이올린은 라이브러리 패치로는 없고(라이브러리의 바이올린 패치는 모두 섹션입니다), Sampler 프리셋으로만 있습니다: `Plug-In Settings/Sampler/z_Legacy/Strings/Violin (Arco).exs` 와 `Violin (Pizzicato).exs` 입니다. Arco 는 지속음 3종(sus, 마르카토 sus, 여린 시작 sus)을 각각 12개 샘플로 담았고(44.1 kHz/16 bit, 77 MB), Pizzicato 는 22개 샘플입니다. 레가토나 빠른 패시지 전용 주법은 없습니다. 쓰려면 Sampler 플러그인에 프리셋을 이름으로 불러와야 합니다.
 
 **함정 (사용 금지/주의)**:
-- PC 48 → "GM 기기 4" 폴백 (저품질 GM). 스트링은 PC 50 사용.
-- PC 119 (GM 리버스 심벌) → "Tough Kit" 오매핑. 리버스 심벌 효과는 **크래시 롤 크레셴도**(벨로시티 34→112 램프)로 구현.
-- PC 28 → "GM 기기 2" 폴백, PC 29 → "Eastern Synth Guitar" (용도 제한적).
-- 미검증 PC(11, 62 등)는 사용 후 반드시 스트립 실측.
-- PC 40 / 41 / 42 / 44 → "GM 기기 3/1/2/3" 폴백 (2026-09-19). 현악 솔로는 110. PC 104 → "80s Starlight" (시타르 아님).
+- 비고가 적힌 번호는 GM 이름대로의 소리가 나지 않습니다. 사계 편성에서는 특히 PC 6(하프시코드), 46(하프), 47(팀파니), 60(프렌치 호른), 68·70(오보에·바순)이 해당합니다.
+- `GM 기기 N` 으로 로드되는 PC 54·85·91·114 는 저품질 GM 폴백이므로 쓰지 않습니다.
+- PC 48 은 이전에 "GM 기기 4" 로 폴백했지만, 라이브러리 설치 뒤 Studio Strings 섹션(Kensington)으로 로드됩니다(2026-11-08).
+- PC 119(GM 리버스 심벌)는 Tough Kit 전체가 로드됩니다. 리버스 심벌 효과는 **크래시 롤 크레셴도**(벨로시티 34→112 램프)로 만듭니다.
+- 표에 없는 경우(라이브러리 변경 뒤 등)는 사용 후 반드시 스트립을 실측합니다.
 
 ## 5. 실패 사례 → 규칙 매핑 (이 문서의 근거)
 
@@ -89,15 +218,12 @@
 |---|---|---|
 | v0a 배치: 7곡 전부 i–VI–III–VII 조옮김 | "같은 곡을 키만 바꾼 느낌" | §2-1 |
 | 공용 아르페지오 3공식 | "아르페지오가 다 똑같이 들림" | §2-3 |
-| 고정 벨로시티 햇+노출 클랩 (Drum Synth Kit) | "메트로놈 넣었나?" | §2-4, §2-5 일렉트로닉 |
-| SoCal 클랩 단독 vs 고스트 스네어 (drumgrid B-clap) | 차이 없음 — 클랩이 -5 dB 로 묻힘 | §2-5 어쿠스틱 |
-| Dawn Set 4곡 편곡 엔진 공유 / 레퍼런스를 노래 형식으로 오독 | "기본값 클론, 동요/트로트" / "주제부가 심심, 볼레로형이었음" | §2-10, §1 레퍼런스 |
-| 스케치 툴 신스 크래시를 4& 에 배치 → SoCal 로 옮김 | "크래시가 빨리 나온다" | §2-11 |
+| 고정 벨로시티 햇+노출 클랩 | "메트로놈 넣었나?" | §2-4, §2-5 |
 | 메트로놈이 바운스에 렌더 | 전 곡 클릭 오염 → 전량 재바운스 | §3 게이트 |
 | 신스 풀코드 스택 | "신디사이저 소리밖에 안 들림" | §2-6 |
 | 808 매마디 홀드 | "베이스가 너무 부각" | §2-7 |
 | 피아노 아르페지오 스타카토 | "끊어지는 느낌" | §2-8 |
-| PC 48/119 오매핑 | 스트링 저품질 / 라이저 단타 | §4 함정 |
+| PC 48/119 오매핑 | 스트링 저품질 / 라이저 단타 | §4 함정 (PC 48 은 2026-11-08 라이브러리 설치로 해소) |
 
 ## 6. 워크플로 (고정)
 
@@ -111,70 +237,11 @@
 - 구버전은 삭제하지 않고 `music/_archive-*/`로 보관
 - 헤드폰(블루투스) 청취는 Logic이 아니라 **바운스 파일을 Finder/QuickTime으로** (BT HFP 16kHz 강등 이슈)
 - **Suno 프롬프트는 공백 포함 1,000자 이내 (MUST)** — Suno 입력 필드 상한. Description ≤ 1,000자, Style ≤ 300자. 쓰고 나서 `len()` 으로 재서 출력한다(2026-10-21: 30블록이 1,262~1,710자로 넘쳐 전량 재작성). 잘라내는 우선순위는 키·BPM·코드 루프 → 드럼 골격 → 층(패드·텍스처·퍼커션) → 구조 한 줄 → "no lead, no vocals"; 벨로시티 수치·16분 칸 번호 같은 구현 세부는 넣지 않는다. 양식은 `SUNO_PROMPTS.md` 사용 메모
+- **Suno Cover 슬라이더**: weirdness ≤ 20~30%, variety 는 기본값. Cover 는 입력 오디오가 골격을 고정하므로 슬라이더를 올려도 방향이 바뀌지 않고 음색·품질만 들쭉날쭉해진다(2026-11-07 청취). 변주는 Style/Description 과 입력 MIDI 로 만든다.
+- **Suno "matches an existing recording" 반려**는 자작 GM 렌더에도 생기는 오탐이다(2026-11-06 lh02·lh14). 대응 순서: ① 템포 메타만 ±2 BPM(`{sid}-v2u`, lh02 통과) ② 드럼 제외 +1 반음 전조(`{sid}-v2t`) ③ support@suno.com — 2026-11-09 실측: "AI 탐지" 자동 응답만 오고 사람 처리 없음(사실상 막힘). 곡별로 다르게 걸리므로 하나가 만능이 아니다.
 - 코드는 `docs/music/tools/`(`pipeline.py` AX·SMF·계측 / `sketches.py`·`goldenhour.py` 작곡 / `round_*.py` 라운드별 수정)에 둔다 — 커널 상주 함수는 세션과 함께 휘발됨(2026-09-05 복원 비용 발생)
-- **밸런스는 SMF 의 CC7 로 잡히지 않는다** (계측: star v6 1차 시도 저역-고역 차 25.1→27.4 dB, 무효). 확실한 수단은 ① 편성/음역 정리 ② 악기 교체 ③ 벨로시티 스케일. AX 페이더는 새 임포트마다 리셋되고 성공률이 랜덤
+- **베이스 레벨은 SMF tick 0 의 CC7 로 잡힌다** — 2026-11-04 lh15 실측: Bass CC7 85/60/30 → <150 Hz 대역이 전체 대비 −0.8/−1.7/−3.6 dB, 리미터 히트 922/420/44. 권장값 **PC38 신스 48, PC33 핑거 85**, 다른 트랙은 CC7 생략. (옛 기록 "CC7 무효"(star v6, 저역-고역 차 25.1→27.4 dB)는 `band_balance()` 가 고역 대비 상대값이라 베이스 외 층이 함께 움직인 측정으로 보이며, 절대 저역 레벨로는 반영됨.) 그 밖의 밸런스 수단은 ① 편성/음역 정리 ② 악기 교체 ③ 벨로시티 스케일. AX 페이더는 새 임포트마다 리셋되고 성공률이 랜덤
 - 바운스 전/후 `band_balance()` 로 저역-고역 차(dB)를 이전판과 대조해 밸런스 변화 방향을 계측한다 (절대값이 아니라 상대 변화만 의미 있음)
 - osascript 창 이름은 한글이 NFD 로 돌아올 수 있음 → NFC 정규화 후 비교 (`pipeline.windows()`). 임포트 중에는 System Events 호출이 ~2분씩 블록되므로 대기 루프는 호출 횟수가 아니라 벽시계 기준으로
 - 같은 이름의 `.logicx` 가 `sketches/` 에 남아 있으면 저장 시 "대치하겠습니까?" 시트가 뜬다 (`save_project_as` 가 처리)
-- **Logic idle 무응답** (09-11~18, 4회 재현): 프로젝트 창 0개로 오래 idle 이면 `open -a` 임포트를 무시하고 `produce()` 가 `stage='open', windows=[]` 로 실패. `activate` 만으로는 부족. 창 0개 실패 시 먼저 `AXDialog` 의 static text 를 읽을 것 — 구독 만료("구독이 만료됨") 도 같은 증상(09-14, 30분 손실). **09-19 확정**: 문제는 idle 이 아니라 `open -a` 경로 — 새로 띄운 Logic 에서도 무시됨. AppleScript `tell app to open POSIX file` 은 같은 상태에서 즉시 임포트 → `pipeline.open_in_logic()` 로 교체, `produce()`·`open_mid()` 반영 완료 (rebetiko 5곡 + 프로브 1회 연속 성공).
-
-## 7. Suno 전달 규칙 (2026-09-19, 기존 4곡 Cover 완성본 대조에서 승격)
-
-> 근거: `FEEDBACK_LOG.md` "Suno 완성본 판정" — golden-hour v3 / star-cruiser v6 / ghost-signal v4 / chrome-sunset v6 의 Logic 의도(A) · 투입 Style(B) · Suno 자동 메타태그(C) · 청취(D) 4열 대조. 규칙 번호는 그 절의 후보 번호와 다르다(압축).
-> 이 절은 **로직에서 무엇에 시간을 쓸지**를 바꾼다: Suno 가 다시 쓰는 것에는 라운드를 쓰지 않는다.
-
-### 7.1 Suno Cover 의 텍스트 경로 (실측 구조)
-
-- **업로드 Style** (원곡 업로드 시 1회): 09-05 에는 Description 전문(~560자)이 그대로 들어갔고, **100자 제한은 09-12 부터** 적용. 이 Style 의 단어는 메타태그에 거의 반영되지 않았다 (4곡 중 생존 단어: "root notes", "swing", "Rhodes" 정도 — 전부 오디오에서도 읽히는 것).
-- **Cover Style** (Cover 생성 시): **실제 레버다** (09-20 canon-lofi 정정). 우리 단어가 Suno 의 확장 프롬프트에 원문 그대로 생존하고, Suno 는 거기에 보컬 서술·프로덕션 어휘(analog compression, plate reverb, tape saturation)·템포 감을 덧붙여 최종 프롬프트로 쓴다. 분위기·질감은 이 경로로 확실히 통제된다("의도한 프롬프트대로 분위기는 간다").
-- **메타태그**(`[Intro] [Section A] … [Outro]` + 편성 지시)는 업로드 시 **오디오 분석으로 1회 생성**되어 원곡 항목에 저장되고, Cover 는 이를 상속한다. 같은 업로드의 생성본들은 동일 태그. 편성·구조를 바꾸는 텍스트 레버는 메타태그 편집, 분위기·질감을 바꾸는 레버는 Cover Style.
-- 태그는 **음색·리듬·레이어 순서만** 서술한다. BPM·키·무드(horror)·화성(Phrygian)·필(half-time) 단어는 4곡 모두 태그에 없다.
-
-### 7.2 로직 → Suno 전달 표 (무엇이 살아남는가)
-
-| 로직 요소 | 전달 | 근거 |
-|---|---|---|
-| 레이어 누적 순서·섹션 구조 | **정확** | 4곡 모두 태그의 섹션 순서가 원곡과 일치 |
-| 선율 골격 (훅 리프의 음정·리듬) | **정확 — 악기는 바뀜** | 골든 피아노 리프 → 기타 리프(최고 호평), 크롬 EP 멜로디 → 기타 |
-| 화성 장치 → 무드 | **정확** | 고스트 프리지안 b2 → 태그엔 없어도 호러 톤으로 렌더 |
-| 드럼 그리드 스윙 (SW 틱) | 정확 ("with swing") | 크롬. 선율 스윙(스타 솔로)은 안 됨 — 필은 드럼으로 |
-| 드럼 벨로시티 지터 | 정확 ("velocity modulation") | 고스트 |
-| 베이스 "근음만" 설계 | 정확 ("follows root notes") | 크롬 |
-| CC74 필터 스윕 | 정확 ("filter resonance") | 스타 |
-| 라이저·크래시 롤 | **장르 의존** — 전자 문맥에선 "white noise riser", 어쿠스틱 문맥에선 누락 | 스타 O / 골든 X |
-| 폴리신스·EP·오르간 등 **건반 음색** | 범주로 축약 (오르간 → "Rhodes tremolo") | 크롬 v4/v5/v6 분기가 실제로는 기타 vs 건반 2종 |
-| 어쿠스틱 킷(SoCal) | **장르가 결정** — 폴리신스가 있으면 "electronic kit" 으로 | 골든·스타 모두 전자 킷으로 오인 |
-| 하프타임 | **전달 안 됨** ("snare on 2 and 4" 로 정규화) | 고스트. 원하면 BPM 을 절반으로 쓸 것(미검증) |
-| 롱톤·저벨로시티 레이어 (스트링·패드) | **누락 또는 재작성** | 골든 스트링 통째 누락, 스타 패드 톤 자동 교체 |
-| 단발 이벤트 (1마디 침묵·단독 크래시) | 태그화 안 됨, 오디오 피벗은 살아남 | 고스트 49마디 → 생성본 2 의 2:00 클랩 전환 |
-| 믹스 밸런스·킷 음색·"지루함" | **소멸** — Suno 가 재렌더 | 고스트 "베이스 앞/드럼 먹먹/지루" 셋 다 사라짐 |
-| 길이 | **~2.5–3 분으로 정규화** (3:27→2:54, 1:27→2:28, 1:32→발명된 브릿지·플루트·아웃트로) | 4곡 |
-
-### 7.3 로직 라운드에 적용할 규칙 (MUST)
-
-1. **원곡은 1:30 골격이면 충분하다.** Suno 가 길이를 정규화하고 부족분은 장르 어휘로 섹션을 발명한다(크롬 브릿지·플루트 — 호평). 3분을 채우는 라운드는 쓰지 않는다. 단, 발명은 장르 판단 안에서 일어나므로 **장르 판단이 맞는 오디오**여야 한다.
-2. **로직 판정 항목을 줄인다**: 화성·리듬 골격·레이어 존재 여부·선율 골격만 본다. 밸런스·킷 음색·패드 톤·경계 장치·지루함은 Suno 단계 이슈 — 라운드를 쓰지 않는다 (§6 밸런스 항목의 우선순위 하향을 확정).
-3. **난해한 솔로는 쓰지 않는다.** 가치는 솔로가 아니라 **브레이크 슬롯의 존재**다 (스타 25-32 난해 솔로 → "필인→클랩→코드 반복→변주" 로 렌더되어 최고 호평). 슬롯을 비워두고 코드만 유지.
-4. **어쿠스틱 밴드 사운드를 원하면 폴리신스를 넣지 않는다.** 폴리신스 하나가 킷·베이스·피아노 전부를 전자로 읽게 한다(골든).
-5. **장르 표지는 오디오에 넣는다.** Style 의 "city-pop" 은 안 잡히고 브러시+EP+롱코드가 로파이 재즈로 읽혔다(크롬). 시티팝이면 16분 신코페이션 베이스·코러스 기타 컷팅·디스코 햇을 로직에 실제로 쓴다.
-6. **롱톤 레이어에는 움직임을 준다.** 스트링·패드는 정적 롱톤이면 누락되고, 스윕(CC74)·아르페지오·리듬이 있으면 전달된다.
-7. **필은 드럼 그리드에 쓴다** (스윙 틱·벨로시티 지터). 선율에 스윙을 쓰거나 Style 에 "swinging" 이라 적어도 전달되지 않는다.
-8. **하프타임 의도는 BPM 으로 표현**하는 실험을 먼저 한다 (100 하프타임 → 50 표기). 미검증.
-
-### 7.4 Suno 단계 규칙 (재도전·메타태그 편집)
-
-1. **판정은 "의도한 감정·질감이 어느 구간에서 들리는가" 한 줄.** 4곡 채택 요인은 전부 한 구간·한 악기의 질감(골든 도입부 / 스타 브레이크 / 고스트 브릿지 / 크롬 피아노 비중)이었고 구성·길이·마무리는 한 번도 결정 요인이 아니었다. "다 그럴싸하게 들린다" 는 상태에서 결함 찾기는 불가능 — A 열(로직 의도) 대조만 유효.
-2. **재도전은 메타태그 편집으로 한다.** 채택본의 태그를 기본으로 두고 고치고 싶은 섹션 태그만 교체. 1순위 실험은 `[Outro]` (4곡 중 3곡의 미련이 마무리): 페이드 서술을 종지 서술로 — `drums stop, <악기> carries the last phrase, resolve on a held <으뜸화음> chord` / `final hit on the downbeat, cymbal ring out` / `slowing down into a held final chord`.
-3. **태그 구체성 ∝ 생성본 일관성** (가설, 크롬 vs 골든·스타). 고정하고 싶은 구간만 악기·주법을 특정하고(`walking fingered electric bass`, `chorus-modulated guitar`), 변주를 원하는 구간은 범주로 둔다.
-4. 태그의 **악기·구조 지시는 실행되지만 텍스처 FX 는 불확실** (크롬 vinyl crackle 미실행). FX 로 무드를 잡으려 하지 말 것.
-5. **Cover Style 100자**: 장르·질감·무드 + **"instrumental" 필수** — 빼면 Suno 가 보컬 서술(baritone/tenor/alto)을 스스로 추가한다(6개 중 5개, 09-20). 악기를 부각하려면 명사가 아니라 **역할 문구**("guitar cutting through the arrangement", "guitar takes the bridge") — 명사만("guitar cutting")으로는 부각되지 않았다.
-6. 같은 Style 의 생성본 중 **짧은 쪽이 원곡에 가깝다** (2:46 > 3:13). 초과 길이는 발명이므로 원곡성이 목표면 짧은 생성본을 고른다.
-7. 매처 회피용 리하모는 **정체성도 함께 희석**한다 (canon v2: 근음 2.5/8 치환만으로 "캐논인 듯 아닌 듯"). 원곡성은 선율보다 화성에 있다 — 회피는 리듬·구조 축을 먼저 쓰고 화성은 최소로.
-
-### 7.5 §1 스펙 템플릿에 대한 함의
-
-- **키/BPM/길이** → 길이는 "1:30 골격(36~40마디)" 을 기본값으로.
-- **편성** → "Suno 에서 살아남는 편성" 열 추가: 킷 종류는 장르로 결정되므로 **폴리신스 유무**를 먼저 정한다.
-- **다이내믹 아크** → 브레이크 슬롯 위치(마디)를 명시. 솔로 음정은 쓰지 않는다.
-- **경계 처리** → 전자 편성에서만 유효. 어쿠스틱 편성은 필인만 (라이저·임팩트는 Suno 가 자기 방식으로 넣음).
-- 신규 필드 **Suno 메타태그 초안** — 업로드 후 자동 태그를 받아 §7.4-2 로 편집할 섹션을 미리 정해둔다.
+- **Logic 바운스 대화상자는 마지막 저장 폴더를 기억한다** — 워크트리(세션)가 여럿이면 다른 세션이 쓴 `sketches/` 로 파일이 떨어진다(2026-10-30 "aif missing" ×3). `pipeline.BOUNCE_SEARCH` 가 형제 워크트리 `*/docs/music/sketches` 를 모두 보고, `wait_bounce_file(since=)` 가 옛 동명 파일을 거른다.

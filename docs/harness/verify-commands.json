@@ -12,6 +12,13 @@
     "python3 docs/music/tools/dh_opus_v3.py",
     "python3 docs/music/tools/lh_astra.py",
     "python3 docs/music/tools/lh_fable.py",
-    "python3 docs/music/tools/lh_opus.py"
+    "python3 docs/music/tools/lh_opus.py",
+    "python3 docs/music/tools/lh_astra_v2.py",
+    "python3 docs/music/tools/lh_fable_v2.py",
+    "python3 docs/music/tools/lh_opus_v2.py",
+    "python3 docs/music/tools/lh_sonnet_v2.py",
+    "python3 -B docs/music/tools/vivaldi_astra.py --check",
+    "python3 docs/music/tools/vivaldi_fable.py",
+    "python3 docs/music/tools/vivaldi_opus.py"
   ]
 }
