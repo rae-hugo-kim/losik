@@ -2275,3 +2275,41 @@ Cotton Ledge: 74 BPM, Bb major, 56 bars. Loop Bbmaj9 for two bars, then Cm9 and 
 ```
 Last Streetlamp: 72 BPM, G minor, 56 bars, the closer of the set. Loop Gm9-Ebmaj9-Am7b5-D7b9, i-VI-ii-V; electric piano holds bar one, enters late on the and-of-one in bar two, plays one plus beat four in bar three, holds bar four, re-pedalled every bar, with a low root-and-fifth pad, flat fifth under Am7b5. Sparse SoCal boom bap: kick on one plus the a-of-three, the and-of-two, the a-of-three, the and-of-three; snare on 2/4 with a single ghost, swung eighth hats, one open hat per four bars. Finger bass follows the kick minus its last hit. Nylon picks single tones. Grand piano lead: A-Bb-D / G-Bb / C-A / F#-A, rising from the ninth, an echo, and the leading tone turning home. Intro EP first, hats at 3, kick/snare at 5, bass, nylon and pad at 9; break 25-32 EP, bass and pad, no drums; crash at 33; outro 49-56 lets go in order: lead, nylon and pad leave, drums stop after bar 50, bass after bar 52, EP alone, last bar one held Gm9. no vocals, lo-fi warmth, DJ-friendly intro/outro.
 ```
+
+## lo-fi hip hop v2 보정 4곡 (2026-11-05) — Logic 바운스 청취 통과, Suno Cover 비교용
+
+## lh01-felt-doorway-v2
+**Style**
+`lo-fi hip hop, 76 BPM, D minor with Dorian color, mellow electric piano comping, warm pad, nylon guitar arpeggio, walking finger bass, acoustic boom bap with fills, swung hats, intimate EP lead, vinyl warmth, instrumental`
+
+**Description**
+```
+Felt Doorway: 76 BPM, D minor, 56 bars. Loop Dm9-Dm9-G13-G13. Mellow electric piano comps on one, two, three and the and-of-three/four, one inner voice moving each bar, re-pedalled; warm pad holds root-fifth-ninth from bar 1 with four-bar swells. Nylon guitar arpeggiates eighths from bar 1 to the end. Finger bass walks five notes a bar: root on one, chord tones, a chromatic approach, an octave pop every two bars. SoCal boom bap: kick on one plus changing pickups, snare 2/4, two ghosts, swung hats; fill every four bars, hats shift every eight, ride replaces closed hats in A2, soft crash at each section. EP lead: A-G-E / F-E-D / E-G-A / B-A-G with grace notes from the second pass; in A2 a second keyboard answers each phrase below the lead. Intro 1-8 keys+nylon+pad, hats 3, drums 5; A 9-24 bass, lead 17; break 25-32 nylon and pad carry, pickup fill; A2 33-48 full with ride and counter-line; outro 49-56 thins to keys. no vocals, lo-fi warmth, DJ-friendly intro/outro
+```
+
+## lh02-linen-afternoon-v2
+**Style**
+`lo-fi hip hop, 76 BPM, D minor, nylon guitar arpeggio opening, mellow electric piano comping, warm pad swells, walking finger bass, soft acoustic boom bap with fills, swung hats, gentle EP lead, tape warmth, instrumental`
+
+**Description**
+```
+Linen Afternoon: 76 BPM, D minor, 56 bars. Loop Dm9-Am7-Bbmaj7-Gm9, i-v-VI-iv. Nylon guitar arpeggiates eighths from bar 1 to the end with a thumb bass on each beat; warm pad holds three voices from bar 1 with four-bar swells. Mellow electric piano comps four times a bar, always on one, one inner voice stepping, re-pedalled; inverted in A2. Finger bass walks five notes a bar: root on one, chord tones, chromatic approaches, an octave pop every two bars. Soft SoCal boom bap: kick on one plus the and-of-three, snare 2/4, two ghosts, swung hats; fill every four bars, hats shift every eight, ride replaces closed hats in A2, soft crash at sections. EP lead resting on beat one: A-F-D / E-G / F-A-Bb / G-F with grace notes and turns; a second keyboard answers below in A2. Intro 1-8 nylon+keys+pad, hats 3, drums 5; A 9-24 bass, lead 17; break 25-32 nylon and pad, then keys rejoin, pickup fill; A2 33-48 full; outro 49-56 drums fade, keys last. no vocals, lo-fi warmth, DJ-friendly intro/outro
+```
+
+## lh14-brass-orchard-v2
+**Style**
+`lo-fi hip hop, 88 BPM, E major, bright-but-mellow electric piano ninths, grand piano counter-line, nylon guitar arpeggio, warm pad, walking synth bass, full acoustic boom bap with fills and ride, ghost snares, swung hats, nylon guitar lead, vinyl crackle, instrumental`
+
+**Description**
+```
+Brass Orchard: 88 BPM, E major, 64 bars. Loop Emaj9-Amaj9-G#m7-C#m9, I-IV-iii-vi. Electric piano comps three times a bar with an inner voice stepping down and back, re-pedalled, inverted in A2; warm pad holds root-fifth-ninth from bar 1 with four-bar swells. Nylon guitar arpeggiates eighths from bar 1 to the end with a thumb bass on one and three. Synth bass walks five notes a bar: root on one, chord tones, a chromatic approach, octave pops. Full SoCal boom bap: kick on one plus two syncopations, snare 2/4 with two ghosts, swung hats plus sixteenth flicks; fill every four bars, ride replaces closed hats in A2, crash at each section. Nylon lead: G#-B-C#-B / A-G#-E / D#-F#-G# / B-G#-F#-E with grace notes and turns; in A2 a grand piano riffs chord tones below and answers each phrase. Intro 1-8 EP+nylon+pad, hats 3, drums 5; A 9-28 bass, lead 21; break 29-36 keys, bass, hats rebuild, pickup fill; A2 37-56 full; outro 57-64 thins. no vocals, lo-fi warmth, DJ-friendly intro/outro
+```
+
+## lh15-quartz-overpass-v2
+**Style**
+`lo-fi hip hop, 88 BPM, C# minor, electric piano ninths with sustain, tonewheel organ counter-line, steel-string guitar arpeggio, warm pad, walking deep synth bass, full acoustic boom bap with fills and ride, ghost snares, swung hats, grand piano lead, tape saturation, instrumental`
+
+**Description**
+```
+Quartz Overpass: 88 BPM, C# minor, 64 bars, peak of the set. Loop C#m9-F#9-Amaj9-G#7b13, i-IV9-VI-V. Electric piano comps three times a bar with one inner voice moving, re-pedalled, inverted in A2; warm pad holds three voices from bar 1 with four-bar swells. Steel-string guitar arpeggiates eighths from bar 1 to the end with a thumb bass on every beat. Deep synth bass walks: root on one, chord tones under the kicks, a chromatic approach before four, an octave pop every two bars. Full SoCal boom bap: kick on one plus two syncopations, snare 2/4 with two ghosts, swung hats; fill every four bars, ride replaces closed hats in A2, crash at each section. Grand piano lead: G#-B-G#-E / A#-G# / B-C#-B-G# / B#-G# with grace notes and turns; in A2 a tonewheel organ riffs eighths below and answers each phrase. Intro 1-8 EP+guitar+pad, hats 3, drums 5; A 9-28 bass, lead 21; break 29-36 drums, bass, guitar, pad; A2 37-56 full; outro 57-64 thins. no vocals, lo-fi warmth, DJ-friendly intro/outro
+```
