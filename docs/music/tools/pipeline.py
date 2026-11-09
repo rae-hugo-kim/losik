@@ -67,18 +67,25 @@ def meta(tick, mtype, payload, order=0):
     return (tick, order, bytes([0xFF, mtype, len(payload)]) + payload)
 
 
-def build_smf(title, bpm, keysig_sf, minor, n_bars, tracks, pcs, nt, cc, markers=()):
+def build_smf(title, bpm, keysig_sf, minor, n_bars, tracks, pcs, nt, cc, markers=(), timesig=(4, 4), tempos=()):
     """tracks: [(name, midi_ch)], pcs: {idx: program}, nt: {idx: [(tick,dur,pitch,vel)]},
-    cc: {idx: [(tick, cc, val)]}, markers: [(bar, text)]"""
+    cc: {idx: [(tick, cc, val)]}, markers: [(bar, text)], timesig: (num, den) with den a power of two,
+    tempos: [(tick, bpm)] 추가 템포 이벤트(루바토·아첼레란도). 기본값(4/4, 템포 변화 없음)은 이전 출력과 바이트 동일.
+    4/4 가 아니면 bt()/BAR 는 쓰지 말고 bar_ticks = num * PPQ * 4 // den 로 틱을 직접 계산한다(band-fable 7d6d9a0 에서 가져옴)."""
+    num, den = timesig
+    assert den > 0 and den & (den - 1) == 0, f'timesig denominator must be a power of two: {timesig}'
+    bar_ticks = num * (PPQ * 4 // den)
     cond = [
         meta(0, 0x03, title.encode()),
         meta(0, 0x51, struct.pack('>I', round(60_000_000 / bpm))[1:]),
-        meta(0, 0x58, bytes([4, 2, 24, 8])),
+        meta(0, 0x58, bytes([num, den.bit_length() - 1, 24, 8])),
         meta(0, 0x59, struct.pack('>bB', keysig_sf, 1 if minor else 0)),
-        meta(bt(n_bars) + BAR, 0x06, b'END'),
+        meta(n_bars * bar_ticks, 0x06, b'END'),
     ]
+    for tick, tb in tempos:
+        cond.append(meta(tick, 0x51, struct.pack('>I', round(60_000_000 / tb))[1:]))
     for bar, text in markers:
-        cond.append(meta(bt(bar), 0x06, text.encode()))
+        cond.append(meta((bar - 1) * bar_ticks, 0x06, text.encode()))
     chs = [track_chunk(cond)]
     for i, (name, mch) in enumerate(tracks):
         evs = [meta(0, 0x03, name.encode()), (0, 0, bytes([0xC0 | mch, pcs[i]]))]

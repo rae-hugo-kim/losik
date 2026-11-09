@@ -736,3 +736,4 @@ WAV 12개와 Logic 프로젝트 12개를 만들었습니다. 전곡 48kHz·24bit
   - 의뢰에 없는 장르·악기 전제를 브리프에 넣을 때는 먼저 사용자에게 확인합니다.
   - 브리프에 선호 장르와 그 장르의 레시피를 함께 두면, "자유"라고 써도 결과는 그쪽으로 정렬됩니다.
 - **Suno support 답변 (2026-11-09)**: lh14 반려 문의에 사람 답변 없이 "AI 탐지" 취지의 자동 응답만 옴 — 매칭기가 기존 녹음 일치가 아니라 **AI 생성물 탐지**로 걸고 있다는 뜻으로 읽힘(우리 GM 렌더는 AI 생성이 아니지만 분류기는 그렇게 봄). support 경로는 사실상 막힘. lh14 는 Suno Cover 없이 두거나 렌더 자체(패치·휴머나이즈)를 바꿔 재시도하는 선택만 남음. lo-fi 작업은 주제 세션 `lofi` 로 인계.
+- **v2 착수 준비 (2026-11-09, 주제 세션 vivaldi)**: PR #2 가 issuereport 에 머지됐고(16d01de), 세션 위계 규칙 `.omp/rules/losik-sessions.md` 를 받았습니다. band-fable `7d6d9a0` 의 `build_smf(timesig, tempos)` 확장을 `pipeline.py` 에 들여왔고, 기존 작곡기 12종(dh v3·lh v1/v2·vivaldi fable/opus 재생성, astra `--check`)의 출력이 바이트 단위로 같음을 확인했습니다. v2 라운드 세션은 `vivaldi-<model>`(base `rae-hugo-kim/vivaldi`)로 새로 열고, v1 의 band-* 는 규칙의 닫기 절차로 정리하기로 했습니다(`VIVALDI_BRIEF_V2.md` §4.1). Suno 반려가 AI 탐지일 수 있다는 lo-fi 실측을 브리프 §2-7 에 반영했습니다.
