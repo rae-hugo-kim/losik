@@ -738,3 +738,51 @@ WAV 12개와 Logic 프로젝트 12개를 만들었습니다. 전곡 48kHz·24bit
 - **Suno support 답변 (2026-11-09)**: lh14 반려 문의에 사람 답변 없이 "AI 탐지" 취지의 자동 응답만 옴 — 매칭기가 기존 녹음 일치가 아니라 **AI 생성물 탐지**로 걸고 있다는 뜻으로 읽힘(우리 GM 렌더는 AI 생성이 아니지만 분류기는 그렇게 봄). support 경로는 사실상 막힘. lh14 는 Suno Cover 없이 두거나 렌더 자체(패치·휴머나이즈)를 바꿔 재시도하는 선택만 남음. lo-fi 작업은 주제 세션 `lofi` 로 인계.
 - **v2 착수 준비 (2026-11-09, 주제 세션 vivaldi)**: PR #2 가 issuereport 에 머지됐고(16d01de), 세션 위계 규칙 `.omp/rules/losik-sessions.md` 를 받았습니다. band-fable `7d6d9a0` 의 `build_smf(timesig, tempos)` 확장을 `pipeline.py` 에 들여왔고, 기존 작곡기 12종(dh v3·lh v1/v2·vivaldi fable/opus 재생성, astra `--check`)의 출력이 바이트 단위로 같음을 확인했습니다. v2 라운드 세션은 `vivaldi-<model>`(base `rae-hugo-kim/vivaldi`)로 새로 열고, v1 의 band-* 는 규칙의 닫기 절차로 정리하기로 했습니다(`VIVALDI_BRIEF_V2.md` §4.1). Suno 반려가 AI 탐지일 수 있다는 lo-fi 실측을 브리프 §2-7 에 반영했습니다.
 - **이름 로드 자동화 (2026-11-09, 주제 세션 vivaldi)**: `pipeline.load_patches()` / `produce(..., patches={트랙 번호: spec})` 로 라이브러리 패치(.patch)와 Sampler EXS 를 트랙에 이름으로 올립니다. 방식은 ① 트랙 메뉴 "트랙 검색 및 선택…" 팝오버에 트랙 번호 입력 → ② 라이브러리 검색 필드에 이름 → ③ 결과 표에서 정확히 같은 행을 AX 선택(선택 = 로드), EXS 는 인스펙터 스트립의 "라이브러리 표시기, Sampler" 로 층을 바꾼 뒤 같은 방법. 실측: 좌표 클릭(`click at`)은 Logic 에 닿지 않고(뮤트 버튼도 안 눌림), 채널 스트립 "설정" 메뉴는 AX 에 노출되지 않는 사용자 정의 팝업이라 .cst 경로는 포기했습니다. 임포트 직후 자동 명명 트랙은 패치/EXS 를 올리면 이름이 그 이름으로 바뀌고, 사람이 이름을 바꾼 트랙은 안 바뀝니다. 이미 켜진 라이브러리 표시기를 다시 누르면 패널이 닫힙니다. 3트랙 프로브(Studio Violins 1 → `('Violins 1','Violin (Arco)')`, Studio Cellos → `Harpsichord`, SoCal 드럼 → `Timpani`) 임포트→로드→바운스 144초, 믹서 스트립 `[Violin (Arco)] [Harpsichord] [Timpani] …`, WAV 피크 −0.39 dBFS·RMS −23~−35 dB 로 소리 확인. 사용법·제약은 `LOGIC_LIBRARY_INVENTORY.md` §4.1, 라운드 규칙은 `VIVALDI_BRIEF_V2.md` §3·§4·§6 에 반영했습니다. 라운드는 band-* 재사용으로 바꿨습니다(위 "v2 착수 준비" 의 `vivaldi-<model>` 계획은 사용자 결정으로 철회).
+
+## 2026-11-10 Vivaldi 사계 변주 v2 — opus (anthropic/claude-opus-5-5)
+
+`VIVALDI_BRIEF_V2.md` 대로 12악장에 서로 다른 12개 장르를 주고 주제를 다시 짰습니다. 모델 ID 는 세션 설정값 `anthropic/claude-opus-5-5` 입니다. 계획은 `vivaldi_opus_v2_plan.md`(커밋 `1219335`), 작곡기는 `tools/vivaldi_opus_v2.py` 입니다(`SKETCHES` 12개, `compose(sid)`; `--check` 는 12곡을 다시 만들어 점검하고 디스크 MIDI 와 바이트 단위로 비교하며 아무 파일도 쓰지 않습니다). MIDI 는 `sketches/vs-<season><n>-opus-v2.mid`, Suno 블록은 `suno/vivaldi_opus_v2.md` 입니다. 출처 메타(Mutopia Project, CC BY-SA 3.0)는 **첫 악기 트랙 틱 0** 의 저작권 메타로 넣었고, 12곡 모두 Logic 스트립 수가 SMF 악기 트랙 수와 같아 빈 트랙이 생기지 않았습니다. `리듬 변형` 칸의 괄호 숫자는 그 op 를 빼면 마디 결과가 달라지는(뒤 op 가 되돌리지 않은) 출력 마디 수이고, `원리듬` 은 "원리듬 마디/주제 마디, 최장 연속", `실효` 는 주제 실효 템포 ÷ 원곡 템포입니다(원리듬 정의는 위 v1 절과 같고, 비교 대상은 맵이 그 출력 마디로 보내는 원곡 온셋입니다).
+
+| key | sid | 장르 | 장르 이유 | 박자 | BPM | 마디 | 편성 | 주제 창 | 리듬 변형 | 주제 비율 | 업로드 결과 |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| spring 1 | vs-spring1-opus | Afro highlife, E major | 반복음 셀·새소리의 밝은 활기 → 기타 리프 콜앤리스폰스 | 4/4 | 134 | 100 | SoCal · Simple Foundation · 어쿠스틱 기타 · 톤휠 오르간 · Classical Guitar(주제) · Sugar Hill 브라스 | solo 1–13 | 당김①(12) · 점음 쌍④(14) · 8분 골격③(14) / 원리듬 7/47, 최장 3 / 실효 1.17× | 47 % (47/100) | 대기 |
+| spring 2 | vs-spring2-opus | Bossa nova, C♯ minor | 잠든 목동의 속삭이는 Largo → 보사 기타 컴핑·플루트 | 4/4 | 80 | 60 | SoCal · 업라이트 · Classical Guitar · Kensington · Deluxe Classic EP · **Flute Solo**(B) | solo 2–10 | 3/4→4/4 3+3+2 재배열 · 당김①(11) · 늦은 진입①(9) · 4분 골격③(5) / 8/27, 최장 2 / 1.20× | 45 % (27/60) | 대기 |
+| spring 3 | vs-spring3-opus | Celtic slip jig, D major(−2) | 시칠리아나 지속음 위 목가 춤 → 켈틱 무곡 | 9/8 | 174(점4분 116) | 116 | 업라이트 · SoCal 탐·림 · **Irish Bouzouki** · **Celtic Harp** · **Celtic Tin Whistle**(B) | solo 1–12 | 12/8 한 마디→9/8 두 마디 · 늦은 진입①(24) · 당김①(10) · 점4분 골격 재표집③(17) / 9/60, 최장 2 / 0.81× | 52 % (60/116) | 대기 |
+| summer 1 | vs-summer1-opus | Trip-hop, G minor | 더위에 지친 한숨 동기·긴 쉼 → 느리고 무거운 브레이크비트 | 4/4 | 84 | 64 | SoCal · Taureg Moon Bass · Dark Lo-Fi Piano · Bloomsbury · Vibraphone · **Oboe**(B) | violin1 1–30 | 3/8 두 마디→4/4 한 마디(첫 8분 늘림) · 당김①(18) · 늦은 진입①(6) · 8분 골격③(4) · 16분 스윙④(8) / 3/30, 최장 2 / 0.84× | 47 % (30/64) | 대기 |
+| summer 2 | vs-summer2-opus | Cinematic neo-classical, G minor | 독주가 천둥에 끊기는 Adagio → 영화음악 서사·팀파니 | 4/4 | 63 | 48 | Concert Grand · Kensington · Studio Cellos · **Timpani**(B) · **Violins 1/Violin (Arco)**(C) | solo 1–8 | 늦은 진입①(11) · 당김①(7) · 4분 골격 재표집③(4) / 3/24, 최장 1 / 1.40× | 50 % (24/48) | 대기 |
+| summer 3 | vs-summer3-opus | Symphonic metal, G minor | 폭풍의 G 연타 트레몰로·쏟아지는 음계 → 트레몰로 피킹·더블 킥 | 4/4 | 180 | 136 | 복고풍 록 · Punchy Bottom · 하드 록 ×2 · Bloomsbury · The Final Lead · **Mixed Choir**(B) | violin1 1–20 | 3/4 한 마디→4/4 두 마디(3+3+2) · 8분 트레몰로·갤럽 재표집③(58) · 당김①(14) / 0/60 / 0.45× | 44 % (60/136) | 대기 |
+| autumn 1 | vs-autumn1-opus | Balkan brass, F major | 농부의 춤·취한 비틀거림 → 7/8 잔치 브라스 | 7/8 | 140 | 120 | SoCal · Studio Trumpet 1 · Studio Alto Sax 2 · **Polka Accordion** · **Tuba**(B) | violin1 1–12 | 4/4 한 마디→7/8 두 마디 · 늦은 진입①(24) · 당김①(16) · 묶음당 한 음 재표집③(15) / 8/60, 최장 2 / 0.67× | 50 % (60/120) | 대기 |
+| autumn 2 | vs-autumn2-opus | Cool jazz ballad, D minor | 약음기 현의 반음계 화음뿐인 정지된 밤 → 쿨 재즈 발라드 | 4/4 | 88 | 64 | SoCal(브러시 대용) · 업라이트 · Studio Grand · Vibraphone · **Studio Tenor Sax 1**(B) | violin1 4–14 | 3/4→4/4 재배열 · 당김①(13) · 늦은 진입①(6) · 8분 스윙④(11) / 15/33, 최장 4 / 1.25× | 52 % (33/64) | 대기 |
+| autumn 3 | vs-autumn3-opus | Spaghetti western, D minor | 사냥의 호른 부름·총성·추격 → 갤럽·트럼펫·호른 | 4/4 | 112 | 84 | SoCal · 업라이트 · Classical Guitar · Kensington · Studio Trumpet 1 · **Timpani** · **French Horns**(B) | violin1 1–24 | 3/8→4/4 갤럽(3+3+2) · 당김①(14) · 늦은 진입①(4) · 4분 골격③(13) / 4/40, 최장 1 / 0.53× | 48 % (40/84) | 대기 |
+| winter 1 | vs-winter1-opus | Dark techno, F minor | 얼어붙은 떨림·발 구르기·찬바람 → 펄스·4온더플로어·차가운 패드 | 4/4 | 128 | 96 | Drum Synth Kit · Pulse Bass · Tidal Space · Epic Cloud Formation · Reverse Engineering · **Celesta**(B) | solo **4–13** (기본 1–12) | 하프타임② · 3+3+2 스탭 재표집③(40) / 0/40 / 0.46× | 42 % (40/96) | 대기 |
+| winter 2 | vs-winter2-opus | Neo-soul, E♭ major | 난롯가의 따뜻한 Largo·빗소리 → 로즈·색소폰·피치카토 | 4/4 | 72 | 54 | SoCal · Simple Foundation · Deluxe Classic · Studio Alto Sax 2 · Studio Grand · **Violins 1/Violin (Pizzicato)**(C) | solo 1–8 | 늦은 진입①(9) · 당김①(5) · 8분 골격③(10) · 16분 스윙④(11) / 2/24, 최장 1 / 1.57× | 44 % (24/54) | 대기 |
+| winter 3 | vs-winter3-opus | Tango nuevo, F minor | 얼음 위를 걷다 미끄러지는 알레그로 → 마르카토·레가토 탱고 | 4/4 | 116 | 88 | Studio Grand · Studio Double Basses · Kensington · **Polka Accordion**(B) · **Violins 1/Violin (Arco)**(C) | solo 1–24 | 3/8→4/4 탱고 3+3+2 · 늦은 진입①(16) · 당김①(10) · 4분 골격③(15) / 1/40, 최장 1 / 0.58× | 45 % (40/88) | 대기 |
+
+**점검**: 12곡 모두 `check … PASS` 입니다. 실효 템포는 12곡 모두 1에서 15 % 넘게 떨어져 있고(0.45–1.57×), 3/8·12/8 네 곡은 4/4·9/8 로 다시 묶었습니다. 원리듬 최장 연속은 0–4마디(Autumn II 가 상한 4 — 긴 음 위주라 한·두 음 마디가 원리듬으로 셉니다), 반주 비화성음 0, 반주 층 간 단2/단9 0, 전주·후주 밖 한 층 연속 0마디입니다. 점검 줄은 구간별 음/마디·베이스 음/마디, 트랙별 벨로시티 범위·음/마디, 마지막 노트 위치를 찍습니다.
+
+**결정·이유**: ① 브리프 §2 의 ② 는 "음가 2배/반" 이라 박자 재배열(`regroup`)은 ①–④ 어디에도 세지 않고 §2-3 근거로만 씁니다. 점음 짝(`dot`)은 곧은 8분을 점8분+16분으로 바꾸는 박 분할 변경이라 ④ 로 셉니다. 그래서 Spring II·Autumn III 에 4분 골격③, Spring III·Summer II·Autumn I 에 재표집③을 더해 곡마다 두 부류 이상을 실측으로 채웠습니다. ② Spring I·Spring III 의 Latin 킷·European Folk Kit 은 키 배치를 확인할 자료가 없어 SoCal(GM 키 배치 확인됨)로 바꿨습니다. ③ `pipeline.py` 는 vivaldi 소유라 고치지 않고, 바운스 범위 문제는 "번호가 가장 큰 패치 트랙(`load_patches()` 가 마지막으로 선택)이 마지막 마디까지 울린다"를 `check()` 에서 단언하는 방식으로 막았습니다. 결과는 아래 길이 대조대로 12/12 일치입니다. ④ 뒤에 놓이는 반주 층의 보이싱은 같은 마디 앞 층 음과 단2/단9 를 만들지 않게 고르고, 안 되면 텐션부터 뺍니다.
+
+**계획과 달라진 점**: Spring II 68→80 BPM·52→60마디, Autumn II 64→88 BPM·48→64마디(둘 다 3/4→4/4 한 마디 대응에서 실효 템포가 1.02×·0.91× 로 ±15% 에 걸렸기 때문입니다), Spring III 실효 +21%→−19%·Autumn I +17%→−33%(맵을 한 마디→두 마디로 골랐기 때문입니다), Spring I 드럼 A 40→A 0, Spring III #2 B `European Folk Kit` → A 0, Summer II 주제 안 쉬는 마디(12·24·36)에 팀파니 롤 추가, Winter I 은 아래 대역 측정 뒤 벨로시티(킥 ≤92, 펄스 베이스 56–74, 리드·첼레스타 80–102)와 펄스 베이스 음역(29–48 → 36–55)을 바꿔 두 번 다시 바운스했습니다. 자세한 이유는 계획 파일 "달라진 점" 절에 있습니다.
+
+**바운스 결과**: `python3 -B -u vivaldi_opus_v2.py --bounce`(00:56–01:27) 로 **12/12 OK** 였고, 잠금 대기 초과("대기 초과")와 `stage='patches'` 실패는 없었습니다. 패치 로드 17건(B·C 경로, 11곡)이 모두 `ok=True` 로 올라갔고 헤더가 패치/EXS 이름으로 바뀌었습니다. 4곡마다 Logic 을 재시작했습니다. Winter I 은 대역 측정 뒤 01:29·01:32 에 두 번 더 바운스했습니다. WAV 는 `/Volumes/Netac 2TB/music/bounces/vs-*-opus-v2.wav`(48 kHz 24-bit) 이고, 길이는 기대 길이(마디 × 마디 초)와 12곡 모두 0.00초 차이입니다.
+
+| sid | WAV 길이 | 기대 길이 | 피크 dBFS | RMS dBFS | 에너지 저/중/고(<200 / 200–2k / >2k Hz) |
+|---|---|---|---|---|---|
+| vs-spring1-opus | 179.10 s | 179.10 s | -0.3 | -18.8 | 66/31/3 % |
+| vs-spring2-opus | 180.00 s | 180.00 s | -0.3 | -22.3 | 72/25/3 % |
+| vs-spring3-opus | 180.00 s | 180.00 s | -0.3 | -22.6 | 57/38/5 % |
+| vs-summer1-opus | 182.86 s | 182.86 s | -0.3 | -22.7 | 72/27/2 % |
+| vs-summer2-opus | 182.86 s | 182.86 s | -0.3 | -23.1 | 51/46/3 % |
+| vs-summer3-opus | 181.33 s | 181.33 s | -0.3 | -18.2 | 70/22/9 % |
+| vs-autumn1-opus | 180.00 s | 180.00 s | -0.3 | -22.1 | 56/37/7 % |
+| vs-autumn2-opus | 174.55 s | 174.55 s | -0.3 | -20.9 | 63/34/3 % |
+| vs-autumn3-opus | 180.00 s | 180.00 s | -0.3 | -19.9 | 50/43/6 % |
+| vs-winter1-opus | 180.00 s | 180.00 s | -0.3 | -12.1 | 95/5/0 % |
+| vs-winter2-opus | 180.00 s | 180.00 s | -0.3 | -21.7 | 67/32/1 % |
+| vs-winter3-opus | 182.07 s | 182.07 s | -0.3 | -21.0 | 70/30/1 % |
+
+**남은 위험**: Winter I 은 저역 에너지가 95 % 입니다. 첫 바운스(96/4/0)에서 킥·펄스 베이스 벨로시티를 낮추고 리드를 올려도, 펄스 베이스를 한 옥타브 올려도 거의 변하지 않아 Drum Synth Kit 킥 자체가 에너지를 차지한다고 봅니다. 에너지 비율은 들리는 크기와 같지 않아 리드가 묻히는지는 청취로 확인해야 합니다. 묻히면 다음 판에서 드럼 킷을 바꾸거나 킥 패턴을 줄입니다. Suno 블록 길이(Style/Description, 공백 포함 `len()`)는 표 순서대로 `216/890, 215/851, 201/859, 200/875, 213/810, 190/868, 187/826, 210/849, 211/869, 203/820, 194/797, 198/802` 자이고, Style 에는 작곡가·작품·계절 이름이 없고 모두 `instrumental` 로 끝납니다.
+
+**리뷰(3-pass, PASS WITH NOTES → 반영)**: staged diff `db993fb8…` 를 `reviewer`(자기 분석 + gpt·opus·gemini 적대 패널 + code-reviewer)가 PASS WITH NOTES 로 판정했고, 다음을 고쳤습니다. ① op 효과를 토큰마다 재서 뒤 op 가 되돌린 op 도 셌던 문제(Autumn III `late` 10마디 → 실효 4마디) → 마디마다 "그 토큰을 뺀 결과"와 비교하는 순 효과로 바꾸고, 순 효과가 없는 Autumn III 1차 진술의 `late:0` 토큰을 지웠습니다(출력은 그대로입니다). ② 원리듬 비교 창이 고르지 않은 맵(Summer III)에서 어긋남 → 맵이 그 출력 마디로 보내는 원곡 온셋과 비교합니다. ③ Suno 파일이 없어도 `--check` 가 통과 → `--check` 에서는 실패합니다. ④ Description 점검이 계절만 확인 → 악장 번호(I/II/III)까지 확인합니다. ⑤ 모르는 플래그나 `--bounce` 없는 sid 에도 MIDI 12개를 덮어씀 → 작곡 전에 오류(종료 코드 2)로 끝냅니다. 수정 뒤에도 `--check identical 12/12` 라 MIDI·WAV 는 바뀌지 않았습니다. 남긴 노트: 작곡기 길이(약 1270줄, 브리프 §4 단일 파일 요구), 진술 다운비트 앞 픽업 음이 op·원리듬 집계 창 밖에 있는 점, `pat` 뒤 `sync` 로 ① 을 채우는 경로(Summer III)입니다.
+
+**다음**: 사용자가 Suno 업로드 결과를 알려 주면 `업로드 결과` 칸을 채우고, 반려된 곡은 브리프 §2-7 대로 `-v2u`(템포 메타 ±2 BPM)·`-v2t`(드럼 제외 +1 반음)를 먼저 시험합니다.
