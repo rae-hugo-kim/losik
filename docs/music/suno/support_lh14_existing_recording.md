@@ -28,7 +28,6 @@ Facts:
 - The track is a MIDI composition rendered in Logic Pro with its stock instruments (SoCal drum kit, Pulse Bass, Deluxe Classic electric piano, Classical Acoustic Guitar, Studio Grand, Classic Pad). No samples, loops, or recordings of other works were used.
 - A re-render of the same MIDI was also rejected: lh14-brass-orchard-v2u.wav (tempo 90 BPM instead of 88), between 2026-11-06 15:30 and 2026-11-07 00:00 KST, in the same session in which lh02-linen-afternoon-v2u.wav was accepted (visible in my library). A third render, lh14-brass-orchard-v2t.wav (transposed up one semitone to F major, 90 BPM), was rejected on 2026-11-07 at about 00:25 KST.
 - Three other tracks from the same project, made with the same tools and the same workflow, uploaded without issue: lh01-felt-doorway-v2.wav, lh15-quartz-overpass-v2.wav, lh02-linen-afternoon-v2u.wav.
-- Browser/app: [browser + version]
 
 Could you tell me which recording the system matched, and allow the upload? I can send the Logic Pro project if that helps.
 
@@ -54,7 +53,6 @@ Thank you,
 - MIDI 로 작곡해 Logic Pro 기본 악기(SoCal 드럼, Pulse Bass, Deluxe Classic EP, Classical Acoustic Guitar, Studio Grand, Classic Pad)로 렌더한 곡입니다. 샘플·루프·타인의 녹음은 전혀 쓰지 않았습니다.
 - 같은 MIDI 를 다시 렌더한 v2u(템포 88→90 BPM)도 2026-11-06 15:30 ~ 11-07 00:00 KST 사이 반려 — lh02-v2u 가 통과한 같은 자리. 세 번째 렌더 v2t(+1 반음 전조 F장조, 90 BPM)는 2026-11-07 00:25 KST 경 반려.
 - 같은 프로젝트·같은 도구·같은 절차로 만든 다른 세 곡(lh01-…-v2, lh02-…-v2u, lh15-…-v2)은 같은 세션에서 문제없이 업로드됐습니다.
-- 브라우저/앱: [브라우저 + 버전]
 
 어떤 녹음과 일치로 판정됐는지 알려 주시고 업로드를 허용해 주실 수 있을까요? 필요하면 Logic Pro 프로젝트도 보내 드리겠습니다.
 
