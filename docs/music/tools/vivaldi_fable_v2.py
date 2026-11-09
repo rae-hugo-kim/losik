@@ -68,7 +68,7 @@ SKETCHES = [
          rhythm_ops=['16분 런 솎기(8분 골격)', '2·4박 8분 당김(3직·5변, 패스마다 위상 반전)', '템포 115→96 (−17%)'],
          notes='E–C#m7–Amaj7–B7 팝 루프 위 하프시코드 8분 아르페지오·현악 홀드. 트럼펫 주제 → 하프시코드 한 옥타브 위 재제시'),
     dict(key=('spring', 2), sid='vs-spring2-fable', title='Spring II Fable', genre='celtic air (harp, tin whistle)',
-         genre_reason='3/4 Largo 의 독주 선율과 잎 소리 반주를 하프 분산화음 위 휘슬 에어로; 3/4 를 지키고 템포만 올림',
+         genre_reason='3/4 Largo 의 독주 선율과 잎 소리 반주를 하프 분산화음 위 휘슬 에어로; 3/4 를 지키고 음가 ×2 로 반속 선율',
          meter=(3, 4), bpm=84, bars=84, form=(8, 8, 8), map='3/4', stretch=2, theme_part='solo', theme_window=None, grid=E, antic=(PPQ, 2 * PPQ),
          sync=S2V2, swing=0, tonic='C#', mode=MINOR, sf=4, minor=True,
          tracks=[('Harp', 0, 46, 'Celtic Harp'), ('Cellos', 1, 42, None), ('Theme', 2, 73, 'Celtic Tin Whistle'), ('Theme2', 3, 24, None), ('Strings', 4, 48, None)],
