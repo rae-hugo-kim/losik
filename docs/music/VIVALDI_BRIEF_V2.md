@@ -4,10 +4,11 @@
 
 ## 0. 읽는 순서 (MUST)
 
-1. 장르·편성 계획을 커밋하기 전에는 다음 세 가지만 읽습니다.
+1. 장르·편성 계획을 커밋하기 전에는 다음만 읽습니다.
    - 이 문서
    - `docs/music/tools/vivaldi_data.py`
-   - `docs/music/PROMPT_GUIDELINES.md` §4 (악기 팔레트 표)
+   - `docs/music/PROMPT_GUIDELINES.md` §4 (GM 악기 팔레트 표)
+   - `docs/music/LOGIC_LIBRARY_INVENTORY.md` §4·§5·§6 (악기를 부르는 경로, 어쿠스틱·오케스트라 큐레이션, 공백)
 2. 계획을 커밋하기 전에는 저장소의 다른 음악 문서를 열지 않습니다. 예전 브리프, 세트 기록, `FEEDBACK_LOG.md`, `SETLIST_*.md`, 예전 작곡기 코드(`*_astra.py`, `*_fable.py`, `*_opus.py` 등)가 여기에 해당합니다. 이 저장소에는 예전 라운드의 장르 기록이 많아서, 먼저 읽으면 그쪽으로 기울기 때문입니다.
 3. 계획을 커밋한 뒤에는 무엇이든 참고할 수 있습니다. 계획에서 달라진 곳은 이유와 함께 기록합니다.
 
@@ -51,7 +52,7 @@
 
 ## 3. 장르·편성 (MUST)
 
-- **장르**: 모델이 악장마다 자유롭게 고릅니다. 장르 수나 다양성 할당량은 없습니다.
+- **장르**: 모델이 악장마다 자유롭게 고릅니다. 장르 할당량은 없지만, **12곡이 한두 장르로 모이지 않게** 악장의 성격(템포·박자·표제·질감)에 따라 폭넓게 펼칩니다(사용자 지시 2026-11-09). 이전 라운드가 어떤 장르였는지는 참고하지 않습니다.
 - **배제 장르**: 라운드 킥오프의 `배제 장르:` 줄에 적힌 장르만 피합니다. 그 줄이 없거나 비어 있으면 제한이 없습니다.
 - **계획 파일**: 작곡 전에 `docs/music/vivaldi_<model>_v2_plan.md` 를 쓰고 자기 브랜치에 커밋합니다. 악장별로 다음을 적습니다.
   - 장르
@@ -63,7 +64,7 @@
 - **길이**: 약 3분입니다(Suno Cover 3분 입력 실측 통과 범위).
 - **마커**: 구간 마커를 반드시 넣습니다.
 - **점검 줄**: 곡마다 원리듬 최장 연속 마디, 주제 비율, 트랙별 벨로시티 범위, 트랙별 음/마디, 마지막 노트 위치를 출력합니다.
-- **밀도 하한**: 미정입니다(사용자 결정 대기). v1 청취 판정은 "디테일 부족, 빈 공간 많음"이었습니다.
+- **밀도**: 숫자 하한은 두지 않습니다. 장르가 자유라서 성긴 실내악 편성도 허용하기 때문입니다. 대신 ① 각 마디에서 울리는 층이 하나뿐인 구간은 전주·후주를 빼고 연속 2마디 이하로 두고, ② 점검 줄에 구간별 음/마디와 베이스 음/마디를 출력하며, ③ v1 청취 판정이 "디테일 부족, 빈 공간 많음"이었음을 알고 씁니다(lo-fi v2 가 보정에 쓴 수단은 `LOFI_HIPHOP_SET_BRIEF.md` `## v2 보정` 에 있고, 계획 커밋 뒤에 참고할 수 있습니다).
 
 ## 4. 산출물 (세션당 12곡)
 
@@ -85,10 +86,11 @@
 
 ### 4.1 라운드 세션 (3층) 운영
 
-- 라운드 세션은 모델당 하나, 이름은 `vivaldi-<model>`(브랜치 `rae-hugo-kim/vivaldi-<model>`, 워크트리 `/Users/hugom4/orca/workspaces/losik/vivaldi-<model>`)입니다. `orca worktree create --base-branch rae-hugo-kim/vivaldi` 로 만들고 Orca 부모는 `vivaldi` 입니다.
-- v1 라운드의 `band-astra`·`band-fable`·`band-opus` 는 재사용하지 않습니다. 옛 issuereport 에서 갈라져 무관한 파일이 많고, 이름이 주제를 보여 주지 않기 때문입니다. 규칙의 닫기 절차(부모 머지 확인 → sum·메인 체크아웃·vault → `docs/reviews` 복사 → 푸시 → `orca worktree rm`)로 정리합니다. 푸시와 제거는 사용자 승인이 필요합니다.
-- 각 라운드 워크트리 루트에 미커밋 `VIVALDI_V2_KICKOFF.md` 를 둡니다. 내용은 모델 ID, 읽는 순서(§0), `배제 장르:` 줄(사용자가 준 목록, 없으면 빈 줄), 산출물(§4), 커밋 대상 브랜치입니다. 인계 sum 은 `docs/sum/` 에 복사합니다.
-- 라운드 세션이 끝나면 주제 세션이 `git log rae-hugo-kim/vivaldi..rae-hugo-kim/vivaldi-<model>` 가 비도록 머지·집계한 뒤 닫기 절차를 밟습니다.
+- 라운드 세션은 모델당 하나입니다. v1 라운드 워크트리 `band-astra`·`band-fable`·`band-opus`(브랜치 `rae-hugo-kim/band-<model>`, `/Users/hugom4/orca/workspaces/losik/band-<model>`)를 **그대로 재사용**합니다(Orca 부모는 `vivaldi`, 사용자 결정 2026-11-09). 이름이 주제를 보여 주지 않지만 유지합니다.
+- **모델 고정(MUST)**: 라운드 세션은 첫 응답에서 세션 설정의 모델 ID 를 적고, 킥오프에 적힌 모델과 다르면 작업을 시작하지 않고 보고합니다. 계획 파일·작곡기 `MODEL` 상수·FEEDBACK_LOG 절 제목·세션 요약에 같은 모델 ID 를 적습니다. 다른 모델의 v1·v2 작곡기 코드를 복제하지 않습니다.
+- 라운드 세션은 시작하자마자 `git merge rae-hugo-kim/vivaldi` 로 기준선을 맞춥니다(이 브리프·§4 표·인벤토리·박자 확장이 거기 있습니다). 충돌 규칙: `FEEDBACK_LOG.md`·`SUNO_PROMPTS.md`·`docs/harness/audit.jsonl` 은 양쪽 보존(같은 Vivaldi v1 절이 두 번 나오면 하나만), `PROMPT_GUIDELINES.md`·`tools/pipeline.py`·`docs/harness/verify-commands.json` 은 `rae-hugo-kim/vivaldi` 쪽, 그 밖의 자기 코드는 자기 쪽입니다. 미커밋 잔재(`VIVALDI_KICKOFF.md`, `.omp/mcp.json`)는 건드리지 않습니다.
+- 각 라운드 워크트리 루트에 미커밋 `VIVALDI_V2_KICKOFF.md` 를 둡니다. 내용은 모델 ID, 읽는 순서(§0), `배제 장르:` 줄(사용자가 준 목록, 없으면 빈 줄), 산출물(§4), 커밋 대상 브랜치입니다. 인계 문서는 이 브리프입니다.
+- 라운드 세션이 끝나면 주제 세션이 `git log rae-hugo-kim/vivaldi..rae-hugo-kim/band-<model>` 의 v2 커밋을 머지·집계합니다. 워크트리를 닫을 때는 `.omp/rules/losik-sessions.md` 의 닫기 절차(부모 머지 확인 → sum·메인 체크아웃·vault → `docs/reviews` 복사 → 푸시 → `orca worktree rm`)를 따르고, 푸시와 제거는 사용자 승인이 필요합니다.
 
 ## 5. 취향 반영
 
