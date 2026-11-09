@@ -32,6 +32,7 @@ const CASES = [
   ['canon_lofi_v2.py', [], ['canon-lofi-v2.mid']],
   ['canon_lofi_v3.py', [], ['canon-lofi-v3a.mid', 'canon-lofi-v3b.mid', 'canon-lofi-v3c.mid']],
   ['vivaldi_fable.py', [], ['spring1', 'spring2', 'spring3', 'summer1', 'summer2', 'summer3', 'autumn1', 'autumn2', 'autumn3', 'winter1', 'winter2', 'winter3'].map((k) => `vs-${k}-fable-v1.mid`)],
+  ['vivaldi_fable_v2.py', [], ['spring1', 'spring2', 'spring3', 'summer1', 'summer2', 'summer3', 'autumn1', 'autumn2', 'autumn3', 'winter1', 'winter2', 'winter3'].map((k) => `vs-${k}-fable-v2.mid`)],
 ];
 
 for (const [script, args, outputs] of CASES) {

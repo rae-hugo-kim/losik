@@ -24,9 +24,24 @@
 - **주제 성부**: 전부 `solo`, autumn 2 만 `violin1`(브리프 비고). 창은 기본값, winter 1 은 4–12(1–3 은 solo 쉼), summer 1 은 1–24(3/8 24마디 = 4/4 12마디; 25–30 은 레게 템포에서 48마디 안에 두 번 들어가지 않아 자름).
 - **리듬 변형**(§2-2, 곡마다 둘 이상): 그리드 미만 off-grid 음을 앞 음에 흡수하는 런 솎기 + 마디 패턴 당김(지정 박의 음을 8분 앞당김 / 다운비트 지연 / 마디 전체 지연; 패스마다 패턴 위상을 반 바퀴 돌려 이웃 패스의 원리듬 구간이 맞닿지 않게) + 장르별 스윙(brass band·bossa). 원리듬 최장 연속은 곡 전체에서 스윙 전 값으로 재서 ≤4 를 assert.
 - **박자 변환**: 4/4→4/4(spring 1, summer 2, winter 1·2), 3/4→3/4(spring 2, autumn 2), 12/8→6/8(spring 3: 한 마디를 두 마디로, 틱 그대로), 3/8 두 마디→4/4 한 마디(summer 1, autumn 3, winter 3: 세 8분 + 마지막 연장), 3/4→4/4 마지막 음 연장(summer 3), 4/4→2/4(autumn 1: 한 마디를 두 마디로). 4/4 가 아닌 곡은 `build_smf(timesig=…)` 와 `bar_ticks = num*PPQ*4//den` 로 직접 계산.
-- **화성**: 원곡 베이스를 쓰지 않고 주제 마디의 음 분포에 맞춘 장르 관용 루프(패스 시작에서 위상 0).
+- **화성**: 원곡 베이스를 쓰지 않고 주제 마디의 음 분포에 맞춘 장르 관용 루프(A·A2 구간 시작에서 위상 0; 패스 길이가 루프의 배수가 아니면 둘째 패스부터 위상이 돌아감).
 - **주제 비율**: 울리는 마디 기준 40~60%. 나머지는 자작 모티프·전주·간주·후주.
 - **밀도**: 층이 하나뿐인 구간은 전주·후주를 빼고 연속 2마디 이하(점검에서 assert), 구간별 트랙 음/마디와 베이스 음/마디를 점검 줄에 출력.
-- **출처 메타**: 모든 MIDI 의 지휘 트랙에 저작권 메타(0x02) "Theme: Vivaldi, Le quattro stagioni — data from the Mutopia Project (CC BY-SA 3.0); arrangement 2026 band-fable".
+- **출처 메타**: 모든 MIDI 에 저작권 메타(0x02) "Theme: Vivaldi, Le quattro stagioni (Mutopia Project, CC BY-SA 3.0); arrangement 2026 band-fable (claude-fable-5-1)". (작곡 중 정정: 지휘 트랙이 아니라 **첫 악기 트랙** 틱 0 — 지휘 트랙에 넣으면 Logic 이 빈 트랙을 하나 더 만들어 패치 트랙 번호가 밀림, 2026-11-09 실측.)
 - **패치 로드**: 경로 B·C 트랙 수 — spring 1: 2, spring 2: 2, spring 3: 2, summer 2: 5, autumn 1: 2, autumn 2: 4, autumn 3: 1, winter 1: 3, winter 2: 1, 나머지 0 (합 22, 곡당 30–40초×트랙). 이름은 `logic_library_inventory.json` 에서 확인했습니다(`Harpsichord`, `Celtic Harp`, `Celtic Tin Whistle`, `Medieval Lute`, `Clarinet Solo`, `Full Strings`/`Full Strings Legato`, `Harp`, `Timpani`/`Timpani Tremolo`, `Violins 1`/`Violin (Arco)`, `Tuba`, `Polka Accordion`, `Church Choir`, `Celesta`/`Principal + Mixture`, `English Horn`, `Tango Accordion`, `Flute Solo`).
 - **결정·이유(사용자 판단 대신)**: 솔로 바이올린 `Violin (Arco)` 은 판정이 남아 있지만(브리프 §6) 지속음 3종만 있으므로 느린 지속 선율 두 곡(summer 2, winter 1)에만 쓰고 빠른 런에는 쓰지 않습니다. 청취 판정에서 기계적으로 들리면 FEEDBACK_LOG 에 적습니다.
+
+## 작곡 후 정정 (2026-11-09, 리뷰 1차 반영 — 상세는 FEEDBACK_LOG 절 "계획 대비 달라진 점")
+
+| key | 계획 | 정정 | 이유 |
+|---|---|---|---|
+| spring 1 | 98 BPM | **96 BPM** | 115→98 은 −14.8% 로 브리프 §2-3(±15%) 미달 |
+| spring 2 | 72 BPM · 72마디 · 9마디 주제 | **84 BPM · 84마디 · 음가 ×2(18마디)** | 긴 음뿐이라 런 솎기가 무효(§2-2 연산 하나) → 음가 ×2 를 둘째 연산으로; 실효 템포 ×0.84 |
+| summer 3 | 172 BPM | **174 BPM** | 150→172 는 +14.7% |
+| autumn 2 | 11마디 주제 그대로 | **음가 ×½(6마디), 합창 6마디 루프 Dm–B♭–Gm–Asus–Dm–D** | 긴 음뿐이라 솎기 무효 → 음가 ×½ 를 둘째 연산으로; 실효 템포 ×1.51 |
+| autumn 3 | 16분 그리드 · F7–B♭7–C7 | **8분 그리드 · F6–F6–B♭–C7** | 스윙 80틱이 16분 잔여 음과 겹쳐 주제 음이 30~47틱으로 잘림; 주제 A 음이 B♭7 과 충돌 |
+| winter 3 | Fm–D♭–A♭–E♭ · 베이스 E1~A2 | **Fm(maj7)–C7 · 베이스 E1~C3** | 주제의 E♮(화성단음계) 충돌 18/114 → 6/114; 옥타브 펄스 접힘이 음역을 넘김 |
+| winter 1 | 모티프 끝음 E♭ | **G** | C7 마디의 E♮ 와 반음 충돌 |
+| summer 2 · autumn 1 · winter 1 | 8분 그리드 솎기 | **4분 그리드 솎기**(23→14 / 84→45 / 96→36 음) | 8분 그리드에서는 1~3마디만 바뀌어 §2-2 둘째 연산이 사실상 없었음(2차 리뷰) |
+| winter 1 | Fm–Fm–D♭maj7–C7 | **9마디 진행 Fm×2–D♭maj7×2–Fm×2–B♭m7–C7–Fm** | 9마디 패스와 위상을 맞춰 충돌 24→4 |
+| autumn 2 | 모티프 (0,3,2)(3,3,1)(6,3,0) | **(0,3,2)(3,2,1)(5,1,0)** | 3/4 두 마디 셀(6박) 밖의 셋째 음이 버려지고 있었음 |

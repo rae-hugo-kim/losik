@@ -1123,10 +1123,11 @@ def _worktree_name():
     return os.path.basename(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..')))
 
 
-def produce(sid, title, ver, mid_path, log=print, owner=None, patches=None):
+def produce(sid, title, ver, mid_path, log=print, owner=None, patches=None, select=None):
     """열린 프로젝트 정리 → SMF 임포트(벽시계 기준 대기; 임포트 중 System Events 는 ~2분씩 블록) → finish().
     patches: load_patches() 의 {트랙 번호: 패치 spec} — 임포트 뒤, 바운스 전에 라이브러리 패치/EXS 를 올린다.
-    세션 간 Logic 경합을 막기 위해 LogicLock 을 잡고 돈다(owner 기본값 = 현재 워크트리 이름)."""
+    select: 패치 로드 뒤 선택해 둘 트랙 번호(1-based) — 바운스 범위가 선택 트랙의 마지막 리전 끝으로 잡히므로 끝까지
+    연주하는 트랙을 넘긴다(finish() 참조). 세션 간 Logic 경합을 막기 위해 LogicLock 을 잡고 돈다(owner 기본값 = 현재 워크트리 이름)."""
     owner = owner or _worktree_name()
     with LogicLock(owner):
         t0 = time.time()
@@ -1141,13 +1142,17 @@ def produce(sid, title, ver, mid_path, log=print, owner=None, patches=None):
         time.sleep(3)
         clear_alerts()
         time.sleep(2)
-        r = finish(sid, title, ver, log=log, patches=patches)
+        r = finish(sid, title, ver, log=log, patches=patches, select=select)
         r['elapsed'] = round(time.time() - t0)
         return r
 
 
-def finish(sid, title, ver, log=print, patches=None):
-    """(패치 로드 →) 메트로놈 OFF → 스트립 실측 → 저장(projects/) → bounce_and_post()."""
+def finish(sid, title, ver, log=print, patches=None, select=None):
+    """(패치 로드 → 끝 트랙 선택 →) 메트로놈 OFF → 스트립 실측 → 저장(projects/) → bounce_and_post().
+    select: 패치를 올린 뒤 선택해 둘 트랙 번호(1-based). load_patches() 가 마지막으로 고른 트랙이 선택된 채 남으면
+    '프로젝트 또는 섹션…' 바운스의 끝이 그 트랙의 마지막 리전 끝으로 잡혀 곡이 잘린다(2026-11-09 band-fable 실측:
+    spring 1 72마디 중 53마디, winter 1 88 중 66 — 모두 마지막 패치 트랙의 리전 끝과 일치). 호출자는 끝까지 연주하는
+    트랙 번호를 넘긴다."""
     proj = f'{title} {ver}'
     loaded = None
     if patches:
@@ -1159,6 +1164,18 @@ def finish(sid, title, ver, log=print, patches=None):
             except Exception:
                 tracks = []
             return dict(ok=False, stage='patches', msg=f'{type(e).__name__}: {e}', tracks=tracks)
+    if select is not None:
+        try:
+            ok_sel, picked = select_track(select)
+        except Exception as e:          # AX 시간 초과 등도 곡 단위 실패로 (load_patches 와 같은 계약)
+            ok_sel, picked = False, f'{type(e).__name__}: {e}'
+        log(f'{sid}: select track {select} -> {ok_sel} {picked!r}')
+        if not ok_sel:
+            try:
+                tracks = track_names()
+            except Exception:
+                tracks = []
+            return dict(ok=False, stage='select', msg=picked, tracks=tracks, patches=loaded)
     log(f'{sid}: metronome {metronome_off("무제 - 트랙")}')
     time.sleep(1)
     open_mixer()
