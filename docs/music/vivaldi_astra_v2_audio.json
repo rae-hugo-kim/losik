@@ -1,0 +1,1097 @@
+{
+  "model": "openai-codex/gpt-6-astra",
+  "sids": [
+    "vs-spring1-astra",
+    "vs-spring2-astra",
+    "vs-spring3-astra",
+    "vs-summer1-astra",
+    "vs-summer2-astra",
+    "vs-summer3-astra",
+    "vs-autumn1-astra",
+    "vs-autumn2-astra",
+    "vs-autumn3-astra",
+    "vs-winter1-astra",
+    "vs-winter2-astra",
+    "vs-winter3-astra"
+  ],
+  "passed": true,
+  "results": [
+    {
+      "sid": "vs-spring1-astra",
+      "title": "Spring I Astra",
+      "meter": [
+        4,
+        4
+      ],
+      "bpm": 88,
+      "bars": 64,
+      "project": "/Volumes/Netac 2TB/music/projects/Spring I Astra v2.logicx",
+      "path": "/Volumes/Netac 2TB/music/bounces/vs-spring1-astra-v2.wav",
+      "sha256": "afbd145296025560e4926054059fb481d893c416d78213fce620406f508891f3",
+      "bytes": 50273188,
+      "format_tag": 65534,
+      "data_offset": 4096,
+      "data_bytes": 50269092,
+      "sample_rate": 48000,
+      "channels": 2,
+      "bits": 24,
+      "frames": 8378182,
+      "seconds": 174.545458,
+      "expected_seconds": 174.545455,
+      "length_delta_seconds": 4e-06,
+      "length_window_seconds": [
+        -0.1,
+        12.0
+      ],
+      "peak_samples": [
+        8094696,
+        8017055
+      ],
+      "peak_dbfs": [
+        -0.31,
+        -0.394
+      ],
+      "ceiling_dbfs": -0.1,
+      "channel_rms_dbfs": [
+        -22.119,
+        -23.881
+      ],
+      "section_rms_dbfs": {
+        "intro": -24.616,
+        "themeA": -22.06,
+        "development": -22.168,
+        "bridge": -26.355,
+        "themeB": -22.008,
+        "outro": -23.935
+      },
+      "section_frames": {
+        "intro": [
+          0,
+          1047273
+        ],
+        "themeA": [
+          1047273,
+          3141818
+        ],
+        "development": [
+          3141818,
+          4189091
+        ],
+        "bridge": [
+          4189091,
+          5236364
+        ],
+        "themeB": [
+          5236364,
+          7330909
+        ],
+        "outro": [
+          7330909,
+          8378182
+        ]
+      },
+      "boundary_delta_db": {
+        "themeA": 2.136,
+        "development": 1.779,
+        "bridge": -0.29,
+        "themeB": 4.241,
+        "outro": 1.609
+      },
+      "boundary_window_seconds": 0.5,
+      "active_interval_count": 91,
+      "active_seconds": 165.326705,
+      "min_zero_run_seconds": 0.1,
+      "onset_tolerance_seconds": 0.01,
+      "zero_runs": [],
+      "unexpected_zero_runs": []
+    },
+    {
+      "sid": "vs-spring2-astra",
+      "title": "Spring II Astra",
+      "meter": [
+        3,
+        4
+      ],
+      "bpm": 66,
+      "bars": 64,
+      "project": "/Volumes/Netac 2TB/music/projects/Spring II Astra v2.logicx",
+      "path": "/Volumes/Netac 2TB/music/bounces/vs-spring2-astra-v2.wav",
+      "sha256": "3a6efb13b6310973410c8968c87c50e526a167874dbb5713fd1f5e6d2c535761",
+      "bytes": 50273188,
+      "format_tag": 65534,
+      "data_offset": 4096,
+      "data_bytes": 50269092,
+      "sample_rate": 48000,
+      "channels": 2,
+      "bits": 24,
+      "frames": 8378182,
+      "seconds": 174.545458,
+      "expected_seconds": 174.545455,
+      "length_delta_seconds": 4e-06,
+      "length_window_seconds": [
+        -0.1,
+        12.0
+      ],
+      "peak_samples": [
+        8051454,
+        8094696
+      ],
+      "peak_dbfs": [
+        -0.356,
+        -0.31
+      ],
+      "ceiling_dbfs": -0.1,
+      "channel_rms_dbfs": [
+        -22.351,
+        -23.138
+      ],
+      "section_rms_dbfs": {
+        "intro": -23.764,
+        "themeA": -22.005,
+        "development": -23.59,
+        "bridge": -24.499,
+        "themeB": -21.767,
+        "outro": -23.325
+      },
+      "section_frames": {
+        "intro": [
+          0,
+          1047273
+        ],
+        "themeA": [
+          1047273,
+          3141818
+        ],
+        "development": [
+          3141818,
+          4189091
+        ],
+        "bridge": [
+          4189091,
+          5236364
+        ],
+        "themeB": [
+          5236364,
+          7330909
+        ],
+        "outro": [
+          7330909,
+          8378182
+        ]
+      },
+      "boundary_delta_db": {
+        "themeA": 2.226,
+        "development": -5.682,
+        "bridge": -1.815,
+        "themeB": 4.606,
+        "outro": -7.352
+      },
+      "boundary_window_seconds": 0.5,
+      "active_interval_count": 1,
+      "active_seconds": 172.551136,
+      "min_zero_run_seconds": 0.1,
+      "onset_tolerance_seconds": 0.01,
+      "zero_runs": [],
+      "unexpected_zero_runs": []
+    },
+    {
+      "sid": "vs-spring3-astra",
+      "title": "Spring III Astra",
+      "meter": [
+        6,
+        8
+      ],
+      "bpm": 96,
+      "bars": 96,
+      "project": "/Volumes/Netac 2TB/music/projects/Spring III Astra v2.logicx",
+      "path": "/Volumes/Netac 2TB/music/bounces/vs-spring3-astra-v2.wav",
+      "sha256": "63f233bccc8ea9235a3cbb69ce161234667b2b5ca7b14885eb1845b7d226fe4f",
+      "bytes": 51844096,
+      "format_tag": 65534,
+      "data_offset": 4096,
+      "data_bytes": 51840000,
+      "sample_rate": 48000,
+      "channels": 2,
+      "bits": 24,
+      "frames": 8640000,
+      "seconds": 180.0,
+      "expected_seconds": 180.0,
+      "length_delta_seconds": 0.0,
+      "length_window_seconds": [
+        -0.1,
+        12.0
+      ],
+      "peak_samples": [
+        8094696,
+        8076867
+      ],
+      "peak_dbfs": [
+        -0.31,
+        -0.329
+      ],
+      "ceiling_dbfs": -0.1,
+      "channel_rms_dbfs": [
+        -23.752,
+        -23.895
+      ],
+      "section_rms_dbfs": {
+        "intro": -25.23,
+        "themeA": -23.389,
+        "development": -23.235,
+        "bridge": -25.811,
+        "themeB": -23.029,
+        "outro": -24.768
+      },
+      "section_frames": {
+        "intro": [
+          0,
+          720000
+        ],
+        "themeA": [
+          720000,
+          2880000
+        ],
+        "development": [
+          2880000,
+          4320000
+        ],
+        "bridge": [
+          4320000,
+          5760000
+        ],
+        "themeB": [
+          5760000,
+          7920000
+        ],
+        "outro": [
+          7920000,
+          8640000
+        ]
+      },
+      "boundary_delta_db": {
+        "themeA": 3.31,
+        "development": 3.348,
+        "bridge": -0.003,
+        "themeB": 4.512,
+        "outro": 1.123
+      },
+      "boundary_window_seconds": 0.5,
+      "active_interval_count": 13,
+      "active_seconds": 177.360677,
+      "min_zero_run_seconds": 0.1,
+      "onset_tolerance_seconds": 0.01,
+      "zero_runs": [],
+      "unexpected_zero_runs": []
+    },
+    {
+      "sid": "vs-summer1-astra",
+      "title": "Summer I Astra",
+      "meter": [
+        4,
+        4
+      ],
+      "bpm": 62,
+      "bars": 48,
+      "project": "/Volumes/Netac 2TB/music/projects/Summer I Astra v2.logicx",
+      "path": "/Volumes/Netac 2TB/music/bounces/vs-summer1-astra-v2.wav",
+      "sha256": "2e84d06cedcffc3176d07e92a1e8754bbe42f000c0354e8721c1e70e89a508c4",
+      "bytes": 53516356,
+      "format_tag": 65534,
+      "data_offset": 4096,
+      "data_bytes": 53512260,
+      "sample_rate": 48000,
+      "channels": 2,
+      "bits": 24,
+      "frames": 8918710,
+      "seconds": 185.806458,
+      "expected_seconds": 185.806452,
+      "length_delta_seconds": 7e-06,
+      "length_window_seconds": [
+        -0.1,
+        12.0
+      ],
+      "peak_samples": [
+        8094696,
+        8020149
+      ],
+      "peak_dbfs": [
+        -0.31,
+        -0.39
+      ],
+      "ceiling_dbfs": -0.1,
+      "channel_rms_dbfs": [
+        -20.203,
+        -20.558
+      ],
+      "section_rms_dbfs": {
+        "intro": -22.033,
+        "themeA": -19.494,
+        "development": -20.211,
+        "bridge": -23.848,
+        "themeB": -19.438,
+        "outro": -20.968
+      },
+      "section_frames": {
+        "intro": [
+          0,
+          1486452
+        ],
+        "themeA": [
+          1486452,
+          3716129
+        ],
+        "development": [
+          3716129,
+          4459355
+        ],
+        "bridge": [
+          4459355,
+          5202581
+        ],
+        "themeB": [
+          5202581,
+          7432258
+        ],
+        "outro": [
+          7432258,
+          8918710
+        ]
+      },
+      "boundary_delta_db": {
+        "themeA": -1.915,
+        "development": -1.312,
+        "bridge": -2.844,
+        "themeB": 10.992,
+        "outro": 3.373
+      },
+      "boundary_window_seconds": 0.5,
+      "active_interval_count": 15,
+      "active_seconds": 180.358871,
+      "min_zero_run_seconds": 0.1,
+      "onset_tolerance_seconds": 0.01,
+      "zero_runs": [
+        {
+          "start_frame": 825,
+          "end_frame": 8699,
+          "start": 0.017188,
+          "end": 0.181229,
+          "seconds": 0.164042
+        }
+      ],
+      "unexpected_zero_runs": []
+    },
+    {
+      "sid": "vs-summer2-astra",
+      "title": "Summer II Astra",
+      "meter": [
+        5,
+        4
+      ],
+      "bpm": 80,
+      "bars": 48,
+      "project": "/Volumes/Netac 2TB/music/projects/Summer II Astra v2.logicx",
+      "path": "/Volumes/Netac 2TB/music/bounces/vs-summer2-astra-v2.wav",
+      "sha256": "b9479a71fbf5248320904401441e7300f932235409ae1c9722fcc51c8a0b466f",
+      "bytes": 51844096,
+      "format_tag": 65534,
+      "data_offset": 4096,
+      "data_bytes": 51840000,
+      "sample_rate": 48000,
+      "channels": 2,
+      "bits": 24,
+      "frames": 8640000,
+      "seconds": 180.0,
+      "expected_seconds": 180.0,
+      "length_delta_seconds": 0.0,
+      "length_window_seconds": [
+        -0.1,
+        12.0
+      ],
+      "peak_samples": [
+        8094696,
+        7852549
+      ],
+      "peak_dbfs": [
+        -0.31,
+        -0.574
+      ],
+      "ceiling_dbfs": -0.1,
+      "channel_rms_dbfs": [
+        -23.65,
+        -24.033
+      ],
+      "section_rms_dbfs": {
+        "intro": -26.215,
+        "themeA": -23.019,
+        "development": -23.069,
+        "bridge": -26.57,
+        "themeB": -22.159,
+        "outro": -26.513
+      },
+      "section_frames": {
+        "intro": [
+          0,
+          1440000
+        ],
+        "themeA": [
+          1440000,
+          3600000
+        ],
+        "development": [
+          3600000,
+          4320000
+        ],
+        "bridge": [
+          4320000,
+          5040000
+        ],
+        "themeB": [
+          5040000,
+          7200000
+        ],
+        "outro": [
+          7200000,
+          8640000
+        ]
+      },
+      "boundary_delta_db": {
+        "themeA": 2.845,
+        "development": 5.735,
+        "bridge": 3.055,
+        "themeB": 8.35,
+        "outro": 1.938
+      },
+      "boundary_window_seconds": 0.5,
+      "active_interval_count": 40,
+      "active_seconds": 173.8625,
+      "min_zero_run_seconds": 0.1,
+      "onset_tolerance_seconds": 0.01,
+      "zero_runs": [],
+      "unexpected_zero_runs": []
+    },
+    {
+      "sid": "vs-summer3-astra",
+      "title": "Summer III Astra",
+      "meter": [
+        7,
+        8
+      ],
+      "bpm": 126,
+      "bars": 112,
+      "project": "/Volumes/Netac 2TB/music/projects/Summer III Astra v2.logicx",
+      "path": "/Volumes/Netac 2TB/music/bounces/vs-summer3-astra-v2.wav",
+      "sha256": "bd97696e8278972648e8e25510ebbc60c0076af32092f57343aa17aa2ac3a959",
+      "bytes": 53764096,
+      "format_tag": 65534,
+      "data_offset": 4096,
+      "data_bytes": 53760000,
+      "sample_rate": 48000,
+      "channels": 2,
+      "bits": 24,
+      "frames": 8960000,
+      "seconds": 186.666667,
+      "expected_seconds": 186.666667,
+      "length_delta_seconds": 0.0,
+      "length_window_seconds": [
+        -0.1,
+        12.0
+      ],
+      "peak_samples": [
+        8094696,
+        8074056
+      ],
+      "peak_dbfs": [
+        -0.31,
+        -0.332
+      ],
+      "ceiling_dbfs": -0.1,
+      "channel_rms_dbfs": [
+        -19.046,
+        -19.24
+      ],
+      "section_rms_dbfs": {
+        "intro": -20.372,
+        "themeA": -18.481,
+        "development": -18.969,
+        "bridge": -20.931,
+        "themeB": -18.477,
+        "outro": -19.919
+      },
+      "section_frames": {
+        "intro": [
+          0,
+          640000
+        ],
+        "themeA": [
+          640000,
+          2880000
+        ],
+        "development": [
+          2880000,
+          4480000
+        ],
+        "bridge": [
+          4480000,
+          6080000
+        ],
+        "themeB": [
+          6080000,
+          8320000
+        ],
+        "outro": [
+          8320000,
+          8960000
+        ]
+      },
+      "boundary_delta_db": {
+        "themeA": 0.966,
+        "development": 0.227,
+        "bridge": -1.005,
+        "themeB": 2.588,
+        "outro": 0.199
+      },
+      "boundary_window_seconds": 0.5,
+      "active_interval_count": 94,
+      "active_seconds": 183.266865,
+      "min_zero_run_seconds": 0.1,
+      "onset_tolerance_seconds": 0.01,
+      "zero_runs": [],
+      "unexpected_zero_runs": []
+    },
+    {
+      "sid": "vs-autumn1-astra",
+      "title": "Autumn I Astra",
+      "meter": [
+        4,
+        4
+      ],
+      "bpm": 100,
+      "bars": 72,
+      "project": "/Volumes/Netac 2TB/music/projects/Autumn I Astra v2.logicx",
+      "path": "/Volumes/Netac 2TB/music/bounces/vs-autumn1-astra-v2.wav",
+      "sha256": "cab0e368faa52fcdf7e975ce1521bc01af2ca09645d6c54946d69700327a99a7",
+      "bytes": 49770496,
+      "format_tag": 65534,
+      "data_offset": 4096,
+      "data_bytes": 49766400,
+      "sample_rate": 48000,
+      "channels": 2,
+      "bits": 24,
+      "frames": 8294400,
+      "seconds": 172.8,
+      "expected_seconds": 172.8,
+      "length_delta_seconds": 0.0,
+      "length_window_seconds": [
+        -0.1,
+        12.0
+      ],
+      "peak_samples": [
+        7971816,
+        8094696
+      ],
+      "peak_dbfs": [
+        -0.443,
+        -0.31
+      ],
+      "ceiling_dbfs": -0.1,
+      "channel_rms_dbfs": [
+        -19.226,
+        -19.725
+      ],
+      "section_rms_dbfs": {
+        "intro": -20.165,
+        "themeA": -19.165,
+        "development": -18.432,
+        "bridge": -21.09,
+        "themeB": -19.166,
+        "outro": -20.044
+      },
+      "section_frames": {
+        "intro": [
+          0,
+          921600
+        ],
+        "themeA": [
+          921600,
+          2995200
+        ],
+        "development": [
+          2995200,
+          4147200
+        ],
+        "bridge": [
+          4147200,
+          5299200
+        ],
+        "themeB": [
+          5299200,
+          7372800
+        ],
+        "outro": [
+          7372800,
+          8294400
+        ]
+      },
+      "boundary_delta_db": {
+        "themeA": 3.619,
+        "development": 2.677,
+        "bridge": 0.84,
+        "themeB": 1.51,
+        "outro": 3.519
+      },
+      "boundary_window_seconds": 0.5,
+      "active_interval_count": 78,
+      "active_seconds": 168.20125,
+      "min_zero_run_seconds": 0.1,
+      "onset_tolerance_seconds": 0.01,
+      "zero_runs": [],
+      "unexpected_zero_runs": []
+    },
+    {
+      "sid": "vs-autumn2-astra",
+      "title": "Autumn II Astra",
+      "meter": [
+        3,
+        4
+      ],
+      "bpm": 64,
+      "bars": 64,
+      "project": "/Volumes/Netac 2TB/music/projects/Autumn II Astra v2.logicx",
+      "path": "/Volumes/Netac 2TB/music/bounces/vs-autumn2-astra-v2.wav",
+      "sha256": "d42b08f0139d9a1d445444814e78b43c43f1834c57d578919f81d57554d7ab3b",
+      "bytes": 51844096,
+      "format_tag": 65534,
+      "data_offset": 4096,
+      "data_bytes": 51840000,
+      "sample_rate": 48000,
+      "channels": 2,
+      "bits": 24,
+      "frames": 8640000,
+      "seconds": 180.0,
+      "expected_seconds": 180.0,
+      "length_delta_seconds": 0.0,
+      "length_window_seconds": [
+        -0.1,
+        12.0
+      ],
+      "peak_samples": [
+        7736539,
+        8094696
+      ],
+      "peak_dbfs": [
+        -0.703,
+        -0.31
+      ],
+      "ceiling_dbfs": -0.1,
+      "channel_rms_dbfs": [
+        -25.24,
+        -26.253
+      ],
+      "section_rms_dbfs": {
+        "intro": -26.195,
+        "themeA": -25.303,
+        "development": -25.061,
+        "bridge": -27.742,
+        "themeB": -25.168,
+        "outro": -26.453
+      },
+      "section_frames": {
+        "intro": [
+          0,
+          1080000
+        ],
+        "themeA": [
+          1080000,
+          3240000
+        ],
+        "development": [
+          3240000,
+          4320000
+        ],
+        "bridge": [
+          4320000,
+          5400000
+        ],
+        "themeB": [
+          5400000,
+          7560000
+        ],
+        "outro": [
+          7560000,
+          8640000
+        ]
+      },
+      "boundary_delta_db": {
+        "themeA": 2.119,
+        "development": 5.673,
+        "bridge": 0.776,
+        "themeB": 5.113,
+        "outro": 2.063
+      },
+      "boundary_window_seconds": 0.5,
+      "active_interval_count": 12,
+      "active_seconds": 177.390625,
+      "min_zero_run_seconds": 0.1,
+      "onset_tolerance_seconds": 0.01,
+      "zero_runs": [],
+      "unexpected_zero_runs": []
+    },
+    {
+      "sid": "vs-autumn3-astra",
+      "title": "Autumn III Astra",
+      "meter": [
+        6,
+        8
+      ],
+      "bpm": 100,
+      "bars": 96,
+      "project": "/Volumes/Netac 2TB/music/projects/Autumn III Astra v2.logicx",
+      "path": "/Volumes/Netac 2TB/music/bounces/vs-autumn3-astra-v2.wav",
+      "sha256": "4d6fe15714d6ed3dbe1f25136449a530ea6ae1ce9c4ddc0a060bbaf3804e2097",
+      "bytes": 49770496,
+      "format_tag": 65534,
+      "data_offset": 4096,
+      "data_bytes": 49766400,
+      "sample_rate": 48000,
+      "channels": 2,
+      "bits": 24,
+      "frames": 8294400,
+      "seconds": 172.8,
+      "expected_seconds": 172.8,
+      "length_delta_seconds": 0.0,
+      "length_window_seconds": [
+        -0.1,
+        12.0
+      ],
+      "peak_samples": [
+        8094696,
+        8017304
+      ],
+      "peak_dbfs": [
+        -0.31,
+        -0.393
+      ],
+      "ceiling_dbfs": -0.1,
+      "channel_rms_dbfs": [
+        -24.708,
+        -26.846
+      ],
+      "section_rms_dbfs": {
+        "intro": -26.451,
+        "themeA": -25.147,
+        "development": -25.311,
+        "bridge": -26.873,
+        "themeB": -25.22,
+        "outro": -26.483
+      },
+      "section_frames": {
+        "intro": [
+          0,
+          691200
+        ],
+        "themeA": [
+          691200,
+          2764800
+        ],
+        "development": [
+          2764800,
+          4147200
+        ],
+        "bridge": [
+          4147200,
+          5529600
+        ],
+        "themeB": [
+          5529600,
+          7603200
+        ],
+        "outro": [
+          7603200,
+          8294400
+        ]
+      },
+      "boundary_delta_db": {
+        "themeA": 2.111,
+        "development": 2.392,
+        "bridge": 1.649,
+        "themeB": 1.771,
+        "outro": 3.265
+      },
+      "boundary_window_seconds": 0.5,
+      "active_interval_count": 96,
+      "active_seconds": 165.71125,
+      "min_zero_run_seconds": 0.1,
+      "onset_tolerance_seconds": 0.01,
+      "zero_runs": [],
+      "unexpected_zero_runs": []
+    },
+    {
+      "sid": "vs-winter1-astra",
+      "title": "Winter I Astra",
+      "meter": [
+        4,
+        4
+      ],
+      "bpm": 112,
+      "bars": 80,
+      "project": "/Volumes/Netac 2TB/music/projects/Winter I Astra v2.logicx",
+      "path": "/Volumes/Netac 2TB/music/bounces/vs-winter1-astra-v2.wav",
+      "sha256": "c96d21803093e88e5837546d60a70ca0141ffefa5aeea09b432ebb44cf170034",
+      "bytes": 49375522,
+      "format_tag": 65534,
+      "data_offset": 4096,
+      "data_bytes": 49371426,
+      "sample_rate": 48000,
+      "channels": 2,
+      "bits": 24,
+      "frames": 8228571,
+      "seconds": 171.428562,
+      "expected_seconds": 171.428571,
+      "length_delta_seconds": -9e-06,
+      "length_window_seconds": [
+        -0.1,
+        12.0
+      ],
+      "peak_samples": [
+        8094696,
+        8088129
+      ],
+      "peak_dbfs": [
+        -0.31,
+        -0.317
+      ],
+      "ceiling_dbfs": -0.1,
+      "channel_rms_dbfs": [
+        -21.806,
+        -21.398
+      ],
+      "section_rms_dbfs": {
+        "intro": -23.364,
+        "themeA": -20.889,
+        "development": -21.197,
+        "bridge": -23.841,
+        "themeB": -20.719,
+        "outro": -22.615
+      },
+      "section_frames": {
+        "intro": [
+          0,
+          822857
+        ],
+        "themeA": [
+          822857,
+          2880000
+        ],
+        "development": [
+          2880000,
+          4114286
+        ],
+        "bridge": [
+          4114286,
+          5348571
+        ],
+        "themeB": [
+          5348571,
+          7405714
+        ],
+        "outro": [
+          7405714,
+          8228571
+        ]
+      },
+      "boundary_delta_db": {
+        "themeA": 2.312,
+        "development": -0.05,
+        "bridge": -3.925,
+        "themeB": 5.172,
+        "outro": -0.162
+      },
+      "boundary_window_seconds": 0.5,
+      "active_interval_count": 66,
+      "active_seconds": 166.191964,
+      "min_zero_run_seconds": 0.1,
+      "onset_tolerance_seconds": 0.01,
+      "zero_runs": [],
+      "unexpected_zero_runs": []
+    },
+    {
+      "sid": "vs-winter2-astra",
+      "title": "Winter II Astra",
+      "meter": [
+        4,
+        4
+      ],
+      "bpm": 90,
+      "bars": 64,
+      "project": "/Volumes/Netac 2TB/music/projects/Winter II Astra v2.logicx",
+      "path": "/Volumes/Netac 2TB/music/bounces/vs-winter2-astra-v2.wav",
+      "sha256": "01710389fe654f23e6cf4cf804d50cd71487f5e5c7c25f35b958877a0343d587",
+      "bytes": 49156096,
+      "format_tag": 65534,
+      "data_offset": 4096,
+      "data_bytes": 49152000,
+      "sample_rate": 48000,
+      "channels": 2,
+      "bits": 24,
+      "frames": 8192000,
+      "seconds": 170.666667,
+      "expected_seconds": 170.666667,
+      "length_delta_seconds": 0.0,
+      "length_window_seconds": [
+        -0.1,
+        12.0
+      ],
+      "peak_samples": [
+        8083430,
+        8094696
+      ],
+      "peak_dbfs": [
+        -0.322,
+        -0.31
+      ],
+      "ceiling_dbfs": -0.1,
+      "channel_rms_dbfs": [
+        -21.9,
+        -21.988
+      ],
+      "section_rms_dbfs": {
+        "intro": -22.791,
+        "themeA": -21.287,
+        "development": -20.983,
+        "bridge": -22.787,
+        "themeB": -21.905,
+        "outro": -23.123
+      },
+      "section_frames": {
+        "intro": [
+          0,
+          1024000
+        ],
+        "themeA": [
+          1024000,
+          3072000
+        ],
+        "development": [
+          3072000,
+          4096000
+        ],
+        "bridge": [
+          4096000,
+          5120000
+        ],
+        "themeB": [
+          5120000,
+          7168000
+        ],
+        "outro": [
+          7168000,
+          8192000
+        ]
+      },
+      "boundary_delta_db": {
+        "themeA": 1.738,
+        "development": 1.203,
+        "bridge": -0.573,
+        "themeB": 2.033,
+        "outro": 3.962
+      },
+      "boundary_window_seconds": 0.5,
+      "active_interval_count": 10,
+      "active_seconds": 167.509722,
+      "min_zero_run_seconds": 0.1,
+      "onset_tolerance_seconds": 0.01,
+      "zero_runs": [],
+      "unexpected_zero_runs": []
+    },
+    {
+      "sid": "vs-winter3-astra",
+      "title": "Winter III Astra",
+      "meter": [
+        5,
+        8
+      ],
+      "bpm": 92,
+      "bars": 112,
+      "project": "/Volumes/Netac 2TB/music/projects/Winter III Astra v2.logicx",
+      "path": "/Volumes/Netac 2TB/music/bounces/vs-winter3-astra-v2.wav",
+      "sha256": "b18e58512a2fa2cb657b503d55b7250f4fbadff7275c1013ecf169643afbb046",
+      "bytes": 52595404,
+      "format_tag": 65534,
+      "data_offset": 4096,
+      "data_bytes": 52591308,
+      "sample_rate": 48000,
+      "channels": 2,
+      "bits": 24,
+      "frames": 8765218,
+      "seconds": 182.608708,
+      "expected_seconds": 182.608696,
+      "length_delta_seconds": 1.3e-05,
+      "length_window_seconds": [
+        -0.1,
+        12.0
+      ],
+      "peak_samples": [
+        8094696,
+        7925782
+      ],
+      "peak_dbfs": [
+        -0.31,
+        -0.493
+      ],
+      "ceiling_dbfs": -0.1,
+      "channel_rms_dbfs": [
+        -23.885,
+        -23.854
+      ],
+      "section_rms_dbfs": {
+        "intro": -24.482,
+        "themeA": -23.734,
+        "development": -22.685,
+        "bridge": -25.134,
+        "themeB": -23.772,
+        "outro": -24.9
+      },
+      "section_frames": {
+        "intro": [
+          0,
+          626087
+        ],
+        "themeA": [
+          626087,
+          2817391
+        ],
+        "development": [
+          2817391,
+          4382609
+        ],
+        "bridge": [
+          4382609,
+          5947826
+        ],
+        "themeB": [
+          5947826,
+          8139130
+        ],
+        "outro": [
+          8139130,
+          8765217
+        ]
+      },
+      "boundary_delta_db": {
+        "themeA": 2.383,
+        "development": 1.001,
+        "bridge": -2.341,
+        "themeB": 1.837,
+        "outro": -2.16
+      },
+      "boundary_window_seconds": 0.5,
+      "active_interval_count": 1,
+      "active_seconds": 181.47962,
+      "min_zero_run_seconds": 0.1,
+      "onset_tolerance_seconds": 0.01,
+      "zero_runs": [],
+      "unexpected_zero_runs": []
+    }
+  ],
+  "errors": []
+}

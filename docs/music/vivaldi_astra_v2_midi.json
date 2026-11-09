@@ -1,0 +1,756 @@
+{
+  "model": "openai-codex/gpt-6-astra",
+  "results": [
+    {
+      "sid": "vs-spring1-astra",
+      "meter": [
+        4,
+        4
+      ],
+      "bpm": 88,
+      "bars": 64,
+      "unchanged_run": 0,
+      "theme_ratio": 0.5,
+      "theme_sounding_bars": 32,
+      "single_layer_run": 0,
+      "velocity": {
+        "Rhythm": [
+          49,
+          98
+        ],
+        "Bass": [
+          55,
+          76
+        ],
+        "Harmony": [
+          60,
+          83
+        ],
+        "Lead": [
+          76,
+          96
+        ],
+        "Texture": [
+          53,
+          74
+        ]
+      },
+      "notes_per_bar": {
+        "Rhythm": 11.06,
+        "Bass": 2.81,
+        "Harmony": 7.44,
+        "Lead": 2.95,
+        "Texture": 1.97
+      },
+      "section_notes_per_bar": {
+        "intro": 19.38,
+        "themeA": 32.0,
+        "development": 28.38,
+        "bridge": 13.12,
+        "themeB": 31.88,
+        "outro": 21.25
+      },
+      "bass_notes_per_bar": 2.81,
+      "last_note": 121694,
+      "end_tick": 122880,
+      "sha256": "c5b93b7585307faddfdbb6de6fe4cc78fe0a2fab51e41d5ffb80ec6613d9e133",
+      "source_part": "solo",
+      "source_window": [
+        1,
+        13
+      ],
+      "patches": {
+        "3": "Harpsichord",
+        "4": "Oboe",
+        "5": [
+          "Violins 1",
+          "Violins 1 Pizzicato"
+        ]
+      }
+    },
+    {
+      "sid": "vs-spring2-astra",
+      "meter": [
+        3,
+        4
+      ],
+      "bpm": 66,
+      "bars": 64,
+      "unchanged_run": 1,
+      "theme_ratio": 0.5,
+      "theme_sounding_bars": 32,
+      "single_layer_run": 0,
+      "velocity": {
+        "Bass": [
+          55,
+          76
+        ],
+        "Harmony": [
+          60,
+          83
+        ],
+        "Lead": [
+          76,
+          96
+        ],
+        "Texture": [
+          53,
+          74
+        ]
+      },
+      "notes_per_bar": {
+        "Bass": 1.88,
+        "Harmony": 5.55,
+        "Lead": 1.0,
+        "Texture": 5.91
+      },
+      "section_notes_per_bar": {
+        "intro": 13.62,
+        "themeA": 15.5,
+        "development": 16.12,
+        "bridge": 11.0,
+        "themeB": 15.5,
+        "outro": 11.88
+      },
+      "bass_notes_per_bar": 1.88,
+      "last_note": 91107,
+      "end_tick": 92160,
+      "sha256": "fa64ce6d679e415e53ff494751b1407fde89d24f53f0cc157f4e165f3e4ee265",
+      "source_part": "solo",
+      "source_window": [
+        2,
+        10
+      ],
+      "patches": {
+        "3": "English Horn",
+        "4": "Harp"
+      }
+    },
+    {
+      "sid": "vs-spring3-astra",
+      "meter": [
+        6,
+        8
+      ],
+      "bpm": 96,
+      "bars": 96,
+      "unchanged_run": 1,
+      "theme_ratio": 0.5,
+      "theme_sounding_bars": 48,
+      "single_layer_run": 0,
+      "velocity": {
+        "Rhythm": [
+          49,
+          89
+        ],
+        "Bass": [
+          55,
+          76
+        ],
+        "Harmony": [
+          60,
+          83
+        ],
+        "Lead": [
+          76,
+          96
+        ],
+        "Texture": [
+          53,
+          74
+        ]
+      },
+      "notes_per_bar": {
+        "Rhythm": 7.83,
+        "Bass": 2.88,
+        "Harmony": 7.29,
+        "Lead": 2.42,
+        "Texture": 5.94
+      },
+      "section_notes_per_bar": {
+        "intro": 21.0,
+        "themeA": 30.71,
+        "development": 28.5,
+        "bridge": 16.0,
+        "themeB": 30.79,
+        "outro": 21.75
+      },
+      "bass_notes_per_bar": 2.88,
+      "last_note": 137083,
+      "end_tick": 138240,
+      "sha256": "5b1d7f02b15f8d97d39745633c97c58732281bba2c4c213b4a111b971f276979",
+      "source_part": "solo",
+      "source_window": [
+        1,
+        12
+      ],
+      "patches": {
+        "4": "Celtic Tin Whistle",
+        "5": "Celtic Harp"
+      }
+    },
+    {
+      "sid": "vs-summer1-astra",
+      "meter": [
+        4,
+        4
+      ],
+      "bpm": 62,
+      "bars": 48,
+      "unchanged_run": 0,
+      "theme_ratio": 0.5,
+      "theme_sounding_bars": 24,
+      "single_layer_run": 0,
+      "velocity": {
+        "Rhythm": [
+          49,
+          98
+        ],
+        "Bass": [
+          55,
+          76
+        ],
+        "Harmony": [
+          60,
+          83
+        ],
+        "Lead": [
+          76,
+          96
+        ],
+        "Texture": [
+          53,
+          74
+        ]
+      },
+      "notes_per_bar": {
+        "Rhythm": 10.25,
+        "Bass": 2.75,
+        "Harmony": 11.5,
+        "Lead": 2.5,
+        "Texture": 7.83
+      },
+      "section_notes_per_bar": {
+        "intro": 28.75,
+        "themeA": 40.25,
+        "development": 37.25,
+        "bridge": 23.5,
+        "themeB": 40.08,
+        "outro": 29.38
+      },
+      "bass_notes_per_bar": 2.75,
+      "last_note": 90515,
+      "end_tick": 92160,
+      "sha256": "196b5f0dd44dfb08464bfc831729f83817ba962836c6dbc0a4c91d1d40d154da",
+      "source_part": "solo",
+      "source_window": [
+        1,
+        30
+      ],
+      "patches": {
+        "4": "Turkish Oud Lute"
+      }
+    },
+    {
+      "sid": "vs-summer2-astra",
+      "meter": [
+        5,
+        4
+      ],
+      "bpm": 80,
+      "bars": 48,
+      "unchanged_run": 2,
+      "theme_ratio": 0.5,
+      "theme_sounding_bars": 20,
+      "single_layer_run": 0,
+      "velocity": {
+        "Pulse": [
+          49,
+          84
+        ],
+        "Bass": [
+          58,
+          76
+        ],
+        "Harmony": [
+          60,
+          83
+        ],
+        "Lead": [
+          76,
+          96
+        ],
+        "Texture": [
+          52,
+          64
+        ]
+      },
+      "notes_per_bar": {
+        "Pulse": 2.25,
+        "Bass": 2.75,
+        "Harmony": 3.77,
+        "Lead": 1.12,
+        "Texture": 1.96
+      },
+      "section_notes_per_bar": {
+        "intro": 10.75,
+        "themeA": 13.0,
+        "development": 14.5,
+        "bridge": 8.75,
+        "themeB": 13.58,
+        "outro": 8.88
+      },
+      "bass_notes_per_bar": 2.75,
+      "last_note": 113187,
+      "end_tick": 115200,
+      "sha256": "027bbeef8f79ea1f72826cd7a26412a8a1d0853aa13d970f50ad32b643fa749a",
+      "source_part": "solo",
+      "source_window": [
+        1,
+        8
+      ],
+      "patches": {
+        "1": "Timpani",
+        "4": "Bassoon Solo",
+        "5": [
+          "Violins 1",
+          "Violins 1 Tremolo"
+        ]
+      }
+    },
+    {
+      "sid": "vs-summer3-astra",
+      "meter": [
+        7,
+        8
+      ],
+      "bpm": 126,
+      "bars": 112,
+      "unchanged_run": 2,
+      "theme_ratio": 0.5,
+      "theme_sounding_bars": 55,
+      "single_layer_run": 0,
+      "velocity": {
+        "Rhythm": [
+          49,
+          98
+        ],
+        "Bass": [
+          55,
+          76
+        ],
+        "Harmony": [
+          60,
+          83
+        ],
+        "Lead": [
+          76,
+          96
+        ],
+        "Texture": [
+          52,
+          64
+        ]
+      },
+      "notes_per_bar": {
+        "Rhythm": 10.32,
+        "Bass": 5.79,
+        "Harmony": 11.21,
+        "Lead": 4.3,
+        "Texture": 1.98
+      },
+      "section_notes_per_bar": {
+        "intro": 24.88,
+        "themeA": 40.54,
+        "development": 34.45,
+        "bridge": 20.05,
+        "themeB": 40.36,
+        "outro": 26.25
+      },
+      "bass_notes_per_bar": 5.79,
+      "last_note": 187214,
+      "end_tick": 188160,
+      "sha256": "069c84b2981887e80e975f13a3a65c00885159fb176824a5146b7730c6e97e46",
+      "source_part": "solo",
+      "source_window": [
+        1,
+        20
+      ],
+      "patches": {}
+    },
+    {
+      "sid": "vs-autumn1-astra",
+      "meter": [
+        4,
+        4
+      ],
+      "bpm": 100,
+      "bars": 72,
+      "unchanged_run": 0,
+      "theme_ratio": 0.5,
+      "theme_sounding_bars": 36,
+      "single_layer_run": 0,
+      "velocity": {
+        "Rhythm": [
+          49,
+          98
+        ],
+        "Bass": [
+          55,
+          76
+        ],
+        "Harmony": [
+          60,
+          83
+        ],
+        "Lead": [
+          76,
+          96
+        ],
+        "Texture": [
+          53,
+          74
+        ]
+      },
+      "notes_per_bar": {
+        "Rhythm": 11.08,
+        "Bass": 3.78,
+        "Harmony": 11.33,
+        "Lead": 2.53,
+        "Texture": 1.97
+      },
+      "section_notes_per_bar": {
+        "intro": 23.88,
+        "themeA": 36.11,
+        "development": 33.6,
+        "bridge": 17.7,
+        "themeB": 36.28,
+        "outro": 25.38
+      },
+      "bass_notes_per_bar": 3.78,
+      "last_note": 137054,
+      "end_tick": 138240,
+      "sha256": "c763400598f4726ca79d94322d99837710dbb6c08a05ba0eaf0972447f296713",
+      "source_part": "solo",
+      "source_window": [
+        1,
+        12
+      ],
+      "patches": {
+        "4": "Clarinet Solo"
+      }
+    },
+    {
+      "sid": "vs-autumn2-astra",
+      "meter": [
+        3,
+        4
+      ],
+      "bpm": 64,
+      "bars": 64,
+      "unchanged_run": 1,
+      "theme_ratio": 0.5,
+      "theme_sounding_bars": 32,
+      "single_layer_run": 0,
+      "velocity": {
+        "Bass": [
+          58,
+          76
+        ],
+        "Harmony": [
+          60,
+          83
+        ],
+        "Lead": [
+          76,
+          96
+        ],
+        "Texture": [
+          53,
+          74
+        ]
+      },
+      "notes_per_bar": {
+        "Bass": 2.81,
+        "Harmony": 7.44,
+        "Lead": 0.66,
+        "Texture": 1.97
+      },
+      "section_notes_per_bar": {
+        "intro": 12.25,
+        "themeA": 13.88,
+        "development": 15.12,
+        "bridge": 8.88,
+        "themeB": 13.81,
+        "outro": 11.38
+      },
+      "bass_notes_per_bar": 2.81,
+      "last_note": 91450,
+      "end_tick": 92160,
+      "sha256": "f9ac6d286da5f69ae665404b4c35b601310477b69ca589f7332777a63566645c",
+      "source_part": "violin1",
+      "source_window": [
+        4,
+        14
+      ],
+      "patches": {
+        "2": "Harpsichord",
+        "3": [
+          "Violins 1",
+          "Violin (Arco)"
+        ],
+        "4": "Bassoon Solo"
+      }
+    },
+    {
+      "sid": "vs-autumn3-astra",
+      "meter": [
+        6,
+        8
+      ],
+      "bpm": 100,
+      "bars": 96,
+      "unchanged_run": 1,
+      "theme_ratio": 0.5,
+      "theme_sounding_bars": 48,
+      "single_layer_run": 0,
+      "velocity": {
+        "Pulse": [
+          53,
+          85
+        ],
+        "Bass": [
+          55,
+          76
+        ],
+        "Harmony": [
+          60,
+          83
+        ],
+        "Lead": [
+          76,
+          96
+        ],
+        "Texture": [
+          52,
+          64
+        ]
+      },
+      "notes_per_bar": {
+        "Pulse": 2.38,
+        "Bass": 2.88,
+        "Harmony": 7.29,
+        "Lead": 2.19,
+        "Texture": 1.98
+      },
+      "section_notes_per_bar": {
+        "intro": 14.62,
+        "themeA": 19.17,
+        "development": 17.56,
+        "bridge": 11.5,
+        "themeB": 19.17,
+        "outro": 12.75
+      },
+      "bass_notes_per_bar": 2.88,
+      "last_note": 137072,
+      "end_tick": 138240,
+      "sha256": "d60efe20a618452b00e7dae568b09b3d94432afba79819af61189ac5d803d3d7",
+      "source_part": "solo",
+      "source_window": [
+        1,
+        24
+      ],
+      "patches": {
+        "1": "Timpani",
+        "3": [
+          "Violins 1",
+          "Violins 1 Staccato"
+        ],
+        "4": "French Horn Solo"
+      }
+    },
+    {
+      "sid": "vs-winter1-astra",
+      "meter": [
+        4,
+        4
+      ],
+      "bpm": 112,
+      "bars": 80,
+      "unchanged_run": 1,
+      "theme_ratio": 0.5,
+      "theme_sounding_bars": 40,
+      "single_layer_run": 0,
+      "velocity": {
+        "Rhythm": [
+          49,
+          98
+        ],
+        "Bass": [
+          55,
+          76
+        ],
+        "Harmony": [
+          60,
+          83
+        ],
+        "Lead": [
+          76,
+          96
+        ],
+        "Texture": [
+          42,
+          54
+        ]
+      },
+      "notes_per_bar": {
+        "Rhythm": 11.85,
+        "Bass": 4.75,
+        "Harmony": 4.65,
+        "Lead": 2.7,
+        "Texture": 1.98
+      },
+      "section_notes_per_bar": {
+        "intro": 18.38,
+        "themeA": 31.3,
+        "development": 28.58,
+        "bridge": 14.08,
+        "themeB": 31.25,
+        "outro": 20.5
+      },
+      "bass_notes_per_bar": 4.75,
+      "last_note": 152062,
+      "end_tick": 153600,
+      "sha256": "ff86b5134e048242a981b126bd9fd10fb2ae7a5c3d1b5390ca4ef69dab0d2938",
+      "source_part": "solo",
+      "source_window": [
+        4,
+        12
+      ],
+      "patches": {}
+    },
+    {
+      "sid": "vs-winter2-astra",
+      "meter": [
+        4,
+        4
+      ],
+      "bpm": 90,
+      "bars": 64,
+      "unchanged_run": 1,
+      "theme_ratio": 0.5,
+      "theme_sounding_bars": 32,
+      "single_layer_run": 0,
+      "velocity": {
+        "Rhythm": [
+          49,
+          89
+        ],
+        "Bass": [
+          55,
+          76
+        ],
+        "Harmony": [
+          60,
+          83
+        ],
+        "Lead": [
+          76,
+          96
+        ],
+        "Texture": [
+          53,
+          74
+        ]
+      },
+      "notes_per_bar": {
+        "Rhythm": 11.84,
+        "Bass": 3.75,
+        "Harmony": 18.75,
+        "Lead": 2.5,
+        "Texture": 7.88
+      },
+      "section_notes_per_bar": {
+        "intro": 38.62,
+        "themeA": 51.0,
+        "development": 48.25,
+        "bridge": 28.5,
+        "themeB": 50.81,
+        "outro": 38.75
+      },
+      "bass_notes_per_bar": 3.75,
+      "last_note": 121239,
+      "end_tick": 122880,
+      "sha256": "6ebc1be2451630d9903453a1afe8371b372bd926fc73af4b83339e9e70fb72c9",
+      "source_part": "solo",
+      "source_window": [
+        1,
+        8
+      ],
+      "patches": {
+        "4": "Flute Solo"
+      }
+    },
+    {
+      "sid": "vs-winter3-astra",
+      "meter": [
+        5,
+        8
+      ],
+      "bpm": 92,
+      "bars": 112,
+      "unchanged_run": 3,
+      "theme_ratio": 0.5,
+      "theme_sounding_bars": 56,
+      "single_layer_run": 0,
+      "velocity": {
+        "Bass": [
+          55,
+          76
+        ],
+        "Harmony": [
+          60,
+          83
+        ],
+        "Lead": [
+          76,
+          96
+        ],
+        "Texture": [
+          53,
+          74
+        ]
+      },
+      "notes_per_bar": {
+        "Bass": 1.93,
+        "Harmony": 4.61,
+        "Lead": 2.86,
+        "Texture": 4.96
+      },
+      "section_notes_per_bar": {
+        "intro": 11.62,
+        "themeA": 17.0,
+        "development": 13.95,
+        "bridge": 10.05,
+        "themeB": 16.96,
+        "outro": 10.38
+      },
+      "bass_notes_per_bar": 1.93,
+      "last_note": 133574,
+      "end_tick": 134400,
+      "sha256": "e0963004c0d1e3f787e6cff06d28a975237ecea22720aad8238935c370b2f8dd",
+      "source_part": "solo",
+      "source_window": [
+        1,
+        24
+      ],
+      "patches": {
+        "3": [
+          "Violins 1",
+          "Violin (Pizzicato)"
+        ],
+        "4": "Harp"
+      }
+    }
+  ]
+}
