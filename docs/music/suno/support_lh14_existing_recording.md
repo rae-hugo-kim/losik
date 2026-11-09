@@ -33,7 +33,7 @@ Facts:
 Could you tell me which recording the system matched, and allow the upload? I can send the Logic Pro project if that helps.
 
 Attached: lh14-brass-orchard-v2.mid (31 KB) — the MIDI source of the rejected audio.
-All three rejected renders (WAV, ~50 MB each) in one folder: [download link]
+All three rejected renders (WAV, ~50 MB each) in one folder: https://www.icloud.com/iclouddrive/0257uUox7gK5E90gVLw3XGUOQ#suno-support-lh14
 
 Thank you,
 [Name]
@@ -59,7 +59,7 @@ Thank you,
 어떤 녹음과 일치로 판정됐는지 알려 주시고 업로드를 허용해 주실 수 있을까요? 필요하면 Logic Pro 프로젝트도 보내 드리겠습니다.
 
 첨부: lh14-brass-orchard-v2.mid (31 KB) — 반려된 오디오의 MIDI 소스.
-반려된 렌더 세 개(WAV, 각 ~50 MB)는 폴더 하나로: [다운로드 링크]
+반려된 렌더 세 개(WAV, 각 ~50 MB)는 폴더 하나로: https://www.icloud.com/iclouddrive/0257uUox7gK5E90gVLw3XGUOQ#suno-support-lh14
 
 감사합니다,
 [이름]
