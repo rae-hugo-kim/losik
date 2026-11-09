@@ -44,33 +44,173 @@
 
 ## 4. 검증된 GM PC → 패치 매핑표 (실측)
 
-| PC | 채널 | 로드되는 패치 | 용도 |
+2026-11-08 에 Logic 12.4 에서 128개 전부와 드럼 킷 13개를 실측했습니다. 사운드 라이브러리는 Netac 에 둔 상태이고, 팩 정의 81개 중 79개가 설치돼 있었습니다. 측정 도구는 `tools/gm_map.py`, 원자료(믹서 스트립 문자열 포함)는 `gm_patch_map.json` 입니다. 라이브러리를 바꾸면 다시 측정합니다.
+
+- 패치 이름 일부는 Logic 이 한국어로 표시합니다(예: `톤휠 오르간` = Tonewheel Organ, `하드 록` = Hard Rock, `어쿠스틱 기타` = Acoustic Guitar).
+- 비고가 비어 있으면 GM 악기와 같은 계열의 패치가 로드됩니다. 비고가 있으면 다른 악기가 로드되므로, 그 GM 악기 소리를 기대하고 쓰면 안 됩니다.
+
+| PC | GM 악기 | 로드되는 패치 | 비고 |
 |---|---|---|---|
-| 0 | 드럼(10) | **SoCal** | 어쿠스틱 밴드 드럼 |
-| 25 | 드럼(10) | **Drum Synth Kit** | 일렉트로닉 드럼 |
-| 0 | 멜로디 | **Studio Grand** | 피아노 |
-| 4 | 멜로디 | Deluxe Classic | E.피아노 |
-| 33 | 멜로디 | **Simple Foundation** | 핑거 일렉 베이스 |
-| 38 | 멜로디 | Pulse Bass (ES2) | 신스 베이스 |
-| 6 | 멜로디 | **Muted Clav** | 펑크 커팅/긴장 건반 (하프시코드 대용) |
-| 26 | 멜로디 | **Hard Rock** | 일렉기타 (유일 확보) |
-| 27 | 멜로디 | Classical Acoustic Guitar | 어쿠스틱 기타 |
-| 88 | 멜로디 | Glistening Pad | 스위프/글리터 패드 |
-| 50 | 멜로디 | **Authentic Strings** | 스트링 앙상블 |
-| 80 | 멜로디 | Reverse Engineering (RetroSyn) | 신스 리드(스퀘어) |
-| 81 | 멜로디 | The Final Lead (ES2) | 신스 리드(소우) |
-| 89 | 멜로디 | Classic Pad | 신스 패드 |
-| 90 | 멜로디 | **Epic Cloud Formation** | 폴리신스 |
-| 100 | 멜로디 | Cosmonaut Space Capsule | FX/앰비언트 |
-| 16 | 멜로디 | Tonewheel Organ | 오르간 롱코드 (17 Bebop / 18 Classic Rock / 19 Side Man 도 로드 확인, 2026-09-05) |
-| 24 | 멜로디 | Classical Acoustic Guitar | 나일론 (27 과 동일 패치) |
-| 25 | 멜로디 | Acoustic Guitar | 스틸 어쿠스틱 스트럼 |
+| 0 | Acoustic Grand | Studio Grand |  |
+| 1 | Bright Acoustic | Vintage Upright |  |
+| 2 | Electric Grand | Concert Grand |  |
+| 3 | Honky-tonk | Dark Lo-Fi Piano |  |
+| 4 | E.Piano 1 | Deluxe Classic |  |
+| 5 | E.Piano 2 | 80s Wave Bells |  |
+| 6 | Harpsichord | Muted Clav | 하프시코드 아님 (클라비넷) |
+| 7 | Clavi | 70s Funk Clav |  |
+| 8 | Celesta | Toy Celesta |  |
+| 9 | Glockenspiel | Toy Glockenspiel |  |
+| 10 | Music Box | Mystic Vibes | 뮤직 박스 아님 (비브라폰 계열 이름) |
+| 11 | Vibraphone | Vibraphone |  |
+| 12 | Marimba | Marimba |  |
+| 13 | Xylophone | Vibraphone | 실로폰 아님 (비브라폰) |
+| 14 | Tubular Bells | Delicate Bells |  |
+| 15 | Dulcimer | Digging Deeper Clav | 덜시머 아님 (클라비넷) |
+| 16 | Drawbar Organ | 톤휠 오르간 |  |
+| 17 | Percussive Organ | Bebop Organ |  |
+| 18 | Rock Organ | Classic Rock Organ |  |
+| 19 | Church Organ | Side Man Organ | 교회 오르간 아님 (재즈 오르간) |
+| 20 | Reed Organ | Grand Organ |  |
+| 21 | Accordion | Cheap Organ | 아코디언 아님 (오르간) |
+| 22 | Harmonica | Cheap Organ | 하모니카 아님 (오르간) |
+| 23 | Tango Accordion | Cheap Organ | 아코디언 아님 (오르간) |
+| 24 | Nylon Guitar | Classical Acoustic Guitar |  |
+| 25 | Steel Guitar | 어쿠스틱 기타 |  |
+| 26 | Jazz Guitar | 하드 록 | 재즈 기타 아님 (디스토션) |
+| 27 | Clean Guitar | Classical Acoustic Guitar | 일렉 기타 아님 (클래식 기타) |
+| 28 | Muted Guitar | Phasing Guitar Plucks |  |
+| 29 | Overdriven Guitar | Eastern Synth Guitar | 오버드라이브 아님 |
+| 30 | Distortion Guitar | 하드 록 |  |
+| 31 | Guitar Harmonics | 어쿠스틱 기타 |  |
+| 32 | Acoustic Bass | 루트 업라이트 |  |
+| 33 | Finger Bass | Simple Foundation |  |
+| 34 | Pick Bass | Punchy Bottom |  |
+| 35 | Fretless Bass | Punchy Bottom |  |
+| 36 | Slap Bass 1 | Slap & Pop |  |
+| 37 | Slap Bass 2 | Slap & Pop |  |
+| 38 | Synth Bass 1 | Pulse Bass |  |
+| 39 | Synth Bass 2 | Taureg Moon Bass |  |
+| 40 | Violin | Studio Violins 1 |  |
+| 41 | Viola | Studio Violas |  |
+| 42 | Cello | Studio Cellos |  |
+| 43 | Contrabass | Studio Double Basses |  |
+| 44 | Tremolo Strings | Eden Park | 트레몰로 아님 (섹션 기본 주법) |
+| 45 | Pizzicato Strings | Eden Park | 피치카토 아님 (섹션 기본 주법) |
+| 46 | Orchestral Harp | Space Harp | 오케스트라 하프 아님 (신스) |
+| 47 | Timpani | Taiko Drums | 팀파니 아님 (타이코) |
+| 48 | String Ensemble 1 | Kensington |  |
+| 49 | String Ensemble 2 | Bloomsbury |  |
+| 50 | Synth Strings 1 | Authentic Strings |  |
+| 51 | Synth Strings 2 | Space Strings |  |
+| 52 | Choir Aahs | Mellotron Choir |  |
+| 53 | Voice Oohs | Mellotron Choir |  |
+| 54 | Synth Voice | GM 기기 11 | 저품질 GM 폴백 — 쓰지 않음 |
+| 55 | Orchestra Hit | The Final Lead | 오케스트라 히트 아님 (신스 리드) |
+| 56 | Trumpet | Studio Trumpet 1 |  |
+| 57 | Trombone | Studio Trombone 1 |  |
+| 58 | Tuba | Studio Bass Trombone | 튜바 아님 (베이스 트롬본) |
+| 59 | Muted Trumpet | Sugar Hill | 뮤트 트럼펫 아님 (브라스·색소폰 섹션) |
+| 60 | French Horn | Studio Baritone Sax | 프렌치 호른 아님 (바리톤 색소폰) |
+| 61 | Brass Section | Sugar Hill |  |
+| 62 | Synth Brass 1 | Bright Synth Brass |  |
+| 63 | Synth Brass 2 | 80s Pop Synth Brass |  |
+| 64 | Soprano Sax | (New) Horns | 소프라노 색소폰 아님 (알토 색소폰 — `Studio Alto Sax 1` 패치) |
+| 65 | Alto Sax | Studio Alto Sax 2 |  |
+| 66 | Tenor Sax | Studio Alto Sax 2 | 테너 아님 (알토) |
+| 67 | Baritone Sax | (New) Horns | 바리톤 색소폰 아님 (알토 색소폰 — `Studio Alto Sax 1` 패치) |
+| 68 | Oboe | Mellotron Flute | 오보에 아님 (멜로트론 플루트) |
+| 69 | English Horn | Studio Baritone Sax | 잉글리시 호른 아님 (바리톤 색소폰) |
+| 70 | Bassoon | Studio Bass Trombone | 바순 아님 (베이스 트롬본) |
+| 71 | Clarinet | Mellotron Flute | 클라리넷 아님 (멜로트론 플루트) |
+| 72 | Piccolo | Mellotron Flute | 피콜로 아님 (멜로트론 플루트) |
+| 73 | Flute | Mellotron Flute | 오케스트라 플루트 아님 (멜로트론 플루트) |
+| 74 | Recorder | Mellotron Flute | 리코더 아님 (멜로트론 플루트) |
+| 75 | Pan Flute | Sweet Dream Flute |  |
+| 76 | Blown Bottle | Mellotron Flute | 블로운 보틀 아님 (멜로트론 플루트) |
+| 77 | Shakuhachi | Liquid Breath Flute |  |
+| 78 | Whistle | Mellotron Flute | 휘슬 아님 (멜로트론 플루트) |
+| 79 | Ocarina | Mellotron Flute | 오카리나 아님 (멜로트론 플루트) |
+| 80 | Lead 1 square | Reverse Engineering |  |
+| 81 | Lead 2 saw | The Final Lead |  |
+| 82 | Lead 3 calliope | Sync Lead |  |
+| 83 | Lead 4 chiff | Analog Horns |  |
+| 84 | Lead 5 charang | 80s Starlight |  |
+| 85 | Lead 6 voice | GM 기기 12 | 저품질 GM 폴백 — 쓰지 않음 |
+| 86 | Lead 7 fifths | Fifth Formant Keys |  |
+| 87 | Lead 8 bass+lead | Ambient Lead |  |
+| 88 | Pad 1 new age | Glistening Pad |  |
+| 89 | Pad 2 warm | Classic Pad |  |
+| 90 | Pad 3 polysynth | Epic Cloud Formation |  |
+| 91 | Pad 4 choir | GM 기기 2 | 저품질 GM 폴백 — 쓰지 않음 |
+| 92 | Pad 5 bowed | Space Strings |  |
+| 93 | Pad 6 metallic | Ghost Voices |  |
+| 94 | Pad 7 halo | Tidal Space |  |
+| 95 | Pad 8 sweep | Aurora Waves |  |
+| 96 | FX 1 rain | Crystal Rain |  |
+| 97 | FX 2 soundtrack | Distant Air |  |
+| 98 | FX 3 crystal | Glacial Forms |  |
+| 99 | FX 4 atmosphere | Pipe Ambience |  |
+| 100 | FX 5 brightness | Cosmonaut Space Capsule |  |
+| 101 | FX 6 goblins | Forever Riser |  |
+| 102 | FX 7 echoes | Backwards Masking |  |
+| 103 | FX 8 sci-fi | Dark Abyss |  |
+| 104 | Sitar | 80s Starlight | 시타르 아님 |
+| 105 | Banjo | 어쿠스틱 기타 | 밴조 아님 |
+| 106 | Shamisen | Asian Plucked Strings |  |
+| 107 | Koto | Koto |  |
+| 108 | Kalimba | Sweet Overdrive Kalimba |  |
+| 109 | Bagpipe | Toy Melodica | 백파이프 아님 |
+| 110 | Fiddle | Authentic Strings | 피들 아님 (현악 합주) |
+| 111 | Shanai | Toy Melodica | 샤나이 아님 |
+| 112 | Tinkle Bell | Delicate Bells |  |
+| 113 | Agogo | Agogo High |  |
+| 114 | Steel Drums | GM 기기 11 | 저품질 GM 폴백 — 쓰지 않음 |
+| 115 | Woodblock | Xylo Keyboard | 우드블록 아님 |
+| 116 | Taiko Drum | Taiko Drums |  |
+| 117 | Melodic Tom | Tom Mid High - Synthia | 패치 이름으로 보아 드럼 킷의 탐 한 조각 |
+| 118 | Synth Drum | Kick 1 - Drum Synth Kit | 드럼 킷 전체가 로드됨 |
+| 119 | Reverse Cymbal | Kick 1 - Tough Kit | 드럼 킷 전체가 로드됨 |
+| 120 | Guitar Fret Noise | Mech Impact | 효과음 아님 |
+| 121 | Breath Noise | Breathy Vox | 효과음 아님 (보컬 계열 이름) |
+| 122 | Seashore | Deeper Emotion | 효과음 아님 |
+| 123 | Bird Tweet | 선원 | 효과음 아님 |
+| 124 | Telephone Ring | Azure Crystal Synth Bells | 효과음 아님 |
+| 125 | Helicopter | Ocean Waves Modular | 효과음 아님 |
+| 126 | Applause | Rain Strum | 효과음 아님 |
+| 127 | Gunshot | Underwater Laser | 효과음 아님 |
+
+**드럼 킷 (채널 10)**
+
+| PC | 로드되는 킷 |
+|---|---|
+| 0 | SoCal |
+| 8 | 복고풍 록 |
+| 16 | Kick 1 - Tough Kit |
+| 24 | Kick 1 - Drum Synth Kit |
+| 25 | Kick 1 - Drum Synth Kit |
+| 26 | Roots |
+| 27 | SoCal |
+| 28 | SoCal |
+| 32 | Roots |
+| 40 | Latin |
+| 48 | Latin |
+| 56 | Latin |
+| 127 | SoCal |
+
+**GM 번호로는 닿지 않는 패치** (설치돼 있지만 SMF 임포트로는 불러올 수 없고, `pipeline.produce(..., patches={트랙 번호: '패치 이름'})` 로 이름을 지정해 올립니다 — 사용법은 `LOGIC_LIBRARY_INVENTORY.md` §4.1):
+- `z_Legacy/Orchestral`: Harpsichord, Celesta, Oboe, Bassoon Solo, English Horn, Piccolo, Flute Solo, Clarinet Solo, Harp, Timpani, Glockenspiel, Xylophone, Tubular Bells, Crotales, French Horn Solo·French Horns·Trumpets·Trombones·Tuba·Full Brass, 합창 11종, 현악 섹션(Violins 1·2, Violas, Cellos, Basses, Full Strings 등)이 있습니다.
+- `Strings/Studio Strings`: Section Instruments 중 Abbey Wood·King's Cross 가 해당합니다(Eden Park·Kensington·Bloomsbury 는 PC 44·45·48·49 로 닿습니다).
+- `z_Legacy/World`: Medieval Lute, Celtic Harp, Hammered Dulcimer, Oud, Sitar, Erhu 등이 있습니다.
+- Alchemy 프리셋과 Studio Horns 단일 악기 대부분도 해당합니다.
+- 솔로 바이올린은 라이브러리 패치로는 없고(라이브러리의 바이올린 패치는 모두 섹션입니다), Sampler 프리셋으로만 있습니다: `Plug-In Settings/Sampler/z_Legacy/Strings/Violin (Arco).exs` 와 `Violin (Pizzicato).exs` 입니다. Arco 는 지속음 3종(sus, 마르카토 sus, 여린 시작 sus)을 각각 12개 샘플로 담았고(44.1 kHz/16 bit, 77 MB), Pizzicato 는 22개 샘플입니다. 레가토나 빠른 패시지 전용 주법은 없습니다. 쓰려면 Sampler 플러그인에 프리셋을 이름으로 불러와야 합니다.
 
 **함정 (사용 금지/주의)**:
-- PC 48 → "GM 기기 4" 폴백 (저품질 GM). 스트링은 PC 50 사용.
-- PC 119 (GM 리버스 심벌) → "Tough Kit" 오매핑. 리버스 심벌 효과는 **크래시 롤 크레셴도**(벨로시티 34→112 램프)로 구현.
-- PC 28 → "GM 기기 2" 폴백, PC 29 → "Eastern Synth Guitar" (용도 제한적).
-- 미검증 PC(11, 62 등)는 사용 후 반드시 스트립 실측.
+- 비고가 적힌 번호는 GM 이름대로의 소리가 나지 않습니다. 사계 편성에서는 특히 PC 6(하프시코드), 46(하프), 47(팀파니), 60(프렌치 호른), 68·70(오보에·바순)이 해당합니다.
+- `GM 기기 N` 으로 로드되는 PC 54·85·91·114 는 저품질 GM 폴백이므로 쓰지 않습니다.
+- PC 48 은 이전에 "GM 기기 4" 로 폴백했지만, 라이브러리 설치 뒤 Studio Strings 섹션(Kensington)으로 로드됩니다(2026-11-08).
+- PC 119(GM 리버스 심벌)는 Tough Kit 전체가 로드됩니다. 리버스 심벌 효과는 **크래시 롤 크레셴도**(벨로시티 34→112 램프)로 만듭니다.
+- 표에 없는 경우(라이브러리 변경 뒤 등)는 사용 후 반드시 스트립을 실측합니다.
 
 ## 5. 실패 사례 → 규칙 매핑 (이 문서의 근거)
 
@@ -83,7 +223,7 @@
 | 신스 풀코드 스택 | "신디사이저 소리밖에 안 들림" | §2-6 |
 | 808 매마디 홀드 | "베이스가 너무 부각" | §2-7 |
 | 피아노 아르페지오 스타카토 | "끊어지는 느낌" | §2-8 |
-| PC 48/119 오매핑 | 스트링 저품질 / 라이저 단타 | §4 함정 |
+| PC 48/119 오매핑 | 스트링 저품질 / 라이저 단타 | §4 함정 (PC 48 은 2026-11-08 라이브러리 설치로 해소) |
 
 ## 6. 워크플로 (고정)
 
@@ -97,8 +237,11 @@
 - 구버전은 삭제하지 않고 `music/_archive-*/`로 보관
 - 헤드폰(블루투스) 청취는 Logic이 아니라 **바운스 파일을 Finder/QuickTime으로** (BT HFP 16kHz 강등 이슈)
 - **Suno 프롬프트는 공백 포함 1,000자 이내 (MUST)** — Suno 입력 필드 상한. Description ≤ 1,000자, Style ≤ 300자. 쓰고 나서 `len()` 으로 재서 출력한다(2026-10-21: 30블록이 1,262~1,710자로 넘쳐 전량 재작성). 잘라내는 우선순위는 키·BPM·코드 루프 → 드럼 골격 → 층(패드·텍스처·퍼커션) → 구조 한 줄 → "no lead, no vocals"; 벨로시티 수치·16분 칸 번호 같은 구현 세부는 넣지 않는다. 양식은 `SUNO_PROMPTS.md` 사용 메모
+- **Suno Cover 슬라이더**: weirdness ≤ 20~30%, variety 는 기본값. Cover 는 입력 오디오가 골격을 고정하므로 슬라이더를 올려도 방향이 바뀌지 않고 음색·품질만 들쭉날쭉해진다(2026-11-07 청취). 변주는 Style/Description 과 입력 MIDI 로 만든다.
+- **Suno "matches an existing recording" 반려**는 자작 GM 렌더에도 생기는 오탐이다(2026-11-06 lh02·lh14). 대응 순서: ① 템포 메타만 ±2 BPM(`{sid}-v2u`, lh02 통과) ② 드럼 제외 +1 반음 전조(`{sid}-v2t`) ③ support@suno.com — 2026-11-09 실측: "AI 탐지" 자동 응답만 오고 사람 처리 없음(사실상 막힘). 곡별로 다르게 걸리므로 하나가 만능이 아니다.
 - 코드는 `docs/music/tools/`(`pipeline.py` AX·SMF·계측 / `sketches.py`·`goldenhour.py` 작곡 / `round_*.py` 라운드별 수정)에 둔다 — 커널 상주 함수는 세션과 함께 휘발됨(2026-09-05 복원 비용 발생)
-- **밸런스는 SMF 의 CC7 로 잡히지 않는다** (계측: star v6 1차 시도 저역-고역 차 25.1→27.4 dB, 무효). 확실한 수단은 ① 편성/음역 정리 ② 악기 교체 ③ 벨로시티 스케일. AX 페이더는 새 임포트마다 리셋되고 성공률이 랜덤
+- **베이스 레벨은 SMF tick 0 의 CC7 로 잡힌다** — 2026-11-04 lh15 실측: Bass CC7 85/60/30 → <150 Hz 대역이 전체 대비 −0.8/−1.7/−3.6 dB, 리미터 히트 922/420/44. 권장값 **PC38 신스 48, PC33 핑거 85**, 다른 트랙은 CC7 생략. (옛 기록 "CC7 무효"(star v6, 저역-고역 차 25.1→27.4 dB)는 `band_balance()` 가 고역 대비 상대값이라 베이스 외 층이 함께 움직인 측정으로 보이며, 절대 저역 레벨로는 반영됨.) 그 밖의 밸런스 수단은 ① 편성/음역 정리 ② 악기 교체 ③ 벨로시티 스케일. AX 페이더는 새 임포트마다 리셋되고 성공률이 랜덤
 - 바운스 전/후 `band_balance()` 로 저역-고역 차(dB)를 이전판과 대조해 밸런스 변화 방향을 계측한다 (절대값이 아니라 상대 변화만 의미 있음)
 - osascript 창 이름은 한글이 NFD 로 돌아올 수 있음 → NFC 정규화 후 비교 (`pipeline.windows()`). 임포트 중에는 System Events 호출이 ~2분씩 블록되므로 대기 루프는 호출 횟수가 아니라 벽시계 기준으로
 - 같은 이름의 `.logicx` 가 `sketches/` 에 남아 있으면 저장 시 "대치하겠습니까?" 시트가 뜬다 (`save_project_as` 가 처리)
+- **Logic 바운스 대화상자는 마지막 저장 폴더를 기억한다** — 워크트리(세션)가 여럿이면 다른 세션이 쓴 `sketches/` 로 파일이 떨어진다(2026-10-30 "aif missing" ×3). `pipeline.BOUNCE_SEARCH` 가 형제 워크트리 `*/docs/music/sketches` 를 모두 보고, `wait_bounce_file(since=)` 가 옛 동명 파일을 거른다.
