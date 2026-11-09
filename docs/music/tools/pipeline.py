@@ -463,6 +463,377 @@ end tell
 end tell''', timeout=60)
     return out or err
 
+# ---------------------------------------------------------------- patch loading (이름으로 패치 올리기)
+# SMF 임포트는 GM 프로그램 번호로만 악기를 고른다. 라이브러리 패치(.patch)를 트랙에 올리려면
+# ① 트랙 메뉴 "트랙 검색 및 선택…" 으로 트랙을 고르고(키 입력) ② 라이브러리 검색 필드에 패치 이름을 치고
+# ③ 결과 표의 행을 AX 로 선택한다. 좌표 클릭(`click at`)은 Logic 에 닿지 않아 쓰지 않는다 (2026-11-09 실측).
+def _nfc(s):
+    import unicodedata
+    return unicodedata.normalize('NFC', s)       # osascript 는 한글을 NFD 로 돌려줄 때가 있다 (windows() 와 같은 이유)
+
+
+def _as_str(s):
+    """AppleScript 문자열 리터럴 안에 넣을 값. 역슬래시·큰따옴표는 이스케이프하고, 결과 구분자 | 는 거부한다."""
+    if '|' in s or '\n' in s:
+        raise ValueError(f'name cannot contain | or newline: {s!r}')
+    return s.replace('\\', '\\\\').replace('"', '\\"')
+
+
+
+def _nth(names, i):
+    return names[i - 1] if 0 < i <= len(names) else ''
+
+
+_FIND_BY_DESC = '''on findDesc(el, depth, want)
+tell application "System Events"
+if depth > 12 then return missing value
+try
+if (description of el) is want then return el
+end try
+try
+repeat with c in (every UI element of el)
+set r to my findDesc(c, depth + 1, want)
+if r is not missing value then return r
+end repeat
+end try
+return missing value
+end tell
+end findDesc
+on findRole(el, depth, want)
+tell application "System Events"
+if depth > 12 then return missing value
+try
+if (role of el) is want then return el
+end try
+try
+repeat with c in (every UI element of el)
+set r to my findRole(c, depth + 1, want)
+if r is not missing value then return r
+end repeat
+end try
+return missing value
+end tell
+end findRole
+'''
+
+
+def _main_window(proj='무제'):
+    return f'window "{proj} - 트랙"'
+
+
+def library_visible(proj='무제'):
+    rc, out, err = osa(f'''tell application "System Events"
+tell process "{APP}"
+return (exists (first UI element of {_main_window(proj)} whose description is "라이브러리")) as text
+end tell
+end tell''')
+    return out == 'true'
+
+
+def show_library(proj='무제'):
+    if library_visible(proj):
+        return True
+    osa(f'''tell application "System Events"
+tell process "{APP}"
+set frontmost to true
+perform action "AXRaise" of {_main_window(proj)}
+delay 0.3
+click menu item "라이브러리 보기" of menu 1 of menu bar item "보기" of menu bar 1
+end tell
+end tell''')
+    time.sleep(2)
+    return library_visible(proj)
+
+
+def track_names(proj='무제'):
+    """트랙 헤더 순서대로 트랙 이름(= 채널 스트립 이름) 목록."""
+    rc, out, err = osa(_FIND_BY_DESC + f'''tell application "System Events"
+tell process "{APP}"
+set hs to my findDesc((first UI element of {_main_window(proj)} whose description is "그룹"), 0, "트랙 헤더")
+if hs is missing value then return ""
+set out to ""
+repeat with h in UI elements of hs
+set out to out & (description of text field 1 of h) & "|"
+end repeat
+return out
+end tell
+end tell''', timeout=60)
+    return [_nfc(n) for n in out.split('|') if n] if rc == 0 else []
+
+
+# 인스펙터의 "트랙:" 줄에 적힌 선택 트랙 이름 (트랙 선택이 반영됐는지 확인용). 없으면 "".
+_INSPECTOR_TRACK = '''on inspectorTrack(win)
+tell application "System Events"
+try
+set insp to first UI element of win whose description is "인스펙터"
+repeat with g in UI elements of list 1 of insp
+try
+if (value of static text 1 of g) is "트랙:" then return value of text field 1 of g
+end try
+end repeat
+end try
+return ""
+end tell
+end inspectorTrack
+'''
+
+# 스트립에서 설명이 desc 인 버튼의 값("켬"/"끔")을 설명으로 다시 찾아 읽는다 (위치 참조가 어긋나도 안전).
+_INDICATOR_VALUE = '''on indicatorValue(strip, desc)
+tell application "System Events"
+try
+return value of (first button of strip whose description is desc)
+end try
+return ""
+end tell
+end indicatorValue
+'''
+
+
+def select_track(index, proj='무제'):
+    """트랙 메뉴 '트랙 검색 및 선택…' 팝오버에 트랙 번호를 치고, 윤곽 목록에서 "<번호>\\t이름" 행을 골라 Return.
+    이름이 같은 트랙이 여럿이어도 번호로 고르므로 유일하다. 팝오버가 안 뜨거나 행이 없거나 도중에 오류가 나면
+    Escape 로 닫고 실패를 돌려준다. 반환: (성공 여부, 고른 행 텍스트 "<번호>\\t이름" 또는 오류)."""
+    index = int(index)
+    rc, out, err = osa(_INSPECTOR_TRACK + f'''tell application "System Events"
+tell process "{APP}"
+set frontmost to true
+perform action "AXRaise" of {_main_window(proj)}
+delay 0.3
+click menu item "트랙 검색 및 선택…" of menu 1 of menu bar item "트랙" of menu bar 1
+set pop to missing value
+repeat 10 times
+delay 0.4
+repeat with w in windows
+if (name of w) is "" and (count of UI elements of w) is 1 then
+set pop to w
+exit repeat
+end if
+end repeat
+if pop is not missing value then exit repeat
+end repeat
+if pop is missing value then return "ERR no popover"
+try
+keystroke "{index}"
+delay 1.2
+set ol to outline 1 of scroll area 1 of group 1 of pop
+set hit to missing value
+set picked to ""
+repeat with r in rows of ol
+set t to value of static text 1 of UI element 1 of r
+if t starts with "{index}" & tab then
+set hit to r
+set picked to t
+exit repeat
+end if
+end repeat
+if hit is missing value then
+key code 53
+return "ERR no row for track {index}"
+end if
+set selected of hit to true
+delay 0.3
+keystroke return
+set want to text ((length of ("{index}" & tab)) + 1) thru -1 of picked
+set shown to ""
+repeat 16 times
+delay 0.5
+set shown to my inspectorTrack({_main_window(proj)})
+if shown is want then exit repeat
+end repeat
+if shown is not want then return "ERR inspector shows " & shown & " after selecting " & picked
+delay 0.5
+return "OK " & picked
+on error e
+key code 53
+return "ERR " & e
+end try
+end tell
+end tell''', timeout=60)
+    if rc != 0:
+        return False, err[:160]
+    if not out.startswith('OK '):
+        return False, out[:160]
+    status, _, picked = out.partition(' ')
+    return status == 'OK', _nfc(picked)
+
+
+def focus_library_slot(slot=None, proj='무제'):
+    """인스펙터 채널 스트립의 '라이브러리 표시기' 버튼을 눌러 라이브러리가 보여줄 층을 고른다.
+    slot=None → 패치 층(표시기 이름이 플러그인 슬롯 이름과 다른 것; 그 이름이 곧 올라간 패치명),
+    slot='Sampler' → 그 플러그인의 프리셋 층(EXS 악기 검색 가능).
+    트랙을 바꾼 직후에는 인스펙터 스트립이 아직 이전 트랙 것이거나 반쯤 바뀐 상태라(2026-11-09 실측: 슬롯 그룹과
+    표시기 버튼이 다른 트랙 것으로 섞임) 스트립 이름이 인스펙터 "트랙:" 이름과 같고 패치 층 표시기가 정확히 하나일
+    때까지 기다린다. 이미 켜진 표시기를 다시 누르면 라이브러리 패널이 닫히므로 켜져 있으면 누르지 않는다.
+    반환: (성공 여부, 켜진 표시기 이름, 패치 층 표시기 이름 = 현재 패치명)."""
+    want = f'"{_as_str(slot)}"' if slot else 'missing value'
+    rc, out, err = osa(_FIND_BY_DESC + _INSPECTOR_TRACK + _INDICATOR_VALUE + f'''tell application "System Events"
+tell process "{APP}"
+set frontmost to true
+set target to missing value
+set patchName to ""
+set why to ""
+repeat 12 times
+set target to missing value
+set patchName to ""
+set insp to first UI element of {_main_window(proj)} whose description is "인스펙터"
+set strip to my findRole(insp, 0, "AXLayoutItem")
+if strip is missing value then
+set why to "no inspector strip"
+else
+set shown to my inspectorTrack({_main_window(proj)})
+if (description of strip) is not shown then
+set why to "strip " & (description of strip) & " != inspector " & shown
+else
+set slots to description of every group of strip
+set nPatch to 0
+repeat with b in (every button of strip)
+set d to ""
+try
+set d to description of b
+end try
+if (length of d) > 11 then
+if (text 1 thru 11 of d) is "라이브러리 표시기, " then
+set nm to text 12 thru -1 of d
+if slots does not contain nm then
+set nPatch to nPatch + 1
+set patchName to nm
+if {want} is missing value then set target to b
+else if {want} is not missing value and nm is {want} then
+set target to b
+end if
+end if
+end if
+end repeat
+if nPatch is 1 and target is not missing value then exit repeat
+set why to "patch indicators=" & nPatch & " target found=" & (target is not missing value)
+set target to missing value
+end if
+end if
+delay 0.5
+end repeat
+if target is missing value then return "ERR no indicator for {slot or 'patch'}: " & why
+set td to description of target
+-- System Events 참조는 위치(index) 기반이라 스트립이 다시 그려지면 다른 버튼을 가리킨다 → 매번 설명으로 다시 찾는다
+set cur to my indicatorValue(strip, td)
+if cur is not "켬" then
+click (first button of strip whose description is td)
+delay 1.5
+set cur to my indicatorValue(my findRole((first UI element of {_main_window(proj)} whose description is "인스펙터"), 0, "AXLayoutItem"), td)
+end if
+if cur is "켬" then return "OK " & (text 12 thru -1 of td) & "|" & patchName
+return "ERR indicator did not turn on: " & td & " value=" & cur
+end tell
+end tell''', timeout=90)
+    if rc != 0:
+        return False, err[:160], ''
+    status, _, rest = out.partition(' ')
+    on, _, patch = rest.partition('|')
+    return status == 'OK', _nfc(on), _nfc(patch)
+
+
+def library_pick(patch, proj='무제'):
+    """라이브러리 검색 필드에 patch 를 치고 결과 표에서 이름이 정확히 같은 행을 선택한다(선택 = 로드).
+    반환: (성공 여부, 결과 행 이름 목록)."""
+    patch_lit = _as_str(patch)
+    rc, out, err = osa(_FIND_BY_DESC + f'''tell application "System Events"
+tell process "{APP}"
+set frontmost to true
+if not (exists (first UI element of {_main_window(proj)} whose description is "라이브러리")) then return "ERR no library pane"
+set lib to first UI element of {_main_window(proj)} whose description is "라이브러리"
+set tf to my findDesc(lib, 0, "텍스트 필드 검색")
+if tf is missing value then return "ERR no search field"
+set names to ""
+set hit to missing value
+set lastValue to ""
+repeat 3 times
+set tf to my findDesc(lib, 0, "텍스트 필드 검색")
+if tf is missing value then return "ERR no search field"
+set focused of tf to true
+delay 0.3
+set value of tf to "{patch_lit}"
+keystroke return
+delay 1.2
+repeat 6 times
+set lastValue to value of tf
+if lastValue is not "{patch_lit}" then exit repeat
+set t to my findRole(lib, 0, "AXTable")
+if t is not missing value then
+set names to ""
+repeat with r in rows of t
+set n to value of UI element 1 of UI element 1 of r
+set names to names & n & "|"
+considering case
+if n is "{patch_lit}" and hit is missing value then set hit to r
+end considering
+end repeat
+if hit is not missing value then exit repeat
+end if
+delay 0.5
+end repeat
+if hit is not missing value then exit repeat
+delay 1.0
+end repeat
+if hit is missing value then return "MISS " & names & "|(field=" & lastValue & ")"
+set selected of hit to true
+delay 2.5
+return "OK " & names
+end tell
+end tell''', timeout=90)
+    if rc != 0:
+        return False, [err[:120]]
+    status, _, names = out.partition(' ')
+    return status == 'OK', [_nfc(n) for n in names.split('|') if n]
+
+
+def load_patches(patches, proj='무제', log=print):
+    """patches: {track_index(1-based, SMF 트랙 순서): spec}. spec 은
+      'Harpsichord'                 라이브러리 패치(.patch) 이름 — 정확히 일치해야 한다
+      ('Violins 1', 'Violin (Arco)') (Sampler 를 쓰는 패치, Sampler 프리셋/EXS 악기 이름) — 패치를 먼저 올려 Sampler 를
+                                     확보하고, 인스펙터의 Sampler 라이브러리 표시기로 층을 바꿔 EXS 악기를 올린다.
+    번호로 트랙을 고르므로 이름이 겹쳐도 안전하다. 확인: 패치는 인스펙터 스트립의 패치 층 '라이브러리 표시기' 이름이
+    패치명과 같아야 하고, EXS 는 트랙 이름이 EXS 이름으로 바뀌어야 한다(임포트로 자동 명명된 트랙만 — 사람이 이름을
+    바꾼 트랙은 이름이 안 바뀐다, 2026-11-09 실측).
+    선행 조건: 임포트된 '<proj> - 트랙' 창. 반환: {index: (spec, ok, (patch_indicator, header_name))}; 하나라도 실패면 RuntimeError."""
+    for i, spec in patches.items():
+        parts = spec if isinstance(spec, tuple) else (spec,)
+        if (type(i) is not int or (isinstance(spec, tuple) and len(parts) != 2)
+                or not all(isinstance(p, str) and p for p in parts)):
+            raise ValueError(f'bad patch spec {i!r}: {spec!r} — int 번호와 "패치" 또는 ("패치", "EXS") 만 받는다')
+        for p in parts:
+            _as_str(p)
+    if not show_library(proj):
+        raise RuntimeError('library pane not available')
+    names = track_names(proj)
+    if not names:
+        raise RuntimeError('no track headers found')
+    bad = [i for i in patches if not 1 <= i <= len(names)]
+    if bad:
+        raise RuntimeError(f'track index out of range {bad}: headers {names}')
+    results = {}
+    for i in sorted(patches):
+        spec = patches[i]
+        base, exs = (spec if isinstance(spec, tuple) else (spec, None))
+        ok_sel, picked = select_track(i, proj)
+        if not ok_sel or picked != f'{i}\t{names[i - 1]}':
+            raise RuntimeError(f'track {i}: select failed (picked={picked!r}, expected {names[i - 1]!r})')
+        ok_focus, _, _ = focus_library_slot(None, proj)      # 앞 트랙에서 Sampler 층을 봤더라도 패치 층으로 되돌린다
+        ok_pick, rows = library_pick(base, proj) if ok_focus else (False, [])
+        ok_ind, _, loaded = focus_library_slot(None, proj)   # 올라간 패치명 읽기 (표시기 이름)
+        name = _nth(track_names(proj), i)
+        # 표시기는 '선택된' 트랙의 것이고 헤더는 i 번째 트랙의 것 — 둘 다 맞아야 엉뚱한 트랙에 올라간 경우를 거른다
+        ok = ok_pick and ok_ind and loaded == base and name == base
+        if ok and exs:
+            ok_focus, desc, _ = focus_library_slot('Sampler', proj)
+            ok_pick, rows = library_pick(exs, proj) if ok_focus else (False, [desc])
+            name = _nth(track_names(proj), i)
+            ok = ok_pick and name == exs
+        results[i] = (spec, ok, (loaded, name))
+        log(f'track {i}: {names[i - 1]} -> {spec}: {"OK" if ok else "FAIL"} (patch={loaded}, header={name}, results={rows[:5]})')
+    failed = {i: r for i, r in results.items() if not r[1]}
+    if failed:
+        raise RuntimeError(f'patch load failed: {failed}')
+    return results
+
 
 def start_bounce_aiff(proj_name, file_name):
     rc, out, err = osa(f'''tell application "System Events"
@@ -739,8 +1110,9 @@ def _worktree_name():
     return os.path.basename(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..')))
 
 
-def produce(sid, title, ver, mid_path, log=print, owner=None):
+def produce(sid, title, ver, mid_path, log=print, owner=None, patches=None):
     """열린 프로젝트 정리 → SMF 임포트(벽시계 기준 대기; 임포트 중 System Events 는 ~2분씩 블록) → finish().
+    patches: load_patches() 의 {트랙 번호: 패치 spec} — 임포트 뒤, 바운스 전에 라이브러리 패치/EXS 를 올린다.
     세션 간 Logic 경합을 막기 위해 LogicLock 을 잡고 돈다(owner 기본값 = 현재 워크트리 이름)."""
     owner = owner or _worktree_name()
     with LogicLock(owner):
@@ -756,14 +1128,24 @@ def produce(sid, title, ver, mid_path, log=print, owner=None):
         time.sleep(3)
         clear_alerts()
         time.sleep(2)
-        r = finish(sid, title, ver, log=log)
+        r = finish(sid, title, ver, log=log, patches=patches)
         r['elapsed'] = round(time.time() - t0)
         return r
 
 
-def finish(sid, title, ver, log=print):
-    """메트로놈 OFF → 스트립 실측 → 저장(projects/) → bounce_and_post()."""
+def finish(sid, title, ver, log=print, patches=None):
+    """(패치 로드 →) 메트로놈 OFF → 스트립 실측 → 저장(projects/) → bounce_and_post()."""
     proj = f'{title} {ver}'
+    loaded = None
+    if patches:
+        try:
+            loaded = load_patches(patches, log=log)
+        except Exception as e:          # 이름 오류(ValueError)·AX 시간 초과(TimeoutExpired)도 배치를 끊지 않고 곡 단위 실패로 돌려준다
+            try:
+                tracks = track_names()
+            except Exception:
+                tracks = []
+            return dict(ok=False, stage='patches', msg=f'{type(e).__name__}: {e}', tracks=tracks)
     log(f'{sid}: metronome {metronome_off("무제 - 트랙")}')
     time.sleep(1)
     open_mixer()
@@ -773,6 +1155,8 @@ def finish(sid, title, ver, log=print):
         return dict(ok=False, stage='save', msg=msg, strips=strips)
     r = bounce_and_post(sid, proj, ver)
     r['strips'] = strips
+    if loaded is not None:
+        r['patches'] = loaded
     return r
 
 

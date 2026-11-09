@@ -198,7 +198,7 @@
 | 56 | Latin |
 | 127 | SoCal |
 
-**GM 번호로는 닿지 않는 패치** (설치돼 있지만 SMF 임포트로는 불러올 수 없으며, 쓰려면 트랙에 패치를 이름으로 불러오는 자동화가 필요합니다):
+**GM 번호로는 닿지 않는 패치** (설치돼 있지만 SMF 임포트로는 불러올 수 없고, `pipeline.produce(..., patches={트랙 번호: '패치 이름'})` 로 이름을 지정해 올립니다 — 사용법은 `LOGIC_LIBRARY_INVENTORY.md` §4.1):
 - `z_Legacy/Orchestral`: Harpsichord, Celesta, Oboe, Bassoon Solo, English Horn, Piccolo, Flute Solo, Clarinet Solo, Harp, Timpani, Glockenspiel, Xylophone, Tubular Bells, Crotales, French Horn Solo·French Horns·Trumpets·Trombones·Tuba·Full Brass, 합창 11종, 현악 섹션(Violins 1·2, Violas, Cellos, Basses, Full Strings 등)이 있습니다.
 - `Strings/Studio Strings`: Section Instruments 중 Abbey Wood·King's Cross 가 해당합니다(Eden Park·Kensington·Bloomsbury 는 PC 44·45·48·49 로 닿습니다).
 - `z_Legacy/World`: Medieval Lute, Celtic Harp, Hammered Dulcimer, Oud, Sitar, Erhu 등이 있습니다.
