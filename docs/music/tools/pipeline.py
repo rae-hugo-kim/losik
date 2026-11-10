@@ -73,7 +73,8 @@ def build_smf(title, bpm, keysig_sf, minor, n_bars, tracks, pcs, nt, cc, markers
     tempos: [(tick, bpm)] 추가 템포 이벤트(루바토·아첼레란도). 기본값(4/4, 템포 변화 없음)은 이전 출력과 바이트 동일.
     4/4 가 아니면 bt()/BAR 는 쓰지 말고 bar_ticks = num * PPQ * 4 // den 로 틱을 직접 계산한다(band-fable 7d6d9a0 에서 가져옴)."""
     num, den = timesig
-    assert den > 0 and den & (den - 1) == 0, f'timesig denominator must be a power of two: {timesig}'
+    if not (isinstance(den, int) and den > 0 and den & (den - 1) == 0 and isinstance(num, int) and 1 <= num <= 255):
+        raise ValueError(f'timesig must be (1..255, power of two): {timesig}')
     bar_ticks = num * (PPQ * 4 // den)
     cond = [
         meta(0, 0x03, title.encode()),
@@ -588,13 +589,33 @@ end tell
 end indicatorValue
 '''
 
+# 문자열에 ASCII 가 아닌 글자(한글 표시명)가 있는지 — 번역된 라이브러리 표시명과 영어 오타·부분 일치를 가른다.
+_HAS_NON_ASCII = '''on hasNonASCII(s)
+set cps to id of s
+if class of cps is integer then set cps to {cps}
+repeat with c in cps
+if c > 127 then return true
+end repeat
+return false
+end hasNonASCII
+'''
+
+
+def press_escape():
+    """열린 팝오버·메뉴를 닫는다(AX 시간 초과 뒤 정리용). 실패해도 조용히 넘어간다."""
+    try:
+        osa(f'tell application "System Events" to tell process "{APP}" to key code 53', timeout=15)
+    except Exception:
+        pass
+
 
 def select_track(index, proj='무제'):
     """트랙 메뉴 '트랙 검색 및 선택…' 팝오버에 트랙 번호를 치고, 윤곽 목록에서 "<번호>\\t이름" 행을 골라 Return.
     이름이 같은 트랙이 여럿이어도 번호로 고르므로 유일하다. 팝오버가 안 뜨거나 행이 없거나 도중에 오류가 나면
     Escape 로 닫고 실패를 돌려준다. 반환: (성공 여부, 고른 행 텍스트 "<번호>\\t이름" 또는 오류)."""
     index = int(index)
-    rc, out, err = osa(_INSPECTOR_TRACK + f'''tell application "System Events"
+    try:
+        rc, out, err = osa(_INSPECTOR_TRACK + f'''tell application "System Events"
 tell process "{APP}"
 set frontmost to true
 perform action "AXRaise" of {_main_window(proj)}
@@ -649,6 +670,9 @@ return "ERR " & e
 end try
 end tell
 end tell''', timeout=60)
+    except subprocess.TimeoutExpired:       # osascript 가 죽으면 on error 의 Escape 도 안 돌므로 여기서 닫는다
+        press_escape()
+        return False, 'osascript timeout'
     if rc != 0:
         return False, err[:160]
     if not out.startswith('OK '):
@@ -733,11 +757,12 @@ end tell''', timeout=90)
 
 def library_pick(patch, proj='무제'):
     """라이브러리 검색 필드에 patch 를 치고 결과 표에서 이름이 정확히 같은 행을 선택한다(선택 = 로드).
-    정확히 같은 행이 없고 결과가 **한 행뿐**이면 그 행을 고른다 — 최신 팩 패치는 한국어 UI 에서 표시명이 번역돼
-    있어(실측: `Tonewheel Organ` → 표시 "톤휠 오르간") 파일 이름으로 검색은 되지만 글자가 다르기 때문이다.
-    반환: (성공 여부, 결과 행 이름 목록, 실제로 고른 행 이름 또는 '')."""
+    정확히 같은 행이 없을 때, 결과가 **한 행뿐이고 그 이름에 ASCII 가 아닌 글자(한글 표시명)가 있으면** 그 행을 고른다 —
+    최신 팩 패치는 한국어 UI 에서 표시명이 번역돼 있어(실측: `Tonewheel Organ` → 표시 "톤휠 오르간") 파일 이름으로
+    검색은 되지만 글자가 다르기 때문이다. 영어 이름 한 행(오타·부분 일치, 예: `Bassoon` → `Bassoon Solo`)은 MISS 다.
+    반환: (성공 여부, 결과 행 이름 목록, 실제로 고른 행 이름 또는 '', 대체 여부)."""
     patch_lit = _as_str(patch)
-    rc, out, err = osa(_FIND_BY_DESC + f'''tell application "System Events"
+    rc, out, err = osa(_FIND_BY_DESC + _HAS_NON_ASCII + f'''tell application "System Events"
 tell process "{APP}"
 set frontmost to true
 if not (exists (first UI element of {_main_window(proj)} whose description is "라이브러리")) then return "ERR no library pane"
@@ -772,7 +797,7 @@ considering case
 if n is "{patch_lit}" and hit is missing value then set hit to r
 end considering
 end repeat
-if hit is missing value and nRows is 1 then set hit to lone
+if hit is missing value and nRows is 1 and my hasNonASCII(value of UI element 1 of UI element 1 of lone) then set hit to lone
 if hit is not missing value then exit repeat
 end if
 delay 0.5
@@ -780,32 +805,39 @@ end repeat
 if hit is not missing value then exit repeat
 delay 1.0
 end repeat
-if hit is missing value then return "MISS " & names & "|(field=" & lastValue & ")"
+if hit is missing value then return "MISS |" & names & "(field=" & lastValue & ")"
 set gotName to value of UI element 1 of UI element 1 of hit
 set selected of hit to true
 delay 2.5
-return "OK " & gotName & "|" & names
+considering case
+if gotName is "{patch_lit}" then return "OK " & gotName & "|" & names
+end considering
+return "SUBST " & gotName & "|" & names
 end tell
 end tell''', timeout=90)
     if rc != 0:
-        return False, [err[:120]], ''
+        return False, [err[:120]], '', False
     status, _, rest = out.partition(' ')
     got, _, names = rest.partition('|')
-    return status == 'OK', [_nfc(n) for n in names.split('|') if n], _nfc(got) if status == 'OK' else ''
+    rows = [_nfc(n) for n in names.split('|') if n]
+    if status not in ('OK', 'SUBST'):
+        return False, rows, '', False
+    return True, rows, _nfc(got), status == 'SUBST'
 
 
 def load_patches(patches, proj='무제', log=print):
     """patches: {track_index(1-based, SMF 트랙 순서): spec}. spec 은
       'Harpsichord'                 라이브러리 패치(.patch) 이름 — 파일 이름(확장자 제외). 라이브러리 표시명이 번역돼
-                                     있어도 검색 결과가 한 행뿐이면 그 행을 올린다(library_pick).
+                                     있어(한글) 검색 결과가 그 한 행뿐이면 그 행을 올리고 결과에 대체 표식을 남긴다(library_pick).
       ('Violins 1', 'Violin (Arco)') (Sampler 를 쓰는 패치, Sampler 프리셋/EXS 악기 이름) — 패치를 먼저 올려 Sampler 를
                                      확보하고, 인스펙터의 Sampler 라이브러리 표시기로 층을 바꿔 EXS 악기를 올린다.
     번호로 트랙을 고르므로 이름이 겹쳐도 안전하다. 확인: 패치는 (선택된 트랙의) 인스펙터 패치 층 '라이브러리 표시기'
-    이름이 고른 행 이름과 같고 i 번째 트랙 헤더가 임포트 때 이름에서 바뀌었거나(채널 스트립 이름은 패치 파일 이름과
-    다를 수 있다 — 실측 `Studio Alto Sax 1` → "(New) Horns") 고른 이름과 같아야 한다. EXS 는 헤더가 고른 EXS 이름으로
-    바뀌어야 한다(임포트로 자동 명명된 트랙 기준 — 사람이 이름을 바꾼 트랙은 이름이 안 바뀐다, 2026-11-09 실측).
-    선행 조건: 임포트된 '<proj> - 트랙' 창. 반환: {index: (spec, ok, (올라간 패치 표시명, EXS 표시명 또는 None, 헤더 이름))};
-    하나라도 실패면 RuntimeError."""
+    이름이 고른 행 이름과 같고, i 번째 트랙 헤더를 읽을 수 있으며 그 헤더가 임포트 때 이름에서 바뀌었거나 고른 이름과
+    같거나(채널 스트립 이름은 패치 파일 이름과 다를 수 있다 — 실측 `Studio Alto Sax 1` → "(New) Horns") 로드 전부터
+    같은 패치였어야 한다. EXS 는 헤더가 고른 EXS 이름으로 바뀌어야 한다(임포트로 자동 명명된 트랙 기준 — 사람이 이름을
+    바꾼 트랙은 이름이 안 바뀐다, 2026-11-09 실측).
+    선행 조건: 임포트된 '<proj> - 트랙' 창. 반환: {index: (spec, ok, (올라간 패치 표시명, EXS 표시명 또는 None, 헤더 이름,
+    대체 여부))}; 하나라도 실패면 RuntimeError."""
     for i, spec in patches.items():
         parts = spec if isinstance(spec, tuple) else (spec,)
         if (type(i) is not int or (isinstance(spec, tuple) and len(parts) != 2)
@@ -828,20 +860,24 @@ def load_patches(patches, proj='무제', log=print):
         ok_sel, picked = select_track(i, proj)
         if not ok_sel or picked != f'{i}\t{names[i - 1]}':
             raise RuntimeError(f'track {i}: select failed (picked={picked!r}, expected {names[i - 1]!r})')
-        ok_focus, _, _ = focus_library_slot(None, proj)      # 앞 트랙에서 Sampler 층을 봤더라도 패치 층으로 되돌린다
-        ok_pick, rows, got = library_pick(base, proj) if ok_focus else (False, [], '')
+        ok_focus, _, before = focus_library_slot(None, proj)  # 앞 트랙에서 Sampler 층을 봤더라도 패치 층으로 되돌린다
+        ok_pick, rows, got, subst = library_pick(base, proj) if ok_focus else (False, [], '', False)
         ok_ind, _, loaded = focus_library_slot(None, proj)   # 올라간 패치명 읽기 (표시기 이름)
         name = _nth(track_names(proj), i)
-        # 표시기는 '선택된' 트랙의 것이고 헤더는 i 번째 트랙의 것 — 둘 다 맞아야 엉뚱한 트랙에 올라간 경우를 거른다
-        ok = ok_pick and ok_ind and loaded == got and (name != names[i - 1] or name == got)
+        # 표시기는 '선택된' 트랙의 것이고 헤더는 i 번째 트랙의 것 — 둘 다 맞아야 엉뚱한 트랙에 올라간 경우를 거른다.
+        # 헤더를 못 읽으면(빈 문자열) 실패. 헤더가 그대로여도 로드 전 표시기가 이미 그 패치였으면(GM 으로 올라온 같은 패치) 통과.
+        ok = bool(ok_pick and ok_ind and loaded == got and name
+                  and (name != names[i - 1] or name == got or before == got))
         got_exs = None
         if ok and exs:
             ok_focus, desc, _ = focus_library_slot('Sampler', proj)
-            ok_pick, rows, got_exs = library_pick(exs, proj) if ok_focus else (False, [desc], '')
+            ok_pick, rows, got_exs, subst_exs = library_pick(exs, proj) if ok_focus else (False, [desc], '', False)
+            subst = subst or subst_exs
             name = _nth(track_names(proj), i)
-            ok = ok_pick and name == got_exs
-        results[i] = (spec, ok, (loaded, got_exs, name))
-        log(f'track {i}: {names[i - 1]} -> {spec}: {"OK" if ok else "FAIL"} (patch={loaded}, exs={got_exs}, header={name}, results={rows[:5]})')
+            ok = bool(ok_pick and name and name == got_exs)
+        results[i] = (spec, ok, (loaded, got_exs, name, subst))
+        log(f'track {i}: {names[i - 1]} -> {spec}: {"OK" if ok else "FAIL"}{" SUBST" if subst else ""} '
+            f'(patch={loaded}, exs={got_exs}, header={name}, results={rows[:5]})')
     failed = {i: r for i, r in results.items() if not r[1]}
     if failed:
         raise RuntimeError(f'patch load failed: {failed}')
@@ -1216,6 +1252,7 @@ def finish(sid, title, ver, log=print, patches=None, select=None):
         try:
             loaded = load_patches(patches, log=log)
         except Exception as e:          # 이름 오류(ValueError)·AX 시간 초과(TimeoutExpired)도 배치를 끊지 않고 곡 단위 실패로 돌려준다
+            press_escape()              # 남은 팝오버·메뉴를 닫는다(다음 produce() 의 close_all_projects 가 막히지 않도록)
             try:
                 tracks = track_names()
             except Exception:
