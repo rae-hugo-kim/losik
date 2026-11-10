@@ -923,6 +923,47 @@ BOUNCE_SEARCH += sorted(d for d in _glob.glob(os.path.join(_WT_ROOT, '*', 'docs'
 BOUNCE_SEARCH += [d for d in ('/Volumes/Netac 2TB/workspace/losik/docs/music/sketches',) if os.path.isdir(d) and d not in BOUNCE_SEARCH]
 
 
+def _aiff_ready(path):
+    """Only complete stereo PCM24 big-endian AIFF can enter the in-place limiter."""
+    with open(path, 'rb') as f:
+        physical = os.fstat(f.fileno()).st_size
+        header = f.read(12)
+        if len(header) < 12:
+            return False
+        if header[:4] != b'FORM' or header[8:] not in (b'AIFF', b'AIFC'):
+            raise ValueError(f'Not AIFF: {path}')
+        end = 8 + struct.unpack('>I', header[4:8])[0]
+        if end != physical:
+            return False
+        pos, comm, audio_size = 12, None, None
+        while pos + 8 <= end:
+            f.seek(pos)
+            kind, size = struct.unpack('>4sI', f.read(8))
+            if pos + 8 + size + (size & 1) > end:
+                return False
+            if kind == b'COMM':
+                body = f.read(min(size, 22))
+                if len(body) < 18:
+                    return False
+                channels, frames, bits = struct.unpack('>HIH', body[:8])
+                compression = body[18:22] if header[8:] == b'AIFC' else b'NONE'
+                comm = channels, frames, bits, compression
+            elif kind == b'SSND':
+                if size < 8:
+                    return False
+                offset, _ = struct.unpack('>II', f.read(8))
+                audio_size = size - 8 - offset
+            pos += 8 + size + (size & 1)
+        if pos != end or comm is None or audio_size is None:
+            return False
+        channels, frames, bits, compression = comm
+        if not frames or audio_size != frames * channels * ((bits + 7) // 8):
+            return False
+        if channels != 2 or bits != 24 or compression not in (b'NONE', b'twos'):
+            raise ValueError(f'Expected stereo big-endian PCM24 AIFF, got {comm}: {path}')
+        return True
+
+
 def wait_bounce_file(name, timeout=600, since=None):
     """후보 폴더 중 하나에 name 이 안정적으로 생기면 BOUNCE_DIR 로 옮긴 경로를, 아니면 None.
     since 가 주어지면 그 시각 이전의 파일(옛 잔재)은 무시한다."""
@@ -932,10 +973,10 @@ def wait_bounce_file(name, timeout=600, since=None):
         for d in BOUNCE_SEARCH:
             p = os.path.join(d, name)
             try:
-                if os.path.exists(p) and os.path.getsize(p) > 500000 and (since is None or os.path.getmtime(p) >= since):
+                if os.path.exists(p) and os.path.getsize(p) > 500000 and (since is None or os.path.getmtime(p) >= since) and _aiff_ready(p):
                     s = os.path.getsize(p)
                     time.sleep(3)
-                    if os.path.getsize(p) == s:
+                    if os.path.getsize(p) == s and _aiff_ready(p):
                         dst = os.path.join(BOUNCE_DIR, name)
                         if p != dst:
                             shutil.move(p, dst)
@@ -1142,8 +1183,18 @@ def produce(sid, title, ver, mid_path, log=print, owner=None, patches=None, sele
         time.sleep(3)
         clear_alerts()
         time.sleep(2)
+        imported_tracks = None
+        if patches is not None:
+            with open(mid_path, 'rb') as midi:
+                _, _, _, midi_tracks = parse_smf(midi.read())
+            expected = sum(bool(track['pcs']) for track in midi_tracks)
+            imported_tracks = track_names()
+            if len(imported_tracks) != expected:
+                return dict(ok=False, stage='tracks', expected=expected, tracks=imported_tracks)
         r = finish(sid, title, ver, log=log, patches=patches, select=select)
         r['elapsed'] = round(time.time() - t0)
+        if imported_tracks is not None:
+            r['imported_tracks'] = imported_tracks
         return r
 
 
@@ -1212,7 +1263,10 @@ end tell''')
     ok2, m2 = start_bounce_aiff(proj, f'{sid}-{ver}')
     if not ok2:
         return dict(ok=False, stage='bounce', msg=m2)
-    aif = wait_bounce_file(f'{sid}-{ver}.aif', since=t_start)
+    try:
+        aif = wait_bounce_file(f'{sid}-{ver}.aif', since=t_start)
+    except ValueError as exc:
+        return dict(ok=False, stage='format', msg=str(exc))
     if not aif:
         return dict(ok=False, stage='file', msg='aif missing')
     hits = limit_aiff(aif)

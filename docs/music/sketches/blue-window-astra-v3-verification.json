@@ -1,0 +1,104 @@
+{
+  "path": "/Volumes/Netac 2TB/music/bounces/blue-window-astra-v3.wav",
+  "seconds": 240.0,
+  "bytes": 69124096,
+  "sha256": "f0b85291e29ef4dc203f88bdbd45d77b39364ea6c10369ca6d7f8e2aae889ad9",
+  "sample_rate": 48000,
+  "channels": 2,
+  "bits": 24,
+  "data_offset": 4096,
+  "data_bytes": 69120000,
+  "frames": 11520000,
+  "peak_dbfs": [
+    -0.31,
+    -0.381
+  ],
+  "peak_samples": [
+    8094696,
+    8028861
+  ],
+  "full_scale_samples": 0,
+  "section_rms_dbfs": {
+    "Alone": -32.416,
+    "Verse 1": -28.292,
+    "Reflection 1": -25.229,
+    "Verse 2": -25.619,
+    "Reflection 2": -25.373,
+    "Empty Room": -33.935,
+    "Unsaid": -34.388,
+    "Window Light": -39.7
+  },
+  "section_frames": {
+    "Alone": [
+      0,
+      886154
+    ],
+    "Verse 1": [
+      886154,
+      2658462
+    ],
+    "Reflection 1": [
+      2658462,
+      3987694
+    ],
+    "Verse 2": [
+      3987694,
+      5760002
+    ],
+    "Reflection 2": [
+      5760002,
+      7089233
+    ],
+    "Empty Room": [
+      7089233,
+      8418464
+    ],
+    "Unsaid": [
+      8418464,
+      10190772
+    ],
+    "Window Light": [
+      10190772,
+      11520000
+    ]
+  },
+  "zero_runs": [],
+  "unexpected_zero_runs": [],
+  "final_frame": [
+    0,
+    0
+  ],
+  "release_tail_frames": 4800,
+  "last_100ms_rms_dbfs": -54.55,
+  "title": "Blue Window Astra v3",
+  "project": "/Volumes/Netac 2TB/music/projects/Blue Window Astra v3.logicx",
+  "bpm": 78,
+  "bars": 104,
+  "mode": "offline",
+  "metronome": "clicked; before=2",
+  "control_bar": "AXGroup|\ucee8\ud2b8\ub864 \ub9c9\ub300|missing value\nAXGroup|\ucee8\ud2b8\ub864 \ub9c9\ub300|missing value\nAXPopUpButton|\ud31d\uc5c5 \ubc84\ud2bc|\ube44\ud2b8 \ubc0f \ud504\ub85c\uc81d\ud2b8\nAXGroup|\uc7ac\uc0dd\ud5e4\ub4dc \uc704\uce58|missing value\nAXSlider|\ub9c8\ub514|1.0\nAXSlider|\ube44\ud2b8|1.0\nAXSlider|\ud15c\ud3ec|78.0\nAXPopUpButton||missing value\nAXPopUpButton|\ubc15\uc790\ud45c|3/4\nAXPopUpButton|\uc870\ud45c|A \ub9c8\uc774\ub108\nAXCheckBox|\uccb4\ud06c\uc0c1\uc790|0\nAXButton|\ubc84\ud2bc|0\nAXCheckBox|\uccb4\ud06c\uc0c1\uc790|0\nAXCheckBox|\uccb4\ud06c\uc0c1\uc790|0\nAXCheckBox|\uccb4\ud06c\uc0c1\uc790|0\nAXButton|\ubc84\ud2bc|0\nAXCheckBox|\uccb4\ud06c\uc0c1\uc790|0\nAXCheckBox|\uccb4\ud06c\uc0c1\uc790|0\nAXCheckBox|\uccb4\ud06c\uc0c1\uc790|0\nAXCheckBox|\uccb4\ud06c\uc0c1\uc790|1\nAXCheckBox|\uccb4\ud06c\uc0c1\uc790|0\nAXCheckBox|\ub77c\uc774\ube0c\ub7ec\ub9ac|0\nAXCheckBox|\uc778\uc2a4\ud399\ud130|1\nAXCheckBox|\ube60\ub978 \ub3c4\uc6c0\ub9d0|0\nAXCheckBox|\ub3c4\uad6c \ub9c9\ub300|0\nAXCheckBox|Smart\u00a0Controls|0\nAXCheckBox|\ubbf9\uc11c|0\nAXCheckBox|\ud3b8\uc9d1\uae30|0\nAXCheckBox|\ubaa9\ub85d \ud3b8\uc9d1\uae30|0\nAXCheckBox|\uba54\ubaa8\uc7a5|0\nAXCheckBox|\ub8e8\ud504 \ube0c\ub77c\uc6b0\uc800|0\nAXCheckBox|\ube0c\ub77c\uc6b0\uc800|0",
+  "patches": "[Studio Grand] [Studio Grand] [Upright Jazz Bass] [SoCal] [Stereo Out] [Master]",
+  "instrument_overrides": [
+    {
+      "track": 2,
+      "path": "/Library/Application Support/Logic/Sampler Instruments/02 Bass/01 Acoustic Bass/Upright Jazz Bass.exs",
+      "preset": "Upright Jazz Bass"
+    }
+  ],
+  "mastering": {
+    "path": "/Volumes/Netac 2TB/music/bounces/blue-window-astra-v3.wav",
+    "source_aiff": "/Volumes/Netac 2TB/music/bounces/blue-window-astra-v3.aif",
+    "bytes": 69124096,
+    "data_offset": 4096,
+    "data_bytes": 69120000,
+    "frames": 11520000,
+    "seconds": 240.0,
+    "sample_rate": 48000,
+    "channels": 2,
+    "bits": 24,
+    "limiter_samples": 54,
+    "changed_samples": 54,
+    "limiter_ceiling_dbfs": -0.1,
+    "release_fade_ms": 100
+  }
+}

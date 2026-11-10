@@ -748,6 +748,23 @@ Instrumental city-pop / soft evening groove at 104 BPM in C major (Cmaj7–Am7�
 5. night-circuit v03 판정 여부 확인 (AIF — 재작업 시 WAV로).
 6. 백로그: "따뜻한 전자음악" 신곡 (chrome-sunset 에서 분리).
 
+## 2026-09-12 — Astra v3 청취와 Suno 초안 확정
+
+**공통 결정:** 다섯 곡은 Suno에 전달할 작곡 초안으로 일단 마무리한다. Logic에서 추가 수정하거나 재열기 검증을 반복하지 않는다. 완성본을 들은 뒤 필요한 편곡·길이·용도를 판단한다. 이번 프롬프트 문서 작성은 Suno 업로드나 생성 실행을 뜻하지 않는다.
+
+| 들은 곡 | 관측·판단 | 현재 결정 |
+|---|---|---|
+| Returning Tide v3 | 어쿠스틱 중 스틸스트링이 맞았고, 나일론은 존재감이 약했다. | 스틸스트링 방향 승인. 나일론으로 되돌리거나 볼륨만 높이는 접근을 하지 않는다. |
+| After the Rain v3 | 초반 공백·엇박은 조금 어렵지만 뒤로 갈수록 이해된다. 비가 그친 뒤 물웅덩이와 떨어지는 물줄기 사이를 조심스럽게 나아가는 느낌. 도입은 다소 길다. | 방향과 초안 승인. 추가 도입 축약은 완성 후 편곡에서 판단한다. 현재 초안을 또 다듬기 위해 새 Logic 버전을 만들지 않는다. |
+| Northbound Lights v3 | 기타 솔로가 솔로답게 인지된다. 화려한 솔로를 원했던 것은 아니지만 의도는 전달됐다. | 승인. 기교 과시나 더 긴 속주를 추가 목표로 삼지 않는다. |
+| Blue Window v3 | 공백에서 불안·답답함이 생긴다. 감정적 전달보다 목적에 따라 보컬·랩·나레이션의 받침으로 쓸 수 있다. | 이 방향을 임의로 폐기하거나 밝게 고치지 않는다. 완성본을 듣고 용도·최종 판단을 정한다. 보컬 종류나 가사는 아직 미정이다. |
+| Paper Lanterns v3 | 스피커에서는 다른 곡보다 베이스가 앞선 느낌이다. 하모니카의 음색·음압이 상대적으로 작아서일 수 있다는 추정이 있다. | 하모니카 톤, 바람이 잠시 잦아드는 듯한 변주, 마무리 승인 유지. 밸런스를 크게 건드릴 필요는 없다. 추정을 원인으로 단정하지 않는다. |
+
+Suno 입력: [곡별 Style·Description](SUNO_PROMPTS_ASTRA_V3.md). 자료 기준은 `/Volumes/Netac 2TB/music/bounces/*-astra-v3.wav`다.
+
+### 별도 결정 — 다음 다곡 배치의 다양성
+
+이번 다섯 곡의 승인과는 별개로, 여러 곡을 동시에 만들 때 전개·솔로 위치가 비슷해지는 문제를 남겼다. 코드·BPM·악기만 바꾸는 대신 시작 방식, 반복의 역할, 절정 유무·위치, 솔로 필요성, 끝맺음을 먼저 독립적으로 설계하는 [다곡 제작 지시문](MULTI_SONG_BRIEF.md)을 제안한다. 현재 곡을 다시 개작하거나 새 배치를 제작하라는 결정은 아니다.
 ## 2026-10-12 장르 뼈대 라운드 — Fable
 
 드럼 + 베이스 + 코드(+패드)만 쓴 16마디 루프입니다. 구조는 1-8 풀 루프, 9-12 빼기(브레이크), 13-16 풀 루프 + 13마디 1박 크래시로 같습니다. 작곡 코드는 `tools/fable_skeletons.py`, 파일은 `sketches/{sid}-v1.mid`예요(바운스는 아직 안 했어요).
@@ -1180,7 +1197,6 @@ house 7곡의 저역-고역 차는 23.1~26.3 dB, lo-fi 5곡은 18.3~20.6 dB 입�
 **파이프라인 제안(미적용)**: `pipeline.BOUNCE_SEARCH` 가 형제 워크트리의 `docs/music/sketches/` 를 보지 않아 세션 셋이 번갈아 바운스하면 같은 실패가 반복됩니다. `pipeline.py` 는 issuereport 소유라 이 브랜치에서는 고치지 않았고, 이 작곡기 안의 복구 함수로만 막았습니다.
 
 **다음**: 사용자가 Suno 업로드 결과를 알려 주면 표의 `업로드 결과` 칸을 채우고, 차단된 곡은 브리프 §2-6 대로 리듬 변형 비율을 높이고 주제 비율을 낮춘 v2 를 만듭니다.
-
 ## 2026-10-30 Vivaldi 사계 변주 — astra (openai-codex/gpt-6-astra)
 
 `VIVALDI_BRIEF.md`를 기준으로 12악장의 단일 주제를 새로운 반주 위에 편곡했습니다. 작곡 모델은 세션 설정에 명시된 **openai-codex/gpt-6-astra**이며, 다른 모델의 Vivaldi 편곡 코드를 복제하지 않았습니다. 원전은 `tools/vivaldi_data.py`의 Mutopia Project 데이터이며, 변주 MIDI에도 **Mutopia Project / CC BY-SA 3.0** 출처·라이선스 마커를 넣었습니다. 작품 자체의 퍼블릭 도메인 여부와 데이터 편집본의 라이선스를 구분합니다.
@@ -1357,6 +1373,87 @@ WAV 12개와 Logic 프로젝트 12개를 만들었습니다. 전곡 48kHz·24bit
 - **Suno support 답변 (2026-11-09)**: lh14 반려 문의에 사람 답변 없이 "AI 탐지" 취지의 자동 응답만 옴 — 매칭기가 기존 녹음 일치가 아니라 **AI 생성물 탐지**로 걸고 있다는 뜻으로 읽힘(우리 GM 렌더는 AI 생성이 아니지만 분류기는 그렇게 봄). support 경로는 사실상 막힘. lh14 는 Suno Cover 없이 두거나 렌더 자체(패치·휴머나이즈)를 바꿔 재시도하는 선택만 남음. lo-fi 작업은 주제 세션 `lofi` 로 인계.
 - **v2 착수 준비 (2026-11-09, 주제 세션 vivaldi)**: PR #2 가 issuereport 에 머지됐고(16d01de), 세션 위계 규칙 `.omp/rules/losik-sessions.md` 를 받았습니다. band-fable `7d6d9a0` 의 `build_smf(timesig, tempos)` 확장을 `pipeline.py` 에 들여왔고, 기존 작곡기 12종(dh v3·lh v1/v2·vivaldi fable/opus 재생성, astra `--check`)의 출력이 바이트 단위로 같음을 확인했습니다. v2 라운드 세션은 `vivaldi-<model>`(base `rae-hugo-kim/vivaldi`)로 새로 열고, v1 의 band-* 는 규칙의 닫기 절차로 정리하기로 했습니다(`VIVALDI_BRIEF_V2.md` §4.1). Suno 반려가 AI 탐지일 수 있다는 lo-fi 실측을 브리프 §2-7 에 반영했습니다.
 - **이름 로드 자동화 (2026-11-09, 주제 세션 vivaldi)**: `pipeline.load_patches()` / `produce(..., patches={트랙 번호: spec})` 로 라이브러리 패치(.patch)와 Sampler EXS 를 트랙에 이름으로 올립니다. 방식은 ① 트랙 메뉴 "트랙 검색 및 선택…" 팝오버에 트랙 번호 입력 → ② 라이브러리 검색 필드에 이름 → ③ 결과 표에서 정확히 같은 행을 AX 선택(선택 = 로드), EXS 는 인스펙터 스트립의 "라이브러리 표시기, Sampler" 로 층을 바꾼 뒤 같은 방법. 실측: 좌표 클릭(`click at`)은 Logic 에 닿지 않고(뮤트 버튼도 안 눌림), 채널 스트립 "설정" 메뉴는 AX 에 노출되지 않는 사용자 정의 팝업이라 .cst 경로는 포기했습니다. 임포트 직후 자동 명명 트랙은 패치/EXS 를 올리면 이름이 그 이름으로 바뀌고, 사람이 이름을 바꾼 트랙은 안 바뀝니다. 이미 켜진 라이브러리 표시기를 다시 누르면 패널이 닫힙니다. 3트랙 프로브(Studio Violins 1 → `('Violins 1','Violin (Arco)')`, Studio Cellos → `Harpsichord`, SoCal 드럼 → `Timpani`) 임포트→로드→바운스 144초, 믹서 스트립 `[Violin (Arco)] [Harpsichord] [Timpani] …`, WAV 피크 −0.39 dBFS·RMS −23~−35 dB 로 소리 확인. 사용법·제약은 `LOGIC_LIBRARY_INVENTORY.md` §4.1, 라운드 규칙은 `VIVALDI_BRIEF_V2.md` §3·§4·§6 에 반영했습니다. 라운드는 band-* 재사용으로 바꿨습니다(위 "v2 착수 준비" 의 `vivaldi-<model>` 계획은 사용자 결정으로 철회).
+
+## 2026-11-09 Vivaldi 사계 변주 v2 — astra (openai-codex/gpt-6-astra)
+
+모델은 세션 설정의 `openai-codex/gpt-6-astra`입니다. 지정된 읽기 목록으로 [독립 계획](vivaldi_astra_v2_plan.md)을 먼저 작성해 `ca115d0`로 커밋한 뒤 구현했습니다. 장르는 과거 라운드가 아니라 악장의 박자·표제·선율 질감에서 골랐습니다. 원전은 Mutopia Project 데이터이며, 모든 MIDI에 CC BY-SA 3.0·출처·모델 ID를 저작권 메타 이벤트로 넣었습니다.
+
+편성의 A는 검증된 GM PC, B는 라이브러리 패치, C는 Sampler 바탕 패치와 EXS입니다. C의 바탕 패치는 모두 `Violins 1`이며, 아래에는 EXS 이름을 적었습니다. 반환값의 실제 `patches`·`strips`와 실패 이력은 `vivaldi_astra_v2_bounce.jsonl`에 보존합니다.
+
+| key | sid | 장르 | 장르 이유 | 박자 | BPM | 마디 | 편성 | 주제 창 | 리듬 변형 | 주제 비율 | 업로드 결과 |
+|---|---|---|---|---|---:|---:|---|---|---|---|---|
+| spring 1 | vs-spring1-astra | baroque chamber pop | 새의 반복음을 목관·발현으로 분리합니다. | 4/4 | 88 | 64 | A0 SoCal·A43 Bass; B Harpsichord·Oboe; C Violins 1 Pizzicato | solo 1–13 | 당김·음가 절반·격자 재구성 | 50% | 미확인 |
+| spring 2 | vs-spring2-astra | impressionist chamber nocturne | 목동의 하강선과 3박 호흡을 펼칩니다. | 3/4 | 66 | 64 | A42 Cellos·A2 Concert Grand; B English Horn·Harp | solo 2–10 | 당김·음가 절반·격자 재구성 | 50% | 미확인 |
+| spring 3 | vs-spring3-astra | Celtic folk jig | 복합박 춤을 두 큰 박으로 묶습니다. | 6/8 | 96 | 96 | A26 Roots·A32 Upright·A25 Guitar; B Celtic Tin Whistle·Celtic Harp | solo 1–12 | 12/8→6/8·당김·음가 절반·런 솎기 | 50% | 미확인 |
+| summer 1 | vs-summer1-astra | desert trip-hop | 더위의 한숨을 건조한 발현과 반박자로 옮깁니다. | 4/4 | 62 | 48 | A24 Drum Synth Kit·A39 Bass·A7 Clav·A107 Koto; B Turkish Oud Lute | solo 1–30 | 3/8→4/4·당김·음가 절반·스윙 | 50% | 미확인 |
+| summer 2 | vs-summer2-astra | chamber suspense score | 천둥의 끊김을 3+2 불균형으로 만듭니다. | 5/4 | 80 | 48 | B Timpani·Bassoon Solo; A42 Cellos·A12 Marimba; C Violins 1 Tremolo | solo 1–8 | 4/4→5/4·당김·음가 절반 | 50% | 미확인 |
+| summer 3 | vs-summer3-astra | progressive rock | 폭풍의 반복과 런을 2+2+3 강세로 밀어갑니다. | 7/8 | 126 | 112 | A8 Retro Rock·A34 Bass·A18 Organ·A30 Hard Rock·A48 Kensington | solo 1–20 | 3/4→7/8·당김·음가 절반·런 솎기 | 50% | 미확인 |
+| autumn 1 | vs-autumn1-astra | New Orleans second-line jazz | 수확 춤을 행진형 싱코페이션으로 바꿉니다. | 4/4 | 100 | 72 | A0 SoCal·A32 Upright·A1 Vintage Upright·A57 Trombone; B Clarinet Solo | solo 1–12 | 당김·음가 절반·스윙 | 50% | 미확인 |
+| autumn 2 | vs-autumn2-astra | chamber passacaglia | 잠든 화음의 반음선을 새 저음 반복과 엮습니다. | 3/4 | 64 | 64 | A42 Cellos; B Harpsichord·Bassoon Solo; C Violin (Arco) | violin1 4–14 | 당김·음가 절반·격자 재구성 | 50% | 미확인 |
+| autumn 3 | vs-autumn3-astra | cinematic hunting scherzo | 사냥의 호출과 추격을 호른·스타카토로 만듭니다. | 6/8 | 100 | 96 | B Timpani·French Horn Solo; A43 Basses·A48 Kensington; C Violins 1 Staccato | solo 1–24 | 3/8→6/8·당김·음가 절반·런 솎기 | 50% | 미확인 |
+| winter 1 | vs-winter1-astra | industrial breakbeat | 떨림을 차가운 어택과 비대칭 비트로 나눕니다. | 4/4 | 112 | 80 | A16 Tough Kit·A39 Bass·A8 Toy Celesta·A82 Sync Lead·A98 Glacial Forms | solo 4–12 | 당김·음가 절반·런 솎기 | 50% | 미확인 |
+| winter 2 | vs-winter2-astra | acoustic bossa nova | 실내의 선율과 빗방울을 플루트·기타 엇박으로 만듭니다. | 4/4 | 90 | 64 | A40 Latin·A32 Upright·A24 Guitar·A11 Vibraphone; B Flute Solo | solo 1–8 | 당김·음가 절반·격자 재구성 | 50% | 미확인 |
+| winter 3 | vs-winter3-astra | contemporary minimalist chamber | 빙판 회전음을 3+2의 발현 주기로 움직입니다. | 5/8 | 92 | 112 | A42 Cellos·A12 Marimba; C Violin (Pizzicato); B Harp | solo 1–24 | 3/8→5/8·당김·음가 절반·런 솎기 | 50% | 미확인 |
+
+### 결정과 이유를 기록합니다.
+
+- 한 성부의 전체 주제 창을 A·B 각각에 맞추고 원전 베이스·모방 성부를 복사하지 않았습니다. Spring I의 피크업은 전주 마지막 박으로 옮겼고, Winter I는 solo가 실제로 시작하는 4마디부터 사용했습니다. 50%는 쉼을 포함한 주제 섹션 길이입니다.
+- 재현부는 악기별 음역을 고려해 8곡에서 전체 주제를 ±12반음 이동하고, 4곡은 음역을 유지했습니다. 모든 곡에 아티큘레이션·CC11·반주 전위를 적용했습니다. 구체적인 방향은 계획의 추가 결정에 적었습니다.
+- 하프시코드·목관·팀파니·현악 주법은 이름으로 올리고, 나머지는 PC의 실제 패치 소리를 사용합니다. PC6을 하프시코드, PC68을 오보에처럼 취급하지 않습니다. 실패를 GM 대체로 숨기지 않습니다.
+- 다른 워크트리에 임시 바운스가 생기지 않도록 입력 사본·실패 격리 폴더·바운스 검색 경로를 공용 `music/` 아래로 제한했습니다. Logic의 저장 위치 설정은 기존 잠금 안에서만 조정합니다. 실패한 한 곡의 프로젝트가 다음 곡의 정리 과정에서 이동되지 않게 곡별 입력 폴더를 분리했습니다.
+
+### 첫 실제 시도에서 발견한 오류를 기록합니다.
+
+Spring I 첫 시도는 B/C 검색 자체는 모두 OK였지만, Logic에 선행 Studio Grand가 추가되어 트랙 수가 5개에서 6개가 됐습니다. 이 때문에 지정한 3·4·5번 패치가 실제 Bass·Harmony·Lead에 잘못 적용됐고, `stage=wav`, `ExtAudioFileRead failed (-40)`으로 종료됐습니다. 성공으로 기록하지 않았습니다.
+
+콘덕터의 맨 앞 0x02 저작권 이벤트가 텍스트 전용 트랙을 만들었으므로, 출처 메타는 첫 실제 악기 트랙으로 옮겼습니다. `produce(..., patches=...)`는 이제 임포트 악기 트랙 수가 SMF의 PC 트랙 수와 같은지 확인하고, 다르면 패치를 올리기 전에 `stage=tracks`로 반환합니다. 공유 파이프라인의 이 보강은 이번 라운드에서 발견한 실제 패치 오배정 방지 목적입니다.
+
+남은 `.tmp`는 48kHz·stereo·32bit float AIFF-C였고, 헤더의 67,025,456바이트 오디오에 비해 실제 파일은 17,264,640바이트였습니다. 완성된 결과가 아닙니다. AIFF 후처리 진입 전에 FORM·COMM·SSND의 물리 크기·프레임 수와 stereo PCM24 big-endian 형식을 검사하도록 보강했고, 잘린 파일·잘못된 프레임 수·float 중간 파일을 거부하는 회귀 검사를 추가했습니다.
+
+닫기가 안 되던 실제 원인은 이름 없는 AXDialog의 “Logic Pro Library.bundle을 찾을 수 없습니다” 경고였습니다. 인벤토리의 기존 번들 `/Volumes/Netac 2TB/Logic Sound Library/Logic Pro Library.bundle`이 존재함을 확인하고 `지정`으로 다시 연결했습니다. 빈 번들은 새로 만들지 않았습니다. 실패한 자기 프로세스 PID 97072가 종료됐고 잠금 토큰이 그대로임을 확인한 뒤, 잠금·실패 프로젝트·입력 MIDI·미완성 `.tmp`를 공용 `_archive-vivaldi-astra-v2/spring1-attempt1`에 보존했습니다. 새 복구 잠금은 정상 해제했습니다. 자동 해제되지 않은 최초 잔존 잠금의 원인은 확인되지 않았습니다.
+
+첫 곡 재시도에서는 정확히 5개 트랙으로 들어왔고 `[SoCal][Studio Double Basses][Harpsichord][Oboe][Violins 1 Pizzicato]`를 확인했습니다. 3·4·5번 B/C 반환값이 모두 성공했고 WAV 검증은 174.545458초·48kHz·24bit stereo, 피크 −0.310/−0.394dBFS, 예상 밖 무음 0개로 통과했습니다.
+
+검증은 v2 MIDI 12개 재생성 일치, v1 MIDI 12개 불변, WAV·AIFF 회귀 검사 15개를 통과했습니다. 추가로 완전한 float AIFF 합성 파일을 임시 폴더에 만들어 잘못된 형식이 배치 예외가 아니라 `stage=format`으로 반환됨을 확인했습니다. 이 형식 경로 검사는 Logic UI를 대체한 일회성 호출이며 실제 음원 검증과 구분합니다. 전곡 MIDI의 메타·밀도·해시·요청 패치는 [MIDI 실측 JSON](vivaldi_astra_v2_midi.json)에 기록했습니다. 주제 섹션 비율과 실제 발음 마디 수를 나누어 출력합니다.
+
+자율 재시도는 라운드 세션이 맡습니다. 러너의 실패 목록을 받은 뒤 이름·실제 경고·파일 상태를 확인하고 해당 sid만 다시 실행합니다. `TimeoutError`는 곡별 대기 초과로 기록해 다음 곡을 먼저 진행합니다. 예외 후 미저장 창이 남으면 기존 잠금 안에서 자기 실패 프로젝트인지 확인한 뒤 복구하며, 다른 프로젝트를 임의로 저장하지 않습니다.
+
+### 전곡 결과와 계획 대비 차이를 확정합니다.
+
+최종 결과는 **WAV 12곡·Logic 프로젝트 12개**입니다. 14회 제작 호출 중 성공 12회, 실패 2회였고 두 실패 모두 해당 곡 재시도로 해결했습니다. 잠금 대기 초과는 0건입니다. Winter III의 실패는 이름 오타가 아니었으며, 인벤토리를 다시 확인하고 자기 실패 임포트를 닫은 뒤 동일한 `('Violins 1', 'Violin (Pizzicato)')`와 `Harp`로 성공했습니다. 실패가 프로젝트 저장 전이어서 보존할 실패 번들은 없었고 MIDI 사본은 그대로 유지했습니다.
+
+| 구분 | 발생·계획 대비 차이 | 처리 결과 |
+|---|---|---|
+| Spring I 첫 바운스 | 빈 선행 트랙으로 패치 대상이 밀렸고 `stage=wav / -40`으로 실패했습니다. | 출처 메타 위치·트랙 수 가드·AIFF 완성도 검사를 보강하고 기존 라이브러리를 다시 연결해 성공했습니다. 실패 자료는 공용 아카이브에 보존했습니다. |
+| Winter III 첫 바운스 | `stage=patches`에서 바탕 패치 표시기 읽기가 실패했습니다. | 정확한 이름을 확인하고 자기 실패 임포트만 닫아 동일 편성으로 재시도해 성공했습니다. |
+| 잠금 대기 초과 | 0건입니다. | `produce()`의 기존 잠금과 TimeoutError의 곡별 기록·다음 곡 진행 분기를 유지했습니다. |
+| 장르·편성·박자·BPM·마디 | 계획 표와 달라진 항목은 없습니다. | 12가지 편곡 방향·6가지 박자를 유지했습니다. |
+| 재현부와 보이싱 | 8곡은 ±12반음, 4곡은 음역을 유지하며 표현으로 구분했습니다. 아르페지오에도 B 전위를 적용했습니다. | 계획 추가 결정에 악기별 이유를 남겼으며, Suno 설명과 실제 MIDI를 맞췄습니다. |
+| 제작·검증 경로 | 곡별 공용 입력 폴더와 저장 위치 제한, 공유 파이프라인의 트랙·AIFF 가드를 추가했습니다. | 다른 워크트리는 변경하지 않았고 v1 MIDI 12개도 그대로입니다. |
+| 계획 읽기 범위 | 부모 계획 작성자와 별도 병합 검토 패널의 읽기 로그가 공유돼 있습니다. | verifier가 부모의 금지 파일 열람 0건을 확인했습니다. 패널은 하위 호환·충돌 검토용으로 기존 자료를 읽었지만 음악 권고는 전달하지 않았습니다. 모든 에이전트 읽기를 격리했다고 주장하지 않습니다. |
+
+실제 편성은 `gm_patch_map.json`의 GM 실측 이름과 B/C 반환값에 대조해 12/12 일치했습니다. 이름 로드 21트랙 중 EXS는 5트랙이며 모두 성공했습니다. 경로 A만 사용하는 Summer III·Winter I는 `requested_patches={}`이고 API의 `patches` 키는 없으므로 `imported_tracks`와 `strips`를 근거로 사용합니다. 전곡 바운스 직전 MIDI SHA-256은 현재 파일과 일치합니다.
+
+[오디오 실측 JSON](vivaldi_astra_v2_audio.json)은 `passed=true`, `errors=[]`, 12곡입니다. 전곡 48kHz·24bit·stereo이며 총 **2,131.867978초(약 35분 32초)**, WAV 합계 **614,027,130바이트**입니다. 길이 오차의 절댓값은 최대 0.000013초이며, 높은 쪽 채널 피크는 전곡 −0.310dBFS입니다. 전체 파일 SHA-256은 12개 모두 다릅니다.
+
+| sid | 길이(초) | A RMS(dBFS) | B RMS(dBFS) | 간주 RMS(dBFS) | 예상 밖 무음 |
+|---|---:|---:|---:|---:|---:|
+| vs-spring1-astra | 174.545 | -22.060 | -22.008 | -26.355 | 0 |
+| vs-spring2-astra | 174.545 | -22.005 | -21.767 | -24.499 | 0 |
+| vs-spring3-astra | 180.000 | -23.389 | -23.029 | -25.811 | 0 |
+| vs-summer1-astra | 185.806 | -19.494 | -19.438 | -23.848 | 0 |
+| vs-summer2-astra | 180.000 | -23.019 | -22.159 | -26.570 | 0 |
+| vs-summer3-astra | 186.667 | -18.481 | -18.477 | -20.931 | 0 |
+| vs-autumn1-astra | 172.800 | -19.165 | -19.166 | -21.090 | 0 |
+| vs-autumn2-astra | 180.000 | -25.303 | -25.168 | -27.742 | 0 |
+| vs-autumn3-astra | 172.800 | -25.147 | -25.220 | -26.873 | 0 |
+| vs-winter1-astra | 171.429 | -20.889 | -20.719 | -23.841 | 0 |
+| vs-winter2-astra | 170.667 | -21.287 | -21.905 | -22.787 | 0 |
+| vs-winter3-astra | 182.609 | -23.734 | -23.772 | -25.134 | 0 |
+
+100ms 이상 디지털 무음은 Summer I 도입의 첫 발음 전 0.164042초 구간 하나이며, MIDI 발음 구간과 겹치지 않아 예정된 쉼으로 판정했습니다. **예상 밖 무음은 전곡 0개**입니다. 메트로놈 처리 로그는 전곡 `on_count=1 skip`이며, 성공한 각 프로젝트에서 버튼 상태를 별도로 재측정했다고 주장하지 않습니다. 음색의 선호·주제 식별감·Suno 통과 여부는 사용자 판정으로 남깁니다.
+
+최종 실행은 `vivaldi_astra_v2.py --check` 12/12 MATCH, `vivaldi_astra.py --check` 12/12 PASS, `unittest discover … 'test_vivaldi_astra_v2*.py'` 15/15 OK, 전곡 오디오 CLI 12/12 PASS입니다. Suno Style은 168–226자, Description은 881–980자로 직접 측정했고 전부 필수 출처 문구를 포함합니다. 아직 업로드 결과가 없으므로 `v2u`·`v2t`는 만들지 않았습니다.
 
 ## 2026-11-09 Vivaldi 사계 변주 v2 — fable (anthropic/claude-fable-5-1)
 

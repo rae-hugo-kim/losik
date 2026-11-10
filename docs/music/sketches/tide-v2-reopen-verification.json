@@ -1,0 +1,44 @@
+[
+  {
+    "id": "returning-tide-astra-v2",
+    "project": "/Volumes/Netac 2TB/music/projects/Returning Tide Astra v2.logicx",
+    "reopened": true,
+    "tempo": 96,
+    "meter": "6/8",
+    "patches": "[SoCal] [Fingerstyle Electric Bass] [Classical Acoustic Guitar] [Studio Grand] [Classical Acoustic Guitar] [Classic Pad] [Studio Grand] [Stereo Out] [Master]",
+    "playback": {
+      "before": "1.0,1.0",
+      "during": "1.0,5.0",
+      "playing_observed": true,
+      "stopped": true
+    }
+  },
+  {
+    "id": "paper-lanterns-astra-v2",
+    "project": "/Volumes/Netac 2TB/music/projects/Paper Lanterns Astra v2.logicx",
+    "reopened": true,
+    "tempo": 112,
+    "meter": "4/4",
+    "patches": "[SoCal Kit] [Fingerstyle Electric Bass] [Astra Air Harmonica] [Acoustic Guitar] [Deluxe Classic] [Stereo Out] [Master]",
+    "playback": {
+      "before": "1.0,2.0",
+      "during": "1.0,4.0",
+      "playing_observed": true,
+      "stopped": true
+    }
+  },
+  {
+    "id": "blue-window-astra-v2",
+    "project": "/Volumes/Netac 2TB/music/projects/Blue Window Astra v2.logicx",
+    "reopened": true,
+    "tempo": 78,
+    "meter": "3/4",
+    "patches": "[Studio Grand] [Studio Grand] [Upright Jazz Bass] [SoCal] [Stereo Out] [Master]",
+    "playback": {
+      "before": "1.0,1.0",
+      "during": "1.0,2.0",
+      "playing_observed": true,
+      "stopped": true
+    }
+  }
+]

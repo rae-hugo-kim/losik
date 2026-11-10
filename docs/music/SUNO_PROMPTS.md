@@ -5,6 +5,8 @@
 > **실투입 기록 (2026-09-19 확인)**: 09-05 의 4곡(star v6 / ghost v4 / chrome **v6** / golden v3)은 아래 **Description 전문이 Style 필드에** 들어갔다 (마침표→쉼표, "3.5 minutes" → "3, 5 minutes" 로 깨짐). Style 100자 제한은 09-12 부터. Cover 가 실제로 받은 텍스트는 Suno 가 오디오에서 자동 생성한 **메타태그**이며, 곡별 원문·대조·판정은 `FEEDBACK_LOG.md` "Suno 완성본 판정" 절, 승격 규칙은 `PROMPT_GUIDELINES.md` §7.
 > 4곡 채택본: golden 생성본 1 / star 1 / ghost 1 / chrome 2. 재도전은 채택본 태그의 `[Outro]` 편집부터 (§7.4-2).
 
+현재 Astra 다섯 곡은 [v3 Suno 프롬프트](SUNO_PROMPTS_ASTRA_V3.md)를 사용한다. 아래는 이전 배치의 기록이며, 입력란 사용 안내는 새 문서를 우선한다. 다음 다곡 배치의 설계 방법은 [다곡 제작 지시문](MULTI_SONG_BRIEF.md)에 정리했다.
+
 ## star-cruiser-v6
 **Style**
 `synthwave disco, 122 BPM, B minor, driving four-on-the-floor, acoustic drum kit, finger bass, polysynth chord stabs with pushed anticipations, octave-jump lead riff, swinging synth solo, interstellar cruise, instrumental`
