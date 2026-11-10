@@ -74,7 +74,7 @@
   - `compose(sid)` 와 `__main__` 이 `{sid}-v2.mid` 12개를 쓰고 점검 줄을 출력합니다.
   - `--check` 는 파일을 쓰지 않고 재생성 바이트와 디스크 MIDI 를 비교합니다.
 - **이름**: sid 는 `vs-<season><n>-<model>`, title 은 `<Season> <I/II/III> <Model>`, 판 표기는 `v2` 입니다. 모델 접미사가 없으면 공용 폴더에서 서로 덮어씁니다.
-- **바운스**: `pipeline.produce(sid, title, 'v2', mid, patches=...)` 를 순차 호출합니다. `patches` 는 라이브러리 패치·EXS 를 쓰는 트랙에만 넣고(§3 악기), 반환값의 `patches`·`strips` 를 FEEDBACK_LOG 편성 열의 근거로 남깁니다. `stage='patches'` 로 실패하면 이름 오타·바탕 패치 문제이므로 인벤토리 JSON 에서 이름을 확인해 다시 돌립니다. Logic 은 한 대뿐이라 `produce()` 가 세션 간 잠금(`/Volumes/Netac 2TB/music/.logic-lock`)을 잡습니다. `TimeoutError` 가 난 곡은 "대기 초과"로 기록하고 다음 곡으로 넘어갑니다.
+- **바운스**: `pipeline.produce(sid, title, 'v2', mid, patches=...)` 를 순차 호출합니다. `patches` 는 라이브러리 패치·EXS 를 쓰는 트랙에만 넣고(§3 악기), 반환값의 `patches`·`strips` 를 FEEDBACK_LOG 편성 열의 근거로 남깁니다. `stage='patches'` 로 실패하면 이름 오타·바탕 패치 문제이므로 인벤토리 JSON 에서 이름을 확인해 다시 돌립니다. `stage='tracks'` 는 지휘 트랙의 텍스트·저작권 메타 때문에 빈 트랙이 생긴 경우입니다 — **출처 메타는 첫 악기 트랙 틱 0 에 넣습니다**(2026-11-09 라운드 실측). 패치를 올린 곡은 `produce()` 가 가장 늦게 끝나는 악기 트랙을 다시 선택해 바운스 범위를 곡 끝까지 잡아 주지만, 바운스 WAV 길이는 반드시 `마디 × 박자 × BPM` 기대값과 대조해 기록합니다. Logic 은 한 대뿐이라 `produce()` 가 세션 간 잠금(`/Volumes/Netac 2TB/music/.logic-lock`)을 잡습니다. `TimeoutError` 가 난 곡은 "대기 초과"로 기록하고 다음 곡으로 넘어갑니다.
 - **Suno**: `docs/music/suno/vivaldi_<model>_v2.md` 에 12블록 `## {sid}-v2` 를 씁니다.
   - Style 은 300자 이하, Description 은 **1,000자 이하(공백 포함)** 이며, `len()` 측정 결과를 출력합니다.
   - Description 에는 "variation on the theme of Vivaldi's Four Seasons, <Season> <mvt>" 를 넣고, 원곡 제목은 Style 에 넣지 않습니다.

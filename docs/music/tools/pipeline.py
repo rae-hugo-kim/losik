@@ -1167,8 +1167,11 @@ def _worktree_name():
 def produce(sid, title, ver, mid_path, log=print, owner=None, patches=None, select=None):
     """열린 프로젝트 정리 → SMF 임포트(벽시계 기준 대기; 임포트 중 System Events 는 ~2분씩 블록) → finish().
     patches: load_patches() 의 {트랙 번호: 패치 spec} — 임포트 뒤, 바운스 전에 라이브러리 패치/EXS 를 올린다.
-    select: 패치 로드 뒤 선택해 둘 트랙 번호(1-based) — 바운스 범위가 선택 트랙의 마지막 리전 끝으로 잡히므로 끝까지
-    연주하는 트랙을 넘긴다(finish() 참조). 세션 간 Logic 경합을 막기 위해 LogicLock 을 잡고 돈다(owner 기본값 = 현재 워크트리 이름)."""
+      임포트된 트랙 수가 SMF 의 악기 트랙 수(프로그램 체인지가 있는 트랙)와 다르면 stage='tracks' 로 멈춘다 —
+      지휘 트랙에 텍스트·저작권 메타가 있으면 Logic 이 빈 트랙을 만들어 번호가 밀린다(2026-11-09 band-fable·astra 실측).
+    select: 패치 로드 뒤 선택해 둘 트랙 번호(1-based). 바운스 범위가 선택 트랙의 마지막 리전 끝으로 잡히므로(finish() 참조)
+      기본값 None 이면 patches 가 있을 때 SMF 에서 마지막 틱이 가장 늦은 악기 트랙을 골라 자동으로 선택한다.
+    세션 간 Logic 경합을 막기 위해 LogicLock 을 잡고 돈다(owner 기본값 = 현재 워크트리 이름)."""
     owner = owner or _worktree_name()
     with LogicLock(owner):
         t0 = time.time()
@@ -1187,10 +1190,12 @@ def produce(sid, title, ver, mid_path, log=print, owner=None, patches=None, sele
         if patches is not None:
             with open(mid_path, 'rb') as midi:
                 _, _, _, midi_tracks = parse_smf(midi.read())
-            expected = sum(bool(track['pcs']) for track in midi_tracks)
+            inst = [t for t in midi_tracks if t['pcs']]
             imported_tracks = track_names()
-            if len(imported_tracks) != expected:
-                return dict(ok=False, stage='tracks', expected=expected, tracks=imported_tracks)
+            if len(imported_tracks) != len(inst):
+                return dict(ok=False, stage='tracks', expected=len(inst), tracks=imported_tracks)
+            if select is None and patches and inst:
+                select = max(range(len(inst)), key=lambda i: inst[i]['last_tick']) + 1
         r = finish(sid, title, ver, log=log, patches=patches, select=select)
         r['elapsed'] = round(time.time() - t0)
         if imported_tracks is not None:
@@ -1202,8 +1207,9 @@ def finish(sid, title, ver, log=print, patches=None, select=None):
     """(패치 로드 → 끝 트랙 선택 →) 메트로놈 OFF → 스트립 실측 → 저장(projects/) → bounce_and_post().
     select: 패치를 올린 뒤 선택해 둘 트랙 번호(1-based). load_patches() 가 마지막으로 고른 트랙이 선택된 채 남으면
     '프로젝트 또는 섹션…' 바운스의 끝이 그 트랙의 마지막 리전 끝으로 잡혀 곡이 잘린다(2026-11-09 band-fable 실측:
-    spring 1 72마디 중 53마디, winter 1 88 중 66 — 모두 마지막 패치 트랙의 리전 끝과 일치). 호출자는 끝까지 연주하는
-    트랙 번호를 넘긴다."""
+    spring 1 72마디 중 53마디, winter 1 88 중 66 — 모두 마지막 패치 트랙의 리전 끝과 일치; 선택 해제 ⇧⌘A 는 효과 없음).
+    produce() 는 patches 가 있으면 SMF 에서 가장 늦게 끝나는 악기 트랙을 자동으로 넘긴다; 직접 부를 때는 끝까지
+    연주하는 트랙 번호를 넘긴다."""
     proj = f'{title} {ver}'
     loaded = None
     if patches:
