@@ -31,6 +31,7 @@ alwaysApply: true
 ## 규칙
 
 - **base 와 PR 대상**: 주제 세션은 `issuereport`, 라운드 세션은 자기 주제 브랜치예요. `main` 을 base 로 브랜치를 만들거나 `main` 으로 PR 을 내지 않아요(하네스 동기화 머지 제외).
+- **kickoff 전에 열린 PR·이슈를 확인해요(MUST)**: `gh pr list --state open`·`gh issue list --state open` 을 Phase 1 컨텍스트 탐색에 넣어요. 2026-11-14 통합 세션이 PR #4(`produce(patches=)`)를 놓치고 같은 목표(경로 B·C 패치 로드)를 다시 구현했어요(`docs/sum/session_2026-11-14_template-patch-load.md` Fix 1).
 - **푸시는 세션별 명시 승인** 이 있어야 해요(`rule://harness-core`). PR 을 열 때 그 세션에서 승인받아 푸시하고, 통합 세션의 푸시도 매번 승인받아요. `issuereport` 로의 머지는 통합 세션만, 주제 브랜치로의 머지는 그 주제 세션만 해요(`gh pr merge` 포함, 승인 필요).
 - 브랜치 세션은 **다른 브랜치·워크트리를 건드리지 않아요**. 공유 자원은 저장소 밖이에요: Logic 단일 인스턴스(`pipeline.LogicLock` 으로 세션 간 직렬화), 바운스 `/Volumes/Netac 2TB/music/bounces/`, Logic 사운드 라이브러리(Netac). 바운스 결과 파일은 `BOUNCE_SEARCH` 가 형제 워크트리의 `sketches/` 까지 봐요.
 - **인계는 복사로**: `docs/sum/` 은 untracked 라 브랜치를 타지 않아요. 세션을 넘길 때 인계 sum 을 새 워크트리 `docs/sum/` 에 복사하고 루트에 `<TOPIC>_KICKOFF.md`(미커밋) 를 둬요.
