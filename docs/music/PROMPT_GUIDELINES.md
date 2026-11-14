@@ -245,3 +245,4 @@
 - osascript 창 이름은 한글이 NFD 로 돌아올 수 있음 → NFC 정규화 후 비교 (`pipeline.windows()`). 임포트 중에는 System Events 호출이 ~2분씩 블록되므로 대기 루프는 호출 횟수가 아니라 벽시계 기준으로
 - 같은 이름의 `.logicx` 가 `sketches/` 에 남아 있으면 저장 시 "대치하겠습니까?" 시트가 뜬다 (`save_project_as` 가 처리)
 - **Logic 바운스 대화상자는 마지막 저장 폴더를 기억한다** — 워크트리(세션)가 여럿이면 다른 세션이 쓴 `sketches/` 로 파일이 떨어진다(2026-10-30 "aif missing" ×3). `pipeline.BOUNCE_SEARCH` 가 형제 워크트리 `*/docs/music/sketches` 를 모두 보고, `wait_bounce_file(since=)` 가 옛 동명 파일을 거른다.
+- **Logic 에 보내는 글자 키는 전부 키 명령 후보다** — 한국어 입력 소스에서 합성 ⌘S(`keystroke "s" using command down`)는 저장이 아니라 "새 소프트웨어 악기 트랙" 이 됐고, 열기 패널 검색어 `keystroke` 의 `k` 는 메트로놈을 켰다(2026-11-14). 텍스트는 AX `set value`, 명령은 메뉴 항목 클릭(`save_quiet()` 는 `파일 > 저장`)으로. 템플릿 모드(`produce(template=)`)는 시작 조건이 "프로젝트 창 없음" 이므로 Logic 을 나눠 쓰는 세션은 `LogicLock` 을 놓기 전에 프로젝트를 닫는다. (`docs/sum/session_2026-11-14_template-patch-load.md`)
