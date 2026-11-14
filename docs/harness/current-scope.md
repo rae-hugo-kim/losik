@@ -1,18 +1,33 @@
-# Vivaldi Astra v2 완료 기준입니다.
+# Current Scope: Logic 템플릿 프로젝트로 패치·EXS 로드 자동화 (경로 B·C)
 
-모델은 `openai-codex/gpt-6-astra`이며, 라운드 브랜치는 `rae-hugo-kim/band-astra`입니다. 사용자 승인(2026-11-09)은 `rae-hugo-kim/vivaldi` 병합·계획 및 산출물 커밋·잠금 안의 Logic 바운스와 공용 음악 폴더 쓰기입니다. 푸시·PR·다른 워크트리 변경·하네스 동기화는 하지 않습니다. 기존 MCP와 킥오프 파일은 보존·커밋 제외합니다.
+**Created**: 2026-11-13
+**Seed**: `docs/harness/seed.yaml` (`20261113-220009-a606`, Plan Attack 1·2차 반영판)
 
-## Acceptance criteria
+## MUST
+- AC0 스파이크: 에이전트가 AX·Logic MCP 로 테스트 템플릿 `PROJ_DIR/templates/tplsmoke.logicx` 를 만들고(안 되는 조작만 사용자에게 부탁) 9개 항목 실측, 판정표에 따라 종료 또는 지정 대책으로 진행
+- `pipeline.produce(template=...)`: 프로젝트 창 열려 있으면 시작 거부 → 경로·`NumberOfTracks` 선판정 → 실행 전 해시 → `copytree` 사본(존재 시 실패) → 사본 열기 → 기존 트랙 임포트(라벨 지정, strict 창 조회, 허용 밖 창은 실패) → 스냅샷·스트립·리전·`lcd_tempo` 수집(반환 dict) → `finish(win_title)` → `save_quiet` → 바운스; `try/finally close_all_projects(save=False)`, 실패 사본 `.failed-<ts>`
+- 템플릿 모드 SMF 에 PC·CC0/7/10/32 없음; 템포는 SMF; `metronome_off`·`clear_alerts` 미사용
+- 템플릿 제작 체크리스트·호출법을 `LOGIC_LIBRARY_INVENTORY.md` §4·§7 에 기록(AC0 결과에 따라 가능/불가 분기)
 
-- [x] AC1: 지정된 충돌 규칙으로 자료를 병합하고 v1 MIDI 12개 불변을 확인합니다. 병합 `ff42e8b` 뒤 `vivaldi_astra.py --check` 12/12 PASS입니다.
-- [x] AC2: 허용 읽기 목록만으로 12악장의 장르·이유·A/B/C 트랙·박자·BPM·마디를 계획하고 작곡 전에 커밋합니다. 계획 커밋은 `ca115d0`입니다.
-- [x] AC3: v2 작곡기와 MIDI 12개가 계획을 구현하고, SMF 박자·템포·마커·출처, 주제 40–60%, 리듬 변형 2종 이상, 원리듬 최장 연속 ≤4, 내부 단층 구간 최장 연속 ≤2, 트랙·구간 밀도·벨로시티·마지막 노트·결정적 --check를 검증합니다. 전곡 MATCH, 원리듬 최장 0–3, 단층 최장 0이며 실측 JSON을 보존했습니다.
-- [x] AC4: 정확한 B/C 패치·EXS를 `produce(..., patches=...)`로 올리고 실제 patches·strips를 보존합니다. 21개 이름 로드(그중 EXS 5개)가 모두 성공했고 트랙 수와 GM 실측 이름을 대조했습니다. 실패 2건은 재시도로 해결했고 대기 초과는 0건입니다. 다른 워크트리는 변경하지 않았습니다.
-- [x] AC5: WAV·Logic 프로젝트 각 12개, 전곡 48kHz·24bit stereo·길이·피크·RMS·예상 밖 무음 0개를 검증했습니다. 오디오 보고서는 passed=true, errors=[]이며 v1 MIDI도 최종 --check 12/12 불변입니다.
-- [x] AC6: Suno 12블록의 Style ≤300자, Description ≤1,000자, 필수 Vivaldi 설명 문구와 실제 편성·구조 일치를 검증합니다. 부모 직접 측정값은 Style 168–226자, Description 881–980자입니다.
-- [x] AC7: 계획의 결정·이유·변경 기록, FEEDBACK_LOG의 v2 모델 ID·12열 표, `docs/sum/session_2026-11-09_vivaldi-v2-astra.md`, 실패·대기 초과·계획 차이 표를 기록했습니다. 계획 작성자와 별도 병합 검토 에이전트의 읽기 범위도 구분했습니다.
-- [x] AC8: 독립 리뷰와 verifier의 최종 판정을 받았습니다. V2Verifier는 AC1–AC7 및 verifier 판정 PASS이고, reviewer의 최종 delta 확인은 새 블로커 0건·PASS WITH NOTES입니다. 커밋 전에 아래 절차대로 최종 스테이지 해시를 바인딩합니다.
+## SHOULD
+- 테스트 템플릿에 경로 A·B·C 를 하나씩 포함
 
-완료 커밋은 위 기준 확인 뒤 실행하는 전달 절차이며, 최종 응답 첫 줄은 `라운드 완료 <커밋 해시>`로 씁니다. 최종 스테이지에 리뷰 증거 해시를 바인딩한 뒤 자기 브랜치에만 커밋합니다.
+## MUST NOT
+- 템플릿 원본을 Logic 으로 열기, `save_project_as`·`clear_alerts`·`metronome_off` 사용(템플릿 모드)
+- 라이브러리 창 AX 조작·`.cst` 로드 구현
+- 템플릿 없는 기존 `produce()` 동작 변경, `build_smf` 출력 바이트 변경
+- Logic 환경설정 변경, `template_smoke.py` 의 `LogicLock` 중복 획득·Logic 직접 조회
 
-Suno 업로드·사용자 청취 결과는 이번 완료 기준 밖이며 미확인으로 남깁니다. 반려가 실제 보고되면 브리프 §2-7 순서를 따릅니다.
+## OUT OF SCOPE
+- 브리프 형식 변경, 키스위치·CC 주법 번역
+- `Violin (Arco).exs` 음질 판정, 사계·lo-fi 재렌더
+- 템플릿 제작의 파이프라인 일반화, 방식 ①·② 구현
+
+## Acceptance Criteria
+- [x] AC0 스파이크 판정: 9개 실측 항목과 판정 결과가 FEEDBACK_LOG 에 기록, 불가면 AC1–4·6 N/A·AC5 불가 분기
+- [x] AC1 패치·배치 일치: 반환 dict 의 스트립이 스냅샷과 개수·순서·이름 정확히 일치, 트랙 i 리전 = SMF 트랙 i·시작 1 1 1 1, `lcd_tempo` = SMF BPM
+- [x] AC2 바운스·발음: 길이 9마디 −0.1s~+12s, 마디 1 RMS < −60, 트랙별 구간 RMS > −40, `SamplerInstrumentsFiles` 에 .exs
+- [x] AC3 템플릿 보존: 번들 sha256 트리 해시 전후 동일
+- [x] AC4 회귀: `--gm` 별도 SMF 로 GM 경로 전체 + `gm_patch_map.json` 일치; 기존 스크립트 SMF 바이트 동일
+- [x] AC5 문서: 인벤토리 §4 B·C 행 갱신(가능/불가 분기) + 템플릿 체크리스트 + 호출법·`.failed` 처리
+- [x] AC6 실패 경로: `--dry-run` 등록 + 경로 없음/사본 존재/트랙 초과/프로젝트 창 열림 4건이 Logic 조작 전에 실패
