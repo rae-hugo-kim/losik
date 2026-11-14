@@ -1,0 +1,109 @@
+{
+  "path": "/Volumes/Netac 2TB/music/bounces/after-the-rain-astra-v3.wav",
+  "seconds": 208.69566666666665,
+  "bytes": 60108448,
+  "sha256": "662e3a9dc93e73d50f0a603a244d510349907c6819b6592c9547643cb0c860b1",
+  "sample_rate": 48000,
+  "channels": 2,
+  "bits": 24,
+  "data_offset": 4096,
+  "data_bytes": 60104352,
+  "frames": 10017392,
+  "peak_dbfs": [
+    -0.313,
+    -0.31
+  ],
+  "peak_samples": [
+    8092051,
+    8094696
+  ],
+  "full_scale_samples": 0,
+  "section_rms_dbfs": {
+    "First Drops": -31.582,
+    "Verse 1": -30.778,
+    "First Opening": -21.037,
+    "Breath": -21.074,
+    "Verse 2": -20.949,
+    "Open Road": -19.654,
+    "Looking Back": -23.614,
+    "Clear Sky": -17.467,
+    "Afterglow": -23.749
+  },
+  "section_frames": {
+    "First Drops": [
+      0,
+      1001739
+    ],
+    "Verse 1": [
+      1001739,
+      2504348
+    ],
+    "First Opening": [
+      2504348,
+      4006957
+    ],
+    "Breath": [
+      4006957,
+      4507827
+    ],
+    "Verse 2": [
+      4507827,
+      5509566
+    ],
+    "Open Road": [
+      5509566,
+      7012175
+    ],
+    "Looking Back": [
+      7012175,
+      8013914
+    ],
+    "Clear Sky": [
+      8013914,
+      9015653
+    ],
+    "Afterglow": [
+      9015653,
+      10017392
+    ]
+  },
+  "zero_runs": [],
+  "unexpected_zero_runs": [],
+  "final_frame": [
+    0,
+    0
+  ],
+  "release_tail_frames": 4800,
+  "last_100ms_rms_dbfs": -65.935,
+  "title": "After the Rain Astra v3",
+  "project": "/Volumes/Netac 2TB/music/projects/After the Rain Astra v3.logicx",
+  "bpm": 92,
+  "bars": 80,
+  "mode": "offline",
+  "metronome": "clicked; before=2",
+  "control_bar": "AXGroup|\ucee8\ud2b8\ub864 \ub9c9\ub300|missing value\nAXGroup|\ucee8\ud2b8\ub864 \ub9c9\ub300|missing value\nAXPopUpButton|\ud31d\uc5c5 \ubc84\ud2bc|\ube44\ud2b8 \ubc0f \ud504\ub85c\uc81d\ud2b8\nAXGroup|\uc7ac\uc0dd\ud5e4\ub4dc \uc704\uce58|missing value\nAXSlider|\ub9c8\ub514|1.0\nAXSlider|\ube44\ud2b8|1.0\nAXSlider|\ud15c\ud3ec|92.0\nAXPopUpButton||missing value\nAXPopUpButton|\ubc15\uc790\ud45c|4/4\nAXPopUpButton|\uc870\ud45c|F \uba54\uc774\uc800\nAXCheckBox|\uccb4\ud06c\uc0c1\uc790|0\nAXButton|\ubc84\ud2bc|0\nAXCheckBox|\uccb4\ud06c\uc0c1\uc790|0\nAXCheckBox|\uccb4\ud06c\uc0c1\uc790|0\nAXCheckBox|\uccb4\ud06c\uc0c1\uc790|0\nAXButton|\ubc84\ud2bc|0\nAXCheckBox|\uccb4\ud06c\uc0c1\uc790|0\nAXCheckBox|\uccb4\ud06c\uc0c1\uc790|0\nAXCheckBox|\uccb4\ud06c\uc0c1\uc790|0\nAXCheckBox|\uccb4\ud06c\uc0c1\uc790|1\nAXCheckBox|\uccb4\ud06c\uc0c1\uc790|0\nAXCheckBox|\ub77c\uc774\ube0c\ub7ec\ub9ac|0\nAXCheckBox|\uc778\uc2a4\ud399\ud130|1\nAXCheckBox|\ube60\ub978 \ub3c4\uc6c0\ub9d0|0\nAXCheckBox|\ub3c4\uad6c \ub9c9\ub300|0\nAXCheckBox|Smart\u00a0Controls|0\nAXCheckBox|\ubbf9\uc11c|0\nAXCheckBox|\ud3b8\uc9d1\uae30|0\nAXCheckBox|\ubaa9\ub85d \ud3b8\uc9d1\uae30|0\nAXCheckBox|\uba54\ubaa8\uc7a5|0\nAXCheckBox|\ub8e8\ud504 \ube0c\ub77c\uc6b0\uc800|0\nAXCheckBox|\ube0c\ub77c\uc6b0\uc800|0",
+  "patches": "[SoCal] [Studio Grand] [Fingerstyle Electric Bass] [Acoustic Guitar] [Authentic Strings] [Studio Grand] [Stereo Out] [Master]",
+  "instrument_overrides": [
+    {
+      "track": 2,
+      "path": "/Library/Application Support/Logic/Sampler Instruments/02 Bass/02 Electric Bass/Fingerstyle Electric Bass.exs",
+      "preset": "Fingerstyle Electric Bass"
+    }
+  ],
+  "mastering": {
+    "path": "/Volumes/Netac 2TB/music/bounces/after-the-rain-astra-v3.wav",
+    "source_aiff": "/Volumes/Netac 2TB/music/bounces/after-the-rain-astra-v3.aif",
+    "bytes": 60108448,
+    "data_offset": 4096,
+    "data_bytes": 60104352,
+    "frames": 10017392,
+    "seconds": 208.69566666666665,
+    "sample_rate": 48000,
+    "channels": 2,
+    "bits": 24,
+    "limiter_samples": 82,
+    "changed_samples": 82,
+    "limiter_ceiling_dbfs": -0.1,
+    "release_fade_ms": 100
+  }
+}

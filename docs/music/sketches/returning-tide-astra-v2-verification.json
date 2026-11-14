@@ -1,0 +1,126 @@
+{
+  "path": "/Volumes/Netac 2TB/music/bounces/returning-tide-astra-v2.wav",
+  "seconds": 255.0,
+  "bytes": 73444096,
+  "sha256": "85a20a309c5861de3683610dbfbae511069b7610e1c136d80126a445de92dafa",
+  "sample_rate": 48000,
+  "channels": 2,
+  "bits": 24,
+  "data_offset": 4096,
+  "data_bytes": 73440000,
+  "frames": 12240000,
+  "peak_dbfs": [
+    -0.454,
+    -0.31
+  ],
+  "peak_samples": [
+    7961217,
+    8094696
+  ],
+  "full_scale_samples": 0,
+  "section_rms_dbfs": {
+    "Nylon Memory": -22.006,
+    "Warm Current": -19.184,
+    "Verse 1": -19.133,
+    "Refrain 1": -17.748,
+    "Verse 2": -19.216,
+    "Refrain 2": -17.604,
+    "Ebb": -21.18,
+    "Returning": -17.811,
+    "Shore": -22.525
+  },
+  "section_frames": {
+    "Nylon Memory": [
+      0,
+      720000
+    ],
+    "Warm Current": [
+      720000,
+      1440000
+    ],
+    "Verse 1": [
+      1440000,
+      3600000
+    ],
+    "Refrain 1": [
+      3600000,
+      5040000
+    ],
+    "Verse 2": [
+      5040000,
+      7200000
+    ],
+    "Refrain 2": [
+      7200000,
+      8640000
+    ],
+    "Ebb": [
+      8640000,
+      10080000
+    ],
+    "Returning": [
+      10080000,
+      11520000
+    ],
+    "Shore": [
+      11520000,
+      12240000
+    ]
+  },
+  "zero_runs": [
+    {
+      "start_frame": 12063564,
+      "end_frame": 12074886,
+      "frames": 11322,
+      "start": 251.32425,
+      "end": 251.560125,
+      "seconds": 0.235875
+    },
+    {
+      "start_frame": 12223931,
+      "end_frame": 12240000,
+      "frames": 16069,
+      "start": 254.66522916666668,
+      "end": 255.0,
+      "seconds": 0.33477083333333335
+    }
+  ],
+  "unexpected_zero_runs": [],
+  "final_frame": [
+    0,
+    0
+  ],
+  "release_tail_frames": 4800,
+  "last_100ms_rms_dbfs": -300.0,
+  "title": "Returning Tide Astra v2",
+  "project": "/Volumes/Netac 2TB/music/projects/Returning Tide Astra v2.logicx",
+  "bpm": 96,
+  "bars": 136,
+  "mode": "offline",
+  "metronome": "clicked; before=2",
+  "control_bar": "AXGroup|\ucee8\ud2b8\ub864 \ub9c9\ub300|missing value\nAXGroup|\ucee8\ud2b8\ub864 \ub9c9\ub300|missing value\nAXPopUpButton|\ud31d\uc5c5 \ubc84\ud2bc|\ube44\ud2b8 \ubc0f \ud504\ub85c\uc81d\ud2b8\nAXGroup|\uc7ac\uc0dd\ud5e4\ub4dc \uc704\uce58|missing value\nAXSlider|\ub9c8\ub514|1.0\nAXSlider|\ube44\ud2b8|1.0\nAXSlider|\ud15c\ud3ec|96.0\nAXPopUpButton||missing value\nAXPopUpButton|\ubc15\uc790\ud45c|6/8\nAXPopUpButton|\uc870\ud45c|D \uba54\uc774\uc800\nAXCheckBox|\uccb4\ud06c\uc0c1\uc790|0\nAXButton|\ubc84\ud2bc|0\nAXCheckBox|\uccb4\ud06c\uc0c1\uc790|0\nAXCheckBox|\uccb4\ud06c\uc0c1\uc790|0\nAXCheckBox|\uccb4\ud06c\uc0c1\uc790|0\nAXButton|\ubc84\ud2bc|0\nAXCheckBox|\uccb4\ud06c\uc0c1\uc790|0\nAXCheckBox|\uccb4\ud06c\uc0c1\uc790|0\nAXCheckBox|\uccb4\ud06c\uc0c1\uc790|0\nAXCheckBox|\uccb4\ud06c\uc0c1\uc790|1\nAXCheckBox|\uccb4\ud06c\uc0c1\uc790|0\nAXCheckBox|\ub77c\uc774\ube0c\ub7ec\ub9ac|0\nAXCheckBox|\uc778\uc2a4\ud399\ud130|1\nAXCheckBox|\ube60\ub978 \ub3c4\uc6c0\ub9d0|0\nAXCheckBox|\ub3c4\uad6c \ub9c9\ub300|0\nAXCheckBox|Smart\u00a0Controls|0\nAXCheckBox|\ubbf9\uc11c|0\nAXCheckBox|\ud3b8\uc9d1\uae30|0\nAXCheckBox|\ubaa9\ub85d \ud3b8\uc9d1\uae30|0\nAXCheckBox|\uba54\ubaa8\uc7a5|0\nAXCheckBox|\ub8e8\ud504 \ube0c\ub77c\uc6b0\uc800|0\nAXCheckBox|\ube0c\ub77c\uc6b0\uc800|0",
+  "patches": "[SoCal] [Fingerstyle Electric Bass] [Classical Acoustic Guitar] [Studio Grand] [Classical Acoustic Guitar] [Classic Pad] [Studio Grand] [Stereo Out] [Master]",
+  "instrument_overrides": [
+    {
+      "track": 1,
+      "path": "/Library/Application Support/Logic/Sampler Instruments/02 Bass/02 Electric Bass/Fingerstyle Electric Bass.exs",
+      "preset": "Fingerstyle Electric Bass"
+    }
+  ],
+  "mastering": {
+    "path": "/Volumes/Netac 2TB/music/bounces/returning-tide-astra-v2.wav",
+    "source_aiff": "/Volumes/Netac 2TB/music/bounces/returning-tide-astra-v2.aif",
+    "bytes": 73444096,
+    "data_offset": 4096,
+    "data_bytes": 73440000,
+    "frames": 12240000,
+    "seconds": 255.0,
+    "sample_rate": 48000,
+    "channels": 2,
+    "bits": 24,
+    "limiter_samples": 80,
+    "changed_samples": 80,
+    "limiter_ceiling_dbfs": -0.1,
+    "release_fade_ms": 100
+  }
+}

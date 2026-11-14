@@ -1,0 +1,144 @@
+{
+  "path": "/Volumes/Netac 2TB/music/bounces/northbound-lights-astra-v3.wav",
+  "seconds": 245.8064375,
+  "bytes": 70796350,
+  "sha256": "43ffd0d46c886f19dcd93fea89a8fddc2f07a6cc2a4a81ffd7469151c37fc80d",
+  "sample_rate": 48000,
+  "channels": 2,
+  "bits": 24,
+  "data_offset": 4096,
+  "data_bytes": 70792254,
+  "frames": 11798709,
+  "peak_dbfs": [
+    -1.051,
+    -0.31
+  ],
+  "peak_samples": [
+    7432960,
+    8094696
+  ],
+  "full_scale_samples": 0,
+  "section_rms_dbfs": {
+    "Ignition": -19.302,
+    "Verse 1": -19.603,
+    "Chorus 1": -17.959,
+    "Riff Break": -19.579,
+    "Verse 2": -19.501,
+    "Chorus 2": -18.075,
+    "Seven Steps": -20.738,
+    "Guitar Breakout": -21.629,
+    "Headlights": -17.714,
+    "Distance": -22.328
+  },
+  "section_frames": {
+    "Ignition": [
+      0,
+      743226
+    ],
+    "Verse 1": [
+      743226,
+      2229678
+    ],
+    "Chorus 1": [
+      2229678,
+      3716129
+    ],
+    "Riff Break": [
+      3716129,
+      4459355
+    ],
+    "Verse 2": [
+      4459355,
+      5945807
+    ],
+    "Chorus 2": [
+      5945807,
+      7432259
+    ],
+    "Seven Steps": [
+      7432259,
+      8082581
+    ],
+    "Guitar Breakout": [
+      8082581,
+      9569033
+    ],
+    "Headlights": [
+      9569033,
+      11055485
+    ],
+    "Distance": [
+      11055485,
+      11798709
+    ]
+  },
+  "zero_runs": [
+    {
+      "start_frame": 11606492,
+      "end_frame": 11613253,
+      "frames": 6761,
+      "start": 241.80191666666667,
+      "end": 241.94277083333333,
+      "seconds": 0.14085416666666667
+    },
+    {
+      "start_frame": 11700859,
+      "end_frame": 11705816,
+      "frames": 4957,
+      "start": 243.76789583333334,
+      "end": 243.87116666666665,
+      "seconds": 0.10327083333333334
+    },
+    {
+      "start_frame": 11787849,
+      "end_frame": 11798709,
+      "frames": 10860,
+      "start": 245.5801875,
+      "end": 245.8064375,
+      "seconds": 0.22625
+    }
+  ],
+  "unexpected_zero_runs": [],
+  "final_frame": [
+    0,
+    0
+  ],
+  "release_tail_frames": 4800,
+  "last_100ms_rms_dbfs": -300.0,
+  "title": "Northbound Lights Astra v3",
+  "project": "/Volumes/Netac 2TB/music/projects/Northbound Lights Astra v3.logicx",
+  "bpm": 124,
+  "bars": 128,
+  "mode": "offline",
+  "metronome": "clicked; before=2",
+  "control_bar": "AXGroup|\ucee8\ud2b8\ub864 \ub9c9\ub300|missing value\nAXGroup|\ucee8\ud2b8\ub864 \ub9c9\ub300|missing value\nAXPopUpButton|\ud31d\uc5c5 \ubc84\ud2bc|\ube44\ud2b8 \ubc0f \ud504\ub85c\uc81d\ud2b8\nAXGroup|\uc7ac\uc0dd\ud5e4\ub4dc \uc704\uce58|missing value\nAXSlider|\ub9c8\ub514|1.0\nAXSlider|\ube44\ud2b8|1.0\nAXSlider|\ud15c\ud3ec|124.0\nAXPopUpButton||missing value\nAXPopUpButton|\ubc15\uc790\ud45c|4/4\nAXPopUpButton|\uc870\ud45c|E \ub9c8\uc774\ub108\nAXCheckBox|\uccb4\ud06c\uc0c1\uc790|0\nAXButton|\ubc84\ud2bc|0\nAXCheckBox|\uccb4\ud06c\uc0c1\uc790|0\nAXCheckBox|\uccb4\ud06c\uc0c1\uc790|0\nAXCheckBox|\uccb4\ud06c\uc0c1\uc790|0\nAXButton|\ubc84\ud2bc|0\nAXCheckBox|\uccb4\ud06c\uc0c1\uc790|0\nAXCheckBox|\uccb4\ud06c\uc0c1\uc790|0\nAXCheckBox|\uccb4\ud06c\uc0c1\uc790|0\nAXCheckBox|\uccb4\ud06c\uc0c1\uc790|1\nAXCheckBox|\uccb4\ud06c\uc0c1\uc790|0\nAXCheckBox|\ub77c\uc774\ube0c\ub7ec\ub9ac|0\nAXCheckBox|\uc778\uc2a4\ud399\ud130|1\nAXCheckBox|\ube60\ub978 \ub3c4\uc6c0\ub9d0|0\nAXCheckBox|\ub3c4\uad6c \ub9c9\ub300|0\nAXCheckBox|Smart\u00a0Controls|0\nAXCheckBox|\ubbf9\uc11c|0\nAXCheckBox|\ud3b8\uc9d1\uae30|0\nAXCheckBox|\ubaa9\ub85d \ud3b8\uc9d1\uae30|0\nAXCheckBox|\uba54\ubaa8\uc7a5|0\nAXCheckBox|\ub8e8\ud504 \ube0c\ub77c\uc6b0\uc800|0\nAXCheckBox|\ube0c\ub77c\uc6b0\uc800|0",
+  "patches": "[SoCal] [Fingerstyle Electric Bass] [Hard Rock] [Hard Rock] [Full Brass Staccato] [Stereo Out] [Master]",
+  "instrument_overrides": [
+    {
+      "track": 1,
+      "path": "/Library/Application Support/Logic/Sampler Instruments/02 Bass/02 Electric Bass/Fingerstyle Electric Bass.exs",
+      "preset": "Fingerstyle Electric Bass"
+    },
+    {
+      "track": 4,
+      "path": "/Library/Application Support/Logic/Sampler Instruments/09 Orchestral/02 Brass/Full Brass Staccato.exs",
+      "preset": "Full Brass Staccato"
+    }
+  ],
+  "mastering": {
+    "path": "/Volumes/Netac 2TB/music/bounces/northbound-lights-astra-v3.wav",
+    "source_aiff": "/Volumes/Netac 2TB/music/bounces/northbound-lights-astra-v3.aif",
+    "bytes": 70796350,
+    "data_offset": 4096,
+    "data_bytes": 70792254,
+    "frames": 11798709,
+    "seconds": 245.8064375,
+    "sample_rate": 48000,
+    "channels": 2,
+    "bits": 24,
+    "limiter_samples": 13,
+    "changed_samples": 13,
+    "limiter_ceiling_dbfs": -0.1,
+    "release_fade_ms": 100
+  }
+}

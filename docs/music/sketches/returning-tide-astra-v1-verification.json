@@ -1,0 +1,40 @@
+{
+  "path": "/Volumes/Netac 2TB/music/bounces/returning-tide-astra-v1.wav",
+  "sample_rate": 48000,
+  "channels": 2,
+  "bits": 24,
+  "frames": 12902400,
+  "seconds": 268.8,
+  "bytes": 77418496,
+  "sha256": "8cd3d1b5813bc0399094cdc6cb5ade114ca1cc9c5937b4b7a268ee9eba52fb2a",
+  "peak_dbfs": [
+    -0.31,
+    -0.348
+  ],
+  "full_scale_samples": 0,
+  "section_rms_dbfs": {
+    "Intro A": -23.87,
+    "Intro B": -21.36,
+    "Verse 1": -22.19,
+    "Pre 1": -20.4,
+    "Chorus 1": -17.52,
+    "Verse 2": -21.92,
+    "Pre 2": -20.39,
+    "Chorus 2": -17.57,
+    "Bridge": -34.72,
+    "Final Chorus": -16.75,
+    "Outro": -26.59
+  },
+  "chorus_impact_db": {
+    "41": 11.83,
+    "73": 11.08,
+    "89": 7.42
+  },
+  "final_first_half_dbfs": -17.13,
+  "climax_dbfs": -16.39,
+  "last_second_dbfs": -56.44,
+  "final_frame": [
+    0,
+    0
+  ]
+}

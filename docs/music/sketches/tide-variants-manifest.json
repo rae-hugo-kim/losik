@@ -1,0 +1,78 @@
+[
+  {
+    "id": "paper-lanterns-astra-v1",
+    "title": "Paper Lanterns Astra v1",
+    "identity": "Warm buoyant lantern-light theme built from dotted-quarter calls answered by quick stepwise descents, opening once per chorus into a rising major sixth.",
+    "bpm": 100,
+    "bars": 112,
+    "seconds": 268.8,
+    "sha256_midi": "1953290798ad83efc78ae2d1bef19d5ab1c40be3a6e222092e9dde0afe7309c4",
+    "notes_per_track": {
+      "0": 1357,
+      "2": 119,
+      "1": 192,
+      "3": 413,
+      "4": 124,
+      "6": 25,
+      "5": 225,
+      "7": 80
+    }
+  },
+  {
+    "id": "blue-window-astra-v1",
+    "title": "Blue Window Astra v1",
+    "identity": "Wistful and spacious: long descending sustains answered by offbeat eighth-note pairs, minor-tinged verses opening into a wide chorus.",
+    "bpm": 100,
+    "bars": 112,
+    "seconds": 268.8,
+    "sha256_midi": "dd01e3cfb0b2ab4afd6ed9af2118f8a5744fb94b40d1a10f20af779e7f11ac82",
+    "notes_per_track": {
+      "0": 1357,
+      "2": 102,
+      "1": 192,
+      "3": 413,
+      "4": 124,
+      "6": 25,
+      "5": 188,
+      "7": 80
+    }
+  },
+  {
+    "id": "northbound-lights-astra-v1",
+    "title": "Northbound Lights Astra v1",
+    "identity": "A forward-driving eighth-note pulse that springs up a perfect fourth, answered in the chorus by syncopated off-beat anticipations landing on long held notes over an E-minor-lifted D major loop.",
+    "bpm": 100,
+    "bars": 112,
+    "seconds": 268.8,
+    "sha256_midi": "95f904d9a7483472b9e201be0adb37aa8a19592814990054a701cd8eb4986a90",
+    "notes_per_track": {
+      "0": 1357,
+      "2": 144,
+      "1": 192,
+      "3": 475,
+      "4": 124,
+      "6": 39,
+      "5": 286,
+      "7": 80
+    }
+  },
+  {
+    "id": "after-the-rain-astra-v1",
+    "title": "After the Rain Astra v1",
+    "identity": "Every phrase enters a half-beat late and climbs in three-note stepwise groups, so the lead sounds like it keeps gathering courage; the chorus arches up to a held peak and then walks back down by steps into open space.",
+    "bpm": 100,
+    "bars": 112,
+    "seconds": 268.8,
+    "sha256_midi": "fba51d4d283f5322d8abd06faaa673c2646401d33f1da5ce3de22dd94161e4be",
+    "notes_per_track": {
+      "0": 1357,
+      "2": 117,
+      "1": 192,
+      "3": 428,
+      "4": 124,
+      "6": 22,
+      "5": 244,
+      "7": 80
+    }
+  }
+]

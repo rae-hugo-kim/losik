@@ -120,15 +120,651 @@ neon-rain / highway-zero / midnight-arcade / analog-heart: 개별 피드백 **�
 - 함의: Suno 에 실제로 전달되는 정보는 **멜로디·화성·편성·구조**. 믹스 밸런스는 Suno 가 재렌더링하므로 우선순위 하향 — 다음 라운드부터 작곡 요소에 무게, 밸런스는 "Suno 가 오해하지 않을 정도"면 충분.
 - 학습 방향 전환: "에이전트에게 명령하기" → "상상한 것을 화성·편성 언어로 설득하기". `LEARNING_PLAN.md` v2 에서 부록이던 기초 화성학·작곡 기초를 본편으로 올리는 v3 필요.
 
+## first-light v1 (2026-09-08, 신곡 — 형식 레퍼런스 의뢰)
+
+의뢰: "차우차우 / 여명처럼 주제선율+드럼으로 시작 → 편성 점층 → 탑노트 합류 → 벌스·후렴 반복 → 하이라이트 → 잔잔한 마무리". 확인 답변: 밴드 편성 · D장조 108 BPM 벅참 · ~3:30.
+산출물: `/Volumes/Netac 2TB/music/bounces/first-light-v1.wav` (3:16, 24bit, 리미터 -0.1, 피크 -0.53). 원천 `docs/music/sketches/first-light.mid`, 코드 `docs/music/tools/firstlight.py`.
+
+| 요구 | 반영 |
+|---|---|
+| 주제선율+드럼 도입 | 1-8 Lead(Hard Rock 클린) + 킥/스네어만, 햇 없음 |
+| 편성 쌓기 | 9 베이스·어쿠스틱·햇 → 17 탑노트(LeadHi 옥타브 롱노트) + 스트링 |
+| 벌스/후렴 반복 | 25 V1(저음역 멜로디, 팜뮤트) / 33 C1(주제, 라이드) / 41 V2(+패드) / 49 C2(+탑노트·스트링) |
+| 하이라이트 | 57-64 브릿지 꺼짐(핑거피킹·킥 4분·스네어 빌드·4마디 크래시 롤) → 65-76 전부 + 오픈햇 + 스트링 옥타브 |
+| 잔잔한 마무리 | 77-84 주제 단독(vel 70) + 패드 → 85-88 롱코드 페이드, D 종지 |
+
+계측: 섹션 RMS Intro A -21.9 → Highlight -16.9 → Outro A -24.4 dB (아크 일치). 스트립 실측 전부 의도 패치. 베이스 어프로치는 반음 대신 **온음계**(golden-hour 거슬림 후보 회피).
+
+**판정 포인트**: (1) 인트로 8마디 "선율+드럼만"이 너무 길거나 허전하지 않은지 (2) 17마디 탑노트 합류가 들리는지 — 안 들리면 LeadHi 벨로시티↑ 또는 스트링으로 교체 (3) 벌스↔코러스 대비(계측 0.5 dB 차)가 귀로 충분한지 — 부족하면 벌스 어쿠스틱 팜뮤트 벨로시티↓ (4) Hard Rock 패치가 클린으로 들리는지(star-cruiser 때 디스토션 과다 이력) — 이질적이면 리드를 Studio Grand 로 교체 검토 (5) 하이라이트 12마디가 길이·강도 면에서 "터졌는지" (6) 아웃트로 주제 단독 8마디가 늘어지는지.
+
+## Dawn Set v1 (2026-09-08, first-light 형식 4곡 — 멜로디·탑노트·진행 분리)
+
+의뢰: "같은 컨셉, 메인 멜로디와 탑노트 라인을 다르게 4곡, 각자 제목". 편곡 엔진은 `firstlight.py` 를 스펙 구동으로 리팩터해 공유(first-light.mid 바이트 동일 재생성 확인), 곡별 스펙은 `docs/music/tools/dawnset.py`.
+§2-1/§2-2: 5곡(first-light 포함) 진행 기능 시그니처·훅 리듬/음정 시그니처 자동 유니크 검증 통과. 리드 롱노트(≥1.5박) 코드톤 검사 추가.
+산출물: `/Volumes/Netac 2TB/music/bounces/{morning-glass, blue-hour, paper-kite, long-bridge}-v1.wav` (24bit, 리미터 -0.1). 스트립 전곡 의도 패치.
+
+| sid | 제목 | 키/BPM | 길이 | 벌스 / 코러스 | 훅 정체성 |
+|---|---|---|---|---|---|
+| morning-glass | Morning Glass | G / 104 | 3:23 | I–vi–IV–V / vi–IV–I–V | '5–3–2–1' 하행 한숨 모티프, 마디 끝 되오름 |
+| blue-hour | Blue Hour | E / 112 | 3:09 | I–iii–IV–V / IV–I–V–vi | 점8분 '1·1·↑' 옥타브 도약 |
+| paper-kite | Paper Kite | A / 100 | 3:31 | I–IV–ii–V / ii–IV–I–V | 모든 마디 반박 늦게 시작하는 당김 |
+| long-bridge | Long Bridge | C / 116 | 3:02 | vi–IV–I–V / I–V–ii–IV | 5도 페달 '솔솔솔' 후 순차 이동 |
+
+계측(섹션 RMS dB, Intro A → Highlight → Outro A): morning -22.3/-17.4/-24.5 · blue -21.5/-16.5/-23.9 · paper -22.7/-17.5/-25.1 · long -21.0/-16.4/-23.4 — 4곡 모두 first-light 와 같은 아크.
+
+**판정 포인트**: (1) 5곡 중 "주제선율이 귀에 남는" 순위 — 다음 라운드는 상위 2곡만 (2) first-light 판정 포인트 (1)~(6) 은 편곡이 공통이므로 5곡에 동일 적용: 한 곡에서 고치면 전곡 반영 (3) blue-hour 탑노트(G#6 까지)·long-bridge 116 BPM 이 급하게 들리는지 (4) paper-kite 당김 모티프가 드럼과 어긋나 들리는지 — 어긋나면 드럼 스네어를 2.5박에도 추가 검토.
+
+### 판정 (09-10, first-light v1 + Dawn Set v1 청취)
+
+| 관측 | 지시 |
+|---|---|
+| 네 곡 다 원하는 분위기의 주제부가 없다. 이펙트·편집 부재를 감안해도 너무 심심, 트로트·동요 느낌 | 차분·가라앉는 분위기면 확실하게, 아니면 확실히 방향성 있는 멜로디로 |
+| 드럼 심심. 구성 전반이 평이 | "쿵 짝 / 쿵-쿵 짝 / 쿵 짝 짝짝쿵 짝" 식 마디별 변주, 표기 BPM 보다 리듬감이 느껴지게 |
+| Paper Kite 는 반박 당김이 있어 좀 낫다 | (당김 = 유효한 방향) |
+| 기타가 옥타브가 너무 높은지 음색이 가늘고 높은지 구분 안 됨 | (진단: 리드 음역 D5–E6 = 기타 12~24프렛 + Hard Rock 패치 → 둘 다) |
+| 5곡 중 first-light 가 제일 낫다. 다른 세션 곡들(chrome/ghost/star)보다 전반적으로 실망 | 기존 곡 작업 기록 요청 → 아래 진단 |
+
+**원인 진단 (기존 곡 vs 이번 5곡 코드 대조)**
+1. 훅 어휘: 기존 곡은 옥타브 도약 반복(star), 반음 오스티나토(ghost), 6도 도약(chrome) — 한 마디 안에 정체성이 있는 넓은 음정. 이번 5곡은 5도 이내 순차진행 + 매 마디 3~4박 코드톤 롱노트 = 대칭·예측 가능 → 동요/트로트 느낌.
+2. 드럼: 기존 곡은 4온플로어·디스코 오픈햇·하프타임·16분 햇 등 스타일 자체가 곡별로 다름. 이번 5곡은 킥 1·2.5박 / 스네어 2·4박 고정 패턴을 88마디 × 5곡 공유.
+3. 텍스처: 기존 곡은 아르페지오(곡별 문법) + CC74 필터 스윕으로 상시 움직임. 이번은 스트럼 롱코드만.
+4. 반복 횟수: 기존 곡은 사용자 피드백 3~6회 누적(v3~v6). 이번은 v1.
+5. 리드 편성: 기존 곡은 신스 리드/EP. 이번은 Hard Rock 기타를 D5–E6 에서 — 음역·음색 둘 다 가늘어지는 조합.
+
+### first-light v2 (09-11) — 판정 반영
+
+산출물: `/Volumes/Netac 2TB/music/bounces/first-light-v2.wav` (3:16, 피크 -0.39). 원천 `sketches/first-light-v2.mid`, `firstlight.py FIRST_LIGHT_V2` (`python3 firstlight.py v2`). v1 4곡 SMF 는 바이트 불변.
+
+| 받은 피드백 (v1) | 반영 |
+|---|---|
+| 주제부 동요/트로트 — 확실한 방향성으로 | 훅 전면 재작성: **D4→D5 옥타브 도약 + 반박 늦은 진입**으로 시작, 2마디 프레이즈(홀수마디 제시·짝수마디 상행 응답), 5·6마디 A5 정점까지 상행 시퀀스 → 7·8마디 하행 해소. 매 마디 3~4박 롱노트 패턴 폐기 |
+| 드럼 심심 — 쿵 짝 / 쿵-쿵 짝 / 쿵 짝 짝짝쿵 짝 변주, 체감 리듬↑ | `drums_cell`: 4마디 셀(쿵 짝 / 쿵-쿵 짝 / 쿵 짝 짝짝쿵 짝 / 쿵 짝 쿵쿵 짝짝) + 16분 클로즈햇 악센트 + 1.75·3.75박 고스트 스네어. 코러스 라이드+오프비트 오픈햇, 하이라이트 오픈햇 8분 |
+| 기타 옥타브 높은지 음색인지 모호 | **음역만 한 옥타브 하향** (C#4–A5, 5~17프렛), 패치 유지 → 이번 청취로 음색 변수 분리 |
+| 구성 평이 | 8번째 트랙 **Deluxe Classic EP 8분 아르페지오** (Intro C·벌스·Chorus 2·하이라이트, 하이라이트는 옥타브 위) — 기존 곡의 상시 움직임 복원 |
+| Paper Kite 당김이 낫다 | 벌스 멜로디도 반박 늦은 진입 + 3음 상행, 8마디째 D 로 훅의 도약 예비 |
+
+계측: 섹션 아크 v1 과 동일 형태(Intro A -21.1 → Highlight -16.6 → Outro -24.3). 스트립 8트랙 전부 의도 패치.
+
+**판정 포인트**: (1) 옥타브 하향 후에도 기타가 가늘면 → 음색 문제 확정, 패치 교체(신스 리드/EP) (2) 훅이 "방향성 있게" 들리는지, 특히 5·6마디 정점 (3) 드럼 셀 변주가 표기 108 보다 리듬감 있게 들리는지 — 과하면 셀 3(짝짝쿵)만 남김 (4) EP 아르페지오가 기타와 부딪히거나 시티팝처럼 들리면 벌스만 남기기.
+
+### 판정 (09-11, v2 청취) → 볼레로형 재설계 승인
+
+| 관측 | 결론 |
+|---|---|
+| 레퍼런스 전달 오류: 차우차우는 노래 형식이 아니라 **주제와 변주 위의 점층(볼레로형)**. 주제선율은 귀를 쏘지 않는 아르페지오적 오스티나토, 변주 지점에서 잠시 위로 떠올랐다 복귀. 볼레로와 달리 붕괴 없이 완급 교대 | v1·v2 의 "훅 = 정점 있는 노래 멜로디" 접근 폐기. 오스티나토 + 5축 변주(음역·밀도·음색·다이내믹·탑노트)로 재설계 |
+| 드럼(v2 셀 변주)은 안착 | 유지. 후퇴 구간 하프타임만 추가 |
+| 베이스에 선율 불필요 — 근음을 든든히 꾸준히 | 그루브·어프로치 제거, 근음 페달 |
+| 싸비 디스토션 기타 OK | 회전 8·10 파워코드(1+5) 롱톤, Hard Rock 고벨로시티 |
+| 신스 앞세우지 말 것 — 필요한 곳에 스윽 들어와 받치고 조용히 퇴장 | 패드는 후퇴 구간(회전 6·9)에만, 2마디 크레셴도 진입/디크레셴도 퇴장. EP 아르페지오 삭제 |
+| 기타 2대(주제/탑노트) 구분 어려움 | 탑노트 = **피아노(Studio Grand)**, 2~4마디 호흡의 독립 성부로 |
+
+계획(승인): 11회전 × 8마디, 에너지 2-3-4-4-5-**3**-6-8-**3**-9-1 (후퇴 2회, 상승 3회). 오스티나토 떠오름은 회전 4·7·10 의 7~8마디, 4~5도 위 1.5마디 후 복귀, 리듬형 불변. 한 회전에 가변 축 최대 2개.
+
+### first-light v3 1단계 — 오스티나토 원형 후보 4개 (09-11)
+
+`docs/music/tools/ostinato.py` → `/Volumes/Netac 2TB/music/bounces/ostinato-{A-wave,B-pedal,C-stairs,D-tresillo}.wav` (각 16마디 ≈ 36초). 공통: D–A–Bm–G 코드당 2마디, 회전 1 기타+킥/스네어, 회전 2 +베이스 페달+햇. 차이는 오스티나토만.
+
+| 후보 | 원형 | 성격 |
+|---|---|---|
+| A wave | 1-3-5-8-5-3-1-3 물결 | 가장 중립. 변주 여지 최대 |
+| B pedal | 코드톤 ↔ D5 페달 교대 | 개방현 리프 느낌, A 코드에서 sus4 긴장 |
+| C stairs | 순차 하행 4음 + 아르페지오 상행 4음 | 선율성 최고, "쏘는" 위험도 최고 |
+| D tresillo | 점4분 3+3+2 당김 | Paper Kite 의 당김. 드럼과 겹리듬 |
+
+판정 (09-11): "트레실로의 리듬감에 페달 정도의 긴장감. 앞뒤 음 낙폭이 비슷 — 마디에 한 번은 큰 도약 후 복귀."
+
+2차 후보 (`ostinato-{E-leap-early,F-leap-late}.wav`): 트레실로 3+3+2 + D5 페달 + 마디당 도약 1회.
+
+| 후보 | 마디 형태 (D 코드 예) | 도약 |
+|---|---|---|
+| E leap-early | D4 → **D5**(1.5박) → F#4(3박) → A4 | 옥타브(A 코드는 C#4→D5 단9도), 마디 앞쪽. 페달 위에 1.5박 머묾 |
+| F leap-late | F#4 → A4 → **D5**(3박) → F#4(3.5박) | 6도, 마디 끝. 떠올랐다 즉시 복귀해 다음 마디 첫 음과 맞물림 |
+
+판정: **E 선택.**
+
+### first-light v3 (09-11) — 볼레로형 2단계, 오스티나토 E 위 11회전
+
+산출물: `/Volumes/Netac 2TB/music/bounces/first-light-v3.wav` (3:16, 피크 -0.77). 원천 `sketches/first-light-v3.mid`, 코드 `tools/firstlight_v3.py` (ostinato.LEAP_EARLY 재사용). 스트립 8트랙 전부 의도 패치 (Studio Grand 피아노 탑노트 포함).
+
+계측 회전별 RMS(dB): 1 -21.5 / 2 -18.1 / 3 -17.9 / 4 -17.8 / 5 -17.6 / **6 -19.2** / 7 -17.6 / 8 -16.1 / **9 -19.2** / 10 -16.0 / 11 -20.8 → 계획한 파도(후퇴 2회·상승 3회)가 계측에 그대로 나타남.
+
+| 계획 | 구현 |
+|---|---|
+| 오스티나토 불변 | E 리듬형·음정 전 회전 고정, 회전별 벨로시티 오프셋만 (-12~+14, 클린 유지 상한 92) |
+| 떠오름 4·7·10 | 7~8마디 온음계 4도 위 (D5 페달 → G5), 8마디 1.5박에 원위치 복귀 |
+| 베이스 근음 페달 | 2분음표(2~5·7) / 온음표(후퇴·11) / 8분 펌핑(8·10). 어프로치·선율 없음 |
+| 피아노 탑노트 | 8마디 독립 성부(쉼표·롱톤, 정점 B5), 회전 5·6·7·8·10. 10 은 옥타브 더블링. 회전 7 떠오름과 F#/G 충돌 회피 위해 7마디 리듬 조정 |
+| 후퇴 6·9 | 하프타임(스네어 3박), 베이스 온음표, 패드 34→60→34 벨로시티 램프로 진입·퇴장, 이전 회전 8마디에 vel 26 선행 |
+| 싸비 디스토션 8·10 | 파워코드(1+5+8) 롱톤 vel 110/118, 2마디 크래시 롤 진입, 2마디마다 크래시 |
+| 회전 7 음역 | 어쿠스틱이 오스티나토 옥타브 위 더블링 (기타 자체는 음역 유지 — v2 가늘기 판정 반영), 스트링 IN, 라이드 |
+| 종결 | 81-84 회전 1 거울, 85-86 기타+킥, 87-88 D 아르페지오 → 온음표 D 종지, 크래시 vel 60 |
+
+**판정 포인트**: (1) 3분 동안 오스티나토 반복이 견딜 만한지 — 지루하면 떠오름을 4·7·10 → 3·5·7·10 으로 (2) 후퇴 6·9 가 "숨 고르기"로 들리는지, 너무 꺼지면 하프타임 대신 햇만 빼기 (3) 피아노 탑노트가 "보컬"로 분리되어 들리는지 (4) 8·10 디스토션이 싸비로 터지는지, Hard Rock vel 118 이 과하면 108 (5) 클린 기타 vel 상한 92 에서도 가늘면 음색 문제 확정.
+
+## Rebetiko 5 버전 초안 (2026-09-18) — 지시형 의뢰, 버전당 1개
+
+의뢰: 드로모스·리듬·편성·로직 방침·Suno 태그·레퍼런스가 버전별로 명시된 5개 스펙 → 각 초안 1개. 산출: `sketches/rebetiko-{1..5}-*.mid`, `tools/rebetiko.py`(도수표 선율 + 드로모스 검사), `SUNO_PROMPTS.md` 5쌍. `build_smf` 에 `timesig`·`tempos` 추가(9/8·2/4·루바토·아첼레란도; 기존 4/4 출력 md5 불변 확인).
+
+| # | 드로모스 / 리듬 | 구조 (마디) | 구현 요점 |
+|---|---|---|---|
+| 1 piraeus | Hitzaz / zeibekiko 9/8 66 | taximi 1-3(48bpm 무박) · 벌스 5-12 · 간주 13-20 · 벌스 21-28 · 코다 30 | 기타 2+2+2+3 (베이스 0·2·4·6, 코드 1·3·5·7, 8번째 8분음 강세). 부주키 옥타브 아래 더블링 + 롱톤 트레몰로. 프레임드럼 5타/마디 vel 60대 |
+| 2 hasapiko | Kiourdi(종지 C#) / 2/4 80 | 인트로 8 · A 16 · B 8 · A' 16(+아코디언) · B' 8(8va) · 아우트로 8 | 트윈 부주키 온음계 3도 아래 병행(C# → A). 기타 근음-5도 워킹 + 뒷박 코드. 드럼 없음 |
+| 3 smyrna | Hitzazkiar / tsifteteli 4/4 100 | 바이올린 taximi 1-4(72bpm) · 벌스×2 · 솔로 · 벌스(8va) · 솔로 · 코다 | 둠(41) `x..x..x.` 텍(37) `..x..x.x` + 질리아(54) 16분 뒷박. 바이올린 온음계 아래 이웃음 슬라이드 장식. 산투리 16분 트레몰로, 우드 근음+턴 |
+| 4 teke | Sabah / 9/8 56 루바토 | taximi 1-8(마디별 템포 46~60) · zeibekiko 9-20 · taximi 회귀 21-23(48→42) | 부주키+바글라마스만, 기타는 D 드론 2회+근음 0·6. 선율 F 중심 → Gb 기울기 → D 낙하 |
+| 5 serviko | Rast(하행 C) / 2/4 138→170 | 인트로 8 · A16 B8 A16 B8(솔로 8va) A16(아첼레란도 시작) B8 A16 · 코다 4 | 기타 8분 다운스트로크(베이스+코드 동시), 바글라마스 16분 트레몰로 = 하이햇, 손북 둠텍+탬버린. 57~96마디 마디 단위 선형 가속 |
+
+패치 실측(09-19): 부주키·바글라마스 PC 25 Acoustic Guitar / 기타·우드 PC 24 Classical Acoustic Guitar / 산투리 PC 46 Space Harp / 바이올린 PC 40 → **GM 기기 3 폴백** → 프로브(41·42·44·110·23·22·105·104) 결과 **110 Authentic Strings** 로 교체 후 재바운스 / 아코디언 PC 21 Cheap Organ(22·23 동일, 전용 패치 없음 — 유지).
+
+바운스(09-19, v1): `bounces/rebetiko-{1..5}-v1.wav` — 2:03 / 1:36 / 1:50 / 1:57 / 1:23, 피크 -0.33~-0.41, 저역-고역 차 13.4 / 8.9 / 10.0 / 12.0 / 10.0 dB. 길이가 설계 추정과 일치 = Logic 이 9/8·2/4 박자표와 루바토·아첼레란도 템포맵을 그대로 받음 (판정 포인트 1 해소). 메트로놈 OFF 5회 모두 `before=2` 클릭 확인.
+
+임포트 실패 원인 확정: `open -a` 가 아니라 AppleScript `open POSIX file` 이어야 함 → `pipeline.open_in_logic()` (PROMPT_GUIDELINES §6).
+
+**v1 판정 (09-19)**: "느낌이 미묘… 그리스가 아니라 이스탄불이나 알라딘 나올 것 같다. 1번이 제일 어색. 전반적으로 고쳐라. 3번은 괜찮은데 드럼킷을 더 볼드한 걸로 바꾸고 비트를 더 신나는 붐뱁으로."
+
+**진단**: (1) 선율이 음계를 한 음씩 오르내리는 순차+턴 장식 = 마캄 타크심 문법. 레베티코 부주키는 코드톤 아르페지오·반복음·3도 도약, 종지 V(장)→I (2) 1번 Hitzaz 의 E♭–F♯ 증2도가 Misirlou/알라딘 음정 — Vamvakaris·Batis 는 minore·Rast·Ousak (3) 3박 이상 전부 트레몰로 → 우드/카눈 질감 (4) 긴 루바토 taximi = 타크심 (5) 3번 스미르나는 원래 소아시아 색 — 사용자도 OK.
+
+### rebetiko v2 (09-19) — `sketches/rebetiko-*-v2.mid`, `bounces/rebetiko-{1..5}-v2.wav`
+
+| 변경 | 내용 |
+|---|---|
+| 선율 문법 (1·2·4·5) | 표 전부 재작성. 마디 화음의 구성음 + 경과음 1개 이내, 반복음·3도 도약, 16분은 코드톤 아르페지오만 |
+| 1번 드로모스 | Hitzaz → **Minore**(D E F G A B♭ C♯, 하행 C 허용). 화음 Dm·Gm·A(장)·B♭. 진행 Dm Dm Gm A / Dm Gm A Dm. taximi 3→2마디, Dm 코드톤 닻 |
+| 트레몰로 | 마디 마지막 롱톤(≥3 8분음)에만. `Song.phrase` 규칙 변경, twin 도 동일 |
+| 4번 taximi | 8→4마디(템포 46/56/48/60), Dm 코드톤 닻 + G♭ 한 번씩만 |
+| 3번 드럼 | 프레임드럼·질리아 제거 → **Tough Kit(PC 16 드럼 채널 실측)** 붐뱁: 킥 1·2& + 3& 고스트, 스네어 2·4, 스윙 8분 햇(뒷박 +22틱), 짝수 마디 4& 오픈햇, 8마디째 16분 스네어 필인, 코다 킥+크래시 |
+
+계측 v2: 1:59 / 1:36 / 1:50 / 1:36 / 1:23, 피크 -0.35~-0.73, 저역-고역 차 12.4 / 8.1 / **18.0**(3번, 킷 킥 — v1 10.0) / 11.2 / 9.8. `produce()` 교체본으로 5곡 연속 성공(각 70~78초).
+
+**v2 판정 (09-19)**: "내가 그리스 스타일을 잘 모르네." 1번 — "v1 은 음악 자체가 이상했는데 이제 무슨 느낌인지는 알겠음. 같은 음이 되게 반복적으로 쓰이는구나." 2번 — "대강 신나." 4번 — "불협화음이 자꾸 끼어드는 느낌. 원래 그리스 음악이 이런 거라고? 듣기에 너무 어려워." 5번 — "되게 메이저하고 밝고 빠르다. 톰과 제리 게임이면 써도 될 듯." 3번 — "스네어가 있어야 해. 붐뱁보다는 올드스쿨하게 정박에 떨어지는 비트, 킥에 약간 변주."
+
+### rebetiko-3 v3 (09-19) — 드럼만: `sketches/rebetiko-3-smyrna-v3.mid`, `bounces/rebetiko-3-v3.wav`
+스윙 햇·3& 고스트 킥·16분 필인 제거. 킥 1·3 기본 + 4마디 셀 변주(2번째 마디 2&, 3번째 3&, 4번째 4&), 스네어 2·4 vel +18/+20(최전면, 길이 180틱), 스트레이트 8분 햇 vel −30/−48, 짝수 마디 4& 오픈햇, 8마디째 필인 = 스네어 3·4박 2타. 계측 1:50, 피크 −0.47, 저역-고역 17.9.
+
+v2 관찰 → 후속 후보(미착수): 1번 반복음 과다 → 반복 2회 상한·경과음 비율 상향 / 4번 불협 = Sabah G♭ + 바글라마스 다이어드 + 옥타브 더블링의 조합 — 스펙의 "불안정"이 의도였으나 청취 난도 초과 → minore 전환 또는 폐기 / 5번 만화적 → 템포 138→120·아첼레란도 축소·아코디언 제거 검토. **장르 자체 재검토 필요** — 레베티코 선택은 이 세션 이전 결정.
+
+## canon-lofi (2026-09-19) — 파헬벨 캐논 로파이 시티팝, Suno Cover 소스
+
+의뢰: "로파이 시티팝 스타일의 캐논 변주곡 프롬프트". 텍스트 프롬프트 2판(변주곡형 → 원곡 명시형) 모두 "캐논 선율이 전혀 나오지 않네" → 원곡이 퍼블릭 도메인이므로 SMF 를 직접 만들어 Cover 로 가기로.
+
+원천: mfiles.co.uk 원전판 MIDI(바이올린 3 + 첼로 + 키보드, 4/4 50 BPM, 57마디)에서 음표만 추출해 `tools/canon_data.py` 로 고정(바이너리는 리포에 두지 않음). 편곡 `tools/canon_lofi.py`: 72 BPM, 바이올린 1→Deluxe Classic EP(CC64 리페달), 2→나일론 기타, 3→RetroSyn 스퀘어 리드 vel 62, 첼로→Simple Foundation 베이스, 키보드 더블링 폐기, SoCal 킥 1·3/스네어 2·4/스윙 8분 햇(3마디부터), 7마디부터 Classic Pad D 페달 vel 30. 원곡의 반음 경과음(C 자연음) 때문에 온음계 assert 는 두지 않음.
+
+산출: `bounces/canon-lofi-v1.wav` 3:13, 피크 -0.56, 저역-고역 14.0. 스트립 6트랙 전부 의도 패치.
+
+파이프라인 교훈 2건: (1) 3분 이상 곡은 바운스가 240초 대기를 넘겨 `stage='file'` 로 실패하고, 그 상태에서 `close_all_projects` 가 저장 다이얼로그에 막혀 다음 임포트까지 블록됨 → `produce(bounce_timeout=)` 추가(곡 길이 2배 이상 권장). (2) SMF 의 CC 틱이 음수면 `varlen` 이 무한 루프 → 생성 스크립트에서 `max(0, …)` 필수.
+
+판정 포인트: (1) Suno Cover 가 선율을 유지하는지 (2) 스퀘어 리드(3성부)가 EP·기타와 분리되어 카논으로 들리는지 — 아니면 vel 62→50 또는 PC 90 폴리신스 (3) 19~22마디 32분음 런이 72 BPM 에서 EP 로 감당되는지 (4) 로파이 질감(테이프 히스·롤오프)은 SMF 로 못 만드니 Suno 쪽 Style 에 의존.
+
+### v1 업로드 차단 → v2 (09-20)
+
+Suno 업로드 결과: **"This audio matches an existing recording. Our system matched this upload to a known recording."** — 저작권 클레임이 아니라 업로드 정책 게이트(남의 녹음 금지). 작곡은 PD 이고 바운스는 세상에 없는 오디오이므로, 파일 지문이 아니라 **커버곡 감지형 매처(선율/크로마 + 리듬 골격, 템포·키 불변)** 로 추정. 편성·템포 변경은 그 관점에서 무변화. 09-19 텍스트 프롬프트에서 선율이 안 나온 것도 같은 시스템의 생성 측 억제일 가능성 → "원곡 선율 그대로" 는 업로드·프롬프트 양쪽에서 막히는 경로.
+
+선택지 A(리하모+리듬 변형+모방 성부 제거) / B(그라운드 진행 위 새 선율, 캐논은 인용만) / C(support 소명) 중 **A 실행**:
+
+| 축 | v1 | v2 (`tools/canon_lofi_v2.py`) |
+|---|---|---|
+| 화성 | 그라운드 D A B F# G D G A | 선율 피치클래스 히스토그램(슬롯별)에 맞춘 리하모 **Dmaj7 \| F#m7 A7 \| Bm7 \| D/F# \| Gmaj7 \| Bm7 \| Em7 \| A7** — 근음 2.5/8 + 전 슬롯 7th/텐션 변경. 롱노트 충돌 9/344 (짧은 당김음, 허용) |
+| 리듬 | 원전 그대로 | 4분음 2·3박 8분 앞당김(0 / 0.75 / 1.5 / 3), 8분 런 스윙, 16분 런 절반 솎기→8분, 32분 런 ¼ 솎기→16분 |
+| 구조 | 바이올린 1·2·3 카논 + 첼로 | **바이올린 1 만** (EP). 기타는 16분 신코페이션 뮤트 컷팅(0·¾·1½·2¼·3·3½), 베이스는 새 근음 시티팝 패턴(1박·옥타브 팝·3.75박 선행), 폴리신스 1+5 는 29마디부터, 킥 4& 푸시 추가 |
+| 템포 | 72 | 84 |
+| 마무리 | 57 크래시 | 57 드럼 정지 + Dmaj9 링아웃 (Description 과 일치) |
+
+산출: `bounces/canon-lofi-v2.wav` 2:46, 피크 -0.42, 저역-고역 16.2, 스트립 6트랙 의도 패치 (Epic Cloud 폴리신스 포함). 업로드 프롬프트 `SUNO_PROMPTS.md` canon-lofi v2 (Style 94자 / Description 997자 — Style 에서는 곡명 제거).
+
+판정 포인트 (v2): (1) **업로드 통과 여부** — 통과하면 매처 = 커버 감지형 확증 + "리하모+당김+단성부" 가 회피 최소 조건. 재차단이면 Description 곡명 제거 → 그래도 차단이면 B (2) 통과 시 Suno 자동 메타태그 원문 → Cover Style 작성 (3) 리하모 후에도 캐논으로 들리는지 — 안 들리면 그 자체가 답(원곡성은 화성에 있었다) (4) v1 판정 포인트 (2)~(4) 는 v2 에서 소멸(3성부 제거·런 솎기·84 BPM).
+
+### v2 업로드 통과 → Cover 3 Style × 2 (09-20)
+
+**업로드 통과** — 매처 = 커버 감지형 확증. 회피 최소 조건: 리하모(근음 2.5/8 + 7th) + 선율 당김/런 솎기 + 모방 성부 제거. (어느 축이 결정적이었는지는 분리 실험 안 함.)
+
+**A. Logic v2 청취 판정**: "캐논인 듯 아닌 듯 — 싱코페이션인지 선율이 달라진 건지 모르겠다." → v2 판정 포인트 (3) 의 답: **원곡성은 선율이 아니라 화성(그라운드 베이스)에 있었다.** 리하모로 근음 2.5/8 만 바꿔도 캐논 정체성이 흐려짐. 사용자가 "코드 진행을 못 알아듣는 게 문제" 라 자평했으나, 이건 지식 부족이 아니라 v2 가 그렇게 설계된 결과(매처 회피 = 정체성 희석, 동전의 양면).
+
+**B → C. 우리 Style 과 Suno 의 재작성** — 이번엔 생성본마다 **Suno 가 확장한 Style 프롬프트**가 남았다 (09-05 4곡의 메타태그와 다른 종류의 텍스트):
+
+| 곡명 (Suno) | 길이 | 우리 Style | Suno 재작성 Style |
+|---|---|---|---|
+| 파헬벨나이트 | 3:13 | A | Lo-fi city pop, unhurried night-drive groove, **world-weary male baritone with understated delivery**, worn analog compression, warm Rhodes, muted guitar cutting, round finger bass, dusty swung drums |
+| 파헬벨나이트 | 2:46 | A | Lo-fi city pop with warm Rhodes, muted guitar cutting, round finger bass, and dusty swung drums; **soft male tenor with restrained phrasing**; short plate reverb; unhurried night-drive groove |
+| 러스티 캐논 | 3:13 | B | Lo-fi city pop with warm Rhodes chords and muted guitar comping, dusty swung midtempo drums, **mellow understated male baritone**, tape-saturated mix with soft hiss and rounded transients |
+| 러스티 캐논 | 2:58 | B | Lo-fi city pop, tape-saturated production, mellow swung midtempo groove, **androgynous tenor with soft falsetto**, warm Rhodes chords and muted guitar comping |
+| 캐논시티 | 3:20 | C | 80s city pop with a lo-fi mix, Rhodes chords, **chorus guitar cutting through the arrangement**, slap-free finger bass, laid-back groove, **breathy female alto vocals close-mic** |
+| 캐논시티 | 3:07 | C | City pop, Rhodes chords, chorus guitar cuts, slap-free finger bass, laid-back groove, **instrumental**, lo-fi mix with tape saturation and softened high end |
+
+B↔C 대조:
+- **우리 단어가 거의 원문 그대로 생존** (Rhodes / muted guitar cutting / finger bass / dusty swung drums / night drive / tape-saturated / 80s city pop / slap-free / laid-back). 09-05 의 "Style 은 메타태그에 반영 안 됨" 과 대비 — **Cover Style 은 실제 레버**이고, Suno 는 그것을 확장해 최종 프롬프트로 쓴다. §7.1 정정 필요.
+- Suno 가 **추가**하는 것: ① 보컬 서술 (6개 중 5개 — baritone/tenor/alto). 우리가 Style 에서 "instrumental" 을 뺐기 때문. 유일하게 "instrumental" 이 들어간 캐논시티 3:07 은 Style C 에 없던 단어를 Suno 가 넣은 것(Description 첫 단어를 참조한 듯) ② 프로덕션 어휘 (analog compression, plate reverb, rounded transients, softened high end) ③ 템포 감(midtempo).
+- "guitar cutting" (A) → 기타 부각 없음. "chorus guitar cutting **through the arrangement**" (C, Suno 확장) → 기타 부각. B 2:58 도 기타 앞으로 — 같은 Style 의 3:13 은 아님 → 기타 부각은 **주사위 반, 문구 반**.
+
+**D. 청취 판정**
+
+| | 관측 |
+|---|---|
+| 파헬벨나이트 (A) | 둘 다 따뜻한 재질의 훌륭한 로파이. 일부 주선율에 캐논 냄새, 곡 대부분은 "좋긴 한데 캐논인진 모르겠다". **2:46 이 3:13 보다 캐논 냄새 더 남**(도약·진행). "오히려 좋아?" |
+| 러스티 캐논 (B) 3:13 | **드럼 못갖춘마디 시작** — 취향. 앞부분 더 아련한 시티팝. 진행은 원소스가 같아 큰 차이 없음. 머플드 킥·스네어·햇 위주 따뜻한 킷 + 키보드 선율 아주 잘 어울림. **기타 부각 없음**(아쉬움) |
+| 러스티 캐논 (B) 2:58 | 테이프 늘어지는 효과의 밝고 청량한 시작, 인트로 후 **기타가 앞으로** — 브릿지도 기타. "기대한 느낌에 가장 가까움. 기타가 잠시라도 끌어주느냐가 차이가 큼 — 이 정도 편성 변화폭은 있어야 심심하지 않다" |
+| 캐논시티 (C) 3:20 | 러스티 2분대보다 더 시티팝. 아련·상큼·가볍고 아름다움. 키보드가 기타 비슷한 톤으로. **로파이를 걷어낸 완연한 시티팝 — 프롬프트를 잘 지킴**. 브릿지에서 캐논 선율이 **노트 반복 방식으로 대놓고** 드러남(마음에 듦). 1:55 조바꿈(?) 쌩뚱맞지만 2:21 복귀가 설득력 있음. 브라스를 쓰고 싶지만 상투적 레퍼런스라 이번엔 빼는 것도 좋음 |
+| 캐논시티 (C) 3:07 | 비슷, 더 발랄 |
+
+사용자 총평: **"의도한 프롬프트대로 분위기는 간다."** 단, 업로드 Description 의 "keep the melody as uploaded" 가 분위기별 변주를 억제했을 가능성.
+
+**이 라운드에서 얻은 규칙 후보**
+27. **Cover Style 은 실제 레버** — 우리 단어가 Suno 재작성 프롬프트에 원문 생존. 09-05 의 "Style 무력" 판정은 *업로드 시 Style* 에 한정. §7.1 정정: 업로드 Style → 메타태그에 무반영 / **Cover Style → Suno 가 확장해 최종 프롬프트로 사용**.
+28. **Style 에 "instrumental" 을 반드시 남긴다** — 빼면 Suno 가 보컬 서술을 스스로 추가한다 (6개 중 5개). 100자 절약보다 우선.
+29. 짧은 생성본이 원곡에 가깝다 (2:46 > 3:13 캐논 냄새) — 길이 초과분은 발명이므로, 원곡성을 원하면 짧은 쪽을 고른다 (규칙 8·20 보강).
+30. 악기 부각은 "명사" 로는 부족하고 **역할 문구**가 필요 ("guitar cutting" ✗ / "guitar cutting through the arrangement", "guitar takes the bridge" ✓). 기타를 원하면 Style 에 역할을 쓴다.
+31. 리하모 회피판은 매처는 통과하지만 **정체성도 같이 희석**된다. "캐논으로 들리게" 가 목표면 화성은 원곡에 더 가깝게 두고(근음 1~2칸만 치환) 리듬·구조 축으로만 회피하는 v3 실험 가치 있음.
+
+**상태**: canon-lofi Cover 6개 생성, 채택 **미확정** — 후보 러스티 캐논 2:58 (기대 최근접) vs 캐논시티 3:20 (프롬프트 준수 최상). 보컬: 5개 생성본 전부 인스트루멘탈 확인(09-20).
+
+### v3 A/B/C — 원곡성 복원 (09-20)
+
+의뢰: "원곡의 느낌을 살리는 테스트. Cover Style A/B/C 를 염두에 두고 세 버전을 각자 특색 있게." 확인된 결정: 매처 재차단 감수(실험) / 카논 모방(돌림노래) **기각** — 단일 리드가 밀고 나가는 캐논-락 형태 / B 는 한 구간을 기타가 주선율로 통째로 / C 는 Logic 소스에 실제 전조 / 4번(하행 16분 런 = "딴 다라란 다라라리라…") 은 어떤 형태로든 살림 / 보컬 서술 5개 생성본은 실제로 전부 인스트루멘탈이었음(서술은 붙지만 오디오 앞에서 무시 — 규칙 28 은 "보컬 위험" 이 아니라 "프롬프트 오염" 차원에서 유지).
+
+"원곡성" 분해 (사용자 확인용 설명 → 배분):
+
+| 요소 | 무엇 | v2 손상 | v3 배분 |
+|---|---|---|---|
+| 1 그라운드 베이스 | 8음 D A B F# G D G A 반복 — 캐논 정체성의 본체 | 5·6 번째 치환 + 7th | A·C 8/8 복원(7th 컬러만), B 6/8 |
+| 2 주제 원리듬 | 3~10 마디 4분음 하행 — 청자의 대조 기준점 | 첫 등장부터 당김 | 셋 다 3~10 원리듬, 11 부터 당김 |
+| 3 카논 모방 | 2마디 뒤 성부 따라오기 | 제거 | **기각 (셋 다 없음)** |
+| 4 하행 16분 런 | 19~26 클라이맥스 | ½ 솎기 | A: EP 원형 / B: **기타 리드 19~34 원형** / C: EP 원형, 32분(34~38) ½ |
+
+| | A (파헬벨나이트 계열) | B (러스티 캐논 계열) | C (캐논시티 계열) |
+|---|---|---|---|
+| 근거 (사용자 호평) | 2:46 의 도약·진행에서 캐논 냄새 | 못갖춘마디 시작, 기타가 앞으로 나오는 구간 | 완연한 시티팝, 1:55 전조→2:21 복귀, 브릿지 캐논 노출 |
+| 화성 | 8/8 | 6/8 | 8/8 + **41~48 E장조**(온음 위) + 진입·복귀 크래시 |
+| 드럼 | v2 | 2마디 4박 **스네어 4연타 픽업** + 3마디 크래시 | 오픈햇 2마디마다 |
+| 템포 / 길이 | 84 / 2:46 | 84 / 2:46 | 90 / 2:35 |
+| 계측 | 피크 -0.87, 저-고 15.0 | -0.54 / 15.8 | -0.51 / 15.0 |
+
+베이스는 그라운드가 박마다 바뀌므로 v2 의 "1박 길게 + 2.5 옥타브" 대신 **매 박 근음 + 2·4박 뒤 옥타브 팝 + 3.75 선행**. 기타 리드 구간(B)에서는 EP 가 1·3박 컴핑으로 교대. 롱노트 충돌 4/594 (A7 위 D = 원곡의 계류음, 허용). 스트립 3곡 모두 의도 패치. 코드 `tools/canon_lofi_v3.py` (SPECS 딕셔너리, `python3 canon_lofi_v3.py a b c`), 업로드 프롬프트 `SUNO_PROMPTS.md` v3 절 (Style 에 "instrumental" 포함).
+
+**판정 포인트**: (1) **업로드 통과** — 셋 다 통과면 화성 복원 안전, A·C 만 차단이면 그라운드 8/8 이 결정적, B 만 통과면 6/8 이 경계 (2) 3~10 원리듬 제시가 "캐논이구나" 를 만드는지, 11 부터의 당김이 그 뒤에도 정체성을 유지하는지 (3) 16분 런 원형이 84/90 BPM 에서 EP·기타로 들리는지 — 뭉개지면 Suno 가 어떻게 처리했는지가 데이터 (4) B 의 기타 리드 16마디가 "기타가 잠시라도 끌어주는" 요구를 채우는지 (5) C 의 전조 8마디가 캐논시티 1:55 처럼 설득력 있는지, 복귀 크래시가 과한지.
+
+**업로드 (09-20)**: **A/B/C 셋 다 통과** → 판정 포인트 (1) 의 답: 그라운드 8/8 복원은 안전. v1 차단의 결정 요인은 화성이 아니라 **선율 원리듬 전곡 + 카논 모방 3성부**(v2·v3 에서 공통으로 제거된 축). 단일 리드 + 11마디부터 당김이면 화성·주제 제시·런 원형은 전부 원곡대로 둬도 된다 — 규칙 31 갱신: 회피는 *모방 성부 제거 + 부분 당김* 으로 충분, 리하모는 불필요.
+
+**Cover 생성 (09-21)**: `SUNO_PROMPTS.md` v3 절의 ①~⑤ 를 **그대로** 붙여넣어 정상 완료 — 문서가 정본. ④ lyrics(직접 쓴 메타태그) 첫 실험 데이터 확보.
+
+**상태**: v3 A/B/C Cover 생성 완료, 청취 판정 대기.
+
+## Drum Grid 92 (2026-09-14 ~ 09-18) — 사용자 격자 → SoCal 실측, 심벌·클랩 장르 재판정
+
+원천: 사용자가 `chats` 브랜치 `docs/drum-grid.html`(Web Audio 신스 루프 툴)로 그린 4마디 록 그루브(킥 1·2&·3&, 3마디 라이드 변주, 4마디 필인). 코드 `tools/drumgrid.py`, SMF `sketches/drumgrid-*.mid`, WAV `bounces/drumgrid-*.wav` (모두 4마디×2회, 변주는 +해소 마디 1).
+
+| 파일 | 내용 | 판정 |
+|---|---|---|
+| original | 격자 그대로 (16분 햇만 88/60/74/60 강약) | — |
+| revised | 지적 5개: 필인 중 햇→풋햇 4분 / 클랩→고스트 스네어 / 라이드→벨 / 4& 크래시에 킥 동반 / 로우탐 3a→4e | "크래시가 빨리 나오는 느낌" |
+| A-downbeat | 4& 없음, 다음 1박 크래시+킥 | |
+| B-splash | 4& 스플래시(GM55)+킥, 다음 1박 크래시 | **선택** |
+| C-soft | 4& 크래시 vel 84+킥, 1박 없음 | |
+| B-clap | B + 3마디 1e·3e 클랩 단독 vel 96 (원본) | 판정 대기 |
+| B-clap-layer | B + 클랩과 고스트 스네어 겹침 | 판정 대기 |
+
+**크래시 원인 확정** (`drum-grid.html:309`): HTML 크래시 = 사각파 6개 3.5k 하이패스 + 노이즈 5k 하이패스, 실청 0.3~0.5초 → 고역만 남은 짧은 악센트라 4& 에서 '당김'으로 들림. SoCal 크래시 = 전대역 2~3초 감쇠 → 다음 1박을 덮어 '반박 빠른 1박'으로 들림. 루프 툴은 끊김 없이 1박으로 해소되지만 첫 바운스(revised)는 마지막 반복이 미해소였던 것도 가중. **함의: 스케치 툴에서 킥/스네어/탐 배치는 옮겨도 심벌(크래시·라이드·오픈햇) 판단은 어쿠스틱 킷에서 다시.**
+
+**클랩 재판정 취지**: §2-5 "단독 노출 금지"는 08-25 신스웨이브 실측에서 나온 전역 규칙. 92 BPM 록·SoCal·라이드 벨 직후라는 자리에서 유효한지 미실측 → B-clap / B-clap-layer 판정 후 §2-5 를 **장르별**로 분화(신스웨이브 / 밴드·록). 같은 갱신에서 §2-4·§2-6 도 "신스웨이브 실측" 표기, §5 에 HTML 크래시 건 추가, 승격 대기 Fix 1(다곡 엔진 공유 클론) 반영.
+
+**클랩 판정 (09-19)**: "그다지 차이를 모르겠다, 둘 다 어색하지 않다, 레이어 없는 쪽이 전반적으로 무겁다." 계측: 3마디 1e/3e 16분 창 RMS — B-splash(고스트만) -28.3/-28.5, **B-clap(클랩 단독) -33.1/-33.8**, B-clap-layer -27.6/-28.0 dB, 총 RMS 3개 동일 -19.5. → SoCal 클랩은 vel 96 에서도 고스트 스네어 vel 40 보다 5 dB 작아 그 자리가 사실상 비어 있음. "무겁다" = 그 두 자리의 고역 트랜지언트 부재 [INFERENCE]. **§2-5 는 장르가 아니라 킷 문제** — Drum Synth Kit 클랩(크고 날카로움)과 SoCal 클랩(거의 안 들림)은 다른 소리. 채택: **B-splash 그대로**. `PROMPT_GUIDELINES.md` 갱신: §2 실측 맥락 표기, §2-5 킷별 분화, §2-10 다곡 엔진 공유 금지, §2-11 심벌 판단, §1 레퍼런스 형식 판정, §5 사례 4건, §6 Logic idle 우회.
+
+**Logic idle 무응답 (4회 재현, 1회 구독 만료 오인 30분 손실)**: 창 0개로 오래 idle 이면 `open -a` 임포트 무시. 확인된 우회 — `activate` → **Cmd-N 으로 빈 프로젝트 생성** → `open_mid` → 저장 패널 dismiss (커널 `produce_robust`). `pipeline.produce()` 반영 + 창 0개 실패 시 다이얼로그 텍스트 보고는 다음 pipeline 수정 라운드. 09-14 실측: 구독 만료 다이얼로그(`AXDialog` "구독이 만료됨")도 같은 증상으로 나타남 — 실패 시 다이얼로그 static text 를 먼저 읽을 것.
+
+## grid92 (가제) 기획 (2026-09-19) — B-splash 비트 전제 신곡, Logic 미사용
+
+의뢰: 스네어 2타 픽업 + B-splash 셀을 골자로, Runaway/연필깎이처럼 "단순한 몇 음이 박자감 있게 반복"되는 곡. 피아노·클린 신스 위주. 형식 판정(§1): 오스티나토 위 섹션(힙합 루프) — 멜로디는 노래가 아니라 리듬 모티프.
+
+- **A minor 92 BPM**, 픽업 ½ + 84마디. 편성: SoCal / Pulse Bass 서브(마디 1히트) / Studio Grand 오스티나토 / Reverse Engineering 스퀘어(1+5 롱톤, 코러스 옥타브 유니즌) / Classic Pad(브릿지만)
+- 진행: Verse Am–Am–Fmaj7–Fmaj7 (E 페달이 5도↔장7도) · Pre Dm–Dm–E7–E7 · Chorus Am–G–F–E · Bridge Fmaj7–G–Am–Am
+- 드럼: 픽업 스네어 4&·4a(vel 96→112)를 모든 섹션 진입에 재사용(시그니처). Verse = B-splash 셀 / Pre = 킥 1박 + 매 마디 픽업 스네어(빌드) / Chorus = 오픈햇 8분 + 2마디 크래시 / Bridge = 킥 + 픽업만
+- 멜로디 후보: **M1 페달**(E5 리듬 7→5→7→3 밀도 감소, 마디 끝 E–D–C 하행) / **M2 3음 트레실로**(C5·E5·D5 점4분 순환, 2마디 위상) / **M3 2음**(A4 롱 + E5 뒷박, Fmaj7 위 F→E 반음)
+- 다음: Logic 비면 M1~M3 각 8마디 바운스 → 선택 → 84마디 편곡 → 곡명
+
+**후보 바운스 (09-19)**: `bounces/grid92-{M1-pedal,M2-tresillo,M3-twonote}.wav` (각 26초 = 픽업 + 8마디 + 해소). 코드 `tools/grid92.py`(drumgrid B-splash 셀 import). 스트립 4트랙 의도 패치(SoCal / Pulse Bass / Studio Grand / Reverse Engineering). 1차 바운스에서 서브 vel 92 가 저역-고역 차 22 dB(드럼 단독 17)로 지배 → **vel 66 으로 재바운스**(20.6~22.3). 2회전(마디 6~9)에만 신스 1+5 롱톤 vel 46 합류 — "스윽 들어오는" 느낌 확인용.
+판정 요청: 셋 중 하나 또는 조합("M1 리듬 + M2 음"). 판정 포인트: (1) 피아노가 드럼 위에서 박자를 찍는지, 묻히는지 (2) 픽업 스네어 2타가 곡의 문으로 들리는지 (3) Fmaj7 마디(3·4·7·8)에서 E 페달(M1)·F→E(M3)의 색이 나는지 (4) 신스 합류가 앞서지 않는지.
+
+**판정 (09-20)**: 픽업 4e·4a — "못갖춘마디로 시작하는 방법은 확실히 알았다, 생각한 느낌대로 됨" → **확정**. 멜로디: M1 은 음이 너무 많다 — Runaway 의 매력은 간결함 + 불협 같은 한 음이 끊어질 듯 규칙적으로 반복되는 것 (단, 뭘 만들어도 카피캣 우려). M2·M3 도 안 당김 → **멜로디 보류**, 드럼부터. 드럼: 3마디 라이드(벨) 변주가 거슬림, 햇이 너무 규칙적이고 많다.
+
+**드럼 셀 v2 후보 (09-20)** — 공통: 라이드 제거, 킥/스네어 원본 유지, 픽업 4e·4a, 4마디 B-splash 필인, 3마디 고스트 스네어 유지. 차이 = 햇 개념.
+| 후보 | 햇 |
+|---|---|
+| D-eighths | 8분 햇(x.x.x.x.), **3마디 햇 아웃**(킥/스네어만 = 숨) |
+| E-offbeat | 뒷박(&)만 햇 — 붐뱁 "츠" 자리. 2·4마디 4& 오픈햇 |
+| F-enter | 1·2마디 햇 없음 → 3마디 8분 햇 진입 → 4마디 필인. 셀 안에서 밀도 상승 |
+
+## Suno 완성본 판정 (2026-09-19) — 기존 4곡, Logic 최신판 → Suno Cover 최종
+
+> 기록 구조: **A** 우리 의도(Logic 최신판) · **B** 업로드 시 넣은 Style · **C** Suno 가 스스로 남긴 텍스트 · **D** 청취 판정. 분석은 A↔C(Suno 가 원곡에서 읽어낸 어휘) / B↔C(우리 단어의 채택·무시·치환) / D(효과).
+>
+> 조사 결과 (09-19): 09-05 투입 시 실제로 붙여넣은 Style 은 세션·리포 어디에도 없었음 — 사용자가 Suno 곡 페이지에서 복사해 준 텍스트를 정본으로 기록한다. **100자 제한은 09-12 에 처음 등장**(first-light v3 투입) — 09-05 에는 ~560자 Description 이 그대로 들어갔다.
+>
+> **Cover 모드는 Style 을 생성하지 않는다.** 대신 **가사 필드에 섹션별 메타태그**(`[Intro]` `[Section A]` … `[Outro]` + 편성 지시)를 원곡 오디오 분석으로 생성하며, 같은 업로드의 생성본 2개가 **동일 메타태그**를 받았다 → 메타태그는 업로드당 1회 결정, 생성본 차이는 렌더링만.
+
+### golden-hour v3 → Suno Cover ×2
+
+**A. Logic v3 청취 판정 (09-19, 첫 기록)** — 설계 의도 전부 확인됨:
+
+| 관측 (사용자) | 설계 대응 (마디 · 시각, 94 BPM) |
+|---|---|
+| 하이라이트부를 몽환적 신스로 쭉 뽑은 부분 인상적 | 65-72 (2:43-3:04) 폴리신스 훅 + **옥타브 더블링 vel 66** → "몽환" 은 더블링에서 |
+| 1:30 전후 피아노에 약간의 복잡도가 생기며 진행 | 33-40 (1:22-1:42) `PIANO_RIFF` (2·2.5·3박 3음 리프, v3 에서 G7 마디 교정) |
+| 라이딩햇으로 라이저 → 크래시 임팩트 | 코러스 라이드(energy 3) + 2마디 크래시 롤(vel 34→112) + 경계 크래시 120 |
+| 롱노트 신스가 2:30 부근에서 코드를 밀어주고 주제부로 | 57-64 (2:23-2:43) 브릿지 — 신스 r4+5도 롱톤, 킥 4분, 하프 베이스 → 65 재폭발 |
+| 드럼 필인 오버하지 않되 적소에 존재 | `FILL_BARS` = 섹션 직전 마디만 (스네어 램프 + 탐 하강) |
+
+용어: 이 곡의 레이아웃에서 25-32 / 49-56 = **코러스**(훅), 57-64 = **브릿지**(꺼짐), 65-72 = **하이라이트**(= 일본식 '싸비', 마지막 코러스 + 더블링). 사용자가 "브릿지? 싸비?" 라 부른 몽환 신스 구간은 하이라이트.
+
+**B. 업로드 시 Style** (사용자 복사, 09-19) — `SUNO_PROMPTS.md` 의 **Description 전문**을 Style 필드에 넣은 것. 마침표가 쉼표로 바뀌고 "3.5 minutes" 가 "3, 5 minutes" 로 깨진 채 들어감:
+
+```
+Instrumental band-style pop at 94 BPM in C major over a four-chord loop (Fmaj7–G7–Dm7–Em7), Acoustic drums with swung hi-hats in the verses and ride in the choruses; warm finger bass with walking approach notes, Piano comping with sustain pedal carries the harmony; a string ensemble fills the space; a polysynth plays the chorus hook, Every section change is marked by a crash-roll riser and an impact, Late bridge drops to kick pulse and half-time bass, then explodes back into a final chorus with an octave-layered hook, Feel: golden-hour glow, hopeful and full, About 3, 5 minutes
+```
+
+**C. Suno 자동 메타태그** (가사 필드, 생성본 1·2 동일):
+
+```
+[Instrumental]
+[Intro] [arpeggiated clean electric guitar, light reverb] [electronic drum kit enters with steady kick and gated snare]
+[Section A] [analog synth bass enters, rhythmic eighth notes] [shimmering synth pads swell in the background]
+[Section B] [bright polyphonic synth melody enters] [guitar arpeggio continues underneath] [increased percussion density with hi-hat patterns]
+[Section C] [synth lead takes over the main melodic theme] [bass becomes more sustained] [full electronic arrangement with layered pads]
+[Outro] [drums and bass drop out] [fading synth pads and final guitar arpeggio]
+```
+
+**A↔C 대조 — Suno 가 원곡에서 읽은 것**
+
+| 원곡 요소 | Suno 의 인식 | 판정 |
+|---|---|---|
+| 1-8 Studio Grand `piano_intro` (반박 스태거 아르페지오) | "arpeggiated clean electric guitar" | **오인식** — 피아노 아르페지오를 클린 기타로. 73-80 아웃트로도 "final guitar arpeggio" |
+| SoCal 어쿠스틱 킷 | "electronic drum kit, gated snare" | **오인식** — 폴리신스 존재가 장르 판단을 전자음악으로 끌어감 |
+| Simple Foundation 핑거베이스 groove/drive | "analog synth bass, eighth notes" | 오인식 (드라이브 8분 패턴은 정확히 읽음) |
+| Epic Cloud 1+5 롱톤 (5-8, 57-64) | "shimmering synth pads" | 정확 |
+| 폴리신스 훅 25/49/65 | "bright polyphonic synth melody" → "synth lead takes over" | 정확 |
+| 코러스 라이드 | "increased percussion density with hi-hat patterns" | 대체로 정확 |
+| 57-64 하프 베이스 → 65 | "bass becomes more sustained" (Section C) | 정확 — 브릿지가 별도 섹션이 아니라 C 의 도입으로 흡수 |
+| Authentic Strings (13-72 상시) | **언급 없음** | **누락** — 4겹 중 한 겹이 통째로 빠짐 |
+| 피아노 컴핑 (9-72), CC64 | 언급 없음 (기타 아르페지오로 흡수) | 누락 |
+| 크래시 롤 라이저·임팩트·필인 | 언급 없음 | 누락 → D 에서 "라이딩햇 라이저 없어진 느낌" 으로 확인 |
+
+구조는 정확(레이어 누적 순서·아웃트로 드롭아웃 모두 맞음), **편성 식별은 전자음악 편향**. 메타태그에 BPM·키·장르 단어는 없음 — 오직 편성 + 레이어 순서.
+
+**B↔C 대조 — 우리 단어의 운명**: B 의 "Acoustic drums / finger bass / Piano comping / string ensemble / crash-roll riser / impact" 는 C 에 하나도 남지 않음. 남은 것은 "polysynth hook" 계열과 구조 서술("late bridge drops … explodes back")만. → **Style 텍스트는 Suno 의 오디오 분석을 이기지 못한다**: 메타태그가 오디오에서 결정되고, Style 은 렌더링 톤에만 관여한 것으로 보임.
+
+**D. 청취 판정**
+
+| | 생성본 1 (2:54) | 생성본 2 |
+|---|---|---|
+| 도입부 (1-8) | **붕붕 뜨는 이펙터(모듈레이션) 먹은 기타 + 신스** — 분위기를 딱 잡으며 시작, 선호 | 일렉트릭 피아노에 페달 + 리버브 — 원곡 `piano_intro` 에 가장 가까운 렌더지만 인상은 약함 |
+| ~0:50 | 기타 솔로 안정적 (원곡 17-24 = 0:41-1:01 폴리신스 8분 아르페지오 → **기타 솔로로 렌더**) | 솔로 더 간결 |
+| 첫 주제부 (~1:01) | 멜로디가 깨끗한 신스로 들어옴 — 좋음 | 메인 멜로디를 **기타가 밀고 나가는 힘** 좋음 |
+| ~1:26 | **여유롭지만 느낌 있는 기타 리프 아주 훌륭** (원곡 33-40 `PIANO_RIFF` 1:22 → 기타로 렌더) | 리프 마무리가 더 세련되게 빠짐 — "세세한 프롬프팅 불가, 운" |
+| 햇 | — | **중간중간 오픈햇** 좋음 |
+| 드럼 필인 | 있음, 스네어+탐 필인 느낌 좋음. **라이딩햇 라이저는 없어진 느낌** | — |
+| 2:00-2:30 | — | 메인 멜로디 악기 식별 불가 (신스패드?) |
+| ~2:30 | — | 분위기 한 번 정리하며 **피아노 진입 좋음**. "마무리할 듯하다가 다시 시작" 하는 느낌 조금 어색, 나쁘진 않음 (= 원곡 브릿지→하이라이트 재폭발. Logic 에선 "아주 좋음", Suno 렌더에선 페이크 엔딩으로 들림) |
+| 길이 | **2:54 — 원곡 3:27 보다 33초 짧음** | 구조 동일 |
+
+사용자 결론: "메타데이터를 잘 쓰든가 Style 프롬프트로 커버를 유도하는 쪽으로 갔어야 했다."
+
+**이 곡에서 얻은 규칙 후보** (4곡 끝나면 `PROMPT_GUIDELINES.md` 로 승격 판단)
+1. Cover 는 편성을 **원곡 오디오 분석**으로 정하고, 피아노·어쿠스틱 킷·핑거베이스를 전자 편성으로 오인할 수 있다. 어쿠스틱을 원하면 **원곡에 폴리신스를 넣지 말거나**, 메타태그를 직접 써서 덮어야 한다.
+2. 스트링처럼 **롱톤·저벨로시티 레이어는 메타태그에서 통째로 사라진다** → Suno 에 전달되려면 움직임(아르페지오·리듬)이 있어야 한다.
+3. 라이저·임팩트·필인 같은 **경계 장치는 전달되지 않는다**. 대신 Suno 가 자기 방식의 필인을 넣는다(스네어+탐, 오픈햇). 경계에 힘을 쓸 이유가 줄어듦.
+4. 폴리신스 아르페지오·피아노 리프가 **기타 솔로/리프**로 렌더되어 오히려 호평 — "악기" 보다 **선율 골격**이 전달 단위. 리프의 음정·리듬을 잘 쓰면 악기는 Suno 가 고른다.
+5. 원곡 길이가 보존되지 않는다 (3:27 → 2:54). 브릿지 꺼짐이 페이크 엔딩으로 들릴 수 있음 — 꺼짐 폭을 줄이거나 꺼짐 중 한 레이어(피아노)는 유지.
+6. Style 필드에 Description 전문을 넣어도 무해했으나 메타태그를 바꾸지 못함. 다음 Cover 는 **가사 필드에 메타태그를 직접 작성**해서 편성을 지정하는 실험이 필요.
+7. **같은 메타태그("arpeggiated clean electric guitar, light reverb")에서도 도입부 음색은 생성본마다 갈린다** (이펙트 기타+신스 vs EP+리버브) — 메타태그는 편성 범주만 고정하고 음색·이펙트는 주사위. 도입부 음색을 고정하려면 메타태그에 이펙트 단어(`chorus/modulated guitar`, `warm electric piano`)를 직접 써야 할 것으로 추정.
+
+**상태**: golden-hour **완성 (Suno final)**. 채택 = **생성본 1** ("굳이 선택한다면 1 을 업로드") — 구성·길이는 2 가 낫지만 **도입부가 분위기를 잡는 쪽**이 결정을 가름. 이상형은 "2 의 구성에 1 의 도입부"이나 Cover 단위로는 조합 불가. 재도전 시 메타태그 `[Intro]` 에 1 의 음색을 명시해 2 의 구성을 노린다. Logic v3 판정 완료.
+
+사용자 메타 관찰: "Suno 곡들은 다 그럴싸하게 들리는 게 문제." → 생성본 간 판정은 **결함 찾기가 아니라 의도 대조**로만 가능. 이 절의 A 열(Logic 의도)을 판정 기준으로 삼는 이유.
+
+### star-cruiser v6 → Suno Cover ×2
+
+**A. Logic v6 청취 판정 (09-19, 첫 기록)** — 122 BPM, 마디 = 1.97초:
+
+| 관측 (사용자) | 설계 대응 |
+|---|---|
+| 다소 심심. **30초 넘어서 첫 주제 멜로디** | 1-16 인트로·벌스(패드·코드·베이스만) → 17마디(0:31) 첫 훅. 구성상 도입이 길다 |
+| 드럼이 리듬감을 끌어가며 존재감 큼 | v6 의 Drum Synth Kit → **SoCal** 교체 + 햇/스네어 vel +14 — 6회전의 "드럼 안 들림" 싸움이 여기서 종결 |
+| 신스 멜로디 신나고 좋음 | 옥타브 점프 훅 (71↔83 반박 교대) |
+| **50초 전후 변주 멜로디 난해** | 25-28 `SWING_SOLO` (0:47-0:55) + v6 삽입 29-32 응답구 (0:55-1:03). v5 에서 "스윙 파트 확장" 을 요청했던 바로 그 구간 — 늘리고 나니 난해 |
+| 아래 깔리는 신스/패드가 붕 뜸 | Epic Cloud 코드 + 패드 — v6 에서 저역 옥타브 제거·-25% 했으나 "우주 느낌" 톤 자체가 부양감 |
+| 의도·구성은 이해됨, Suno 가 편성을 바꿔줄 것으로 기대 | — |
+
+**B. 업로드 시 Style** — golden-hour 와 같이 `SUNO_PROMPTS.md` Description 전문(마침표→쉼표):
+
+```
+Instrumental synthwave with a disco pulse at 122 BPM in B minor (Bm7–Em7–A7–Dmaj7 verses, Em7–A7–Dmaj7–Bm7 chorus), Punchy acoustic-style drum kit sits in front; the bass is light and clean, never dominant, Wide polysynth chords play a syncopated "bam— bop ba-ba" rhythm, pushing the next chord in early on the and-of-four, Octave-jumping lead riff in the chorus; a loose, swinging synth solo section between verses, Crash-roll risers into every section, Feel: a starship cruising between stars — glossy, propulsive, no distortion
+```
+
+**C. Suno 자동 메타태그** (가사 필드):
+
+```
+[Instrumental]
+[Intro] [bright sawtooth synth lead riff, electronic kick drum] [closed hi-hat sixteenth notes]
+[Main Theme] [synth bass enters with sidechain pumping] [staccato synth pad chord stabs] [snare on beats 2 and 4]
+[Transition] [white noise riser, kick drum roll]
+[Variation Section] [lead synth melody continues with added filter resonance] [open hi-hat accents on the off-beats]
+[Outro] [drums drop out, synth lead fades with delay effect]
+```
+
+**A↔C 대조**
+
+| 원곡 요소 | Suno 의 인식 | 판정 |
+|---|---|---|
+| The Final Lead(ES2 소우) 옥타브 점프 훅 | "bright sawtooth synth lead riff" | 정확 (음색까지). 옥타브 점프는 이름 안 붙었지만 렌더에서 살아남 |
+| SoCal 어쿠스틱 킷 | "electronic kick drum, closed hi-hat 16ths" | **또 전자 킷으로 오인식** — 이번엔 장르(신스웨이브)와 맞아 결과가 좋았음. Suno 는 킷 종류를 장르로 결정한다 |
+| Simple Foundation 핑거베이스 8분 | "synth bass with sidechain pumping" | 오인식이지만 **pump16 스타일 의도는 정확히 읽음** → D 의 "둠칫둠칫" |
+| Epic Cloud "빰~ 밥 빠빠" + 3.5박 선행 | "staccato synth pad chord stabs" | 리듬 아이디어는 "스타카토 스탭" 으로 축약. 선행(밀기)은 언급 없음 |
+| 크래시 롤 라이저 (섹션 경계) | "**white noise riser, kick drum roll**" (Transition 섹션) | **정확 — golden-hour 에서는 누락됐던 경계 장치가 여기선 잡힘.** 차이: 전자음악 문맥에서 라이저는 장르 어휘. 어쿠스틱 문맥의 크래시 롤은 "장치" 로 인식 안 됨 |
+| 25-32 스윙 솔로 + 응답구 | "Variation Section: lead continues with added **filter resonance**, open hi-hat off-beats" | 스윙 느낌은 사라지고 "변주 + 필터" 로 — **CC74 필터 스윕이 실제로 읽혔다** (v0 부터 깔려 있던 아르페지오 스윕). 오픈햇 오프비트 = 디스코 문법 |
+| 곡 끝 (1:27, 40마디에서 컷) | "Outro: drums drop out, lead fades with delay" | **Suno 가 아웃트로를 발명** — 원곡엔 없음 |
+| B minor / 122 BPM / 스윙 | 언급 없음 | 골든아워와 동일 — 메타태그엔 키·BPM·필 단어가 없다 |
+
+**B↔C 대조**: "acoustic-style drum kit" → 무시(전자 킷). "bass light and clean" → "sidechain pumping" 으로 치환(결과는 호평). "bam— bop ba-ba / pushing early" → "staccato stabs" 로 축약. "swinging synth solo" → "Variation Section"(스윙 탈락). **"Crash-roll risers" → "white noise riser, kick drum roll" 로 장르 어휘 치환되어 생존** — B 의 단어가 C 에 반영된 첫 사례. 단, 이것이 B 때문인지 오디오 분석 때문인지는 분리 불가 (골든아워 B 에도 같은 문구가 있었고 누락됨 → **오디오 문맥이 결정**, B 는 무관했을 가능성이 높음).
+
+**D. 청취 판정**
+
+| | 생성본 1 (2:28) — **채택** | 생성본 2 |
+|---|---|---|
+| 장르 | **디스코 문법을 잘 따름 — 스페이스 디스코라 부르기에 손색 없음** | "젠틀". 조금 신나지만 내적 댄스용. 스페이스 디스코라기엔 미묘 |
+| 주제 멜로디 | 잘 살림 | 주제선율·코드 아주 잘 따름, 마음에 듦 |
+| 드럼 | **아주 잘 씀** — 스네어 필요한 곳에 충분히, 브레이크 후 변주 지점에 **클랩** 적시 | — |
+| 도입 | **크레셴도로 들어오는 인트로** 가 특이점 (원곡엔 없음) | 무난, 여유 |
+| 패드 | **톤이 바뀌고 존재감이 옅어져 붕 뜬 느낌 사라짐** → "달릴 준비 - 달리기 - 쉬기 - 달릴 준비 - 달리기" 아크가 살아남 | 라인이 곳곳에 많이 추가됨 |
+| 변주 구간 (원곡 25-32 난해) | **드럼 필인 → 클랩 → 메인 코드 1마디 반복 → 변주** 가 가장 마음에 드는 부분 | 분위기 안 바꾸는 점잖은 쉬는 시간 |
+| 베이스 | 둠칫둠칫 | — |
+| 느낌 | — | 미묘하게 살짝 처짐, 이유 불명 |
+| 마무리 | 좋음 | 심심 |
+| 길이 | 2:28 — **원곡 1:27 에서 +61초 확장**. 다소 짧나 싶지만 낫 배드 | — |
+
+**이 곡에서 얻은 규칙 후보**
+8. **길이는 원곡과 무관하게 ~2.5-3분으로 정규화된다** (golden 3:27→2:54 축소, star 1:27→2:28 확장). 로직 원곡을 3분 채울 이유가 없다 — **1:30 짜리 골격으로 충분**하고, 그만큼 로직 라운드가 싸진다.
+9. **패드 톤은 Suno 가 자유롭게 다시 쓴다** — 로직에서 "붕 뜬다" 고 고민한 패드가 Suno 에서 자동 해결. 패드·롱톤 음색은 로직에서 시간 쓸 대상이 아님 (골든아워 스트링 누락과 같은 축: 롱톤 레이어는 전달 안 되거나 재작성됨).
+10. **난해한 솔로는 Suno 가 단순화한다** — 원곡의 난해 구간이 "필인→클랩→코드 반복→변주" 로 렌더되어 최고 호평. 가치는 솔로의 음정이 아니라 **구조상 '브레이크 슬롯' 의 존재**. 로직에서 솔로를 잘 쓰려 애쓰기보다 슬롯을 비워두는 게 낫다 (v5 "스윙 확장" 요청은 결과적으로 불필요했던 라운드).
+11. **CC74 필터 스윕은 읽힌다** ("added filter resonance") — 골든아워에서 누락된 스트링과 달리, 롱톤이라도 **움직임(스윕)이 있으면 전달**된다. 규칙 2 의 보강.
+12. 드럼 킷 종류는 **장르가 결정** — 어쿠스틱 킷(SoCal)이 두 곡 모두 "electronic kit" 으로 읽혔고, 신스웨이브에서는 무해, 밴드 팝에서는 손실. 어쿠스틱 밴드 사운드를 원하면 폴리신스를 빼서 장르 판단부터 바꿔야 한다 (규칙 1 재확인).
+13. **2곡 연속 "캐릭터 강한 생성본" 이 "균형 잡힌 생성본" 을 이겼다** (golden: 도입부 분위기 / star: 디스코 추진력 vs 젠틀). 판정 기준 후보: 의도한 감정 한 단어("벅참" "질주")가 첫 30초에 들리는가.
+
+**상태**: star-cruiser **완성 (Suno final, 생성본 1)**. Logic v6 판정 완료. 남은 것: ghost-signal v4, chrome-sunset (올린 버전 확인 필요).
+
+### ghost-signal v4 → Suno Cover ×2
+
+> 정정 (사용자, 09-19): **Style 은 원곡 업로드 시에만 들어가고, 메타태그는 업로드된 원곡과 Cover 양쪽에 붙는다.** 즉 메타태그는 업로드 시점에 오디오 분석으로 1회 생성되어 원곡 항목에 저장되고, Cover 는 그것을 상속한다. Cover 가 텍스트로 받는 것은 이 메타태그(편집 가능)뿐.
+
+**A. Logic v4 청취 판정 (09-19, 첫 기록)** — 100 BPM, 마디 = 2.4초. 레이아웃 1-36 v3 | 37-44 벌스 | 45-48 프리 | **49 폭발+침묵** (1:55) | 50-57 마지막 벌스 (Pulse Bass) | 58-73 코러스×2 | 74-77 아웃트로:
+
+| 관측 (사용자) | 설계 대응 |
+|---|---|
+| 신스 롱노트 코드가 **귀신 같은 이미지** 잘 줌 | Glistening Pad 롱코드 + Gm–A♭maj7 프리지안 b2 |
+| **볼드하게 걷는 베이스 = 유령이 둥둥 떠올랐다 가라앉는 느낌**, 잘 어울림 | Simple Foundation 핑거베이스 + 50-57 Pulse Bass 4분+옥타브 팝 (v0 "심장 압박" 재사용) |
+| 베이스 다소 앞 | v4 는 v3 벨로시티 비율 고정 — 여전히 앞. Suno 단계에서 무의미해진 항목 |
+| 멜로디 신스가 쫑쫑거림 | D–E♭ 반음 오스티나토 리드 (스퀘어) |
+| 드럼킷이 **먹먹함** | Drum Synth Kit (PC 25) — 신스와 어울리는지 불명 |
+| 구성 다소 지루, 정석 | 벌스-프리-폭발-벌스-코러스×2 교과서 구조 |
+
+**B. 업로드 시 Style** — Description 전문(마침표→쉼표):
+
+```
+Instrumental horror/thriller synthwave at 100 BPM in G minor with a Phrygian pull (Gm–A♭maj7–Gm–D7), Half-time drums with a dark ride pattern; a muted clavinet plays tense, restrained chord stabs, Hypnotic dotted-eighth synth arpeggio and a lead built on a D–E♭ semitone ostinato, Around the two-minute mark the tension breaks: a huge cymbal crash, one bar of silence, then the final verse returns with a heavy, chest-pressing sub bass under the groove, Two final choruses, then a short fade, Mood: unsettling but controlled — sinister, not loud, About 3 minutes
+```
+
+**C. Suno 자동 메타태그** (원곡·Cover 공통):
+
+```
+[Instrumental]
+[Intro] [distorted kick drum, metallic synth sequence] [white noise sweeps]
+[Section A] [syncopated 16th-note bassline enters] [closed hi-hats with velocity modulation]
+[Section B] [snare on beats 2 and 4] [acid-style synth lead with resonant filter modulation] [industrial percussion layers]
+[Outro] [bass and lead synth fade out] [kick drum and metallic sequence remain] [final white noise decay]
+```
+
+**A↔C 대조**
+
+| 원곡 요소 | Suno 의 인식 | 판정 |
+|---|---|---|
+| Drum Synth Kit | "distorted kick drum" | 정확 (전자 킷을 전자로) |
+| 점8분 아르페지오 (Glistening Pad) | "metallic synth sequence" | 정확 — 곡의 정체성 레이어로 잡힘 (Intro 부터 Outro 까지 "remain") |
+| 크래시 롤 / SFX (Cosmonaut) | "white noise sweeps" | 정확 (star 와 같이 전자 문맥에서 라이저 인식) |
+| 핑거베이스 / Pulse Bass 4분+옥타브 팝 | "syncopated 16th-note bassline" | 리듬 과대 해석 (4분·8분 → 16분). "볼드하게 걷는" 성격은 미포착 |
+| 휴머나이즈 햇 (v3 추가) | "closed hi-hats with velocity modulation" | **정확 — §2-4 벨로시티 지터가 그대로 읽혔다** |
+| **하프타임 (스네어 3박)** | "snare on beats 2 and 4" | **오인식** — 하프타임을 표준 백비트로. B 의 "Half-time" 도 무시 |
+| D–E♭ 반음 오스티나토 리드 | "acid-style synth lead with resonant filter modulation" | 음색·움직임은 정확(반음 오스티나토 + 스윕 = 애시드 문법). "공포" 는 없음 |
+| Muted Clav 스탭 | "industrial percussion layers" (추정) | 클라비넷을 타악으로 — 짧은 스탭이 퍼커션으로 읽힘 |
+| **49마디 폭발 + 1마디 침묵** (1:55) | **언급 없음** | **누락** — star 의 라이저는 잡혔는데 곡의 최대 사건이 태그에 없음. 침묵은 "이벤트" 로 안 읽힘. 그러나 D: 생성본 2 가 2:00 에 클랩 전환을 넣음 → 오디오에서 피벗은 살아남았고 태그만 없는 것 |
+| Gm 프리지안 / 호러 무드 / 서브베이스 | 언급 없음 | 태그는 음색·리듬만 서술, **무드·화성 단어는 절대 안 나온다** (3곡 공통) |
+
+**B↔C 대조**: horror / Phrygian / half-time / dark ride / muted clavinet / dotted-eighth / semitone ostinato / cymbal crash + silence / sub bass / sinister — **C 에 하나도 없음**. C 는 이 곡을 호러 신스웨이브가 아니라 **인더스트리얼·애시드 테크노** 로 서술한다. 그런데 D 의 결과는 "먹먹하고 멀리서 들리는" 호러 톤으로 나옴 → 무드는 태그가 아니라 **오디오의 화성(프리지안)** 에서 전달됐다 (09-05 "장치를 지정하면 장르로 렌더" 판정과 일치).
+
+**D. 청취 판정**
+
+| | 생성본 1 (2:49) | 생성본 2 (3:02) |
+|---|---|---|
+| 도입 | **먹먹하고 멀리서 들리는 듯** 시작 → 바로 드럼 비트가 앞으로 나와 "이런 박자감의 곡" 이 확 와닿음 | 같은 크레셴도, **멜로디 먼저 → 비트 나중** (비트 없는 멜로디 1마디 추가) |
+| 드럼 | 진행부는 **아날로그틱한 SoCal 느낌**, 필인 탐은 드럼패드 느낌. 필인 괜찮음 | 같은 킷 |
+| 주제부 | — | 표현 비슷 |
+| 브릿지 (주제부 사이) | **아르페지오 노트가 감정을 연결** — 좋음 | **차이 큼**: 베이스 대신 중저음 패드(현 떨림 없음), 연결 멜로디 없음. 주제+아르페지오 코드 강약만으로 진행. 브릿지 변주가 재미는 있음 |
+| 2:00 이후 | — | **비트에 클랩** 섞음 — 괜찮은 선택 (= 원곡 49 피벗 자리) |
+| 편성 | — | 3:02 내내 **아르페지오 코드 + 주제선율 둘만** — 아쉬움 |
+| 후반·마무리 | 마무리 **애매** — "곡을 끝낸다는 느낌을 어떻게 줘야 할지 모르겠음" | 중저역 악기만으로 끌어가는 후반 + 마무리 **좋음** |
+| 길이 | 2:49 적당 | 3:02 |
+
+원곡 3:07 → 2:49 / 3:02: 정규화 대역 안이라 거의 보존됨 (규칙 8 재확인).
+
+**"곡을 끝낸다는 느낌" — 장치 목록** (사용자 질문에 대한 답, 다음 Cover 메타태그 `[Outro]` 에 직접 쓸 수 있는 단어):
+- **정박 종지**: 마지막 마디 1박에 전 악기 으뜸화음 한 방 + 크래시, 이후 잔향만 (`final hit on the downbeat, cymbal ring out`)
+- **드럼 먼저 퇴장**: 마지막 4마디 드럼 빠지고 한 악기만 남아 으뜸음으로 (`drums stop, solo piano resolves to the tonic`) — 생성본 2 의 "중저역만 남는" 마무리가 이쪽
+- **리타르단도**: 마지막 2마디 느려지며 롱코드 (`slowing down into a held final chord`)
+- **페이드**: 반복하며 볼륨만 내림 — 가장 약한 선택. 생성본 1 의 "애매함" 은 태그 `[bass and lead synth fade out] … [final white noise decay]` 가 바로 페이드 지시였기 때문
+→ 메타태그의 `[Outro]` 를 페이드 서술에서 종지 서술로 **고쳐 쓰면** 마무리를 바꿀 수 있을 것으로 추정 (실험 필요).
+
+**이 곡에서 얻은 규칙 후보**
+14. 메타태그는 **업로드 시 1회 생성 → 원곡 항목에 저장 → Cover 상속**. Style 은 원곡 업로드 시 1회. 따라서 Cover 를 바꾸는 유일한 텍스트 레버는 **메타태그 편집**이다.
+15. 태그는 **음색·리듬 어휘만** 쓴다. 무드(horror)·화성(Phrygian)·필(half-time, swing) 단어는 3곡 모두 태그에 없다. 무드는 오디오의 화성이 전달하므로 **로직에서 화성 장치를 정확히 쓰는 것이 무드 프롬프트보다 강하다**.
+16. **1마디 침묵·단발 크래시는 태그화되지 않는다** — 그러나 오디오 피벗은 살아남는다 (생성본 2 의 2:00 클랩). 태그에 없다 ≠ 전달 안 됨. 반대로 태그에 있는 것(페이드 아웃트로)은 확실히 실행된다.
+17. **베이스 음색은 주사위** — 같은 태그에서 생성본 1 은 현 떨림 있는 베이스, 2 는 패드. "유령 둥둥" 의 핵심이 베이스였으므로 이 곡에선 치명적 차이. 지키려면 `[Section A]` 태그의 "syncopated 16th-note bassline" 을 `walking fingered electric bass` 로 고쳐 쓸 것.
+18. **하프타임은 전달되지 않는다** (태그 "snare on 2 and 4", B 의 half-time 무시). 로직에서 하프타임으로 쓴 의도가 Suno 에서 표준 백비트로 정규화될 수 있음 — 하프타임 필을 원하면 BPM 자체를 절반(50)으로 써서 넘기는 편이 안전할 것으로 추정.
+19. 사용자가 로직에서 지적한 "베이스 앞", "드럼 먹먹", "구성 지루" 세 항목 모두 Suno 에서 소멸 (킷 교체·밸런스 재렌더·브릿지 변주 삽입). 로직 판정 항목 중 **밸런스·킷 음색·지루함은 Suno 단계 이슈**로 넘기고, 로직에서는 화성·리듬 골격·레이어 존재 여부만 본다.
+
+**상태**: ghost-signal **완성 (Suno final, 생성본 1)** — 결정 요인은 **브릿지의 리듬과 연결 멜로디**. 이상형은 "1 + 2 의 마무리(중저역만 남기고 종지)". 재도전 시 1 의 태그를 유지하고 `[Outro]` 만 `[bass and lead synth fade out] …` → `[drums stop, low synth and bass carry the last phrase, resolve on a held G minor chord]` 로 교체해 확인. Logic v4 판정 완료.
+
+3곡 패턴: 채택은 매번 **한 구간의 질감**(golden 도입부 / star 브레이크 슬롯 / ghost 브릿지)이 결정하고, 미련은 매번 **구성·마무리**에 남는다. → 메타태그 편집 실험의 1순위는 `[Outro]` 다.
+
+### chrome-sunset v6 (오르간) → Suno Cover ×2
+
+세 편성 중 **v6 톤휠 오르간** 을 업로드. 근거(사용자): "로직 기준으로 오르간이 가장 어울림" — 09-05 판정 포인트 (1) 의 답.
+
+**A. Logic v6 청취 판정 (09-19, 첫 기록)** — 104 BPM, 1:32:
+
+| 관측 (사용자) | 설계 대응 / 진단 |
+|---|---|
+| 오르간이라는데 **신스 같은 느낌**. "전자 키트라 어쩔 수 없나?" | 킷은 전자가 아니라 **SoCal 브러시** (v2 결정). 신스 느낌은 킷이 아니라 **Tonewheel Organ 패치 자체** — 로터리 없이 롱코드만 치면 오르간은 정적 신스 패드와 구별이 안 됨. Suno 도 이것을 "Rhodes with tremolo" 로 읽음 (아래 C) |
+| 라이딩 햇이 다소 튐 | 코러스 라이드 vel 86/62 — 브러시 킷에서 라이드만 스틱 소리라 이질 |
+| 뒤에서 뾰록뾰록 들리는 소리가 **의외로 킥** | SoCal 킥 저벨로시티(브러시 문맥) = 어택만 남은 블립. Suno 는 "muffled kick" 으로 정확히 재해석 |
+
+**B. 업로드 시 Style** — 공통 Description 전문(마침표→쉼표). v6 전용 Style(`tonewheel organ long chords low in the mix`)은 **넣지 않았음**:
+
+```
+Instrumental city-pop / soft evening groove at 104 BPM in C major (Cmaj7–Am7–Dm7–G7 verses, Fmaj7–G7–Em7–Am7 chorus), Warm brushed drums with ride cymbal, finger bass on root notes, gentle electric-piano melody with a sixth-leap hook, Feel: a pleasant walk at golden hour — soft, warm, slightly bouncy, relaxed, Nothing aggressive, nothing dreamy or washed out
+```
+
+**C. Suno 자동 메타태그**:
+
+```
+[Instrumental]
+[Intro] [Rhodes electric piano playing jazz chords with tremolo] [subtle vinyl crackle and hiss]
+[Main Theme] [muffled kick drum and crisp snare enter with swing] [warm synth bass follows piano root notes] [clean electric guitar enters with melodic lead lines]
+[Bridge] [airy flute melody enters] [electric guitar continues with light chorus and delay]
+[Outro] [drums and bass fade out] [Rhodes piano and vinyl crackle remain until silence]
+```
+
+**A↔C 대조**
+
+| 원곡 요소 | Suno 의 인식 | 판정 |
+|---|---|---|
+| Tonewheel Organ 롱코드 + Deluxe Classic EP 멜로디 | "Rhodes electric piano, jazz chords with tremolo" | 오르간 → **Rhodes 트레몰로** 로 병합. 오르간 패치는 살아남지 않음 (사용자도 신스로 들음) |
+| SoCal 브러시 킷 + SW 22틱 스윙 | "muffled kick, crisp snare, **with swing**" | **정확 — 4곡 중 처음으로 필 단어(swing)가 태그에 등장.** 드럼 그리드 스윙은 전달된다 (star 의 선율 스윙은 안 됐음). 라이드는 누락 |
+| 핑거베이스 근음 | "warm synth bass **follows piano root notes**" | 음색 오인(신스) — 그러나 **"근음만" 이라는 설계가 단어로 읽힘** |
+| EP 6도 도약 훅 | "clean electric guitar, melodic lead lines" | 멜로디를 기타로 (골든아워와 같은 패턴: 선율은 기타로 귀속되는 경향) |
+| (없음) | "vinyl crackle and hiss" | **발명** — 로파이 장르 어휘 |
+| (없음 — 1:32, 벌스/코러스뿐) | "[Bridge] airy flute melody, guitar chorus+delay" | **발명** — 짧은 원곡을 ~3분으로 채우며 섹션·악기를 새로 씀 |
+| (없음 — 40마디 컷) | "[Outro] drums/bass fade, Rhodes + crackle remain" | 발명 |
+| 패드 -30% (9th 제거) | 언급 없음 | 누락 (규칙 2·9 재확인) |
+
+**B↔C 대조**: "brushed drums with ride" → 브러시 성격은 "muffled/crisp" 로, **ride 탈락**. "finger bass on root notes" → "root notes" **생존**. "electric-piano melody" → Rhodes **생존**(단 멜로디는 기타로 이관). "sixth-leap hook" → 없음. **"city-pop" → 로파이 재즈 힙합 어휘(vinyl, Rhodes tremolo, flute) 로 장르 표류.** "nothing dreamy or washed out" → 무시 (생성본 2 는 뭉개짐).
+
+**D. 청취 판정**
+
+| | 생성본 1 | 생성본 2 |
+|---|---|---|
+| 도입 | 도입 멜로디를 **그냥 피아노**, 기타가 아르페지오/트레몰로 코드로 받침 | 1 보다 **뭉개지고 낮음** |
+| 진행 | 기타가 주선율 인계 → 메인 테마를 피아노가 받음. **두 악기 조합 괜찮음** | 드럼 골자 동일 |
+| 브릿지 전 | **피아노 변주 훌륭** | — |
+| 브릿지 | **플루트가 잘 어울림** (발명된 섹션·악기가 호평) | — |
+| 드럼 | 필인 과하지 않음. **하이햇 셋잇단 처리 훌륭. 스네어 선택 영리 — 림샷을 필요한 곳에** | — |
+| 태그 이행 | `[Outro]` 의 **바이닐 크래클 없음** — 태그가 실행되지 않은 첫 사례 | — |
+| 차이 | — | "의외로 차이가 별로 없어?" |
+
+**"둘이 왜 비슷한가"** — 4곡 대조로 나오는 가설: 이 곡의 태그는 섹션마다 **악기가 특정**되어 있다(Rhodes / 기타 / 플루트 / 스윙). 골든아워·스타의 태그는 "synth lead / pad / bass" 수준으로 범주만 있었고 생성본 간 차이가 컸다(도입부 음색, 젠틀 vs 디스코). 고스트는 베이스 태그가 범주("16th-note bassline")라 그 자리만 갈렸다. → **태그가 구체적일수록 주사위가 작다.** 변주를 원하면 범주 태그, 고정을 원하면 악기·주법 태그.
+
+**이 곡에서 얻은 규칙 후보**
+20. **원곡이 짧으면(1:32) Suno 가 섹션을 발명한다** — 브릿지·플루트·아웃트로가 새로 생겼고 전부 호평. 규칙 8(1:30 골격이면 충분)의 확인이자 조건: 발명된 섹션은 **장르 어휘 안에서** 만들어지므로, 장르 판단이 맞아야 발명도 맞는다.
+21. **장르 표류**: "city-pop" Style 은 안 잡히고 오디오(브러시 + EP + 오르간 롱코드)가 로파이 재즈로 읽힘. 시티팝을 원하면 오디오에 시티팝 표지(16분 신코페이션 베이스, 밝은 코러스 기타 컷팅, 4온플로어 디스코 햇)가 있어야 함 — v5(나일론 16분 신코페이션)가 오히려 시티팝으로 읽혔을 가능성.
+22. **드럼 스윙은 전달된다** (`hum`/SW 그리드 → "with swing"). 선율 스윙(star 솔로)은 안 됨. 필은 드럼으로 써라.
+23. **베이스 "근음만" 설계는 단어로 전달된다** ("follows root notes"). 베이스 절제(§2-7)는 Suno 까지 살아남는 몇 안 되는 설계.
+24. **오르간 패치는 무의미** — Suno 도 사용자도 EP/신스로 들음. 코드 악기 3종 분기(v4/v5/v6)는 Suno 앞에서는 "어쿠스틱 기타 vs 건반" 2종이었던 셈.
+25. 태그의 **악기·구조 지시는 실행되지만 텍스처 FX(vinyl crackle)는 불확실** — 규칙 16 의 범위 한정.
+26. **태그 구체성 ∝ 생성본 일관성** (위 가설). 메타태그 편집 실험 설계에 반영: 고정하고 싶은 구간만 구체적으로.
+
+**상태**: chrome-sunset **완성 (Suno final, 생성본 2)** — "굳이 고르라면 **피아노가 좀 더 우세한** 2". 뭉개짐·낮음보다 주선율 악기의 비중이 결정. 1 의 장점(피아노 변주·플루트·림샷)은 2 에도 골자가 같아 대부분 공유. Logic v6 판정 완료.
+
+**4곡 채택 요인 정리**: golden = 도입부 분위기 / star = 브레이크 슬롯의 질감 / ghost = 브릿지 리듬·연결 멜로디 / chrome = 주선율 악기(피아노) 비중. 넷 다 **한 구간 또는 한 악기의 질감**이 결정했고, 구성·길이·마무리는 한 번도 결정 요인이 아니었다(미련으로만 남음). → 다음 판정은 "의도한 감정·질감이 어느 구간에서 들리는가" 한 줄이면 충분하고, 그 구간을 고정하는 메타태그 편집이 재도전의 형식이다.
+
 ## 다음 세션 진입점
 
-1. 로직 버전 청취 판정(6개) — 기준을 "Suno 가 의도대로 받았는가"로 가볍게.
+1. ~~로직 버전 청취 판정(6개)~~ **완료 (09-19)** — 기존 4곡 Suno final 확정, 규칙 `PROMPT_GUIDELINES.md` §7 승격. 다음: **메타태그 편집 실험** — ghost-signal 채택본(1) 태그에서 `[Outro]` 만 종지 서술로 교체해 재생성, 마무리가 바뀌는지 1건 확인 (§7.4-2). 결과에 따라 §7.4-3(구체성 가설) 검증.
 2. `LEARNING_PLAN.md` v3 — 기초 화성학(다이어토닉·기능·관용 진행) + 작곡 기초(모티프→프레이즈→섹션)를 본편으로.
 3. 스케치 4곡(neon-rain / highway-zero / midnight-arcade / analog-heart) v0 첫 피드백 → Suno 투입 후보.
 4. Logic 백그라운드 구동(키 입력 제거·`open -g`·frontmost 제거) — 다음 제작 사이클 전에 chrome 1곡으로 실측.
 5. night-circuit v03 판정 여부 확인 (AIF — 재작업 시 WAV로).
 6. 백로그: "따뜻한 전자음악" 신곡 (chrome-sunset 에서 분리).
 
+## 2026-09-12 — Astra v3 청취와 Suno 초안 확정
+
+**공통 결정:** 다섯 곡은 Suno에 전달할 작곡 초안으로 일단 마무리한다. Logic에서 추가 수정하거나 재열기 검증을 반복하지 않는다. 완성본을 들은 뒤 필요한 편곡·길이·용도를 판단한다. 이번 프롬프트 문서 작성은 Suno 업로드나 생성 실행을 뜻하지 않는다.
+
+| 들은 곡 | 관측·판단 | 현재 결정 |
+|---|---|---|
+| Returning Tide v3 | 어쿠스틱 중 스틸스트링이 맞았고, 나일론은 존재감이 약했다. | 스틸스트링 방향 승인. 나일론으로 되돌리거나 볼륨만 높이는 접근을 하지 않는다. |
+| After the Rain v3 | 초반 공백·엇박은 조금 어렵지만 뒤로 갈수록 이해된다. 비가 그친 뒤 물웅덩이와 떨어지는 물줄기 사이를 조심스럽게 나아가는 느낌. 도입은 다소 길다. | 방향과 초안 승인. 추가 도입 축약은 완성 후 편곡에서 판단한다. 현재 초안을 또 다듬기 위해 새 Logic 버전을 만들지 않는다. |
+| Northbound Lights v3 | 기타 솔로가 솔로답게 인지된다. 화려한 솔로를 원했던 것은 아니지만 의도는 전달됐다. | 승인. 기교 과시나 더 긴 속주를 추가 목표로 삼지 않는다. |
+| Blue Window v3 | 공백에서 불안·답답함이 생긴다. 감정적 전달보다 목적에 따라 보컬·랩·나레이션의 받침으로 쓸 수 있다. | 이 방향을 임의로 폐기하거나 밝게 고치지 않는다. 완성본을 듣고 용도·최종 판단을 정한다. 보컬 종류나 가사는 아직 미정이다. |
+| Paper Lanterns v3 | 스피커에서는 다른 곡보다 베이스가 앞선 느낌이다. 하모니카의 음색·음압이 상대적으로 작아서일 수 있다는 추정이 있다. | 하모니카 톤, 바람이 잠시 잦아드는 듯한 변주, 마무리 승인 유지. 밸런스를 크게 건드릴 필요는 없다. 추정을 원인으로 단정하지 않는다. |
+
+Suno 입력: [곡별 Style·Description](SUNO_PROMPTS_ASTRA_V3.md). 자료 기준은 `/Volumes/Netac 2TB/music/bounces/*-astra-v3.wav`다.
+
+### 별도 결정 — 다음 다곡 배치의 다양성
+
+이번 다섯 곡의 승인과는 별개로, 여러 곡을 동시에 만들 때 전개·솔로 위치가 비슷해지는 문제를 남겼다. 코드·BPM·악기만 바꾸는 대신 시작 방식, 반복의 역할, 절정 유무·위치, 솔로 필요성, 끝맺음을 먼저 독립적으로 설계하는 [다곡 제작 지시문](MULTI_SONG_BRIEF.md)을 제안한다. 현재 곡을 다시 개작하거나 새 배치를 제작하라는 결정은 아니다.
 ## 2026-10-12 장르 뼈대 라운드 — Fable
 
 드럼 + 베이스 + 코드(+패드)만 쓴 16마디 루프입니다. 구조는 1-8 풀 루프, 9-12 빼기(브레이크), 13-16 풀 루프 + 13마디 1박 크래시로 같습니다. 작곡 코드는 `tools/fable_skeletons.py`, 파일은 `sketches/{sid}-v1.mid`예요(바운스는 아직 안 했어요).
@@ -561,7 +1197,6 @@ house 7곡의 저역-고역 차는 23.1~26.3 dB, lo-fi 5곡은 18.3~20.6 dB 입�
 **파이프라인 제안(미적용)**: `pipeline.BOUNCE_SEARCH` 가 형제 워크트리의 `docs/music/sketches/` 를 보지 않아 세션 셋이 번갈아 바운스하면 같은 실패가 반복됩니다. `pipeline.py` 는 issuereport 소유라 이 브랜치에서는 고치지 않았고, 이 작곡기 안의 복구 함수로만 막았습니다.
 
 **다음**: 사용자가 Suno 업로드 결과를 알려 주면 표의 `업로드 결과` 칸을 채우고, 차단된 곡은 브리프 §2-6 대로 리듬 변형 비율을 높이고 주제 비율을 낮춘 v2 를 만듭니다.
-
 ## 2026-10-30 Vivaldi 사계 변주 — astra (openai-codex/gpt-6-astra)
 
 `VIVALDI_BRIEF.md`를 기준으로 12악장의 단일 주제를 새로운 반주 위에 편곡했습니다. 작곡 모델은 세션 설정에 명시된 **openai-codex/gpt-6-astra**이며, 다른 모델의 Vivaldi 편곡 코드를 복제하지 않았습니다. 원전은 `tools/vivaldi_data.py`의 Mutopia Project 데이터이며, 변주 MIDI에도 **Mutopia Project / CC BY-SA 3.0** 출처·라이선스 마커를 넣었습니다. 작품 자체의 퍼블릭 도메인 여부와 데이터 편집본의 라이선스를 구분합니다.
@@ -736,3 +1371,191 @@ WAV 12개와 Logic 프로젝트 12개를 만들었습니다. 전곡 48kHz·24bit
   - 의뢰에 없는 장르·악기 전제를 브리프에 넣을 때는 먼저 사용자에게 확인합니다.
   - 브리프에 선호 장르와 그 장르의 레시피를 함께 두면, "자유"라고 써도 결과는 그쪽으로 정렬됩니다.
 - **Suno support 답변 (2026-11-09)**: lh14 반려 문의에 사람 답변 없이 "AI 탐지" 취지의 자동 응답만 옴 — 매칭기가 기존 녹음 일치가 아니라 **AI 생성물 탐지**로 걸고 있다는 뜻으로 읽힘(우리 GM 렌더는 AI 생성이 아니지만 분류기는 그렇게 봄). support 경로는 사실상 막힘. lh14 는 Suno Cover 없이 두거나 렌더 자체(패치·휴머나이즈)를 바꿔 재시도하는 선택만 남음. lo-fi 작업은 주제 세션 `lofi` 로 인계.
+- **v2 착수 준비 (2026-11-09, 주제 세션 vivaldi)**: PR #2 가 issuereport 에 머지됐고(16d01de), 세션 위계 규칙 `.omp/rules/losik-sessions.md` 를 받았습니다. band-fable `7d6d9a0` 의 `build_smf(timesig, tempos)` 확장을 `pipeline.py` 에 들여왔고, 기존 작곡기 12종(dh v3·lh v1/v2·vivaldi fable/opus 재생성, astra `--check`)의 출력이 바이트 단위로 같음을 확인했습니다. v2 라운드 세션은 처음에 `vivaldi-<model>`(base `rae-hugo-kim/vivaldi`)로 새로 열 계획이었으나 **같은 날 사용자 결정으로 v1 의 band-* 워크트리를 그대로 재사용하는 것으로 바뀌었습니다**(`VIVALDI_BRIEF_V2.md` §4.1·§6; band-* 닫기는 v2 청취 뒤 규칙의 닫기 절차로). Suno 반려가 AI 탐지일 수 있다는 lo-fi 실측을 브리프 §2-7 에 반영했습니다.
+- **이름 로드 자동화 (2026-11-09, 주제 세션 vivaldi)**: `pipeline.load_patches()` / `produce(..., patches={트랙 번호: spec})` 로 라이브러리 패치(.patch)와 Sampler EXS 를 트랙에 이름으로 올립니다. 방식은 ① 트랙 메뉴 "트랙 검색 및 선택…" 팝오버에 트랙 번호 입력 → ② 라이브러리 검색 필드에 이름 → ③ 결과 표에서 정확히 같은 행을 AX 선택(선택 = 로드), EXS 는 인스펙터 스트립의 "라이브러리 표시기, Sampler" 로 층을 바꾼 뒤 같은 방법. 실측: 좌표 클릭(`click at`)은 Logic 에 닿지 않고(뮤트 버튼도 안 눌림), 채널 스트립 "설정" 메뉴는 AX 에 노출되지 않는 사용자 정의 팝업이라 .cst 경로는 포기했습니다. 임포트 직후 자동 명명 트랙은 패치/EXS 를 올리면 이름이 그 이름으로 바뀌고, 사람이 이름을 바꾼 트랙은 안 바뀝니다. 이미 켜진 라이브러리 표시기를 다시 누르면 패널이 닫힙니다. 3트랙 프로브(Studio Violins 1 → `('Violins 1','Violin (Arco)')`, Studio Cellos → `Harpsichord`, SoCal 드럼 → `Timpani`) 임포트→로드→바운스 144초, 믹서 스트립 `[Violin (Arco)] [Harpsichord] [Timpani] …`, WAV 피크 −0.39 dBFS·RMS −23~−35 dB 로 소리 확인. 사용법·제약은 `LOGIC_LIBRARY_INVENTORY.md` §4.1, 라운드 규칙은 `VIVALDI_BRIEF_V2.md` §3·§4·§6 에 반영했습니다. 라운드는 band-* 재사용으로 바꿨습니다(위 "v2 착수 준비" 의 `vivaldi-<model>` 계획은 사용자 결정으로 철회).
+
+## 2026-11-09 Vivaldi 사계 변주 v2 — astra (openai-codex/gpt-6-astra)
+
+모델은 세션 설정의 `openai-codex/gpt-6-astra`입니다. 지정된 읽기 목록으로 [독립 계획](vivaldi_astra_v2_plan.md)을 먼저 작성해 `ca115d0`로 커밋한 뒤 구현했습니다. 장르는 과거 라운드가 아니라 악장의 박자·표제·선율 질감에서 골랐습니다. 원전은 Mutopia Project 데이터이며, 모든 MIDI에 CC BY-SA 3.0·출처·모델 ID를 저작권 메타 이벤트로 넣었습니다.
+
+편성의 A는 검증된 GM PC, B는 라이브러리 패치, C는 Sampler 바탕 패치와 EXS입니다. C의 바탕 패치는 모두 `Violins 1`이며, 아래에는 EXS 이름을 적었습니다. 반환값의 실제 `patches`·`strips`와 실패 이력은 `vivaldi_astra_v2_bounce.jsonl`에 보존합니다.
+
+| key | sid | 장르 | 장르 이유 | 박자 | BPM | 마디 | 편성 | 주제 창 | 리듬 변형 | 주제 비율 | 업로드 결과 |
+|---|---|---|---|---|---:|---:|---|---|---|---|---|
+| spring 1 | vs-spring1-astra | baroque chamber pop | 새의 반복음을 목관·발현으로 분리합니다. | 4/4 | 88 | 64 | A0 SoCal·A43 Bass; B Harpsichord·Oboe; C Violins 1 Pizzicato | solo 1–13 | 당김·음가 절반·격자 재구성 | 50% | 미확인 |
+| spring 2 | vs-spring2-astra | impressionist chamber nocturne | 목동의 하강선과 3박 호흡을 펼칩니다. | 3/4 | 66 | 64 | A42 Cellos·A2 Concert Grand; B English Horn·Harp | solo 2–10 | 당김·음가 절반·격자 재구성 | 50% | 미확인 |
+| spring 3 | vs-spring3-astra | Celtic folk jig | 복합박 춤을 두 큰 박으로 묶습니다. | 6/8 | 96 | 96 | A26 Roots·A32 Upright·A25 Guitar; B Celtic Tin Whistle·Celtic Harp | solo 1–12 | 12/8→6/8·당김·음가 절반·런 솎기 | 50% | 미확인 |
+| summer 1 | vs-summer1-astra | desert trip-hop | 더위의 한숨을 건조한 발현과 반박자로 옮깁니다. | 4/4 | 62 | 48 | A24 Drum Synth Kit·A39 Bass·A7 Clav·A107 Koto; B Turkish Oud Lute | solo 1–30 | 3/8→4/4·당김·음가 절반·스윙 | 50% | 미확인 |
+| summer 2 | vs-summer2-astra | chamber suspense score | 천둥의 끊김을 3+2 불균형으로 만듭니다. | 5/4 | 80 | 48 | B Timpani·Bassoon Solo; A42 Cellos·A12 Marimba; C Violins 1 Tremolo | solo 1–8 | 4/4→5/4·당김·음가 절반 | 50% | 미확인 |
+| summer 3 | vs-summer3-astra | progressive rock | 폭풍의 반복과 런을 2+2+3 강세로 밀어갑니다. | 7/8 | 126 | 112 | A8 Retro Rock·A34 Bass·A18 Organ·A30 Hard Rock·A48 Kensington | solo 1–20 | 3/4→7/8·당김·음가 절반·런 솎기 | 50% | 미확인 |
+| autumn 1 | vs-autumn1-astra | New Orleans second-line jazz | 수확 춤을 행진형 싱코페이션으로 바꿉니다. | 4/4 | 100 | 72 | A0 SoCal·A32 Upright·A1 Vintage Upright·A57 Trombone; B Clarinet Solo | solo 1–12 | 당김·음가 절반·스윙 | 50% | 미확인 |
+| autumn 2 | vs-autumn2-astra | chamber passacaglia | 잠든 화음의 반음선을 새 저음 반복과 엮습니다. | 3/4 | 64 | 64 | A42 Cellos; B Harpsichord·Bassoon Solo; C Violin (Arco) | violin1 4–14 | 당김·음가 절반·격자 재구성 | 50% | 미확인 |
+| autumn 3 | vs-autumn3-astra | cinematic hunting scherzo | 사냥의 호출과 추격을 호른·스타카토로 만듭니다. | 6/8 | 100 | 96 | B Timpani·French Horn Solo; A43 Basses·A48 Kensington; C Violins 1 Staccato | solo 1–24 | 3/8→6/8·당김·음가 절반·런 솎기 | 50% | 미확인 |
+| winter 1 | vs-winter1-astra | industrial breakbeat | 떨림을 차가운 어택과 비대칭 비트로 나눕니다. | 4/4 | 112 | 80 | A16 Tough Kit·A39 Bass·A8 Toy Celesta·A82 Sync Lead·A98 Glacial Forms | solo 4–12 | 당김·음가 절반·런 솎기 | 50% | 미확인 |
+| winter 2 | vs-winter2-astra | acoustic bossa nova | 실내의 선율과 빗방울을 플루트·기타 엇박으로 만듭니다. | 4/4 | 90 | 64 | A40 Latin·A32 Upright·A24 Guitar·A11 Vibraphone; B Flute Solo | solo 1–8 | 당김·음가 절반·격자 재구성 | 50% | 미확인 |
+| winter 3 | vs-winter3-astra | contemporary minimalist chamber | 빙판 회전음을 3+2의 발현 주기로 움직입니다. | 5/8 | 92 | 112 | A42 Cellos·A12 Marimba; C Violin (Pizzicato); B Harp | solo 1–24 | 3/8→5/8·당김·음가 절반·런 솎기 | 50% | 미확인 |
+
+### 결정과 이유를 기록합니다.
+
+- 한 성부의 전체 주제 창을 A·B 각각에 맞추고 원전 베이스·모방 성부를 복사하지 않았습니다. Spring I의 피크업은 전주 마지막 박으로 옮겼고, Winter I는 solo가 실제로 시작하는 4마디부터 사용했습니다. 50%는 쉼을 포함한 주제 섹션 길이입니다.
+- 재현부는 악기별 음역을 고려해 8곡에서 전체 주제를 ±12반음 이동하고, 4곡은 음역을 유지했습니다. 모든 곡에 아티큘레이션·CC11·반주 전위를 적용했습니다. 구체적인 방향은 계획의 추가 결정에 적었습니다.
+- 하프시코드·목관·팀파니·현악 주법은 이름으로 올리고, 나머지는 PC의 실제 패치 소리를 사용합니다. PC6을 하프시코드, PC68을 오보에처럼 취급하지 않습니다. 실패를 GM 대체로 숨기지 않습니다.
+- 다른 워크트리에 임시 바운스가 생기지 않도록 입력 사본·실패 격리 폴더·바운스 검색 경로를 공용 `music/` 아래로 제한했습니다. Logic의 저장 위치 설정은 기존 잠금 안에서만 조정합니다. 실패한 한 곡의 프로젝트가 다음 곡의 정리 과정에서 이동되지 않게 곡별 입력 폴더를 분리했습니다.
+
+### 첫 실제 시도에서 발견한 오류를 기록합니다.
+
+Spring I 첫 시도는 B/C 검색 자체는 모두 OK였지만, Logic에 선행 Studio Grand가 추가되어 트랙 수가 5개에서 6개가 됐습니다. 이 때문에 지정한 3·4·5번 패치가 실제 Bass·Harmony·Lead에 잘못 적용됐고, `stage=wav`, `ExtAudioFileRead failed (-40)`으로 종료됐습니다. 성공으로 기록하지 않았습니다.
+
+콘덕터의 맨 앞 0x02 저작권 이벤트가 텍스트 전용 트랙을 만들었으므로, 출처 메타는 첫 실제 악기 트랙으로 옮겼습니다. `produce(..., patches=...)`는 이제 임포트 악기 트랙 수가 SMF의 PC 트랙 수와 같은지 확인하고, 다르면 패치를 올리기 전에 `stage=tracks`로 반환합니다. 공유 파이프라인의 이 보강은 이번 라운드에서 발견한 실제 패치 오배정 방지 목적입니다.
+
+남은 `.tmp`는 48kHz·stereo·32bit float AIFF-C였고, 헤더의 67,025,456바이트 오디오에 비해 실제 파일은 17,264,640바이트였습니다. 완성된 결과가 아닙니다. AIFF 후처리 진입 전에 FORM·COMM·SSND의 물리 크기·프레임 수와 stereo PCM24 big-endian 형식을 검사하도록 보강했고, 잘린 파일·잘못된 프레임 수·float 중간 파일을 거부하는 회귀 검사를 추가했습니다.
+
+닫기가 안 되던 실제 원인은 이름 없는 AXDialog의 “Logic Pro Library.bundle을 찾을 수 없습니다” 경고였습니다. 인벤토리의 기존 번들 `/Volumes/Netac 2TB/Logic Sound Library/Logic Pro Library.bundle`이 존재함을 확인하고 `지정`으로 다시 연결했습니다. 빈 번들은 새로 만들지 않았습니다. 실패한 자기 프로세스 PID 97072가 종료됐고 잠금 토큰이 그대로임을 확인한 뒤, 잠금·실패 프로젝트·입력 MIDI·미완성 `.tmp`를 공용 `_archive-vivaldi-astra-v2/spring1-attempt1`에 보존했습니다. 새 복구 잠금은 정상 해제했습니다. 자동 해제되지 않은 최초 잔존 잠금의 원인은 확인되지 않았습니다.
+
+첫 곡 재시도에서는 정확히 5개 트랙으로 들어왔고 `[SoCal][Studio Double Basses][Harpsichord][Oboe][Violins 1 Pizzicato]`를 확인했습니다. 3·4·5번 B/C 반환값이 모두 성공했고 WAV 검증은 174.545458초·48kHz·24bit stereo, 피크 −0.310/−0.394dBFS, 예상 밖 무음 0개로 통과했습니다.
+
+검증은 v2 MIDI 12개 재생성 일치, v1 MIDI 12개 불변, WAV·AIFF 회귀 검사 15개를 통과했습니다. 추가로 완전한 float AIFF 합성 파일을 임시 폴더에 만들어 잘못된 형식이 배치 예외가 아니라 `stage=format`으로 반환됨을 확인했습니다. 이 형식 경로 검사는 Logic UI를 대체한 일회성 호출이며 실제 음원 검증과 구분합니다. 전곡 MIDI의 메타·밀도·해시·요청 패치는 [MIDI 실측 JSON](vivaldi_astra_v2_midi.json)에 기록했습니다. 주제 섹션 비율과 실제 발음 마디 수를 나누어 출력합니다.
+
+자율 재시도는 라운드 세션이 맡습니다. 러너의 실패 목록을 받은 뒤 이름·실제 경고·파일 상태를 확인하고 해당 sid만 다시 실행합니다. `TimeoutError`는 곡별 대기 초과로 기록해 다음 곡을 먼저 진행합니다. 예외 후 미저장 창이 남으면 기존 잠금 안에서 자기 실패 프로젝트인지 확인한 뒤 복구하며, 다른 프로젝트를 임의로 저장하지 않습니다.
+
+### 전곡 결과와 계획 대비 차이를 확정합니다.
+
+최종 결과는 **WAV 12곡·Logic 프로젝트 12개**입니다. 14회 제작 호출 중 성공 12회, 실패 2회였고 두 실패 모두 해당 곡 재시도로 해결했습니다. 잠금 대기 초과는 0건입니다. Winter III의 실패는 이름 오타가 아니었으며, 인벤토리를 다시 확인하고 자기 실패 임포트를 닫은 뒤 동일한 `('Violins 1', 'Violin (Pizzicato)')`와 `Harp`로 성공했습니다. 실패가 프로젝트 저장 전이어서 보존할 실패 번들은 없었고 MIDI 사본은 그대로 유지했습니다.
+
+| 구분 | 발생·계획 대비 차이 | 처리 결과 |
+|---|---|---|
+| Spring I 첫 바운스 | 빈 선행 트랙으로 패치 대상이 밀렸고 `stage=wav / -40`으로 실패했습니다. | 출처 메타 위치·트랙 수 가드·AIFF 완성도 검사를 보강하고 기존 라이브러리를 다시 연결해 성공했습니다. 실패 자료는 공용 아카이브에 보존했습니다. |
+| Winter III 첫 바운스 | `stage=patches`에서 바탕 패치 표시기 읽기가 실패했습니다. | 정확한 이름을 확인하고 자기 실패 임포트만 닫아 동일 편성으로 재시도해 성공했습니다. |
+| 잠금 대기 초과 | 0건입니다. | `produce()`의 기존 잠금과 TimeoutError의 곡별 기록·다음 곡 진행 분기를 유지했습니다. |
+| 장르·편성·박자·BPM·마디 | 계획 표와 달라진 항목은 없습니다. | 12가지 편곡 방향·6가지 박자를 유지했습니다. |
+| 재현부와 보이싱 | 8곡은 ±12반음, 4곡은 음역을 유지하며 표현으로 구분했습니다. 아르페지오에도 B 전위를 적용했습니다. | 계획 추가 결정에 악기별 이유를 남겼으며, Suno 설명과 실제 MIDI를 맞췄습니다. |
+| 제작·검증 경로 | 곡별 공용 입력 폴더와 저장 위치 제한, 공유 파이프라인의 트랙·AIFF 가드를 추가했습니다. | 다른 워크트리는 변경하지 않았고 v1 MIDI 12개도 그대로입니다. |
+| 계획 읽기 범위 | 부모 계획 작성자와 별도 병합 검토 패널의 읽기 로그가 공유돼 있습니다. | verifier가 부모의 금지 파일 열람 0건을 확인했습니다. 패널은 하위 호환·충돌 검토용으로 기존 자료를 읽었지만 음악 권고는 전달하지 않았습니다. 모든 에이전트 읽기를 격리했다고 주장하지 않습니다. |
+
+실제 편성은 `gm_patch_map.json`의 GM 실측 이름과 B/C 반환값에 대조해 12/12 일치했습니다. 이름 로드 21트랙 중 EXS는 5트랙이며 모두 성공했습니다. 경로 A만 사용하는 Summer III·Winter I는 `requested_patches={}`이고 API의 `patches` 키는 없으므로 `imported_tracks`와 `strips`를 근거로 사용합니다. 전곡 바운스 직전 MIDI SHA-256은 현재 파일과 일치합니다.
+
+[오디오 실측 JSON](vivaldi_astra_v2_audio.json)은 `passed=true`, `errors=[]`, 12곡입니다. 전곡 48kHz·24bit·stereo이며 총 **2,131.867978초(약 35분 32초)**, WAV 합계 **614,027,130바이트**입니다. 길이 오차의 절댓값은 최대 0.000013초이며, 높은 쪽 채널 피크는 전곡 −0.310dBFS입니다. 전체 파일 SHA-256은 12개 모두 다릅니다.
+
+| sid | 길이(초) | A RMS(dBFS) | B RMS(dBFS) | 간주 RMS(dBFS) | 예상 밖 무음 |
+|---|---:|---:|---:|---:|---:|
+| vs-spring1-astra | 174.545 | -22.060 | -22.008 | -26.355 | 0 |
+| vs-spring2-astra | 174.545 | -22.005 | -21.767 | -24.499 | 0 |
+| vs-spring3-astra | 180.000 | -23.389 | -23.029 | -25.811 | 0 |
+| vs-summer1-astra | 185.806 | -19.494 | -19.438 | -23.848 | 0 |
+| vs-summer2-astra | 180.000 | -23.019 | -22.159 | -26.570 | 0 |
+| vs-summer3-astra | 186.667 | -18.481 | -18.477 | -20.931 | 0 |
+| vs-autumn1-astra | 172.800 | -19.165 | -19.166 | -21.090 | 0 |
+| vs-autumn2-astra | 180.000 | -25.303 | -25.168 | -27.742 | 0 |
+| vs-autumn3-astra | 172.800 | -25.147 | -25.220 | -26.873 | 0 |
+| vs-winter1-astra | 171.429 | -20.889 | -20.719 | -23.841 | 0 |
+| vs-winter2-astra | 170.667 | -21.287 | -21.905 | -22.787 | 0 |
+| vs-winter3-astra | 182.609 | -23.734 | -23.772 | -25.134 | 0 |
+
+100ms 이상 디지털 무음은 Summer I 도입의 첫 발음 전 0.164042초 구간 하나이며, MIDI 발음 구간과 겹치지 않아 예정된 쉼으로 판정했습니다. **예상 밖 무음은 전곡 0개**입니다. 메트로놈 처리 로그는 전곡 `on_count=1 skip`이며, 성공한 각 프로젝트에서 버튼 상태를 별도로 재측정했다고 주장하지 않습니다. 음색의 선호·주제 식별감·Suno 통과 여부는 사용자 판정으로 남깁니다.
+
+최종 실행은 `vivaldi_astra_v2.py --check` 12/12 MATCH, `vivaldi_astra.py --check` 12/12 PASS, `unittest discover … 'test_vivaldi_astra_v2*.py'` 15/15 OK, 전곡 오디오 CLI 12/12 PASS입니다. Suno Style은 168–226자, Description은 881–980자로 직접 측정했고 전부 필수 출처 문구를 포함합니다. 아직 업로드 결과가 없으므로 `v2u`·`v2t`는 만들지 않았습니다.
+
+## 2026-11-09 Vivaldi 사계 변주 v2 — fable (anthropic/claude-fable-5-1)
+
+브리프 `VIVALDI_BRIEF_V2.md` 의 fable 라운드입니다. 계획 `vivaldi_fable_v2_plan.md`(커밋 413010c, §0 읽기 목록만 읽고 작성) → 작곡기 `tools/vivaldi_fable_v2.py` → `sketches/vs-<season><n>-fable-v2.mid` 12개 → `pipeline.produce(..., patches=…)` 바운스 → `suno/vivaldi_fable_v2.md`. 편성 열의 경로: A = GM PC(ch10 은 드럼 채널), B = 라이브러리 패치 이름, C = Sampler 바탕 패치 + EXS. 모든 MIDI 의 첫 악기 트랙 틱 0 에 저작권 메타(Mutopia Project, CC BY-SA 3.0)를 넣었습니다(아래 "저작권 메타 위치" 참고).
+
+| key | sid | 장르 | 장르 이유 | 박자 | BPM | 마디 | 편성 | 주제 창 | 리듬 변형 | 주제 비율 | 업로드 결과 |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| spring 1 | vs-spring1-fable | chamber pop (60s baroque pop) | 4/4 E장조 리토르넬로의 밝은 호출-응답을 하프시코드·현악·가벼운 드럼의 팝 코러스로 | 4/4 | 115→96 (×0.83) | 72 | Drums A0(ch10) · Bass A33 · Harpsichord B Harpsichord · Strings A48 · Theme A56 · Theme2 B Harpsichord | solo 1–13 | 16분 런 솎기(8분 골격) · 2·4박 8분 당김(3직·5변, 패스마다 위상 반전) · 템포 115→96 (−17%), 연속 4 | 50% (36/72) | 미업로드 |
+| spring 2 | vs-spring2-fable | celtic air (harp, tin whistle) | 3/4 Largo 의 독주 선율과 잎 소리 반주를 하프 분산화음 위 휘슬 에어로; 3/4 를 지키고 음가 ×2 로 반속 선율 | 3/4 | 50→84 (×0.84) | 84 | Harp B Celtic Harp · Cellos A42 · Theme B Celtic Tin Whistle · Theme2 A24 · Strings A48 | solo 2–10 | 음가 ×2 (9마디 → 18마디, 실효 템포 ×0.84) · 2·3박 8분 당김(2직·2변) · 템포 50→84, 연속 3 | 57% (48/84) | 미업로드 |
+| spring 3 | vs-spring3-fable | tarantella (Italian folk 6/8) | 12/8 시칠리아나 목가 춤을 같은 이탈리아 6/8 춤 타란텔라로; 한 마디를 6/8 두 마디로 묶고 템포를 올림 | 6/8 | 144→168 (×1.17) | 168 | Perc A40(ch10) · Bass A32 · Strum A24 · Lute B Medieval Lute · Theme B Clarinet Solo · Theme2 A24 | solo 1–12 | 12/8→6/8 (한 마디를 두 마디로) · 16분 솎기 · 둘째 박(점4분) 8분 당김(2직·2변) · 템포 ×1.17(마디 시간 기준), 연속 2 | 57% (96/168) | 미업로드 |
+| summer 1 | vs-summer1-fable | roots reggae / dub | 3/8 "더위에 늘어진" 튜티를 뒷박에 기대는 원드롭과 멜로디카로; 3/8 두 마디를 4/4 한 마디로 | 4/4 | 75→62 (×0.83) | 48 | Drums A26(ch10) · Bass A33 · Organ A16 · Skank A25 · Theme A109 · Theme2 A16 | solo 1–24 | 3/8 두 마디→4/4 한 마디(세 8분 + 연장) · 16분 솎기 · 2·4박 당김(4직·4변) · 8분음 속도 −17%, 연속 4 | 48% (23/48) | 미업로드 |
+| summer 2 | vs-summer2-fable | neoclassical ambient | 4/4 Adagio 의 독주 선율을 천둥이 끊는 장면: 지속 현악 위 솔로 바이올린, 팀파니 트레몰로가 천둥, 하프가 빗방울 | 4/4 | 45→56 (×1.24) | 44 | Strings C Full Strings+Full Strings Legato · Harp B Harp · Timpani C Timpani+Timpani Tremolo · Theme C Violins 1+Violin (Arco) · Theme2 B Harp | solo 1–8 | 8분·16분 솎기(4분 골격 — 23음 → 14음, 8마디 중 6마디 변함) · 2·4박 당김(4직·4변) · 템포 45→56 (+24%), 연속 3 | 43% (19/44) | 미업로드 |
+| summer 3 | vs-summer3-fable | drum and bass | 3/4 프레스토 폭풍의 속도와 무게를 174 BPM 브레이크비트와 서브베이스로; 런은 골격만, 3/4 를 4/4 로 | 4/4 | 150→174 (×1.16) | 128 | Drums A25(ch10) · Sub A38 · Pad A90 · Riser A101 · Theme A81 · Theme2 A80 | solo 1–20 | 16분 런→4분 골격 · 3/4→4/4 (마디 끝 음 연장) · 2·4박 당김(3직·5변) · 템포 150→174 (+16%), 연속 3 | 45% (57/128) | 미업로드 |
+| autumn 1 | vs-autumn1-fable | polka (harvest dance) | 4/4 "농부의 춤과 노래" 리토르넬로를 2/4 움파 폴카로: 튜바·아코디언 뒷박·트럼펫·스네어 | 2/4 | 120→100 (×0.83) | 144 | Drums A0(ch10) · Tuba B Tuba · Accordion B Polka Accordion · Theme A56 · Theme2 A65 | solo 1–12 | 4/4→2/4 (한 마디를 두 마디로) · 8분·16분 솎기(4분 골격 — 84음 → 45음, 24마디 중 21마디 변함) · 둘째 박 8분 당김(4직·4변) · 템포 120→100 (−17%), 연속 4 | 50% (72/144) | 미업로드 |
+| autumn 2 | vs-autumn2-fable | sacred minimal drone (choir, pipe organ) | 3/4 Adagio molto, 거의 화음뿐인 "잠든 취객": 합창 지속화음과 파이프오르간 드론 위에 잉글리시 호른이 violin1 의 긴 음을 노래 | 3/4 | 53→40 (×1.51) | 40 | Choir B Church Choir · Organ C Celesta+Principal + Mixture · Theme B English Horn · Theme2 B Church Choir · Bells A14 | violin1 4–14 | 음가 ×½ (11마디 → 6마디, 실효 템포 ×1.51) · 다운비트 8분 지연·2·3박 당김(2직·2변) · 템포 53→40 · 주제는 violin1 긴 음 13개, 연속 2 | 45% (18/40) | 미업로드 |
+| autumn 3 | vs-autumn3-fable | New Orleans brass band (second line) | 3/8 사냥 호른 콜을 트럼펫·트롬본 콜-앤-리스폰스로, 스네어 세컨드 라인 셔플 위에; 3/8 두 마디를 4/4 한 마디로 | 4/4 | 80→96 (×1.20) | 72 | Drums A0(ch10) · Tuba B Tuba · Trombone A57 · Sax A65 · Theme A56 · Theme2 A57 | solo 1–24 | 3/8 두 마디→4/4 한 마디(세 8분 + 연장) · 16분·32분 꾸밈 흡수(8분 그리드 — 스윙과 16분이 겹치지 않게) · 2·4박 당김(4직·4변) · 8분 셔플 스윙 80틱 · 8분음 속도 +20%, 연속 4 | 50% (36/72) | 미업로드 |
+| winter 1 | vs-winter1-fable | tango nuevo | 4/4 Fm "떨림·발 구르기"를 스타카토 피아노 마르카토, 아코디언(반도네온 대용), 떨리는 바이올린의 탱고 긴장으로 | 4/4 | 140→118 (×0.84) | 88 | Piano A0 · Bass A32 · Accordion B Tango Accordion · Theme C Violins 1+Violin (Arco) · Theme2 B Tango Accordion | solo 4–12 | 주제 창 4–12 (solo 진입부) · 8분·32분 솎기(4분 골격 — 96음 → 36음, 9마디 전부 변함; 마르카토 탱고 프레이징) · 2·4박 당김(4직·4변) · 템포 140→118 (−16%), 연속 4 | 51% (45/88) | 미업로드 |
+| winter 2 | vs-winter2-fable | bossa nova | 4/4 Largo 의 피치카토 빗방울 위 선율을 나일론 컴핑(빗방울)·브러시 드럼·플루트의 난롯가 보사노바로 | 4/4 | 46→72 (×1.57) | 56 | Drums A0(ch10) · Bass A32 · Guitar A24 · Vibes A11 · Theme B Flute Solo · Theme2 A11 | solo 1–8 | 16분 꾸밈 솎기(8분 골격) · 2·4박 당김(4직·4변) · 템포 46→72 (+57%), 연속 4 | 43% (24/56) | 미업로드 |
+| winter 3 | vs-winter3-fable | synthwave | 3/8 Fm "얼음 위를 걷다 미끄러지고 바람이 싸운다": 아르페지오 신스와 스윕 패드가 바람, 드럼 신스가 발걸음; 3/8 두 마디를 4/4 한 마디로 | 4/4 | 75→118 (×1.57) | 88 | Drums A25(ch10) · Bass A38 · Arp A80 · Pad A94 · Theme A81 · Theme2 A80 | solo 1–24 | 3/8 두 마디→4/4 한 마디(세 8분 + 연장) · 16분 아르페지오 솎기(8분) · 2·4박 당김(4직·4변) · 8분음 속도 +57%, 연속 4 | 50% (44/88) | 미업로드 |
+
+"연속" 은 곡 전체에 배치된 주제를 스윙 전 상태에서 평면 매핑과 마디 단위로 비교한 원리듬 최장 연속(≤4 assert; 온셋 없이 지속만 하는 마디도 원리듬으로 세고, 소리 없는 쉼 마디는 세지도 끊지도 않으며, 패스 밖 마디는 끊음, 피크업 마디는 셈). BPM 열의 ×는 실효 템포 비(음가 ×2/×½ 반영; `check()` 가 ±15% 또는 음가 배율을 assert). 주제 비율은 주제가 울리는 마디 / 전체 마디. 점검 줄은 그 밖에 트랙별 벨로시티 범위, 구간별(intro/A/break/A2/outro) 트랙 음/마디, 베이스 음/마디, 층 하나뿐인 구간의 최장 연속(전주·후주 제외, ≤2 assert; summer 2·autumn 2 가 2, 나머지 0), 마지막 음 위치를 출력합니다.
+
+**계획 대비 달라진 점**
+
+- 장르·편성은 계획 그대로이고, 1차 리뷰(`docs/reviews/review-2026-11-09-231008.md`, FAIL) 뒤 수치·화성을 고쳤습니다: spring 1 98→**96 BPM**(−14.8% 가 §2-3 미달), spring 2 **84 BPM·84마디·음가 ×2**(긴 음뿐이라 솎기가 무효여서 §2-2 연산이 하나뿐이었음; 18마디 2마디씩 루프로 재조정), summer 3 172→**174 BPM**(172 는 +14.7% 로 미달, 174 는 +16%), autumn 2 **음가 ×½(6마디 패스 두 번) + 6마디 루프 Dm–B♭–Gm–Asus–Dm–D**, autumn 3 **8분 그리드·F6–F6–B♭–C7**(스윙과 16분 잔여 음이 겹쳐 주제 음이 30~47틱으로 잘림, B♭7 과 A 충돌), winter 3 **Fm(maj7)–C7**(E♮ 충돌 18→6)·베이스 음역 E1~C3, winter 1 모티프 끝음 E♭→G(C7 과 반음). 2차 리뷰(`review-2026-11-09-235245.md`, PASS WITH NOTES) 뒤: summer 2·autumn 1·winter 1 의 솎기 그리드를 8분→**4분**으로 올려 둘째 연산이 실제로 작동하게(23→14 / 84→45 / 96→36 음), winter 1 은 **9마디 진행**(Fm×2–D♭maj7×2–Fm×2–B♭m7–C7–Fm)으로 패스 위상에 맞춰 충돌 24→4, autumn 2 모티프 셋째 음을 6박 셀 안으로, winter 3 베이스 하한 E1. 작곡 중 정한 세부: summer 2 팀파니 롤 음고 G1→G2/C3(Timpani EXS 음역), autumn 2 잉글리시 호른 주제 한 옥타브 아래(원음 E5~B♭5 는 음역 위), summer 1 주제 창 1–30→**1–24**(3/8 24마디 = 4/4 12마디로 A·A2 12마디에 꼭 맞음; 25–30 은 48마디 레게에 두 번 넣을 자리가 없음), winter 3 A2 둘째 패스 8마디 부분(주제 50%). `pipeline.produce(select=)` 추가는 아래 바운스 항목.
+- 결정·이유(사용자 판단 대신): 솔로 바이올린 `Violin (Arco)` EXS 는 판정이 남았지만(브리프 §6) 지속음 샘플만 있어 느린 지속 선율 두 곡(summer 2 Adagio, winter 1 탱고)에만 썼습니다. 빠른 런이 있는 악장에는 쓰지 않았습니다.
+- **저작권 메타 위치**: 지휘 트랙(MTrk #1)에 FF 02 를 넣으면 Logic 12.4 가 1번에 빈 'Studio Grand' 트랙을 만들어(실측 2026-11-09, v1 메타 없는 MIDI 는 7트랙 그대로) `produce(patches={번호: …})` 의 번호가 한 칸 밀립니다 — 첫 바운스에서 spring 1 의 Bass·Trumpet 트랙에 하프시코드가 올라간 뒤(헤더 확인은 번호 기준이라 통과) 중단했습니다. 메타를 첫 악기 트랙(MTrk #2) 틱 0 으로 옮겨 헤더 6개 = SMF 악기 순서를 확인하고 다시 돌렸습니다. `LOGIC_LIBRARY_INVENTORY.md` §4.1 트랙 번호 항목에 승격할 사항입니다.
+- **패치 로드 뒤 바운스 길이**: 첫 바운스에서 패치가 들어간 7곡의 WAV 가 짧았습니다(spring 1 2:09 = 53마디, winter 1 2:14 = 66마디, summer 2 2:17 = 32마디 …). 길이가 전부 **마지막으로 패치를 올린 트랙의 마지막 리전 끝**과 일치했고, 끝까지 연주하는 트랙이 마지막 패치였던 autumn 1·3 은 정상이었습니다 — `load_patches()` 의 `select_track()` 선택이 남아 '프로젝트 또는 섹션…' 바운스의 끝이 그 트랙 리전 끝으로 잡힙니다. ⇧⌘A 선택 해제는 효과가 없었고, `pipeline.finish()` 에 `select=` 를 더해 패치 로드 뒤 **마지막 음이 가장 늦게 끝나는 트랙을 다시 선택**하니 spring 1 이 2:56(72마디)으로 돌아왔습니다. 짧았던 6곡은 이 방식으로 다시 바운스했습니다(`pipeline.py` 변경은 주제 세션에 보고 — 승격 사항).
+- 바운스 결과는 아래 표입니다.
+
+**바운스 결과** (2026-11-09 21:51 – 11-10 00:11, `pipeline.produce(..., patches=…, select=…)`, 세션 간 잠금 — 대기 없음, 12/12 성공, 실패·대기 초과 0; 패치 7곡은 길이 문제로 1회, 1차 리뷰 반영 7곡·2차 반영 4곡은 다시 재바운스 — 표는 커밋된 `.mid` 와 같은 최종 바운스). 열: 길이 / 피크 dBFS / 저역−고역 dB / Logic 작업 시간 / 믹서 스트립(`strips`, 패치 로드 근거) / `patches` 반환값(트랙: 올라간 패치+EXS).
+
+| sid | 길이 | 피크 | 저역−고역 | 소요 | strips | patches |
+|---|---|---|---|---|---|---|
+| vs-spring1-fable | 3:00 | -0.36 | 13.4 | 166s | [SoCal] [Simple Foundation] [Harpsichord] [Kensington] [Studio Trumpet 1] [Harpsichord] [Small Room/Studio A] [Large Hall/Concert Hall] [Stereo Out] [Master] | 3: Harpsichord; 6: Harpsichord |
+| vs-spring2-fable | 3:00 | -0.4 | 2.3 | 136s | [Celtic Harp] [Studio Cellos] [Celtic Tin Whistle] [Classical Acoustic Guitar] [Kensington] [Small Room/Studio A] [Large Hall/Concert Hall] [Stereo Out] [Master] | 1: Celtic Harp; 3: Celtic Tin Whistle |
+| vs-spring3-fable | 3:00 | -0.32 | 16.8 | 170s | [Latin] [루트 업라이트] [Classical Acoustic Guitar] [Medieval Lute] [Clarinet Solo] [Classical Acoustic Guitar] [Small Room/Studio A] [Large Hall/Concert Hall] [Stereo Out] [Master] | 4: Medieval Lute; 5: Clarinet Solo |
+| vs-summer1-fable | 3:05 | -0.37 | 17.1 | 102s | [Roots] [Simple Foundation] [톤휠 오르간] [어쿠스틱 기타] [Toy Melodica] [톤휠 오르간] [Stereo Out] [Master] | — |
+| vs-summer2-fable | 3:08 | -0.37 | 4.1 | 257s | [Full Strings Legato] [Harp] [Timpani Tremolo] [Violin (Arco)] [Harp] [Small Room/Studio A] [Large Hall/Concert Hall] [Stereo Out] [Master] | 1: Full Strings+Full Strings Legato; 2: Harp; 3: Timpani+Timpani Tremolo; 4: Violins 1+Violin (Arco); 5: Harp |
+| vs-summer3-fable | 2:56 | -0.4 | 27.8 | 105s | [Kick 1 - Drum Synth Kit] [Pulse Bass] [Epic Cloud Formation] [Forever Riser] [The Final Lead] [Reverse Engineering] [Stereo Out] [Master] | — |
+| vs-autumn1-fable | 2:52 | -0.31 | 7.6 | 134s | [SoCal] [Tuba] [Polka Accordion] [Studio Trumpet 1] [Studio Alto Sax 2] [Small Room/Studio A] [Large Hall/Concert Hall] [Stereo Out] [Master] | 2: Tuba; 3: Polka Accordion |
+| vs-autumn2-fable | 3:00 | -0.54 | 10.3 | 185s | [Church Choir] [Principal + Mixture] [English Horn] [Church Choir] [Delicate Bells] [Small Room/Studio A] [Large Hall/Concert Hall] [Stereo Out] [Master] | 1: Church Choir; 2: Celesta+Principal + Mixture; 3: English Horn; 4: Church Choir |
+| vs-autumn3-fable | 3:00 | -0.32 | 9.1 | 145s | [SoCal] [Tuba] [Studio Trombone 1] [Studio Alto Sax 2] [Studio Trumpet 1] [Studio Trombone 1] [Small Room/Studio A] [Large Hall/Concert Hall] [Stereo Out] [Master] | 2: Tuba |
+| vs-winter1-fable | 2:58 | -0.65 | 15.8 | 181s | [Studio Grand] [루트 업라이트] [Tango Accordion] [Violin (Arco)] [Tango Accordion] [Small Room/Studio A] [Large Hall/Concert Hall] [Stereo Out] [Master] | 3: Tango Accordion; 4: Violins 1+Violin (Arco); 5: Tango Accordion |
+| vs-winter2-fable | 3:06 | -0.32 | 16.4 | 160s | [SoCal] [루트 업라이트] [Classical Acoustic Guitar] [Vibraphone] [Flute Solo] [Vibraphone] [Small Room/Studio A] [Large Hall/Concert Hall] [Stereo Out] [Master] | 5: Flute Solo |
+| vs-winter3-fable | 2:58 | -0.39 | 26.0 | 110s | [Kick 1 - Drum Synth Kit] [Pulse Bass] [Reverse Engineering] [Tidal Space] [The Final Lead] [Reverse Engineering] [Stereo Out] [Master] | — |
+
+길이는 전부 마디 수 × 박자 × BPM 의 기대값(±1초)과 일치합니다. 경로 B·C 22트랙 전부 `(패치 표시명, EXS 표시명, 헤더)` 가 spec 과 같았습니다(`stage='patches'` 실패 0). 패치 트랙당 추가 시간은 30~45초(summer 2 는 5트랙으로 257초). 저역−고역이 1~4 dB 인 spring 2·summer 2 는 드럼이 없는 편성이라 지표가 낮은 것이고, 드럼이 있는 곡은 7~28 dB 입니다.
+
+## 2026-11-10 Vivaldi 사계 변주 v2 — opus (anthropic/claude-opus-5-5)
+
+`VIVALDI_BRIEF_V2.md` 대로 12악장에 서로 다른 12개 장르를 주고 주제를 다시 짰습니다. 모델 ID 는 세션 설정값 `anthropic/claude-opus-5-5` 입니다. 계획은 `vivaldi_opus_v2_plan.md`(커밋 `1219335`), 작곡기는 `tools/vivaldi_opus_v2.py` 입니다(`SKETCHES` 12개, `compose(sid)`; `--check` 는 12곡을 다시 만들어 점검하고 디스크 MIDI 와 바이트 단위로 비교하며 아무 파일도 쓰지 않습니다). MIDI 는 `sketches/vs-<season><n>-opus-v2.mid`, Suno 블록은 `suno/vivaldi_opus_v2.md` 입니다. 출처 메타(Mutopia Project, CC BY-SA 3.0)는 **첫 악기 트랙 틱 0** 의 저작권 메타로 넣었고, 12곡 모두 Logic 스트립 수가 SMF 악기 트랙 수와 같아 빈 트랙이 생기지 않았습니다. `리듬 변형` 칸의 괄호 숫자는 그 op 를 빼면 마디 결과가 달라지는(뒤 op 가 되돌리지 않은) 출력 마디 수이고, `원리듬` 은 "원리듬 마디/주제 마디, 최장 연속", `실효` 는 주제 실효 템포 ÷ 원곡 템포입니다(원리듬 정의는 위 v1 절과 같고, 비교 대상은 맵이 그 출력 마디로 보내는 원곡 온셋입니다).
+
+| key | sid | 장르 | 장르 이유 | 박자 | BPM | 마디 | 편성 | 주제 창 | 리듬 변형 | 주제 비율 | 업로드 결과 |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| spring 1 | vs-spring1-opus | Afro highlife, E major | 반복음 셀·새소리의 밝은 활기 → 기타 리프 콜앤리스폰스 | 4/4 | 134 | 100 | SoCal · Simple Foundation · 어쿠스틱 기타 · 톤휠 오르간 · Classical Guitar(주제) · Sugar Hill 브라스 | solo 1–13 | 당김①(12) · 점음 쌍④(14) · 8분 골격③(14) / 원리듬 7/47, 최장 3 / 실효 1.17× | 47 % (47/100) | 대기 |
+| spring 2 | vs-spring2-opus | Bossa nova, C♯ minor | 잠든 목동의 속삭이는 Largo → 보사 기타 컴핑·플루트 | 4/4 | 80 | 60 | SoCal · 업라이트 · Classical Guitar · Kensington · Deluxe Classic EP · **Flute Solo**(B) | solo 2–10 | 3/4→4/4 3+3+2 재배열 · 당김①(11) · 늦은 진입①(9) · 4분 골격③(5) / 8/27, 최장 2 / 1.20× | 45 % (27/60) | 대기 |
+| spring 3 | vs-spring3-opus | Celtic slip jig, D major(−2) | 시칠리아나 지속음 위 목가 춤 → 켈틱 무곡 | 9/8 | 174(점4분 116) | 116 | 업라이트 · SoCal 탐·림 · **Irish Bouzouki** · **Celtic Harp** · **Celtic Tin Whistle**(B) | solo 1–12 | 12/8 한 마디→9/8 두 마디 · 늦은 진입①(24) · 당김①(10) · 점4분 골격 재표집③(17) / 9/60, 최장 2 / 0.81× | 52 % (60/116) | 대기 |
+| summer 1 | vs-summer1-opus | Trip-hop, G minor | 더위에 지친 한숨 동기·긴 쉼 → 느리고 무거운 브레이크비트 | 4/4 | 84 | 64 | SoCal · Taureg Moon Bass · Dark Lo-Fi Piano · Bloomsbury · Vibraphone · **Oboe**(B) | violin1 1–30 | 3/8 두 마디→4/4 한 마디(첫 8분 늘림) · 당김①(18) · 늦은 진입①(6) · 8분 골격③(4) · 16분 스윙④(8) / 3/30, 최장 2 / 0.84× | 47 % (30/64) | 대기 |
+| summer 2 | vs-summer2-opus | Cinematic neo-classical, G minor | 독주가 천둥에 끊기는 Adagio → 영화음악 서사·팀파니 | 4/4 | 63 | 48 | Concert Grand · Kensington · Studio Cellos · **Timpani**(B) · **Violins 1/Violin (Arco)**(C) | solo 1–8 | 늦은 진입①(11) · 당김①(7) · 4분 골격 재표집③(4) / 3/24, 최장 1 / 1.40× | 50 % (24/48) | 대기 |
+| summer 3 | vs-summer3-opus | Symphonic metal, G minor | 폭풍의 G 연타 트레몰로·쏟아지는 음계 → 트레몰로 피킹·더블 킥 | 4/4 | 180 | 136 | 복고풍 록 · Punchy Bottom · 하드 록 ×2 · Bloomsbury · The Final Lead · **Mixed Choir**(B) | violin1 1–20 | 3/4 한 마디→4/4 두 마디(3+3+2) · 8분 트레몰로·갤럽 재표집③(58) · 당김①(14) / 0/60 / 0.45× | 44 % (60/136) | 대기 |
+| autumn 1 | vs-autumn1-opus | Balkan brass, F major | 농부의 춤·취한 비틀거림 → 7/8 잔치 브라스 | 7/8 | 140 | 120 | SoCal · Studio Trumpet 1 · Studio Alto Sax 2 · **Polka Accordion** · **Tuba**(B) | violin1 1–12 | 4/4 한 마디→7/8 두 마디 · 늦은 진입①(24) · 당김①(16) · 묶음당 한 음 재표집③(15) / 8/60, 최장 2 / 0.67× | 50 % (60/120) | 대기 |
+| autumn 2 | vs-autumn2-opus | Cool jazz ballad, D minor | 약음기 현의 반음계 화음뿐인 정지된 밤 → 쿨 재즈 발라드 | 4/4 | 88 | 64 | SoCal(브러시 대용) · 업라이트 · Studio Grand · Vibraphone · **Studio Tenor Sax 1**(B) | violin1 4–14 | 3/4→4/4 재배열 · 당김①(13) · 늦은 진입①(6) · 8분 스윙④(11) / 15/33, 최장 4 / 1.25× | 52 % (33/64) | 대기 |
+| autumn 3 | vs-autumn3-opus | Spaghetti western, D minor | 사냥의 호른 부름·총성·추격 → 갤럽·트럼펫·호른 | 4/4 | 112 | 84 | SoCal · 업라이트 · Classical Guitar · Kensington · Studio Trumpet 1 · **Timpani** · **French Horns**(B) | violin1 1–24 | 3/8→4/4 갤럽(3+3+2) · 당김①(14) · 늦은 진입①(4) · 4분 골격③(13) / 4/40, 최장 1 / 0.53× | 48 % (40/84) | 대기 |
+| winter 1 | vs-winter1-opus | Dark techno, F minor | 얼어붙은 떨림·발 구르기·찬바람 → 펄스·4온더플로어·차가운 패드 | 4/4 | 128 | 96 | Drum Synth Kit · Pulse Bass · Tidal Space · Epic Cloud Formation · Reverse Engineering · **Celesta**(B) | solo **4–13** (기본 1–12) | 하프타임② · 3+3+2 스탭 재표집③(40) / 0/40 / 0.46× | 42 % (40/96) | 대기 |
+| winter 2 | vs-winter2-opus | Neo-soul, E♭ major | 난롯가의 따뜻한 Largo·빗소리 → 로즈·색소폰·피치카토 | 4/4 | 72 | 54 | SoCal · Simple Foundation · Deluxe Classic · Studio Alto Sax 2 · Studio Grand · **Violins 1/Violin (Pizzicato)**(C) | solo 1–8 | 늦은 진입①(9) · 당김①(5) · 8분 골격③(10) · 16분 스윙④(11) / 2/24, 최장 1 / 1.57× | 44 % (24/54) | 대기 |
+| winter 3 | vs-winter3-opus | Tango nuevo, F minor | 얼음 위를 걷다 미끄러지는 알레그로 → 마르카토·레가토 탱고 | 4/4 | 116 | 88 | Studio Grand · Studio Double Basses · Kensington · **Polka Accordion**(B) · **Violins 1/Violin (Arco)**(C) | solo 1–24 | 3/8→4/4 탱고 3+3+2 · 늦은 진입①(16) · 당김①(10) · 4분 골격③(15) / 1/40, 최장 1 / 0.58× | 45 % (40/88) | 대기 |
+
+**점검**: 12곡 모두 `check … PASS` 입니다. 실효 템포는 12곡 모두 1에서 15 % 넘게 떨어져 있고(0.45–1.57×), 3/8·12/8 네 곡은 4/4·9/8 로 다시 묶었습니다. 원리듬 최장 연속은 0–4마디(Autumn II 가 상한 4 — 긴 음 위주라 한·두 음 마디가 원리듬으로 셉니다), 반주 비화성음 0, 반주 층 간 단2/단9 0, 전주·후주 밖 한 층 연속 0마디입니다. 점검 줄은 구간별 음/마디·베이스 음/마디, 트랙별 벨로시티 범위·음/마디, 마지막 노트 위치를 찍습니다.
+
+**결정·이유**: ① 브리프 §2 의 ② 는 "음가 2배/반" 이라 박자 재배열(`regroup`)은 ①–④ 어디에도 세지 않고 §2-3 근거로만 씁니다. 점음 짝(`dot`)은 곧은 8분을 점8분+16분으로 바꾸는 박 분할 변경이라 ④ 로 셉니다. 그래서 Spring II·Autumn III 에 4분 골격③, Spring III·Summer II·Autumn I 에 재표집③을 더해 곡마다 두 부류 이상을 실측으로 채웠습니다. ② Spring I·Spring III 의 Latin 킷·European Folk Kit 은 키 배치를 확인할 자료가 없어 SoCal(GM 키 배치 확인됨)로 바꿨습니다. ③ `pipeline.py` 는 vivaldi 소유라 고치지 않고, 바운스 범위 문제는 "번호가 가장 큰 패치 트랙(`load_patches()` 가 마지막으로 선택)이 마지막 마디까지 울린다"를 `check()` 에서 단언하는 방식으로 막았습니다. 결과는 아래 길이 대조대로 12/12 일치입니다. ④ 뒤에 놓이는 반주 층의 보이싱은 같은 마디 앞 층 음과 단2/단9 를 만들지 않게 고르고, 안 되면 텐션부터 뺍니다.
+
+**계획과 달라진 점**: Spring II 68→80 BPM·52→60마디, Autumn II 64→88 BPM·48→64마디(둘 다 3/4→4/4 한 마디 대응에서 실효 템포가 1.02×·0.91× 로 ±15% 에 걸렸기 때문입니다), Spring III 실효 +21%→−19%·Autumn I +17%→−33%(맵을 한 마디→두 마디로 골랐기 때문입니다), Spring I 드럼 A 40→A 0, Spring III #2 B `European Folk Kit` → A 0, Summer II 주제 안 쉬는 마디(12·24·36)에 팀파니 롤 추가, Winter I 은 아래 대역 측정 뒤 벨로시티(킥 ≤92, 펄스 베이스 56–74, 리드·첼레스타 80–102)와 펄스 베이스 음역(29–48 → 36–55)을 바꿔 두 번 다시 바운스했습니다. 자세한 이유는 계획 파일 "달라진 점" 절에 있습니다.
+
+**바운스 결과**: `python3 -B -u vivaldi_opus_v2.py --bounce`(00:56–01:27) 로 **12/12 OK** 였고, 잠금 대기 초과("대기 초과")와 `stage='patches'` 실패는 없었습니다. 패치 로드 17건(B·C 경로, 11곡)이 모두 `ok=True` 로 올라갔고 헤더가 패치/EXS 이름으로 바뀌었습니다. 4곡마다 Logic 을 재시작했습니다. Winter I 은 대역 측정 뒤 01:29·01:32 에 두 번 더 바운스했습니다. WAV 는 `/Volumes/Netac 2TB/music/bounces/vs-*-opus-v2.wav`(48 kHz 24-bit) 이고, 길이는 기대 길이(마디 × 마디 초)와 12곡 모두 0.00초 차이입니다.
+
+| sid | WAV 길이 | 기대 길이 | 피크 dBFS | RMS dBFS | 에너지 저/중/고(<200 / 200–2k / >2k Hz) |
+|---|---|---|---|---|---|
+| vs-spring1-opus | 179.10 s | 179.10 s | -0.3 | -18.8 | 66/31/3 % |
+| vs-spring2-opus | 180.00 s | 180.00 s | -0.3 | -22.3 | 72/25/3 % |
+| vs-spring3-opus | 180.00 s | 180.00 s | -0.3 | -22.6 | 57/38/5 % |
+| vs-summer1-opus | 182.86 s | 182.86 s | -0.3 | -22.7 | 72/27/2 % |
+| vs-summer2-opus | 182.86 s | 182.86 s | -0.3 | -23.1 | 51/46/3 % |
+| vs-summer3-opus | 181.33 s | 181.33 s | -0.3 | -18.2 | 70/22/9 % |
+| vs-autumn1-opus | 180.00 s | 180.00 s | -0.3 | -22.1 | 56/37/7 % |
+| vs-autumn2-opus | 174.55 s | 174.55 s | -0.3 | -20.9 | 63/34/3 % |
+| vs-autumn3-opus | 180.00 s | 180.00 s | -0.3 | -19.9 | 50/43/6 % |
+| vs-winter1-opus | 180.00 s | 180.00 s | -0.3 | -12.1 | 95/5/0 % |
+| vs-winter2-opus | 180.00 s | 180.00 s | -0.3 | -21.7 | 67/32/1 % |
+| vs-winter3-opus | 182.07 s | 182.07 s | -0.3 | -21.0 | 70/30/1 % |
+
+**남은 위험**: Winter I 은 저역 에너지가 95 % 입니다. 첫 바운스(96/4/0)에서 킥·펄스 베이스 벨로시티를 낮추고 리드를 올려도, 펄스 베이스를 한 옥타브 올려도 거의 변하지 않아 Drum Synth Kit 킥 자체가 에너지를 차지한다고 봅니다. 에너지 비율은 들리는 크기와 같지 않아 리드가 묻히는지는 청취로 확인해야 합니다. 묻히면 다음 판에서 드럼 킷을 바꾸거나 킥 패턴을 줄입니다. Suno 블록 길이(Style/Description, 공백 포함 `len()`)는 표 순서대로 `216/890, 215/851, 201/859, 200/875, 213/810, 190/868, 187/826, 210/849, 211/869, 203/820, 194/797, 198/802` 자이고, Style 에는 작곡가·작품·계절 이름이 없고 모두 `instrumental` 로 끝납니다.
+
+**리뷰(3-pass, PASS WITH NOTES → 반영)**: staged diff `db993fb8…` 를 `reviewer`(자기 분석 + gpt·opus·gemini 적대 패널 + code-reviewer)가 PASS WITH NOTES 로 판정했고, 다음을 고쳤습니다. ① op 효과를 토큰마다 재서 뒤 op 가 되돌린 op 도 셌던 문제(Autumn III `late` 10마디 → 실효 4마디) → 마디마다 "그 토큰을 뺀 결과"와 비교하는 순 효과로 바꾸고, 순 효과가 없는 Autumn III 1차 진술의 `late:0` 토큰을 지웠습니다(출력은 그대로입니다). ② 원리듬 비교 창이 고르지 않은 맵(Summer III)에서 어긋남 → 맵이 그 출력 마디로 보내는 원곡 온셋과 비교합니다. ③ Suno 파일이 없어도 `--check` 가 통과 → `--check` 에서는 실패합니다. ④ Description 점검이 계절만 확인 → 악장 번호(I/II/III)까지 확인합니다. ⑤ 모르는 플래그나 `--bounce` 없는 sid 에도 MIDI 12개를 덮어씀 → 작곡 전에 오류(종료 코드 2)로 끝냅니다. 수정 뒤에도 `--check identical 12/12` 라 MIDI·WAV 는 바뀌지 않았습니다. 수정본(staged `45b02a8c…`, 커밋 `3a41373`)의 델타 재리뷰도 PASS WITH NOTES 였습니다.
+
+**남긴 노트(두 차례 리뷰)**: ① Winter III 1차 진술의 `['thin4', 'late:1']` 마디에서는 `thin4` 가 1.5박 음을 1박으로 당긴 것을 `late:1` 이 다시 1.5박으로 돌려놓습니다. 그래서 표의 `늦은 진입①(16)` 은 "그 op 를 빼면 결과가 달라지는 마디" 정의로는 맞지만, 원곡 대비 실제로 늦어진 마디는 10입니다. 그래도 §2-2 는 `late` 10·`sync` 10·`thin4` 15 로 충족합니다. 다음 판에서는 토큰의 이동이 원곡 대비 최종 결과에 남을 때만 세도록 바꿉니다. ② 원리듬 비교의 원곡 온셋은 스냅·중복 제거 전 값이라, 마디선 근처 스냅이나 겹음이 있으면 원리듬을 적게 셀 수 있습니다(현재 12곡에는 해당 0건). ③ 악장 번호 정규식 `(?![IV])` 은 단어 경계가 아니어서 "Spring In…" 같은 문자열도 통과합니다(실제 12블록은 모두 정상). ④ 작곡기 길이는 1288줄입니다(브리프 §4 가 작곡기를 파일 하나로 정합니다). ⑤ 진술 다운비트 앞 픽업 음은 op·원리듬 집계 창 밖에 있습니다. ⑥ Summer III 의 ① 은 `pat` 이 만든 온셋을 `sync` 로 당긴 것뿐입니다.
+
+**다음**: 사용자가 Suno 업로드 결과를 알려 주면 `업로드 결과` 칸을 채우고, 반려된 곡은 브리프 §2-7 대로 `-v2u`(템포 메타 ±2 BPM)·`-v2t`(드럼 제외 +1 반음)를 먼저 시험합니다.
+## 2026-11-10 Vivaldi 사계 변주 v2 — 집계 (주제 세션 vivaldi)
+
+- **라운드 운영**: 주제 세션이 `band-astra`(gpt-6-astra) → `band-fable`(claude-fable-5-1) → `band-opus`(claude-opus-5-5) 순으로 같은 킥오프 지시(`VIVALDI_V2_KICKOFF.md` + 추가 지시 7개, opus 에는 앞 두 라운드의 결함 교훈 2개 추가)를 보내 순차 진행했습니다. 소요 약 3h / 3h 40m / 1h 45m, 바운스 36/36, 대기 초과 0. opus 가 가장 빨랐던 이유는 교훈을 미리 받아 재바운스가 없었기 때문입니다.
+- **머지**: `a6635e9`(opus) → `846eceb`(fable) → `8bce7a3`(astra). 충돌은 `FEEDBACK_LOG.md`·`audit.jsonl`(양쪽 보존), `SUNO_PROMPTS.md`(제목은 vivaldi 쪽), `pipeline.py`(astra 의 트랙 수 검사·AIFF 완결성 검사 + fable 의 `select=` 를 함께 유지). 머지 커밋은 리뷰 게이트 감사 오버라이드(원점 리뷰 완료, 충돌 해소는 합집합)로 넘겼고 `audit.jsonl` 에 기록돼 있습니다. 병합 뒤 `vivaldi_{astra,fable,opus}_v2.py --check` 3종 PASS, v1 `--check`·재생성 불변, astra 단위 테스트 OK.
+- **라운드가 찾은 파이프라인 결함 2건과 반영**: ① 지휘 트랙의 저작권 메타(FF 02)가 Logic 에서 빈 트랙이 되어 `patches` 번호가 밀림(fable·astra 실측) → `produce()` 가 임포트 트랙 수 ≠ 악기 트랙 수면 `stage='tracks'`; 메타는 첫 악기 트랙 틱 0 에(브리프 §4). ② 패치 로드 뒤 선택 트랙의 마지막 리전 끝이 바운스 범위가 되어 곡이 잘림(fable 7곡, ⇧⌘A 선택 해제 무효) → `produce()` 가 `patches` 가 있으면 SMF 에서 가장 늦게 끝나는 악기 트랙을 자동으로 다시 선택(`select=` 로 지정 가능). 둘 다 `LOGIC_LIBRARY_INVENTORY.md` §4.1 에 적었습니다. 제 11-09 프로브는 모든 트랙 길이가 같아 ②를 놓쳤습니다 — 교훈: 자동화 프로브는 트랙 길이가 서로 다른 SMF 로 해야 합니다.
+- **집계**: `SETLIST_vivaldi.md` `## v2 — 2026-11-10 집계` — 36곡 107:44, 장르 36종 거의 비겹침, 패치 트랙 astra 21·fable 22·opus 17, 솔로 바이올린 EXS 5곡. 업로드·청취 판정은 비어 있습니다.
+- **머지 전 리뷰 반영 (2026-11-10, chats 리뷰 `review-2026-11-10-142520` FAIL → 수정)**: ① 라이브러리 검색 결과가 한 행이면 무조건 올리던 대체 규칙을 **표시명에 한글(비 ASCII)이 있을 때만**으로 좁히고 결과 넷째 항목에 `substituted` 를 남겼습니다 — 실측: `Bassoon`·`Harpsichor` 는 MISS, `Tonewheel Organ` 은 "톤휠 오르간" 으로 SUBST. ② 헤더를 못 읽어 빈 문자열이면 2차 검증 실패로 처리하고, GM 으로 이미 올라온 같은 패치를 다시 지정한 경우(헤더 불변)는 로드 전 표시기 이름으로 통과시켰습니다(`Studio Cellos` 재지정 OK 실측). ③ `select_track` 의 osascript 시간 초과와 `stage='patches'` 실패 경로에서 Escape 로 팝오버를 닫습니다. ④ `build_smf` 의 박자 검사를 `assert` 에서 `ValueError` 로 바꿨습니다. ⑤ 위 "v2 착수 준비" 의 `vivaldi-<model>` 문장에 band-* 재사용으로 바뀐 사실을 적었습니다. 리뷰의 [medium] "Logic 트랙 번호 = SMF 순서 전제 미검증" 은 트랙 수 검사(`stage='tracks'`)로만 막고 있어 그대로 두었습니다(헤더 이름을 `gm_patch_map.json` 과 대조하는 강화는 후속 후보).
