@@ -1,0 +1,89 @@
+version: 1
+status: done
+completed: 2026-11-14
+task_id: "20261113-220009-a606"
+
+goal: >
+  Logic 템플릿 프로젝트(사용자가 악기를 올려 저장한 .logicx)를 복사본으로 열고 SMF 를 기존 트랙 위에
+  임포트하는 pipeline.produce(template=...) 경로를 만들어, GM 프로그램 번호로 닿지 않는 라이브러리 패치(경로 B)와
+  Sampler 프리셋(경로 C)으로 바운스를 낼 수 있게 한다. 0단계 스파이크(AC0)로 Logic 의 임포트 동작을 먼저 실측하고,
+  AC0 판정표에 따라 "불가로 종료" 또는 "지정한 대책으로 진행" 을 정한다(방식 ①·② 는 이 사이클 밖). 진행하면
+  테스트 템플릿(트랙 4개, 경로 A·B·C 각 1개 이상)과 테스트 SMF 로 패치·배치·발음·바운스를 실측해 증명한다.
+
+constraints:
+  - 템플릿 원본 .logicx 는 Logic 으로 열지 않는다. shutil.copytree 로 PROJ_DIR/<proj>.logicx 에 복사한 사본만 열고, 사본 경로가 이미 있으면 덮지 않고 실패한다
+  - 템플릿 모드의 저장은 save_quiet()(⌘S, 제목 있는 문서) 만 쓴다. save_project_as() 와 그 "대치" 자동 클릭은 쓰지 않는다
+  - 템플릿 모드의 SMF 에는 PC(program change) 와 CC0/7/10/32(뱅크·볼륨·팬) 이벤트를 넣지 않는다 — template_smoke.py --dry-run 이 assert 한다
+  - 템플릿 모드에서는 clear_alerts() 와 metronome_off() 를 부르지 않는다. 대화상자는 AC0 에서 실측한 라벨로 버튼을 지정해 누르고, 창 조회는 gm_map._windows_strict() 패턴(조회 실패는 예외)으로 하며, 허용 창 목록 밖의 창이 뜨면 실패로 끝낸다
+  - 템포는 SMF 가 정한다. 임포트 후 LCD 템포 슬라이더 값(lcd_tempo_value(); 텍스트 탐색 lcd_tempo() 는 빈 값을 주는 경우가 있다)이 SMF BPM 과 같아야 한다(안 들어오면 AC0 판정표의 대책을 따른다)
+  - 트랙 수·템플릿 BPM 은 사본의 Alternatives/000/MetaData.plist(NumberOfTracks, BeatsPerMinute)를 plistlib 로 읽어 Logic 을 건드리기 전에 판정한다. SMF 트랙 수(conductor 제외) > NumberOfTracks 면 실패한다
+  - 시작 조건: 프로젝트 창이 하나라도 열려 있으면 gm_map.measure() 처럼 시작을 거부한다(close_all_projects 로 남의 작업을 버리지 않는다). 템플릿 경로·사본 경로·트랙 수 검증과 실행 전 해시 기록은 그 확인 뒤, Logic 조작 전에 한다. 템플릿 모드 전체는 try/finally 로 감싸 실패 시 close_all_projects(save=False) 로 닫고, 사본은 <proj>.failed-<ts>.logicx 로 이름을 바꿔 보존한다
+  - produce(template=...) 는 save_quiet 전에 템플릿 직후 스냅샷·임포트 후 mixer_strips·트랙별 리전 이름·LCD 템포 값을 수집해 반환 dict 에 넣는다(리전 시작 위치는 AX 로 읽히지 않아 구간 RMS 로 대신한다). template_smoke.py 는 그 값을 assert 만 하고 Logic 을 직접 조회하지 않는다
+  - build_smf 는 pcs=None 을 허용하는 것 외에 바꾸지 않는다. 기존 호출(verify-commands.json 의 스크립트)이 만드는 SMF 는 바이트 단위로 같아야 한다
+  - 템플릿 인자 없는 기존 produce() 의 동작은 바꾸지 않는다. finish() 는 창 제목을 인자로 받되 기본값은 '무제 - 트랙' 이다. 예외(2026-11-14 사용자 승인): save_quiet() 는 합성 ⌘S 가 한국어 입력 소스에서 새 트랙을 만드는 실측 때문에 '파일 > 저장' 메뉴 클릭으로 바꾸며 GM 경로에도 적용한다(버그 수정)
+  - 라이브러리 창 AX 조작·채널 스트립 설정(.cst) 로드는 구현하지 않는다. Logic 환경설정을 바꾸지 않는다
+  - produce() 가 LogicLock 을 잡으므로 template_smoke.py 는 잠금을 따로 잡지 않는다(재진입 불가). sid 는 tplsmoke-<YYYYMMDD-HHMMSS> 로 고유하게 정한다
+  - git 커밋·푸시는 사용자 지시가 있을 때만 한다
+
+acceptance_criteria:
+  - "AC0 스파이크 판정: 에이전트가 AX(라이브러리 창 검색)와 Logic MCP(logic_tracks·logic_mixer)로 테스트 템플릿 PROJ_DIR/templates/tplsmoke.logicx 를 만든다(트랙 4개: 경로 A 라이브러리 패치·경로 B z_Legacy 패치·경로 C .exs 프리셋·단일 출력 드럼 킷, AC5 체크리스트 초안 준수). 어느 단계가 자동으로 안 되면 그 단계만 FEEDBACK_LOG 에 적고 사용자에게 그 조작만 부탁한다(제작 과정은 방식 ① 의 실측 자료로 기록). 그 템플릿으로 FEEDBACK_LOG.md 에 다음 실측이 기록돼 있다 — (1) 프로젝트가 열린 상태에서 `open -a` 또는 메뉴 임포트가 열린 프로젝트로 들어가는지, 메뉴 임포트면 파일 패널의 현재 폴더를 AX 로 읽을 수 있는지 (2) 기존 트랙 배치 선택지의 존재와 정확한 라벨, 임포트 중 뜨는 모든 대화상자(템포 가져오기 등)의 라벨 (3) conductor 트랙이 기존 트랙 배치에서 한 칸을 차지하는지, 대응이 순서인지 MIDI 채널인지 (4) 템플릿에서 mixer_strips() 순서·개수가 트랙 및 MetaData.plist NumberOfTracks 와 같은지 (5) 트랙별 리전 이름·시작 위치를 AX 로 읽을 수 있는지 (6) 임포트가 트랙 이름을 SMF 트랙 이름으로 바꾸는지 (7) 이름을 바꾼 사본의 창 제목이 '<proj> - 트랙' 인지 (8) 제목 있는 프로젝트의 바운스 기본 저장 위치가 BOUNCE_SEARCH 안인지 (9) 템포가 SMF 값으로 들어오는지. 판정표(2026-11-14 사용자 승인으로 개정): 배치 선택지 없음 → 새 트랙으로 임포트한 뒤 트랙 헤더 컨텍스트 메뉴 '트랙 다시 할당 > 믹서 > 소프트웨어 악기 > (Inst i)' 로 템플릿 스트립에 재할당하고 '사용하지 않는 트랙 삭제' 로 빈 원래 트랙을 지우는 대책(실측으로 채택); 드래그로만 가능 → 불가로 종료(AC1–AC4·AC6 N/A, AC5 는 불가 분기); conductor 가 한 칸 차지 → 템플릿 1번 트랙을 빈 예약 트랙으로 두는 대책; 채널 대응 → SMF 채널을 템플릿 순서에 맞추는 대책; 템포 미반영 → AX 로 LCD 템포 설정하는 대책; 리전 읽기 불가 → 배치 검증을 구간 분할 RMS(AC2)로만 하는 대책"
+  - "AC1 패치·배치 일치: 테스트 템플릿(트랙 4개, 경로 A 라이브러리 패치·경로 B z_Legacy 패치·경로 C .exs 프리셋 각 1개 이상, 사용자가 만든 Aux·Track Stack·Drummer 없음 — 패치가 자동으로 만드는 리버브 버스 Aux 는 스트립 목록 뒤에 붙으며 전후 일치로만 판정)과 template_smoke.py 의 9마디 SMF(트랙마다 다른 이름, SMF BPM ≠ 템플릿 BPM, 마디 1 은 전 트랙 무음, 트랙 i 는 마디 2i+2~2i+3 에서만 연주)로 produce(template=...) 를 실행하면 반환 dict 에서 임포트 후 mixer_strips 가 템플릿 직후 스냅샷과 개수·순서·이름이 정확히 같고(새 트랙 0개), 트랙 i 의 리전 이름이 SMF 트랙 i 의 이름과 같고(리전은 SMF 의 절대 위치에 놓이므로 — 2026-11-14 실측 — 배치는 AC2 의 트랙별 구간 RMS 로 판정), LCD 템포 슬라이더 값(lcd_tempo_value)이 SMF BPM 과 같다. 로그를 FEEDBACK_LOG.md 에 기록한다"
+  - "AC2 바운스·발음: 같은 실행으로 /Volumes/Netac 2TB/music/bounces/ 에 WAV 가 생기고, 길이가 SMF BPM 기준 9마디 −0.1초 ~ +12초(릴리스 꼬리 허용, vivaldi_astra.py 기준)이며, 마디 1 RMS < −60 dBFS(메트로놈 클릭 없음)이고, 트랙 i 의 구간(마디 2i+2~2i+3) RMS 가 각각 −40 dBFS 보다 크다(경로 A·B·C 각 트랙이 실제로 소리를 냄). 저장된 사본의 MetaData.plist SamplerInstrumentsFiles 에 경로 C 의 .exs 가 들어 있다"
+  - "AC3 템플릿 보존: template_smoke.py 가 시작 조건 확인 뒤·실행 전과 실행 후에 템플릿 번들 안 전체 파일의 sha256 트리 해시를 기록하고 둘이 같다"
+  - "AC4 회귀: template_smoke.py --gm 이 같은 노트에 PC 를 넣은 별도 SMF 를 만들어 템플릿 없이 produce() 로 돌리면 mixer_strips() 가 gm_patch_map.json 의 해당 PC 매핑과 같고 바운스까지 끝난다. verify-commands.json 의 기존 스크립트가 만드는 SMF 는 변경 전후 바이트가 같다(해시 비교 기록)"
+  - "AC5 문서: LOGIC_LIBRARY_INVENTORY.md §4 표의 B·C 행이 AC0 결과에 따라 '템플릿 방식으로 가능 + 절차 링크' 또는 '템플릿 방식 불가(AC0 판정 링크)' 로 바뀌어 있다. 가능이면 템플릿 제작 체크리스트(트랙 순서·이름, 리전 없음, 소프트웨어 악기 트랙만, 드럼은 단일 출력 킷, Aux·Stack·Drummer 금지, cycle OFF·메트로놈 OFF, 템포·박자, 프로젝트 끝 마커·길이, 재생헤드 마디 1, 플러그인 창 모두 닫고 저장, 믹서 보기 기본, 저장 위치 PROJ_DIR/templates/, 템플릿을 Logic 에서 다시 열어 저장하지 말 것)와 produce(template=) 호출법·실패 시 .failed 사본 처리가 적혀 있다"
+  - "AC6 실패 경로: template_smoke.py --dry-run 이 Logic 없이 SMF 를 만들어 parse_smf 로 트랙마다 PC 없음·CC0/7/10/32 없음·트랙 수·BPM·구간 배치를 assert 하고 verify-commands.json 에 등록돼 있다. 또 (1) 템플릿 경로 없음 (2) 사본 경로 이미 있음 (3) SMF 트랙 수 > MetaData.plist NumberOfTracks (4) 프로젝트 창이 열려 있음 — 네 경우 모두 Logic 을 조작하기 전에 실패하며, 그 결과가 FEEDBACK_LOG 에 기록돼 있다"
+
+out_of_scope:
+  - 브리프 형식 변경(트랙별 악기·주법·키스위치 절 추가)
+  - 키스위치·CC1/CC11 등 주법 지시를 MIDI 로 번역하는 규칙
+  - Violin (Arco).exs 등 개별 악기의 음질·적합성 판정(인벤토리 §7 핸드오프 2번)
+  - 사계·lo-fi 기존 곡을 새 악기로 재렌더하는 것
+  - 테스트 템플릿 제작을 파이프라인 함수로 일반화하는 것(이번에는 tplsmoke 한 개를 에이전트가 AX·MCP 로 만들고 과정만 기록, 체크리스트를 문서화)
+  - 라이브러리 창 AX 조작(방식 ①)·.cst 로드(방식 ②) 구현 — AC0 에서 불가로 판정되면 별도 사이클로 질문
+
+assumptions:
+  - "[AC0 에서 실측] Logic 은 프로젝트가 열린 상태에서 MIDI 파일을 가져올 때 기존 트랙에 리전을 올리는 선택지를 제공한다 — 레포에 실측 기록 없음"
+  - "[AC0 에서 실측] 열린 프로젝트로의 임포트 수단: `open -a APP x.mid` 가 열린 프로젝트에 들어가는지, 아니면 '파일 > 가져오기 > MIDI 파일' 패널(⌘⇧G 가 합성 입력을 받지 않는 기존 실측 pipeline.py:496-497 때문에 패널 현재 폴더를 AX 로 읽어 그곳에 고유 이름으로 복사해 고르고 실행 뒤 지우는 방식)을 써야 하는지"
+  - "[AC0 에서 실측] 기존 트랙 배치 시 SMF 의 conductor 청크(build_smf 가 항상 0번에 넣음, pipeline.py:82)가 트랙 한 칸을 차지하지 않는다"
+  - "[AC0 에서 실측] 템플릿 프로젝트(Aux·Stack 없음)에서 mixer_strips() 가 트랙 순서대로 하나씩 패치명(또는 트랙 이름)을 돌려주고 MetaData.plist NumberOfTracks 와 수가 같다"
+  - "[실측 완료 2026-11-13] PROJ_DIR 의 기존 번들 Alternatives/000/MetaData.plist 에 NumberOfTracks·BeatsPerMinute 키가 있다(plutil -p, 2차 Plan Attack 근거)"
+  - 한국어 UI 의 창·버튼 라벨은 pipeline.py 의 기존 실측(“- 트랙”, “저장 안 함/저장하지 않음”)과 같은 방식으로 상수화할 수 있다
+  - 제목 있는 프로젝트에서 ⌘S(save_quiet) 는 대화상자 없이 그 자리에 저장한다(pipeline.py:356-364 기존 사용)
+
+risks:
+  - 기존 트랙 배치 선택지가 없거나 드래그로만 가능하면 방식 ③ 은 불가 — AC0 판정표로 종료하고 보고한다(이 경우 사이클 산출물은 판정 기록과 AC5 불가 분기 문서)
+  - 리전 이름·시작 위치를 AX 로 읽지 못하면 배치 검증은 AC2 의 구간 분할 RMS 로만 한다(AC0 판정표)
+  - 스트립 이름이 패치명이 아니라 트랙 이름일 수 있다 — AC1 은 스냅샷 일치로 판정하고 발음은 AC2 구간 RMS 와 SamplerInstrumentsFiles 로 보완
+  - 템플릿을 열 때 샘플 누락·복구·플러그인 창이 뜰 수 있다(Netac 연결 이력, Sampler 편집 창) — 허용 창 목록 밖은 실패, 체크리스트에 "플러그인 창 닫고 저장"
+  - Logic 이 번들 안에 자동 저장 파일을 쓰면 AC3 해시가 달라질 수 있다 — 원본은 열지 않으므로 발생하지 않아야 하며, 달라지면 어떤 파일인지 기록
+  - 제목 있는 프로젝트의 바운스 기본 저장 위치가 번들 안이면 BOUNCE_SEARCH 가 못 찾는다 — AC0 (8) 에서 실측해 필요하면 후보 추가(templates/ 는 넣지 않음)
+  - AX 자동화는 Logic 상태(남은 창·시트)에 민감하고 임포트 중 System Events 가 ~2분 막힌다(pipeline.py:736) — strict 창 조회와 LogicLock 직렬화
+  - 자동 테스트 인프라가 없어 Logic 이 필요한 AC 는 수동 스모크 1회 실행과 로그 기록에 의존한다. 커밋 시점 자동 판정은 AC6 의 --dry-run 뿐
+
+references:
+  - path: docs/harness/kickoff-summary.md
+    reason: 이 seed 의 인터뷰 요약(JTBD·Context·Scope)
+  - path: docs/harness/plan-attack-report.md
+    reason: Plan Attack 1·2차 결과와 반영 내역(CRITICAL 1 → 복사본 방식, HIGH 4 → plist 선판정·반환 dict·구간 RMS·metronome_off 미사용)
+  - path: docs/music/LOGIC_LIBRARY_INVENTORY.md
+    reason: §4 악기 호출 경로 A·B·C 와 §7 핸드오프 1번(이 작업의 출처), §5 테스트 템플릿에 쓸 패치·EXS 경로
+  - path: docs/music/tools/pipeline.py
+    reason: produce()/finish()/mixer_strips()/save_quiet()/LogicLock/BOUNCE_SEARCH — 템플릿 모드가 붙을 자리
+  - path: docs/music/tools/gm_map.py
+    reason: _windows_strict·measure() 시작 거부·스트립 개수 fail-closed 검사의 기존 패턴
+  - path: docs/music/tools/vivaldi_astra.py
+    reason: 바운스 길이 허용치(−0.1s ~ +12s) 선례
+  - path: docs/music/gm_patch_map.json
+    reason: AC4 회귀 기준
+  - path: docs/harness/verify-commands.json
+    reason: AC4 바이트 동일성 대상 스크립트 목록, AC6 --dry-run 등록 위치
+  - path: docs/music/FEEDBACK_LOG.md
+    reason: 2026-11-13 절 — 방향 결정과 전제 조건, AC0·AC1·AC6 로그 기록 위치
+
+estimate:
+  risk: medium
+  files: 5
+  depth: high
+  model: anthropic/claude-fable-5-1
+  effort: null

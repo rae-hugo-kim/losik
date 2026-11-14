@@ -25,3 +25,6 @@ artifacts/**
 !artifacts/**/
 !artifacts/README.md
 !artifacts/**/README.md
+
+# Compiled Vision OCR helper (rebuilt by pipeline.ensure_ocr(); source is ax/ocr.swift)
+docs/music/tools/ax/ocr
